@@ -17,7 +17,7 @@ public record StringTypeTokenizer(TokenizerInterface nextTokenizer) implements T
         if(!canTokenize(input)) {
             return nextTokenizer().tokenize(input);
         }
-        TokenInterface stringTokenInterface = new Token("STRING_TYPE",input);
+        TokenInterface stringTokenInterface = new Token("STRING_TYPE_TOKENIZER",input);
         return new CorrectResponse<>(stringTokenInterface);
     }
 }

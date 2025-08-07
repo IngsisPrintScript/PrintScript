@@ -2,6 +2,7 @@ package analyzers.lexic;
 
 import analyzers.Analyzer;
 import analyzers.lexic.tokenizers.TokenizerInterface;
+import parsers.ParserInterface;
 import responses.CorrectResponse;
 import responses.IncorrectResponse;
 import responses.Response;
@@ -12,8 +13,7 @@ import java.util.List;
 
 public record LexicalAnalyzer(TokenizerInterface tokenizerInterface) implements Analyzer {
     @Override
-    public Response analyze(String line) {
-        List<String> words = textSeparator(line);
+    public Response analyze(List<String> words) {
         List<TokenInterface> tokens = new LinkedList<>();
         for(String word : words) {
             Response tokenizerResponse = tokenizerInterface.tokenize(word);

@@ -9,7 +9,7 @@ import token.TokenInterface;
 public record NumberTypeTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
-        return input.matches("number");
+        return input.matches("Number");
     }
 
     @Override
@@ -17,7 +17,7 @@ public record NumberTypeTokenizer(TokenizerInterface nextTokenizer) implements T
         if(!canTokenize(input)) {
             return nextTokenizer().tokenize(input);
         }
-        TokenInterface numberTokenInterface = new Token("NUMBER_TYPE", input);
+        TokenInterface numberTokenInterface = new Token("NUMBER_TYPE_TOKENIZER", input);
         return new CorrectResponse<>(numberTokenInterface);
     }
 }
