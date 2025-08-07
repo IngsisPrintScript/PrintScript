@@ -7,7 +7,7 @@ import responses.Response;
 import token.Token;
 import token.TokenInterface;
 
-public class LiteralTokenizer implements TokenizerInterface {
+public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
 
     @Override
     public Boolean canTokenize(String input) {
