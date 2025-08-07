@@ -1,0 +1,22 @@
+@startuml
+interface Response<T>{
+    + Boolean isCorrect()
+}
+interface Analyzer{
+    + Response analyze()
+}
+class LexicAnalyzer{
+    + List<Char> splitCharacter
+    + StringTokenizer stringTokenizer;
+    + Response analyze(String textToAnalyze)
+}
+interface Tokenizer{
+    + Boolean canTokenize()
+    + Response tokenize()
+}
+
+Response <|-- Analyzer
+
+Analyzer <|-- LexicAnalyzer
+Tokenizer <.. LexicAnalyzer
+@enduml
