@@ -1,5 +1,7 @@
 package repositories;
 
+import responses.Response;
+
 public interface CodeRepositoryInterface {
-    String getCode();
+    Response getCode();
 }

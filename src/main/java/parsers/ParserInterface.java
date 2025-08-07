@@ -1,7 +1,9 @@
 package parsers;
 
+import responses.Response;
+
 import java.util.List;
 
 public interface ParserInterface {
-    List<String> parse();
+    Response parse();
 }

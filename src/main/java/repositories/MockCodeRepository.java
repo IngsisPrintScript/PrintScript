@@ -1,8 +1,11 @@
 package repositories;
 
+import responses.CorrectResponse;
+import responses.Response;
+
 public record MockCodeRepository(String mockCode) implements CodeRepositoryInterface {
     @Override
-    public String getCode() {
-        return mockCode();
+    public Response getCode() {
+        return new CorrectResponse<String>(mockCode());
     }
 }
