@@ -4,21 +4,21 @@ import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
 import responses.CorrectResponse;
 import responses.IncorrectResponse;
 import responses.Response;
-import token.TOKEN.TOKENS;
-import token.TokenInterfaces.Token;
+import token.Token;
+import token.TokenInterface;
 
-public class STRING_TYPE_TOKENIZE implements Tokenizer {
+public record STRING_TYPE_TOKENIZE(Tokenizer nextTokenizer) implements Tokenizer {
     @Override
     public Boolean canTokenize(String input) {
         return input.equals("String");
     }
 
     @Override
-    public <T> Response<T> tokenize(String input) {
+    public Response tokenize(String input) {
         if(!canTokenize(input)) {
-            return new IncorrectResponse("Lexical Error");
+            return nextTokenizer().tokenize(input);
         }
-        Token StringToken = new TOKENS("STRING_TYPE",input);
-        return new CorrectResponse<>((T) StringToken);
+        TokenInterface stringTokenInterface = new Token("STRING_TYPE",input);
+        return new CorrectResponse<>(stringTokenInterface);
     }
 }

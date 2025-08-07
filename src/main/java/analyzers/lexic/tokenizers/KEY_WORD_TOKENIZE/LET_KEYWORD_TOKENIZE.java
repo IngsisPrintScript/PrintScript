@@ -4,20 +4,20 @@ import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
 import responses.CorrectResponse;
 import responses.IncorrectResponse;
 import responses.Response;
-import token.TOKEN.TOKENS;
+import token.Token;
 
-public class LET_KEYWORD_TOKENIZE implements Tokenizer {
+public record LET_KEYWORD_TOKENIZE(Tokenizer nextTokenizer) implements Tokenizer {
     @Override
     public Boolean canTokenize(String input) {
         return input.equals("let");
     }
 
     @Override
-    public <T> Response<T> tokenize(String input) {
+    public Response tokenize(String input) {
         if (!canTokenize(input)) {
-            return new IncorrectResponse("Lexical Error");
+            return nextTokenizer().tokenize(input);
         }
-        TOKENS keywordToken = new TOKENS("KEY_WORD_TOKEN", input);
-        return new CorrectResponse<>((T) keywordToken);
+        Token keywordToken = new Token("KEY_WORD_TOKEN", input);
+        return new CorrectResponse<>(keywordToken);
     }
 }

@@ -1,13 +1,8 @@
 package responses;
 
-public record IncorrectResponse<T>(String message) implements Response<String> {
+public record IncorrectResponse(String message) implements Response {
     @Override
     public Boolean isSuccessful() {
         return false;
-    }
-
-    @Override
-    public String getResponse() {
-        return this.message();
     }
 }

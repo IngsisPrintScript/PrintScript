@@ -1,38 +1,36 @@
 package analyzers.lexic;
 
+import analyzers.Analyzer;
 import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
+import responses.CorrectResponse;
 import responses.IncorrectResponse;
 import responses.Response;
-import token.TokenInterfaces.Token;
+import token.TokenInterface;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Lexical{
-    private List<Tokenizer> tokenizer;
-
-    public Lexical(List<Tokenizer> tokenizer) {
-        this.tokenizer = tokenizer;
-    }
-
-    public LinkedList<Response<Token>> parse(String line){
-        LinkedList<Response<Token>> tokens = new LinkedList<>();
-        String[] token = line.split(" ");
-        for(String word : token){
-            Response<Token> tokenResponse = searchTokens(word);
-            tokens.add(tokenResponse);
-
-        }
-        return tokens;
-    }
-
-    private Response<Token> searchTokens(String word){
-        Response<Token> tokenToGet = new IncorrectResponse("No Coincidence Tokens");
-        for(Tokenizer tokenizer : tokenizer){
-            if(tokenizer.canTokenize(word)){
-                return tokenizer.tokenize(word);
+public record Lexical(Tokenizer tokenizer) implements Analyzer {
+    @Override
+    public Response analyze(String line) {
+        List<String> words = textSeparator(line);
+        List<TokenInterface> tokens = new LinkedList<>();
+        for(String word : words) {
+            Response tokenizerResponse = tokenizer.tokenize(word);
+            if(!tokenizerResponse.isSuccessful()) {
+                return tokenizerResponse;
+            }
+            Object token = ((CorrectResponse<?>) tokenizerResponse).newObject();
+            if(token instanceof TokenInterface) {
+                tokens.add((TokenInterface) token);
+            } else {
+                return new IncorrectResponse("Tokenizer returned a correct response with no token");
             }
         }
-        return tokenToGet;
+        return new CorrectResponse<List<TokenInterface>>(tokens);
+    }
+
+    private List<String> textSeparator(String line){
+        return List.of(line.split(" "));
     }
 }

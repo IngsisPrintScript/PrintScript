@@ -1,6 +1,5 @@
 package responses;
 
-public sealed interface Response<T> permits CorrectResponse, IncorrectResponse {
+public sealed interface Response permits CorrectResponse, IncorrectResponse {
     Boolean isSuccessful();
-    T getResponse();
 }
