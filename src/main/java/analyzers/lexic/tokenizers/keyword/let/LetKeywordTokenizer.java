@@ -1,11 +1,11 @@
-package analyzers.lexic.tokenizers.keyword;
+package analyzers.lexic.tokenizers.keyword.let;
 
-import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
+import analyzers.lexic.tokenizers.TokenizerInterface;
 import responses.CorrectResponse;
 import responses.Response;
 import token.Token;
 
-public record LET_KEYWORD_TOKENIZE(Tokenizer nextTokenizer) implements Tokenizer {
+public record LetKeywordTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
         return input.equals("let");

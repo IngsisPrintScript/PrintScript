@@ -1,13 +1,12 @@
-package analyzers.lexic.tokenizers.TYPE_TOKENIZE;
+package analyzers.lexic.tokenizers.type;
 
-import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
+import analyzers.lexic.tokenizers.TokenizerInterface;
 import responses.CorrectResponse;
-import responses.IncorrectResponse;
 import responses.Response;
 import token.Token;
 import token.TokenInterface;
 
-public record STRING_TYPE_TOKENIZE(Tokenizer nextTokenizer) implements Tokenizer {
+public record StringTypeTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
         return input.equals("String");
