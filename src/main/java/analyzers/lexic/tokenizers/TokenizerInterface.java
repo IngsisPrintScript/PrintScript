@@ -1,8 +1,8 @@
-package analyzers.lexic.tokenizers.TOKENIZE_INTERFACE;
+package analyzers.lexic.tokenizers;
 
 import responses.Response;
 
-public interface Tokenizer {
+public interface TokenizerInterface {
     Boolean canTokenize(String input);
     Response tokenize(String input);
 }

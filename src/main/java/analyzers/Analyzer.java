@@ -2,6 +2,8 @@ package analyzers;
 
 import responses.Response;
 
+import java.util.List;
+
 public interface Analyzer {
-    Response analyze(String line);
+    Response analyze(List<String> words);
 }
