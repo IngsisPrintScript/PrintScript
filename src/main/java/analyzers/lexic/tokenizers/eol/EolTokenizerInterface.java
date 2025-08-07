@@ -1,13 +1,12 @@
-package analyzers.lexic.tokenizers.FINALIZER_TOKENIZER;
+package analyzers.lexic.tokenizers.eol;
 
 import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
 import responses.CorrectResponse;
-import responses.IncorrectResponse;
 import responses.Response;
 import token.Token;
 import token.TokenInterface;
 
-public record SEMICOLON_TOKENIZE(Tokenizer nextTokenizer) implements Tokenizer {
+public record EolTokenizer(Tokenizer nextTokenizer) implements Tokenizer {
     @Override
     public Boolean canTokenize(String input) {
         return input.equals(";");
@@ -18,7 +17,7 @@ public record SEMICOLON_TOKENIZE(Tokenizer nextTokenizer) implements Tokenizer {
         if(!canTokenize(input)) {
             return nextTokenizer().tokenize(input);
         }
-        TokenInterface semicolonTokenInterface = new Token("FINALIZER_TOKEN", input);
+        TokenInterface semicolonTokenInterface = new Token("EOL_TOKENIZER", input);
         return new CorrectResponse<>(semicolonTokenInterface);
     }
 }

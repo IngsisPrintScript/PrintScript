@@ -1,8 +1,7 @@
-package analyzers.lexic.tokenizers.KEY_WORD_TOKENIZE;
+package analyzers.lexic.tokenizers.keyword;
 
 import analyzers.lexic.tokenizers.TOKENIZE_INTERFACE.Tokenizer;
 import responses.CorrectResponse;
-import responses.IncorrectResponse;
 import responses.Response;
 import token.Token;
 
