@@ -16,7 +16,7 @@ public record LetKeywordTokenizer(TokenizerInterface nextTokenizer) implements T
         if (!canTokenize(input)) {
             return nextTokenizer().tokenize(input);
         }
-        Token keywordToken = new Token("KEY_WORD_TOKEN", input);
+        Token keywordToken = new Token("LET_KEYWORD_TOKEN", input);
         return new CorrectResponse<>(keywordToken);
     }
 }

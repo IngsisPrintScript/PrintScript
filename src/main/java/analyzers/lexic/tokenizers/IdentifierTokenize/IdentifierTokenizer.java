@@ -9,7 +9,7 @@ import token.TokenInterface;
 
 import java.util.List;
 
-public record IdentifierTokenizer(TokenizerInterface tokenizerInterface, List<String> DeniedChars) implements TokenizerInterface {
+public record IdentifierTokenizer(TokenizerInterface nextTokenizer, List<String> DeniedChars) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
         for(String chars: DeniedChars) {
@@ -23,9 +23,9 @@ public record IdentifierTokenizer(TokenizerInterface tokenizerInterface, List<St
     @Override
     public Response tokenize(String input) {
         if(!canTokenize(input)) {
-            return new IncorrectResponse("Identifier tokenizer returned an incorrect response");
+            return nextTokenizer().tokenize(input);
         }
-        TokenInterface tokenizer = new Token("IDENTIFIER", input);
+        TokenInterface tokenizer = new Token("IDENTIFIER_TOKEN", input);
         return new CorrectResponse<>(tokenizer);
     }
 }
