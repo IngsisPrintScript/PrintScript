@@ -2,7 +2,6 @@ package analyzers.lexic.tokenizers.IdentifierTokenize;
 
 import analyzers.lexic.tokenizers.TokenizerInterface;
 import responses.CorrectResponse;
-import responses.IncorrectResponse;
 import responses.Response;
 import token.Token;
 import token.TokenInterface;

@@ -1,14 +1,10 @@
-import analyzers.Analyzer;
-import analyzers.lexic.LexicalAnalyzer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import parsers.MockParser;
-import repositories.MockCodeRepository;
+import analyzers.lexic.parsers.MockParser;
+import analyzers.lexic.repositories.code.MockCodeRepository;
 import responses.CorrectResponse;
-import token.Token;
 
 import java.util.List;
-import java.util.Objects;
 
 public class LexicTest{
 

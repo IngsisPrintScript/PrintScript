@@ -2,7 +2,6 @@ package analyzers.lexic;
 
 import analyzers.Analyzer;
 import analyzers.lexic.tokenizers.TokenizerInterface;
-import parsers.ParserInterface;
 import responses.CorrectResponse;
 import responses.IncorrectResponse;
 import responses.Response;

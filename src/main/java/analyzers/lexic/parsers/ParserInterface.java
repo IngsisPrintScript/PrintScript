@@ -1,4 +1,4 @@
-package parsers;
+package analyzers.lexic.parsers;
 
 import responses.Response;
 

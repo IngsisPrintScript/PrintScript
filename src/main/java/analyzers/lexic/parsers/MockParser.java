@@ -1,6 +1,6 @@
-package parsers;
+package analyzers.lexic.parsers;
 
-import repositories.CodeRepositoryInterface;
+import analyzers.lexic.repositories.code.CodeRepositoryInterface;
 import responses.CorrectResponse;
 import responses.IncorrectResponse;
 import responses.Response;
