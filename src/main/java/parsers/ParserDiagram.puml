@@ -1,0 +1,12 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface ParserInterface{
+    + List<String> parse(String input)
+}
+class MockParser{
+    + List<String> parse(String input)
+}
+ParserInterface <|.. MockParser
+
+@enduml
