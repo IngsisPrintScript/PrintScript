@@ -68,12 +68,17 @@ class DefaultLiteralTokenizer{
     + Response tokenize(String input)
 }
 
+class FinalTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
 
 Response <.. TokenizerInterface
 
 TokenizerInterface <|.. AssignationTokenizer
 TokenizerInterface <|.. EndOfLineTokenizer
 TokenizerInterface <|.. IdentifierTokenizer
+TokenizerInterface <|.. FinalTokenizer
 KeywordTokenizer ..|> TokenizerInterface
 TypeTokenizer ..|> TokenizerInterface
 LiteralTokenizer ..|> TokenizerInterface
