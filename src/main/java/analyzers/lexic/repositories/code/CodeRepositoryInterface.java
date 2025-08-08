@@ -1,4 +1,4 @@
-package repositories;
+package analyzers.lexic.repositories.code;
 
 import responses.Response;
 

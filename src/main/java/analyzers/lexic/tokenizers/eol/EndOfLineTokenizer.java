@@ -17,7 +17,7 @@ public record EndOfLineTokenizer(TokenizerInterface nextTokenizer) implements To
         if(!canTokenize(input)) {
             return nextTokenizer().tokenize(input);
         }
-        TokenInterface semicolonTokenInterface = new Token("EOL_TOKENIZER", input);
+        TokenInterface semicolonTokenInterface = new Token("EOL_TOKEN", input);
         return new CorrectResponse<>(semicolonTokenInterface);
     }
 }
