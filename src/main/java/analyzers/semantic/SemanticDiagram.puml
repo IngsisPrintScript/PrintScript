@@ -1,0 +1,24 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Analyzer{
+    + Response analyze()
+}
+
+class SemanticAnalyzer{
+    + Response analyze()
+}
+
+interface AstRepository{
+    + Response getTree()
+}
+
+interface AstValidationStrategy{
+    + Response validate(Ast root)
+}
+
+Analyzer <|.. SemanticAnalyzer
+
+SemanticAnalyzer *.. AstRepository
+SemanticAnalyzer *.. AstValidationStrategy
+@enduml

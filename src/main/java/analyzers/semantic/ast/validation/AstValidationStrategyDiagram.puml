@@ -1,0 +1,26 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface AstValidationStrategy{
+    + Response validate(AstInterface root)
+}
+class DefaultAstValidationStrategy{
+    + Response validate(AstInterface root)
+}
+
+interface AstInterface{
+    + TokenInterface token()
+    + AstInterface leftChild()
+    + AstInterface rightChild()
+}
+
+interface Response{
+    + Boolean isSuccessful()
+}
+
+AstValidationStrategy <|.. DefaultAstValidationStrategy
+
+AstInterface <.. AstValidationStrategy
+Response <.. AstValidationStrategy
+
+@enduml

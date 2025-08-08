@@ -1,0 +1,28 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface AstRepository{
+    + Response getTree()
+}
+
+interface Response{
+    + Boolean isSuccessful()
+}
+
+interface AstInterface{
+    + TokenInterface token()
+    + AstInterface leftChild()
+    + AstInterface rightChild()
+}
+class InMemoryAstRepository{
+    + Response getTree()
+}
+
+AstRepository <|.. InMemoryAstRepository
+
+InMemoryAstRepository *.. AstInterface: ast
+
+Response <.. AstRepository
+AstInterface <.. AstRepository
+
+@enduml
