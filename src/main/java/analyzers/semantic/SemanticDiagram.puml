@@ -9,16 +9,16 @@ class SemanticAnalyzer{
     + Response analyze()
 }
 
-interface AstRepository{
+interface TreeRepository{
     + Response getTree()
 }
 
-interface AstValidationStrategy{
-    + Response validate(Ast root)
+interface TreeValidationStrategy{
+    + Response validate(Tree<V> root)
 }
 
 Analyzer <|.. SemanticAnalyzer
 
-SemanticAnalyzer *.. AstRepository
-SemanticAnalyzer *.. AstValidationStrategy
+SemanticAnalyzer *.. TreeRepository
+SemanticAnalyzer *.. TreeValidationStrategy
 @enduml
