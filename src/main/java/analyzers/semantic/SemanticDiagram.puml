@@ -13,12 +13,7 @@ interface TreeRepository{
     + Response getTree()
 }
 
-interface TreeValidationStrategy{
-    + Response validate(Tree<V> root)
-}
-
 Analyzer <|.. SemanticAnalyzer
 
-SemanticAnalyzer *.. TreeRepository
-SemanticAnalyzer *.. TreeValidationStrategy
+SemanticAnalyzer *.. TreeRepository: repository
 @enduml
