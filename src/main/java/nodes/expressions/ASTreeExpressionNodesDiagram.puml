@@ -7,46 +7,46 @@ interface ASTreeComponent{
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
-interface ASTreeComposite extends ASTreeComponent{
+abstract class ASTreeComposite implements ASTreeComponent{
     + Response addChild(ASTreeNodeInterface newChildren)
     + Response removeChild(ASTreeNodeInterface oldChildren)
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
-interface ASTreeLeaf extends ASTreeComponent{
+abstract class ASTreeLeaf implements ASTreeComponent{
     + Response addChild(ASTreeNodeInterface newChildren)
     + Response removeChild(ASTreeNodeInterface oldChildren)
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
 
-class AssignationExpressionNode implements ASTreeComposite{
+class AssignationExpressionNode extends ASTreeComposite{
     + TokenInterface value
     + TreeInterface<TokenInterface> leftChild
     + TreeInterface<TokenInterface> rightChild
 }
-class AdditionExpressionNode implements ASTreeComposite{
+class AdditionExpressionNode extends ASTreeComposite{
     + TokenInterface value
     + TreeInterface<TokenInterface> leftChild
     + TreeInterface<TokenInterface> rightChild
 }
-class MultiplicationExpressionNode implements ASTreeComposite{
+class MultiplicationExpressionNode extends ASTreeComposite{
     + TokenInterface value
     + TreeInterface<TokenInterface> leftChild
     + TreeInterface<TokenInterface> rightChild
 }
 
-class LiteralExpressionNode implements ASTreeLeaf{
+class LiteralExpressionNode extends ASTreeLeaf{
     + TokenInterface value
     + TreeInterface<TokenInterface> leftChild
     + TreeInterface<TokenInterface> rightChild
 }
-class TypeExpressionNode implements ASTreeLeaf{
+class TypeExpressionNode extends ASTreeLeaf{
     + TokenInterface value
     + TreeInterface<TokenInterface> leftChild
     + TreeInterface<TokenInterface> rightChild
 }
-class IdentifierExpressionNode implements ASTreeLeaf{
+class IdentifierExpressionNode extends ASTreeLeaf{
     + TokenInterface value
     + TreeInterface<TokenInterface> leftChild
     + TreeInterface<TokenInterface> rightChild

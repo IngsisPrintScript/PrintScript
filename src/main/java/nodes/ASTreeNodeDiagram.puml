@@ -1,25 +1,25 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-interface ASTreeComponent{
+interface AbstractSyntaxTreeComponent{
     + Response addChild(ASTreeNodeInterface newChildren)
     + Response removeChild(ASTreeNodeInterface oldChildren)
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
-interface ASTreeComposite extends ASTreeComponent{
+abstract class AbstractSyntaxTreeComposite implements AbstractSyntaxTreeComponent{
     + Response addChild(ASTreeNodeInterface newChildren)
     + Response removeChild(ASTreeNodeInterface oldChildren)
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
-interface ASTreeLeaf extends ASTreeComponent{
+abstract class AbstractSyntaxTreeLeaf implements AbstractSyntaxTreeComponent{
     + Response addChild(ASTreeNodeInterface newChildren)
     + Response removeChild(ASTreeNodeInterface oldChildren)
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
 
-ASTreeComposite *.. ASTreeComponent: children
+AbstractSyntaxTreeLeafExample *.. AbstractSyntaxTreeComponent: children
 
 @enduml
