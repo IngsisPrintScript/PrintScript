@@ -7,5 +7,6 @@ public interface AbstractSyntaxTreeComponent {
     Response addChild(AbstractSyntaxTreeComponent child);
     Response removeChild(AbstractSyntaxTreeComponent child);
     Response getChild(Integer index);
+    Response getChildren();
     Response accept(AbstractSyntaxNodeVisitorInterface visitor);
 }

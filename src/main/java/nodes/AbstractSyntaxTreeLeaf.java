@@ -4,10 +4,14 @@ import responses.IncorrectResponse;
 import responses.Response;
 
 public abstract class AbstractSyntaxTreeLeaf implements AbstractSyntaxTreeComponent {
-    String value;
+    private final String value;
 
     public AbstractSyntaxTreeLeaf(String value) {
         this.value = value;
+    }
+
+    public String value() {
+        return value;
     }
 
     @Override
@@ -20,6 +24,10 @@ public abstract class AbstractSyntaxTreeLeaf implements AbstractSyntaxTreeCompon
     }
     @Override
     public Response getChild(Integer index) {
+        return new IncorrectResponse("Can't get child from a leaf.");
+    }
+    @Override
+    public Response getChildren() {
         return new IncorrectResponse("Can't get child from a leaf.");
     }
 }

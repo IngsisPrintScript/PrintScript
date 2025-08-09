@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractSyntaxTreeComposite implements AbstractSyntaxTreeComponent {
-    private final List<AbstractSyntaxTreeComponent> children;
+    protected final List<AbstractSyntaxTreeComponent> children;
 
     public AbstractSyntaxTreeComposite() {
         this.children = new ArrayList<>();
@@ -38,5 +38,9 @@ public abstract class AbstractSyntaxTreeComposite implements AbstractSyntaxTreeC
             return new IncorrectResponse("The index out of bounds: " + index);
         }
         return new CorrectResponse<AbstractSyntaxTreeComponent>(children.get(index));
+    }
+    @Override
+    public Response getChildren() {
+        return new CorrectResponse<List<AbstractSyntaxTreeComponent>>(children);
     }
 }
