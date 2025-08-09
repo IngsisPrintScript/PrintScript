@@ -10,7 +10,7 @@ interface AbstractSyntaxTreeBuilderInterface{
 class AbstractSyntaxTreeBuilder implements AbstractSyntaxTreeBuilderInterface{
     + Response buildAsTree()
 }
-interface AbstractSyntaxTreeRepository{
+interface TokensRepository{
     + Response getTree()
 }
 
@@ -20,6 +20,6 @@ interface InsertionStrategyInterface{
 
 
 Response <-- AbstractSyntaxTreeBuilderInterface
-AbstractSyntaxTreeBuilder *.. AbstractSyntaxTreeRepository: repository
+AbstractSyntaxTreeBuilder *.. TokensRepository: repository
 AbstractSyntaxTreeBuilder *.. InsertionStrategyInterface: InsertionStrategy
 @enduml

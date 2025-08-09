@@ -2,6 +2,7 @@ package visitors;
 
 import nodes.expressions.composite.AdditionExpressionNode;
 import nodes.expressions.composite.AssignationExpressionNode;
+import nodes.expressions.composite.TypeAssignationExpressionNode;
 import nodes.expressions.leaf.IdentifierExpressionNode;
 import nodes.expressions.leaf.LiteralExpressionNode;
 import nodes.expressions.composite.MultiplicationExpressionNode;
@@ -11,6 +12,7 @@ import responses.Response;
 
 public interface AbstractSyntaxNodeVisitorInterface {
     Response visit(AssignationExpressionNode node);
+    Response visit(TypeAssignationExpressionNode node);
     Response visit(AdditionExpressionNode node);
     Response visit(MultiplicationExpressionNode node);
     Response visit(LiteralExpressionNode node);

@@ -4,6 +4,7 @@ import nodes.AbstractSyntaxTreeComponent;
 import nodes.expressions.composite.AdditionExpressionNode;
 import nodes.expressions.composite.AssignationExpressionNode;
 import nodes.expressions.composite.MultiplicationExpressionNode;
+import nodes.expressions.composite.TypeAssignationExpressionNode;
 import nodes.expressions.leaf.IdentifierExpressionNode;
 import nodes.expressions.leaf.LiteralExpressionNode;
 import nodes.expressions.leaf.TypeExpressionNode;
@@ -18,6 +19,11 @@ public record AbstractSyntaxNodeJavaTranspilationVisitor() implements AbstractSy
     @Override
     public Response visit(AssignationExpressionNode node) {
         return doBinaryOperation("=", "assignation", node);
+    }
+
+    @Override
+    public Response visit(TypeAssignationExpressionNode node) {
+        return doBinaryOperation("", "type assignation", node);
     }
 
     @Override
@@ -92,8 +98,10 @@ public record AbstractSyntaxNodeJavaTranspilationVisitor() implements AbstractSy
         if (!(lcr instanceof String leftChildResult) || !(rcr instanceof String rightChildResult)) {
             return new IncorrectResponse("The visit to a child returned something else than a string.");
         }
-
-        return new CorrectResponse<String>(leftChildResult + operationSymbol + rightChildResult);
+        if (operationSymbol.isEmpty()) {
+            return new CorrectResponse<String>(leftChildResult + " " + rightChildResult);
+        }
+        return new CorrectResponse<String>(leftChildResult + " " + operationSymbol + " " + rightChildResult);
 
     }
 }
