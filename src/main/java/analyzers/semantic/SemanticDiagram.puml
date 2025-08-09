@@ -1,0 +1,19 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Analyzer{
+    + Response analyze()
+}
+
+class SemanticAnalyzer{
+    + Response analyze()
+}
+
+interface TreeRepository{
+    + Response getTree()
+}
+
+Analyzer <|.. SemanticAnalyzer
+
+SemanticAnalyzer *.. TreeRepository: repository
+@enduml

@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface VisitorInterface{
+    + Response visit(AssignationNode node)
+    + Response visit(LetDeclarationNode node)
+    + Response visit(LiteralNode node)
+    + Response visit(TypeNode node)
+    + Response visit(IdentifierNode node)
+    + Response visit(EndOfLine node)
+}
+abstract class TranspilationVisitor implements VisitorInterface{
+    + Path pathToSaveTranspilation
+    + Response visit(AssignationNode node)
+    + Response visit(LetDeclarationNode node)
+    + Response visit(LiteralNode node)
+    + Response visit(TypeNode node)
+    + Response visit(IdentifierNode node)
+    + Response visit(EndOfLine node)
+}
+class JavaTranspilationVisitor extends TranspilationVisitor{
+    + Path pathToSaveTranspilation
+    + Response visit(AssignationNode node)
+    + Response visit(LetDeclarationNode node)
+    + Response visit(LiteralNode node)
+    + Response visit(TypeNode node)
+    + Response visit(IdentifierNode node)
+    + Response visit(EndOfLine node)
+}
+@enduml

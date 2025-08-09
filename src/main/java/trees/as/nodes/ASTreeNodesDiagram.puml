@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Tree<TokenInterface>{
+    + TokenInterface value()
+    + TreeInterface<TokenInterface> leftChild()
+    + TreeInterface<TokenInterface> rightChild()
+    + Response <T> accept(TreeVisitor<T> visitor)
+}
+class AssignationNode implements Tree<TokenInterface>{
+    + TokenInterface value
+    + TreeInterface<TokenInterface> leftChild
+    + TreeInterface<TokenInterface> rightChild
+}
+class LetDeclarationNode implements Tree<TokenInterface>{
+    + TokenInterface value
+    + TreeInterface<TokenInterface> leftChild
+    + TreeInterface<TokenInterface> rightChild
+}
+class LiteralNode implements Tree<TokenInterface>{
+    + TokenInterface value
+    + TreeInterface<TokenInterface> leftChild
+    + TreeInterface<TokenInterface> rightChild
+}
+class TypeNode implements Tree<TokenInterface>{
+    + TokenInterface value
+    + TreeInterface<TokenInterface> leftChild
+    + TreeInterface<TokenInterface> rightChild
+}
+class IdentifierNode implements Tree<TokenInterface>{
+    + TokenInterface value
+    + TreeInterface<TokenInterface> leftChild
+    + TreeInterface<TokenInterface> rightChild
+}
+class EndOfLine implements Tree<TokenInterface>{
+    + TokenInterface value
+    + TreeInterface<TokenInterface> leftChild
+    + TreeInterface<TokenInterface> rightChild
+}
+
+
+@enduml
