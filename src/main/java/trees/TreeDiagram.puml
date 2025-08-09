@@ -11,6 +11,7 @@ class Tree<V>{
     + V value()
     + TreeInterface<V> leftChild()
     + TreeInterface<V> rightChild()
+    + Response <T> accept(TreeVisitor<T> visitor)
 }
 
 interface InsertionStrategy{
