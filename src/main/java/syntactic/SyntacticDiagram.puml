@@ -10,10 +10,16 @@ interface AbstractSyntaxTreeBuilderInterface{
 class AbstractSyntaxTreeBuilder implements AbstractSyntaxTreeBuilderInterface{
     + Response buildAsTree()
 }
-interface TreeRepository{
+interface AbstractSyntaxTreeRepository{
     + Response getTree()
 }
 
+interface InsertionStrategyInterface{
+    + Response insert(V newValue, Tree<V> tree)
+}
+
+
 Response <-- AbstractSyntaxTreeBuilderInterface
-AbstractSyntaxTreeBuilder *.. TreeRepository
+AbstractSyntaxTreeBuilder *.. AbstractSyntaxTreeRepository: repository
+AbstractSyntaxTreeBuilder *.. InsertionStrategyInterface: InsertionStrategy
 @enduml

@@ -13,13 +13,13 @@ interface ASTreeComposite extends ASTreeComponent{
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
-class ASTreeIfStatementNode implements ASTreeComposite{
+class LetStatementNode implements ASTreeComposite{
     + Response addChild(ASTreeNodeInterface newChildren)
     + Response removeChild(ASTreeNodeInterface oldChildren)
     + Response getChild(Integer index)
     + Response accept(VisitorInterface visitor)
 }
 
-ASTreeIfStatementNode *.. ASTreeComponent: children
+LetStatementNode *.. ASTreeComponent: children
 
 @enduml

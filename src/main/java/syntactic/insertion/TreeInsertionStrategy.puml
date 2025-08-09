@@ -5,14 +5,14 @@ interface Response{
     + Boolean isSuccessful()
 }
 
-interface InsertionStrategy{
+interface InsertionStrategyInterface{
     + Response insert(V newValue, Tree<V> tree)
 }
 class DefaultInsertionStrategy{
     + Response insert(V newValue, Tree<V> tree)
 }
 
-Response <.. InsertionStrategy
-InsertionStrategy <|.. DefaultInsertionStrategy
+Response <.. InsertionStrategyInterface
+InsertionStrategyInterface <|.. DefaultInsertionStrategy
 
 @enduml
