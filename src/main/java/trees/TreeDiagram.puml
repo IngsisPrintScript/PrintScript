@@ -3,14 +3,12 @@
 
 interface TreeInterface<V>{
     + V value()
-    + TreeInterface<V> leftChild()
-    + TreeInterface<V> rightChild()
+    + List<TreeInterface<V>> children()
 }
 
 class Tree<V>{
     + V value()
-    + TreeInterface<V> leftChild()
-    + TreeInterface<V> rightChild()
+    + List<TreeInterface<V>> children()
     + Response <T> accept(TreeVisitor<T> visitor)
 }
 
