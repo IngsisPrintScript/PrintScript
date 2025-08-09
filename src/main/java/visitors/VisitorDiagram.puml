@@ -1,30 +1,31 @@
 @startuml
 'https://plantuml.com/class-diagram
 
-interface VisitorInterface{
-    + Response visit(AssignationNode node)
-    + Response visit(LetDeclarationNode node)
-    + Response visit(LiteralNode node)
-    + Response visit(TypeNode node)
-    + Response visit(IdentifierNode node)
-    + Response visit(EndOfLine node)
+interface AbstractSyntaxNodeVisitorInterface{
+    + Response visit(AssignationExpressionNode node)
+    + Response visit(AdditionExpressionNode node)
+    + Response visit(MultiplicationExpressionNode node)
+    + Response visit(LiteralExpressionNode node)
+    + Response visit(TypeExpressionNode node)
+    + Response visit(IdentifierExpressionNode node)
+    + Response visit(LetStatementNode node)
 }
-abstract class TranspilationVisitor implements VisitorInterface{
-    + Path pathToSaveTranspilation
-    + Response visit(AssignationNode node)
-    + Response visit(LetDeclarationNode node)
-    + Response visit(LiteralNode node)
-    + Response visit(TypeNode node)
-    + Response visit(IdentifierNode node)
-    + Response visit(EndOfLine node)
+abstract class AbstractSyntaxNodeTranspilationVisitor implements AbstractSyntaxNodeVisitorInterface{
+    + Response visit(AssignationExpressionNode node)
+    + Response visit(AdditionExpressionNode node)
+    + Response visit(MultiplicationExpressionNode node)
+    + Response visit(LiteralExpressionNode node)
+    + Response visit(TypeExpressionNode node)
+    + Response visit(IdentifierExpressionNode node)
+    + Response visit(LetStatementNode node)
 }
-class JavaTranspilationVisitor extends TranspilationVisitor{
-    + Path pathToSaveTranspilation
-    + Response visit(AssignationNode node)
-    + Response visit(LetDeclarationNode node)
-    + Response visit(LiteralNode node)
-    + Response visit(TypeNode node)
-    + Response visit(IdentifierNode node)
-    + Response visit(EndOfLine node)
+class AbstractSyntaxNodeJavaTranspilationVisitor extends AbstractSyntaxNodeTranspilationVisitor{
+    + Response visit(AssignationExpressionNode node)
+    + Response visit(AdditionExpressionNode node)
+    + Response visit(MultiplicationExpressionNode node)
+    + Response visit(LiteralExpressionNode node)
+    + Response visit(TypeExpressionNode node)
+    + Response visit(IdentifierExpressionNode node)
+    + Response visit(LetStatementNode node)
 }
 @enduml
