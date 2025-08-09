@@ -7,17 +7,21 @@ import token.TokenInterface;
 
 import java.util.List;
 
-public class SyntacticAnalyzer<V>{
+public class SyntacticAnalyzer<V> {
 
-    private final AstTree<TokenInterface> root;
-    private final List<TokenInterface> token;
-
-    public SyntacticAnalyzer(List<TokenInterface> tokens, AstTree<TokenInterface> root) {
-        this.root = root;
-        this.token = tokens;
+    private List<TokenInterface> tokens;
+    private List<SortStrategy> sorters;
+    public SyntacticAnalyzer(List<TokenInterface> tokens, List<SortStrategy> treeBuild) {
+        this.tokens = tokens;
+        this.sorters = treeBuild;
     }
 
-    public Response buildAST(){
-       return
+    public AstTree<V> buildAST(){
+        for(TokenInterface token : tokens){
+
+        }
+
+        return AstTree;
     }
+
 }
