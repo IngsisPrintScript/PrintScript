@@ -20,12 +20,9 @@ public record AbstractSyntaxNodeJavaTranspilationVisitor() implements AbstractSy
     public Response visit(AssignationExpressionNode node) {
         return doBinaryOperation("=", "assignation", node);
     }
-
     @Override
     public Response visit(TypeAssignationExpressionNode node) {
-        return doBinaryOperation("", "type assignation", node);
-    }
-
+        return doBinaryOperation("", "type assignation", node);}
     @Override
     public Response visit(AdditionExpressionNode node) {
         return doBinaryOperation("+", "addition", node);

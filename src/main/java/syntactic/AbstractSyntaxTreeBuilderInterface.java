@@ -1,4 +1,4 @@
-package syntactic;
+package Syntactic;
 
 import responses.Response;
 

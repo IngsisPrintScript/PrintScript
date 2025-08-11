@@ -4,7 +4,7 @@ import responses.Response;
 import visitors.AbstractSyntaxNodeJavaTranspilationVisitor;
 import visitors.AbstractSyntaxNodeVisitorInterface;
 
-public record AbstractSyntaxTreeBuilder(syntactic.TokensRepositoryInterface repository, AbstractSyntaxNodeVisitorInterface transpilationVisitor) implements syntactic.AbstractSyntaxTreeBuilderInterface {
+public record AbstractSyntaxTreeBuilder(syntactic.TokensRepositoryInterface repository, AbstractSyntaxNodeVisitorInterface transpilationVisitor) implements Syntactic.AbstractSyntaxTreeBuilderInterface {
 
     @Override
     public Response buildAbstractSyntaxTree() {
