@@ -1,4 +1,4 @@
-package common;
+package common.tokens;
 
 public interface TokenInterface {
     String name();
