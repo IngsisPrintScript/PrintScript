@@ -1,0 +1,31 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface AbstractSyntaxNodeVisitorInterface{
+    + Response visit(AssignationExpressionNode node)
+    + Response visit(AdditionExpressionNode node)
+    + Response visit(MultiplicationExpressionNode node)
+    + Response visit(LiteralExpressionNode node)
+    + Response visit(TypeExpressionNode node)
+    + Response visit(IdentifierExpressionNode node)
+    + Response visit(LetStatementNode node)
+}
+abstract class AbstractSyntaxNodeTranspilationVisitor implements AbstractSyntaxNodeVisitorInterface{
+    + Response visit(AssignationExpressionNode node)
+    + Response visit(AdditionExpressionNode node)
+    + Response visit(MultiplicationExpressionNode node)
+    + Response visit(LiteralExpressionNode node)
+    + Response visit(TypeExpressionNode node)
+    + Response visit(IdentifierExpressionNode node)
+    + Response visit(LetStatementNode node)
+}
+class AbstractSyntaxNodeJavaTranspilationVisitor extends AbstractSyntaxNodeTranspilationVisitor{
+    + Response visit(AssignationExpressionNode node)
+    + Response visit(AdditionExpressionNode node)
+    + Response visit(MultiplicationExpressionNode node)
+    + Response visit(LiteralExpressionNode node)
+    + Response visit(TypeExpressionNode node)
+    + Response visit(IdentifierExpressionNode node)
+    + Response visit(LetStatementNode node)
+}
+@enduml
