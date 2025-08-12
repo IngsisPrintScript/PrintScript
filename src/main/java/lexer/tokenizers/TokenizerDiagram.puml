@@ -1,0 +1,100 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+interface Response{
+    + Boolean isSuccessful()
+}
+
+interface TokenizerInterface{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+abstract class AssignationTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+class EqualsAssignationTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+abstract class EndOfLineTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+class SemicolonEndOfLineTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+abstract class IdentifierTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+abstract class DefaultIdentifierTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+abstract class KeywordTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+class LetKeywordTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+abstract class TypeTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+class StringTypeTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+class NumberTypeTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+abstract class LiteralTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+class DefaultLiteralTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+class FinalTokenizer{
+    + Boolean canTokenize(String input))
+    + Response tokenize(String input)
+}
+
+Response <.. TokenizerInterface
+
+TokenizerInterface <|.. AssignationTokenizer
+TokenizerInterface <|.. EndOfLineTokenizer
+TokenizerInterface <|.. IdentifierTokenizer
+TokenizerInterface <|.. FinalTokenizer
+KeywordTokenizer ..|> TokenizerInterface
+TypeTokenizer ..|> TokenizerInterface
+LiteralTokenizer ..|> TokenizerInterface
+
+AssignationTokenizer *-- TokenizerInterface: nextTokenizer
+EndOfLineTokenizer *-- TokenizerInterface: nextTokenizer
+IdentifierTokenizer *-- TokenizerInterface: nextTokenizer
+KeywordTokenizer *-- TokenizerInterface: nextTokenizer
+TypeTokenizer *-- TokenizerInterface: nextTokenizer
+LiteralTokenizer *-- TokenizerInterface: nextTokenizer
+
+AssignationTokenizer <|-- EqualsAssignationTokenizer
+EndOfLineTokenizer <|-- SemicolonEndOfLineTokenizer
+IdentifierTokenizer <|-- DefaultIdentifierTokenizer
+LetKeywordTokenizer --|> KeywordTokenizer
+DefaultLiteralTokenizer --|> LiteralTokenizer
+StringTypeTokenizer --|> TypeTokenizer
+NumberTypeTokenizer --|> TypeTokenizer
+@enduml
