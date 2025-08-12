@@ -6,6 +6,6 @@ import common.visitor.VisitorInterface;
 import java.util.List;
 
 public interface Node {
-    List<Node> children();
+    Result children();
     Result accept(VisitorInterface visitor);
 }
