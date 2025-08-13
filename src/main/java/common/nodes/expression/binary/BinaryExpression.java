@@ -1,4 +1,4 @@
-package common.nodes.expression;
+package common.nodes.expression.binary;
 
 import common.nodes.CompositeNode;
 import common.nodes.Node;
