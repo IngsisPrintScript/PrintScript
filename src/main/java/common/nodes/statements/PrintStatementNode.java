@@ -10,7 +10,18 @@ import common.visitor.VisitorInterface;
 public class PrintStatementNode extends CompositeNode {
     @Override
     public Result accept(VisitorInterface visitor) {
-        return visitor.visit(this);
+        Result visitResult = visitor.visit(this);
+
+        if (!visitor.managesVisitFlow()) {
+            for (Node child : children) {
+                Result childResult = child.accept(visitor);
+                if (!childResult.isSuccessful()){
+                    return childResult;
+                }
+            }
+        }
+
+        return visitResult;
     }
     public Boolean hasExpression(){
         try {

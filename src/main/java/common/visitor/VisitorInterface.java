@@ -11,4 +11,5 @@ public interface VisitorInterface {
     Result visit(PrintStatementNode node);
     Result visit(AdditionNode node);
     Result visit(LiteralNode node);
+    Boolean managesVisitFlow();
 }
