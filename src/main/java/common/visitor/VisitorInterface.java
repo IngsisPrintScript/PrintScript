@@ -17,5 +17,4 @@ public interface VisitorInterface {
     Result visit(LiteralNode node);
     Result visit(IdentifierNode node);
     Result visit(TypeNode node);
-    Boolean managesVisitFlow();
 }
