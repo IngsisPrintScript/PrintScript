@@ -1,0 +1,46 @@
+package common.factories.tokens;
+
+import common.tokens.Token;
+import common.tokens.TokenInterface;
+
+public class TokenFactory implements TokenFactoryInterface {
+    @Override
+    public TokenInterface createLetKeywordToken() {
+        return new Token("LET_KEYWORD_TOKEN", "let");
+    }
+
+    @Override
+    public TokenInterface createPrintlnKeywordToken() {
+        return new Token("PRINT_KEYWORD_TOKEN", "println");
+    }
+
+    @Override
+    public TokenInterface createIdentifierToken(String identifier) {
+        return new Token("IDENTIFIER_TOKEN", identifier);
+    }
+
+    @Override
+    public TokenInterface createTypeAssignationToken() {
+            return new Token("TYPE_ASSIGNATION_TOKEN", ".");
+    }
+
+    @Override
+    public TokenInterface createTypeToken(String type) {
+        return new Token("TYPE_TOKEN", type);
+    }
+
+    @Override
+    public TokenInterface createAssignationToken() {
+        return new Token("ASSIGNATION_TOKEN", "=");
+    }
+
+    @Override
+    public TokenInterface createLiteralToken(String literal) {
+        return new Token("LITERAL_TOKEN", literal);
+    }
+
+    @Override
+    public TokenInterface createEndOfLineToken() {
+        return new Token("EOL_TOKEN", ";");
+    }
+}
