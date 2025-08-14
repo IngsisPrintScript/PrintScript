@@ -9,7 +9,7 @@ import common.responses.Result;
 public abstract class BinaryExpression extends CompositeNode {
     public Boolean hasLeftChild(){
         try {
-            this.children.get(0);
+            this.children.getFirst();
             return true;
         } catch (Exception e) {
             return false;
@@ -25,7 +25,7 @@ public abstract class BinaryExpression extends CompositeNode {
     }
     public Result leftChild(){
         if (hasLeftChild()){
-            return new CorrectResult<>(this.children.get(0));
+            return new CorrectResult<>(this.children.getFirst());
         } else {
             return new IncorrectResult("Binary expression has no left child.");
         }
