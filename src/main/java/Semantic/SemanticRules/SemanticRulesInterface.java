@@ -1,10 +1,14 @@
 package Semantic.SemanticRules;
 
 import common.nodes.Node;
+import common.nodes.expression.binary.BinaryExpression;
 import common.responses.Result;
+
+import java.util.List;
+import java.util.function.BinaryOperator;
 
 public interface SemanticRulesInterface {
 
-    boolean match(Node link);
-    Result checkRules(Node link);
+    boolean match(Node leftLiteralNode,  Node rightLiteralNode, BinaryExpression operator);
+    Result checkRules(Node leftLiteral, Node rightLiteral, BinaryExpression operator);
 }

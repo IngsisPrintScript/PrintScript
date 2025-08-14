@@ -21,15 +21,34 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
     @Override
     public Result visit(LetStatementNode node) {
         Result child = node.expression();
+        Result leftChild = node.declaration();
+        if(!leftChild.isSuccessful()){
+            return new IncorrectResult("Need DeclarationNode");
+        }
+        Object leftObj = ((CorrectResult<?>) leftChild).newObject();
+        if(!(leftObj instanceof DeclarationNode declarationNode)){
+            return new IncorrectResult("Let statement has no declaration.");
+        }
         if(!(child.isSuccessful())){
-            return addOnlyVariable(node);
+            return addOnlyVariable(declarationNode);
         }
         Object obj = ((CorrectResult<?>) child).newObject();
         if(obj instanceof BinaryExpression compositeNode){
-            return visit(compositeNode);
+            Result expression = visit(compositeNode);
+            Object leftLiteral = ((CorrectResult<?>) expression).newObject();
+            if(!(leftLiteral instanceof LiteralNode left )){
+                return new IncorrectResult("Incorrect left literal");
+            }
+            return addValue(left, node);
         }else if(obj instanceof LiteralNode literalNode){
-            if(!(checkRules(node).isSuccessful())){
-                return checkRules(node);
+            Result expression = declarationNode.leftChild();
+            Object leftLiteral = ((CorrectResult<?>) expression).newObject();
+            if(!(leftLiteral instanceof List<?> left )){
+                return  new IncorrectResult("Incorrect left literal");
+            }
+            Result rules = checkSemanticRules(literalNode, (LiteralNode) left.getFirst(),null);
+            if(!(rules.isSuccessful())){
+                return rules;
             }
             return addValue(literalNode, node);
         }
@@ -43,7 +62,12 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
 
     @Override
     public Result visit(AdditionNode node){
-        return null;
+        Result leftChild = node.leftChild();
+        Result rightChild = node.rightChild();
+        if(!(leftChild.isSuccessful()) || !(rightChild.isSuccessful())){
+            return new IncorrectResult("Addition has no declaration.");
+        }
+        return calculateBinary(leftChild,rightChild,node);
     }
 
     @Override
@@ -56,6 +80,12 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
         return new CorrectResult<>(node.value());
     }
 
+    /*Can be added
+    if(((CorrectResult<?>) node.leftChild()).newObject() instanceof LiteralNode literalNode
+            && ((CorrectResult<?>) node.rightChild()).newObject() instanceof IdentifierNode id){
+            return new IncorrectResult("Declaration has not valued.");
+        }
+      */
     @Override
     public Result visit(DeclarationNode node) {
         if(!(node.leftChild().isSuccessful() && node.rightChild().isSuccessful())){
@@ -66,21 +96,21 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
 
     @Override
     public Result visit(BinaryExpression node) {
-        return null;
+        Result leftResult = node.leftChild();
+        if (!leftResult.isSuccessful()){
+            return leftResult;
+        }
+        Result rightResult = node.rightChild();
+        if (!rightResult.isSuccessful()){
+            return rightResult;
+        }
+        return calculateBinary(leftResult,rightResult,node);
     }
 
-    private Result checkRules(LetStatementNode node){
-        if(!semanticRules.match(node)){
-            Result child2 = semanticRules.checkRules(node);
-            String obj2 = ((IncorrectResult) child2).errorMessage();
-            return new IncorrectResult(obj2);
-        }
-        return new CorrectResult<>(null);
-    }
     private Result addValue(LiteralNode literalNode, LetStatementNode node){
         Result result = visit(literalNode);
         Object getLiteralValue = ((CorrectResult<?>) result).newObject();
-        if(!(getLiteralValue instanceof String literalValue)) {
+        if(!(getLiteralValue instanceof String value)) {
             return result;
         }
         Result declaration = node.declaration();
@@ -88,33 +118,20 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
         if(!(object instanceof DeclarationNode declarationNode)){
             return new IncorrectResult("Not a declaration");
         }
-        Result getDeclaration = visit(declarationNode);
-        if(getDeclaration.isSuccessful()){
-            return getDeclaration;
-        }
-        Object childList = ((CorrectResult<?>) getDeclaration).newObject();
-        if(!(childList instanceof List<?> declarationsChildList)){
-            return new IncorrectResult("Not a list with children");
-        }
+        Result rightDeclaration = declarationNode.rightChild();
         //Declaration list = [Literal(Type) , Identifier]
-        Result getType = visit((IdentifierNode) declarationsChildList.get(1));
-        Object type = ((CorrectResult<?>) getType).newObject();
-        if(!(type instanceof String id)){
+        Object type = ((CorrectResult<?>) rightDeclaration).newObject();
+        if(!(type instanceof IdentifierNode id)){
             return new IncorrectResult("Not a Value");
         }
-        variablesTable.addValue(id, literalValue);
+        variablesTable.addValue(id.value(), value);
         return new CorrectResult<>(variablesTable);
     }
-    private Result addOnlyVariable(LetStatementNode node){
-        Result declaration = node.declaration();
-        Object object =  ((CorrectResult<?>) declaration).newObject();
-        if(!(object instanceof DeclarationNode declarationNode)){
-            return new IncorrectResult("Not a declaration");
+    private Result addOnlyVariable(DeclarationNode node){
+        Result getIdentifier = node.rightChild();
+        if(!(getIdentifier.isSuccessful())) {
+            return getIdentifier;
         }
-        if(!(visit(declarationNode).isSuccessful())){
-            return visit(declarationNode);
-        }
-        Result getIdentifier = declarationNode.rightChild();
         Object getIdentifierValue = ((CorrectResult<?>) getIdentifier).newObject();
         if(!(getIdentifierValue instanceof IdentifierNode identifier)){
             return new IncorrectResult("Not a identifier");
@@ -126,5 +143,34 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
         }
         variablesTable.addValue(string,null);
         return new CorrectResult<>(variablesTable);
+    }
+
+    private Result checkSemanticRules(LiteralNode leftLiteral, LiteralNode rightLiteral, BinaryExpression operator){
+        if(!semanticRules.match(leftLiteral, rightLiteral, operator)){
+            return semanticRules.checkRules(leftLiteral,rightLiteral, operator);
+        }
+        return new CorrectResult<>(null);
+    }
+
+    private Result calculateBinary(Result leftResult, Result rightResult, BinaryExpression node) {
+        if(((CorrectResult<?>) leftResult).newObject() instanceof BinaryExpression binaryExpression){
+            leftResult = visit(binaryExpression);
+        }
+        if(((CorrectResult<?>) rightResult).newObject() instanceof BinaryExpression binaryExpression){
+            rightResult = visit(binaryExpression);
+        }
+        Object obj2 = ((CorrectResult<?>) leftResult).newObject();
+        Object obj3 = ((CorrectResult<?>) rightResult).newObject();
+        if (!(obj2 instanceof LiteralNode leftLiteral)) {
+            return new IncorrectResult("Literal node is not a LiteralNode");
+        }
+        if (!(obj3 instanceof LiteralNode rightLiteral)) {
+            return new IncorrectResult("Literal node is not a LiteralNode");
+        }
+        Result semanticRules = checkSemanticRules(leftLiteral,rightLiteral, node);
+        if(!semanticRules.isSuccessful()){
+            return semanticRules;
+        }
+        return new CorrectResult<>(new LiteralNode("(" + leftLiteral.value() + node + rightLiteral.value() + ")"));
     }
 }
