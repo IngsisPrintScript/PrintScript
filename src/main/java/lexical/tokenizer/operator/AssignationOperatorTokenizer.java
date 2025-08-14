@@ -11,12 +11,12 @@ public final class AssignationOperatorTokenizer extends OperatorTokenizer {
     }
 
     @Override
-    public Boolean canTokenize(String token) {
-        return token.equals("=");
+    public Boolean canTokenize(String input) {
+        return input.equals("=");
     }
 
     @Override
-    public Result tokenize(String token) {
+    public Result tokenize(String input) {
         return new CorrectResult<>(new TokenFactory().createAssignationToken());
     }
 }

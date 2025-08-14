@@ -7,11 +7,11 @@ import lexical.tokenizer.TokenizerInterface;
 
 public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
-    public Boolean canTokenize(String token) {
-        char[] tokenChars = token.toCharArray();
-        if (token.startsWith("'") && token.endsWith("'")) {
+    public Boolean canTokenize(String input) {
+        char[] tokenChars = input.toCharArray();
+        if (input.startsWith("'") && input.endsWith("'")) {
             return true;
-        } else if (token.startsWith("\"") && token.endsWith("\"")) {
+        } else if (input.startsWith("\"") && input.endsWith("\"")) {
             return true;
         }
 
@@ -25,11 +25,11 @@ public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements Toke
     }
 
     @Override
-    public Result tokenize(String token) {
-        if (canTokenize(token)) {
-            return new CorrectResult<>(new TokenFactory().createLiteralToken(token));
+    public Result tokenize(String input) {
+        if (canTokenize(input)) {
+            return new CorrectResult<>(new TokenFactory().createLiteralToken(input));
         } else {
-            return nextTokenizer.tokenize(token);
+            return nextTokenizer.tokenize(input);
         }
     }
 }

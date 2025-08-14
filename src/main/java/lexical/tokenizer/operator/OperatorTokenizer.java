@@ -14,11 +14,11 @@ public class OperatorTokenizer implements TokenizerInterface {
     }
 
     @Override
-    public Boolean canTokenize(String token) {
+    public Boolean canTokenize(String input) {
         for (Class<? extends OperatorTokenizer> subclass : subclasses) {
             try{
                 TokenizerInterface subclassTokenizer = subclass.getDeclaredConstructor().newInstance();
-                if (subclassTokenizer.canTokenize(token)) {
+                if (subclassTokenizer.canTokenize(input)) {
                     return true;
                 }
             } catch (Exception e){
@@ -29,17 +29,17 @@ public class OperatorTokenizer implements TokenizerInterface {
     }
 
     @Override
-    public Result tokenize(String token) {
+    public Result tokenize(String input) {
         for (Class<? extends OperatorTokenizer> subclass : subclasses) {
             try{
                 TokenizerInterface subclassTokenizer = subclass.getDeclaredConstructor().newInstance();
-                if (subclassTokenizer.canTokenize(token)) {
-                    return subclassTokenizer.tokenize(token);
+                if (subclassTokenizer.canTokenize(input)) {
+                    return subclassTokenizer.tokenize(input);
                 }
             } catch (Exception e){
                 continue;
             }
         }
-        return nextTokenizer.tokenize(token);
+        return nextTokenizer.tokenize(input);
     }
 }

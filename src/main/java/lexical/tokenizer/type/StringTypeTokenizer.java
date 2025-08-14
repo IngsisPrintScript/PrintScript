@@ -11,12 +11,12 @@ public final class StringTypeTokenizer extends TypeTokenizer {
     }
 
     @Override
-    public Boolean canTokenize(String token) {
-        return token.equals("String");
+    public Boolean canTokenize(String input) {
+        return input.equals("String");
     }
 
     @Override
-    public Result tokenize(String token) {
-        return new CorrectResult<>(new TokenFactory().createTypeToken(token));
+    public Result tokenize(String input) {
+        return new CorrectResult<>(new TokenFactory().createTypeToken(input));
     }
 }

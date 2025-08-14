@@ -11,12 +11,12 @@ public final class PrintlnKeywordTokenizer extends KeywordTokenizer {
     }
 
     @Override
-    public Boolean canTokenize(String token) {
-        return token.equals("println");
+    public Boolean canTokenize(String input) {
+        return input.equals("println");
     }
 
     @Override
-    public Result tokenize(String token) {
-        return new CorrectResult<>(new TokenFactory().createTypeToken(token));
+    public Result tokenize(String input) {
+        return new CorrectResult<>(new TokenFactory().createTypeToken(input));
     }
 }

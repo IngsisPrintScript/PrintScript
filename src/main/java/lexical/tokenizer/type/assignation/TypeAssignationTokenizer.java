@@ -1,4 +1,4 @@
-package lexical.tokenizer.assignation;
+package lexical.tokenizer.type.assignation;
 
 import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
@@ -8,16 +8,16 @@ import lexical.tokenizer.TokenizerInterface;
 public record TypeAssignationTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
 
     @Override
-    public Boolean canTokenize(String token) {
-        return token.equals(":");
+    public Boolean canTokenize(String input) {
+        return input.equals(":");
     }
 
     @Override
-    public Result tokenize(String token) {
-        if (canTokenize(token)) {
+    public Result tokenize(String input) {
+        if (canTokenize(input)) {
             return new CorrectResult<>(new TokenFactory().createTypeAssignationToken());
         } else {
-            return nextTokenizer.tokenize(token);
+            return nextTokenizer.tokenize(input);
         }
     }
 }
