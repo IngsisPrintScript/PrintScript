@@ -46,7 +46,7 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
             if(!(leftLiteral instanceof List<?> left )){
                 return  new IncorrectResult("Incorrect left literal");
             }
-            Result rules = checkSemanticRules(literalNode, (LiteralNode) left.getFirst(),null);
+            Result rules = checkSemanticRules((LiteralNode) left.get(0),literalNode,null);
             if(!(rules.isSuccessful())){
                 return rules;
             }
@@ -118,9 +118,17 @@ public record SemanticVisitor(VariablesTableInterface variablesTable, SemanticRu
         if(!(object instanceof DeclarationNode declarationNode)){
             return new IncorrectResult("Not a declaration");
         }
+        Result leftDeclaration = declarationNode.leftChild();
         Result rightDeclaration = declarationNode.rightChild();
         //Declaration list = [Literal(Type) , Identifier]
         Object type = ((CorrectResult<?>) rightDeclaration).newObject();
+        Object leftValue = ((CorrectResult<?>) leftDeclaration).newObject();
+        if(!(leftValue instanceof LiteralNode left)){
+            return new IncorrectResult("Let statement has no declaration.");
+        }
+        if(!checkSemanticRules(left,literalNode, null).isSuccessful()){
+            return checkSemanticRules(left,literalNode, null);
+        }
         if(!(type instanceof IdentifierNode id)){
             return new IncorrectResult("Not a Value");
         }
