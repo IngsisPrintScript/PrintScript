@@ -1,6 +1,6 @@
-package lexical.factories.tokenizer;
+package lexical.factories.tokenizers;
 
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.TokenizerInterface;
 
 public interface TokenizerFactoryInterface {
     TokenizerInterface createDefaultTokenizer();

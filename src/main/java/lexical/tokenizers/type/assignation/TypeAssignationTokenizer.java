@@ -1,9 +1,9 @@
-package lexical.tokenizer.type.assignation;
+package lexical.tokenizers.type.assignation;
 
 import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.TokenizerInterface;
 
 public record TypeAssignationTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
 

@@ -1,11 +1,15 @@
-package lexical.tokenizer.type;
+package lexical.tokenizers.type;
 
 import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.FinalTokenizer;
+import lexical.tokenizers.TokenizerInterface;
 
 public final class NumberTypeTokenizer extends TypeTokenizer {
+    public NumberTypeTokenizer() {
+        super(new FinalTokenizer());
+    }
     public NumberTypeTokenizer(TokenizerInterface nextTokenizer) {
         super(nextTokenizer);
     }

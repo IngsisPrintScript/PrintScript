@@ -1,9 +1,9 @@
-package lexical.tokenizer.literal;
+package lexical.tokenizers.literal;
 
 import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.TokenizerInterface;
 
 public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override

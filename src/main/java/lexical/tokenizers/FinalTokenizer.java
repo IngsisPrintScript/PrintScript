@@ -1,4 +1,4 @@
-package lexical.tokenizer;
+package lexical.tokenizers;
 
 import common.responses.IncorrectResult;
 import common.responses.Result;

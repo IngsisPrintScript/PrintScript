@@ -3,7 +3,7 @@ package lexical;
 import common.responses.CorrectResult;
 import common.responses.Result;
 import common.tokens.TokenInterface;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.TokenizerInterface;
 
 import java.util.ArrayList;
 import java.util.List;

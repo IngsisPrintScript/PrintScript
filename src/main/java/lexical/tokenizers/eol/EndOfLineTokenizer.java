@@ -1,9 +1,9 @@
-package lexical.tokenizer.eol;
+package lexical.tokenizers.eol;
 
 import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.TokenizerInterface;
 
 public record EndOfLineTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override

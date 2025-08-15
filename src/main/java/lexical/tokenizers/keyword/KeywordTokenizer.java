@@ -1,7 +1,8 @@
-package lexical.tokenizer.keyword;
+package lexical.tokenizers.keyword;
 
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.FinalTokenizer;
+import lexical.tokenizers.TokenizerInterface;
 
 import java.util.List;
 

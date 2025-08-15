@@ -1,13 +1,14 @@
-package lexical.factories.tokenizer;
+package lexical.factories.tokenizers;
 
-import lexical.tokenizer.FinalTokenizer;
-import lexical.tokenizer.TokenizerInterface;
-import lexical.tokenizer.identifier.IdentifierTokenizer;
-import lexical.tokenizer.type.TypeTokenizer;
-import lexical.tokenizer.type.assignation.TypeAssignationTokenizer;
-import lexical.tokenizer.eol.EndOfLineTokenizer;
-import lexical.tokenizer.literal.LiteralTokenizer;
-import lexical.tokenizer.operator.OperatorTokenizer;
+import lexical.tokenizers.FinalTokenizer;
+import lexical.tokenizers.TokenizerInterface;
+import lexical.tokenizers.identifier.IdentifierTokenizer;
+import lexical.tokenizers.keyword.KeywordTokenizer;
+import lexical.tokenizers.type.TypeTokenizer;
+import lexical.tokenizers.type.assignation.TypeAssignationTokenizer;
+import lexical.tokenizers.eol.EndOfLineTokenizer;
+import lexical.tokenizers.literal.LiteralTokenizer;
+import lexical.tokenizers.operator.OperatorTokenizer;
 
 public record TokenizerFactory() implements TokenizerFactoryInterface {
     @Override
@@ -19,6 +20,7 @@ public record TokenizerFactory() implements TokenizerFactoryInterface {
         tokenizer = new OperatorTokenizer(tokenizer);
         tokenizer = new TypeTokenizer(tokenizer);
         tokenizer = new TypeAssignationTokenizer(tokenizer);
+        tokenizer = new KeywordTokenizer(tokenizer);
         return tokenizer;
     }
 }

@@ -1,11 +1,15 @@
-package lexical.tokenizer.operator;
+package lexical.tokenizers.operator;
 
 import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.FinalTokenizer;
+import lexical.tokenizers.TokenizerInterface;
 
 public final class AssignationOperatorTokenizer extends OperatorTokenizer {
+    public AssignationOperatorTokenizer() {
+        super(new FinalTokenizer());
+    }
     public AssignationOperatorTokenizer(TokenizerInterface nextTokenizer) {
         super(nextTokenizer);
     }

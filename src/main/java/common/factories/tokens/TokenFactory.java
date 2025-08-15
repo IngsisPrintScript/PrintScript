@@ -21,7 +21,7 @@ public class TokenFactory implements TokenFactoryInterface {
 
     @Override
     public TokenInterface createTypeAssignationToken() {
-            return new Token("TYPE_ASSIGNATION_TOKEN", ".");
+            return new Token("TYPE_ASSIGNATION_TOKEN", ":");
     }
 
     @Override

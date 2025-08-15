@@ -1,7 +1,7 @@
-package lexical.tokenizer.type;
+package lexical.tokenizers.type;
 
 import common.responses.Result;
-import lexical.tokenizer.TokenizerInterface;
+import lexical.tokenizers.TokenizerInterface;
 
 import java.util.List;
 
