@@ -35,19 +35,18 @@ public record LetBuilder() implements ASTreeBuilderInterface {
         Result buildAscritionResult = new AscriptionBuilder().build(tokenStream);
         if (!buildAscritionResult.isSuccessful()) return buildAscritionResult;
 
-        if (!tokenStream.consume(assignationTokenTemplate).isSuccessful()) return new IncorrectResult("Token is not an assignation token.");
+        LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
+        Node ascriptionNode = ( (CorrectResult<Node>) buildAscritionResult).newObject();
+        letNode.addDeclaration(ascriptionNode);
 
-        Result buildLiteralResult = new LiteralBuilder().build(tokenStream);
-        if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
+        if (tokenStream.consume(assignationTokenTemplate).isSuccessful()){
+            Result buildLiteralResult = new LiteralBuilder().build(tokenStream);
+            if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
+            Node expressionNode = ( (CorrectResult<Node>) buildLiteralResult).newObject();
+            letNode.addExpression(expressionNode);
+        }
 
         if (!tokenStream.consume(eolTokenTemplate).isSuccessful()) return new IncorrectResult("Token is not an eol token.");
-
-        LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
-        Node expressionNode = ( (CorrectResult<Node>) buildLiteralResult).newObject();
-        Node ascriptionNode = ( (CorrectResult<Node>) buildAscritionResult).newObject();
-
-        letNode.addDeclaration(ascriptionNode);
-        letNode.addExpression(expressionNode);
 
         return new CorrectResult<>(letNode);
     }
