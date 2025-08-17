@@ -9,6 +9,11 @@ public class AstBuilderFactoryTest {
     @Test
     public void createAstBuilderFactoryTest() {
         AstBuilderFactoryInterface astBuilderFactory = new AstBuilderFactory();
+        Assertions.assertNotNull(astBuilderFactory);
+    }
+    @Test
+    public void createAstBuilderFactoryMethodsTest() {
+        AstBuilderFactoryInterface astBuilderFactory = new AstBuilderFactory();
         for (Method method: AstBuilderFactory.class.getDeclaredMethods()) {
             if (!method.getName().startsWith("create")) continue;
             try {
