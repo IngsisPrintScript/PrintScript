@@ -5,18 +5,23 @@ import common.factories.tokens.TokenFactory;
 import common.nodes.Node;
 import common.nodes.statements.LetStatementNode;
 import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
 import common.responses.Result;
 import common.tokens.TokenInterface;
 import common.tokens.stream.TokenStream;
 import syntactic.ast.builders.ASTreeBuilderInterface;
-import syntactic.ast.builders.ascription.AscriptionBuilder;
-import syntactic.ast.builders.literal.LiteralBuilder;
+import syntactic.factories.builders.AstBuilderFactory;
+import syntactic.factories.builders.AstBuilderFactoryInterface;
 
-public record LetBuilder() implements ASTreeBuilderInterface {
+public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
     final private static TokenInterface letTokenTemplate = new TokenFactory().createLetKeywordToken();
     final private static TokenInterface assignationTokenTemplate = new TokenFactory().createAssignationToken();
     final private static TokenInterface eolTokenTemplate = new TokenFactory().createEndOfLineToken();
+    private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
+
+
+    public LetBuilder(){
+        this(builderFactory.createFinalBuilder());
+    }
 
     @Override
     public Boolean canBuild(TokenStream tokenStream) {
@@ -28,11 +33,11 @@ public record LetBuilder() implements ASTreeBuilderInterface {
 
     @Override
     public Result build(TokenStream tokenStream) {
-        if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build Let node.");
+        if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
 
-        if (!tokenStream.consume(letTokenTemplate).isSuccessful()) return new IncorrectResult("Token is not a let token.");
+        if (!tokenStream.consume(letTokenTemplate).isSuccessful()) return nextBuilder().build(tokenStream);
 
-        Result buildAscritionResult = new AscriptionBuilder().build(tokenStream);
+        Result buildAscritionResult = builderFactory.createAscriptionBuilder().build(tokenStream);
         if (!buildAscritionResult.isSuccessful()) return buildAscritionResult;
 
         LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
@@ -40,13 +45,13 @@ public record LetBuilder() implements ASTreeBuilderInterface {
         letNode.addDeclaration(ascriptionNode);
 
         if (tokenStream.consume(assignationTokenTemplate).isSuccessful()){
-            Result buildLiteralResult = new LiteralBuilder().build(tokenStream);
+            Result buildLiteralResult = builderFactory.createLiteralBuilder().build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
             Node expressionNode = ( (CorrectResult<Node>) buildLiteralResult).newObject();
             letNode.addExpression(expressionNode);
         }
 
-        if (!tokenStream.consume(eolTokenTemplate).isSuccessful()) return new IncorrectResult("Token is not an eol token.");
+        if (!tokenStream.consume(eolTokenTemplate).isSuccessful()) return nextBuilder().build(tokenStream);
 
         return new CorrectResult<>(letNode);
     }

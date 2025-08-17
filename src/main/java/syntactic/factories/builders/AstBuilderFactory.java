@@ -1,11 +1,41 @@
 package syntactic.factories.builders;
 
 import syntactic.ast.builders.ASTreeBuilderInterface;
+import syntactic.ast.builders.FinalBuilder;
+import syntactic.ast.builders.ascription.AscriptionBuilder;
+import syntactic.ast.builders.identifier.IdentifierBuilder;
 import syntactic.ast.builders.let.LetBuilder;
+import syntactic.ast.builders.literal.LiteralBuilder;
+import syntactic.ast.builders.type.TypeBuilder;
 
 public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
-    public ASTreeBuilderInterface createDefaultBuilder() {
+    public ASTreeBuilderInterface createLetBuilder() {
         return new LetBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createAscriptionBuilder() {
+        return new AscriptionBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createIdentifierBuilder() {
+        return new IdentifierBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createLiteralBuilder() {
+        return new LiteralBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createTypeBuilder() {
+        return new TypeBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createFinalBuilder() {
+        return new FinalBuilder();
     }
 }

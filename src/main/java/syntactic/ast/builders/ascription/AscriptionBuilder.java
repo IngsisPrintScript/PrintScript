@@ -10,11 +10,12 @@ import common.responses.Result;
 import common.tokens.TokenInterface;
 import common.tokens.stream.TokenStream;
 import syntactic.ast.builders.ASTreeBuilderInterface;
-import syntactic.ast.builders.identifier.IdentifierBuilder;
-import syntactic.ast.builders.type.TypeBuilder;
+import syntactic.factories.builders.AstBuilderFactory;
+import syntactic.factories.builders.AstBuilderFactoryInterface;
 
 public record AscriptionBuilder() implements ASTreeBuilderInterface {
     private static final TokenInterface template = new TokenFactory().createTypeAssignationToken();
+    private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
 
     @Override
     public Boolean canBuild(TokenStream tokenStream) {
@@ -28,12 +29,12 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
     public Result build(TokenStream tokenStream) {
         if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build identifier node.");
 
-        Result buildIdentifierResult = new IdentifierBuilder().build(tokenStream);
+        Result buildIdentifierResult = builderFactory.createIdentifierBuilder().build(tokenStream);
         if (!buildIdentifierResult.isSuccessful()) return buildIdentifierResult;
 
         if (!tokenStream.consume(template).isSuccessful()) return new IncorrectResult("Token is not an ascription token.");
 
-        Result buildTypeResult = new TypeBuilder().build(tokenStream);
+        Result buildTypeResult = builderFactory.createTypeBuilder().build(tokenStream);
         if (!buildTypeResult.isSuccessful()) return buildTypeResult;
 
         Node identifierNode = ( (CorrectResult<Node>) buildIdentifierResult).newObject();
