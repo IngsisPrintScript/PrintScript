@@ -16,12 +16,15 @@ public record JavaCodeExecutor(JavaCompiler compiler, String className) implemen
     public JavaCodeExecutor(){
         this(ToolProvider.getSystemJavaCompiler(), "TranspiledCode");
     }
+    public JavaCodeExecutor(String className) {
+        this(ToolProvider.getSystemJavaCompiler(), className);
+    }
     @Override
     public Result executeCode(Path path) {
         if (compiler() == null) return new IncorrectResult("compiler is null.");
         int result = compiler().run(null, null, null,  path.toAbsolutePath().toString());
         if (result != 0) return new IncorrectResult("compiler result is " + result);
-        File currentDir = new File(".");
+        File currentDir = new File(path.getParent().toString());
         try{
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {currentDir.toURI().toURL()});
             Class<?> cls = Class.forName(className(), true, classLoader);
