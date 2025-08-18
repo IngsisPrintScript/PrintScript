@@ -7,14 +7,14 @@ import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
 import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStream;
+import common.tokens.stream.TokenStreamInterface;
 import syntactic.ast.builders.ASTreeBuilderInterface;
 
 public record TypeBuilder() implements ASTreeBuilderInterface {
     private static final TokenInterface template = new TokenFactory().createTypeToken("placeholder");
 
     @Override
-    public Boolean canBuild(TokenStream tokenStream) {
+    public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
         TokenInterface token = ( (CorrectResult<TokenInterface>) peekResult).newObject();
@@ -22,7 +22,7 @@ public record TypeBuilder() implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result build(TokenStream tokenStream) {
+    public Result build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build type node.");
         Result consumeResult = tokenStream.consume(template);
         if (!consumeResult.isSuccessful()) return consumeResult;

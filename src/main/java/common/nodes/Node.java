@@ -8,4 +8,5 @@ import java.util.List;
 public interface Node {
     Result children();
     Result accept(VisitorInterface visitor);
+    Boolean isNil();
 }

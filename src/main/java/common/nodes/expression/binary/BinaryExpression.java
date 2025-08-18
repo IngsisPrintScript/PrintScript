@@ -7,22 +7,17 @@ import common.responses.IncorrectResult;
 import common.responses.Result;
 
 public abstract class BinaryExpression extends CompositeNode {
+    public BinaryExpression(){
+        super(2);
+    }
+
     public Boolean hasLeftChild(){
-        try {
-            this.children.get(0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return this.children.get(0).isNil();
     }
     public Boolean hasRightChild(){
-        try {
-            this.children.get(1);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return this.children.get(1).isNil();
     }
+
     public Result leftChild(){
         if (hasLeftChild()){
             return new CorrectResult<>(this.children.get(0));

@@ -29,7 +29,7 @@ public class TokenStream implements TokenStreamInterface {
         if (isEndOfStream()){
             return new IncorrectResult("The stream has no more tokens.");
         }
-        return new CorrectResult<>(this.tokens().get(offset));
+        return new CorrectResult<>(this.tokens().get(index + offset));
     }
 
     @Override
@@ -42,7 +42,7 @@ public class TokenStream implements TokenStreamInterface {
 
     @Override
     public Result consume(TokenInterface expectedToken) {
-        if (isEndOfStream()){
+        if (isEndOfStream()) {
             return new IncorrectResult("The stream has no more tokens.");
         }
         TokenInterface token = this.tokens().get(index);
@@ -56,7 +56,7 @@ public class TokenStream implements TokenStreamInterface {
     @Override
     public Boolean isEndOfStream() {
         TokenInterface template = new TokenFactory().createEndOfLineToken();
-        return tokens().get(index).equals(template);
+        return index >= tokens.size();
     }
 
     @Override

@@ -7,7 +7,7 @@ import common.nodes.statements.LetStatementNode;
 import common.responses.CorrectResult;
 import common.responses.Result;
 import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStream;
+import common.tokens.stream.TokenStreamInterface;
 import syntactic.ast.builders.ASTreeBuilderInterface;
 import syntactic.factories.builders.AstBuilderFactory;
 import syntactic.factories.builders.AstBuilderFactoryInterface;
@@ -24,7 +24,7 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
     }
 
     @Override
-    public Boolean canBuild(TokenStream tokenStream) {
+    public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
         TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
@@ -32,7 +32,7 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
     }
 
     @Override
-    public Result build(TokenStream tokenStream) {
+    public Result build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
 
         if (!tokenStream.consume(letTokenTemplate).isSuccessful()) return nextBuilder().build(tokenStream);

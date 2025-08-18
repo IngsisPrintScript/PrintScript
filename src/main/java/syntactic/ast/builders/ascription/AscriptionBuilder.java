@@ -8,7 +8,7 @@ import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
 import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStream;
+import common.tokens.stream.TokenStreamInterface;
 import syntactic.ast.builders.ASTreeBuilderInterface;
 import syntactic.factories.builders.AstBuilderFactory;
 import syntactic.factories.builders.AstBuilderFactoryInterface;
@@ -18,7 +18,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
     private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
 
     @Override
-    public Boolean canBuild(TokenStream tokenStream) {
+    public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek(1);
         if (!peekResult.isSuccessful()) return false;
         TokenInterface token = ( (CorrectResult<TokenInterface>) peekResult).newObject();
@@ -26,7 +26,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result build(TokenStream tokenStream) {
+    public Result build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build identifier node.");
 
         Result buildIdentifierResult = builderFactory.createIdentifierBuilder().build(tokenStream);

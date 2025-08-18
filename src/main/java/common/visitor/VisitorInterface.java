@@ -1,5 +1,6 @@
 package common.visitor;
 
+import common.nodes.NilNode;
 import common.nodes.declaration.DeclarationNode;
 import common.nodes.declaration.IdentifierNode;
 import common.nodes.declaration.TypeNode;
@@ -17,4 +18,5 @@ public interface VisitorInterface {
     Result visit(LiteralNode node);
     Result visit(IdentifierNode node);
     Result visit(TypeNode node);
+    Result visit(NilNode node);
 }

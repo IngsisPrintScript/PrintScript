@@ -18,4 +18,9 @@ public abstract class LeafNode implements Node {
     public String value() {
         return value;
     }
+
+    @Override
+    public Boolean isNil(){
+        return false;
+    }
 }

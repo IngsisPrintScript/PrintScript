@@ -1,9 +1,9 @@
 package syntactic.ast.builders;
 
 import common.responses.Result;
-import common.tokens.stream.TokenStream;
+import common.tokens.stream.TokenStreamInterface;
 
 public interface ASTreeBuilderInterface {
-    Boolean canBuild(TokenStream tokenStream);
-    Result build(TokenStream tokenStream);
+    Boolean canBuild(TokenStreamInterface tokenStream);
+    Result build(TokenStreamInterface tokenStream);
 }

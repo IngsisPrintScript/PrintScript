@@ -2,16 +2,16 @@ package syntactic.ast.builders;
 
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.tokens.stream.TokenStream;
+import common.tokens.stream.TokenStreamInterface;
 
 public record FinalBuilder() implements ASTreeBuilderInterface {
     @Override
-    public Boolean canBuild(TokenStream tokenStream) {
+    public Boolean canBuild(TokenStreamInterface tokenStream) {
         return false;
     }
 
     @Override
-    public Result build(TokenStream tokenStream) {
+    public Result build(TokenStreamInterface tokenStream) {
         return new IncorrectResult("There was no builder able to handle that token stream.");
     }
 }
