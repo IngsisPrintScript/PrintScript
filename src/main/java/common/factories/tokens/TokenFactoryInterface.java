@@ -12,5 +12,6 @@ public interface TokenFactoryInterface {
     TokenInterface createTypeToken(String type);
     TokenInterface createAssignationToken();
     TokenInterface createLiteralToken(String literal);
+    TokenInterface createAdditionToken();
     TokenInterface createEndOfLineToken();
 }

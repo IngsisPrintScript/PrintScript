@@ -50,6 +50,11 @@ public class TokenFactory implements TokenFactoryInterface {
     }
 
     @Override
+    public TokenInterface createAdditionToken() {
+        return new Token("ADDITION_TOKEN", "+");
+    }
+
+    @Override
     public TokenInterface createEndOfLineToken() {
         return new Token("EOL_TOKEN", ";");
     }

@@ -45,7 +45,7 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
         letNode.addDeclaration(ascriptionNode);
 
         if (tokenStream.consume(assignationTokenTemplate).isSuccessful()){
-            Result buildLiteralResult = builderFactory.createLiteralBuilder().build(tokenStream);
+            Result buildLiteralResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
             Node expressionNode = ( (CorrectResult<Node>) buildLiteralResult).newObject();
             letNode.addExpression(expressionNode);

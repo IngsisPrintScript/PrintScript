@@ -10,4 +10,5 @@ public interface NodeFactoryInterface {
     Node createDeclarationNode();
     Node createTypeNode(String type);
     Node createLiteralNode(String literal);
+    Node createAdditionNode();
 }

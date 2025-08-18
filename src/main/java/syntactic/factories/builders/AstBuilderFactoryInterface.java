@@ -8,5 +8,7 @@ public interface AstBuilderFactoryInterface {
     ASTreeBuilderInterface createIdentifierBuilder();
     ASTreeBuilderInterface createLiteralBuilder();
     ASTreeBuilderInterface createTypeBuilder();
+    ASTreeBuilderInterface createBinaryExpressionBuilder();
+    ASTreeBuilderInterface createOperatorBuilder();
     ASTreeBuilderInterface createFinalBuilder();
 }

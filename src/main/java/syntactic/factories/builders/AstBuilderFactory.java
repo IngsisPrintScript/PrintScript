@@ -3,6 +3,8 @@ package syntactic.factories.builders;
 import syntactic.ast.builders.ASTreeBuilderInterface;
 import syntactic.ast.builders.FinalBuilder;
 import syntactic.ast.builders.ascription.AscriptionBuilder;
+import syntactic.ast.builders.expression.BinaryExpressionBuilder;
+import syntactic.ast.builders.expression.operators.OperatorBuilder;
 import syntactic.ast.builders.identifier.IdentifierBuilder;
 import syntactic.ast.builders.let.LetBuilder;
 import syntactic.ast.builders.literal.LiteralBuilder;
@@ -32,6 +34,16 @@ public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
     public ASTreeBuilderInterface createTypeBuilder() {
         return new TypeBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createBinaryExpressionBuilder() {
+        return new BinaryExpressionBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createOperatorBuilder() {
+        return new OperatorBuilder();
     }
 
     @Override
