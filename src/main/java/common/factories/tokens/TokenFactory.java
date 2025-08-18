@@ -15,6 +15,16 @@ public class TokenFactory implements TokenFactoryInterface {
     }
 
     @Override
+    public TokenInterface createLeftParenthesisToken() {
+        return new Token("LEFT_PARENTHESIS_TOKEN", "(");
+    }
+
+    @Override
+    public TokenInterface createRightParenthesisToken() {
+        return new  Token("RIGHT_PARENTHESIS_TOKEN", ")");
+    }
+
+    @Override
     public TokenInterface createIdentifierToken(String identifier) {
         return new Token("IDENTIFIER_TOKEN", identifier);
     }

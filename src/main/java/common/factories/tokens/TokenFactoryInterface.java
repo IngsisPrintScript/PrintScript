@@ -5,6 +5,8 @@ import common.tokens.TokenInterface;
 public interface TokenFactoryInterface {
     TokenInterface createLetKeywordToken();
     TokenInterface createPrintlnKeywordToken();
+    TokenInterface createLeftParenthesisToken();
+    TokenInterface createRightParenthesisToken();
     TokenInterface createIdentifierToken(String identifier);
     TokenInterface createTypeAssignationToken();
     TokenInterface createTypeToken(String type);
