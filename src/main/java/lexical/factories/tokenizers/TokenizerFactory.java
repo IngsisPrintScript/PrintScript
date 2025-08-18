@@ -4,6 +4,7 @@ import lexical.tokenizers.FinalTokenizer;
 import lexical.tokenizers.TokenizerInterface;
 import lexical.tokenizers.identifier.IdentifierTokenizer;
 import lexical.tokenizers.keyword.KeywordTokenizer;
+import lexical.tokenizers.punctuation.PunctuationTokenizer;
 import lexical.tokenizers.type.TypeTokenizer;
 import lexical.tokenizers.type.assignation.TypeAssignationTokenizer;
 import lexical.tokenizers.eol.EndOfLineTokenizer;
@@ -17,6 +18,7 @@ public record TokenizerFactory() implements TokenizerFactoryInterface {
         tokenizer = new EndOfLineTokenizer(tokenizer);
         tokenizer = new LiteralTokenizer(tokenizer);
         tokenizer = new IdentifierTokenizer(tokenizer);
+        tokenizer = new PunctuationTokenizer(tokenizer);
         tokenizer = new OperatorTokenizer(tokenizer);
         tokenizer = new TypeTokenizer(tokenizer);
         tokenizer = new TypeAssignationTokenizer(tokenizer);
