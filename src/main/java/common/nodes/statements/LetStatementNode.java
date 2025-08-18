@@ -16,11 +16,11 @@ public class LetStatementNode extends CompositeNode {
         return visitor.visit(this);
     }
 
-    public Boolean hasDeclaration(){
-        return this.children.get(0).isNil();
+    public Boolean hasAscription(){
+        return !this.children.get(0).isNil();
     }
     public Boolean hasExpression(){
-        return this.children.get(1).isNil();
+        return !this.children.get(1).isNil();
     }
 
     public Result expression(){
@@ -30,19 +30,19 @@ public class LetStatementNode extends CompositeNode {
             return new IncorrectResult("Let statement has no expression.");
         }
     }
-    public Result declaration(){
-        if(hasDeclaration()){
+    public Result ascription(){
+        if(hasAscription()){
             return new CorrectResult<>(children.get(0));
         } else {
             return new IncorrectResult("Let statement has no declaration.");
         }
     }
 
-    public Result addDeclaration(Node declaration){
+    public Result setAscription(Node declaration){
         this.children.set(0, declaration);
         return new CorrectResult<>(declaration);
     }
-    public Result addExpression(Node expression){
+    public Result setExpression(Node expression){
         this.children.set(1, expression);
         return new CorrectResult<>(expression);
     }

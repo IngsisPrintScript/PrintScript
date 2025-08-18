@@ -1,0 +1,57 @@
+package interpreter.transpiler;
+
+import common.factories.nodes.NodeFactory;
+import common.nodes.Node;
+import common.nodes.declaration.AscriptionNode;
+import common.nodes.statements.LetStatementNode;
+import common.nodes.statements.PrintStatementNode;
+import common.responses.CorrectResult;
+import common.responses.IncorrectResult;
+import common.responses.Result;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.util.Map;
+
+public class JavaTranspilationVisitorTest {
+    private static final NodeFactory nodeFactory = new NodeFactory();
+    private static Map<Node, String> treeCodeMap;
+
+    @BeforeAll
+    public static void setup() {
+        LetStatementNode letNodeOne = (LetStatementNode) nodeFactory.createLetStatementNode();
+        AscriptionNode ascriptionNode = (AscriptionNode) nodeFactory.createAscriptionNode();
+        ascriptionNode.setIdentifier(nodeFactory.createIdentifierNode("identifier"));
+        ascriptionNode.setType(nodeFactory.createTypeNode("Type"));
+        letNodeOne.setAscription(ascriptionNode);
+        LetStatementNode letNodeTwo = (LetStatementNode) nodeFactory.createLetStatementNode();
+        letNodeTwo.setAscription(ascriptionNode);
+        letNodeTwo.setExpression(nodeFactory.createLiteralNode("\"placeholder\""));
+        PrintStatementNode printNode = (PrintStatementNode) nodeFactory.createPrintlnStatementNode();
+        printNode.setExpression(nodeFactory.createLiteralNode("\"Hello, World!\""));
+        treeCodeMap = Map.ofEntries(
+                Map.entry(letNodeOne, "Type identifier;"),
+                Map.entry(letNodeTwo, "Type identifier = \"placeholder\";"),
+                Map.entry(printNode, "System.out.println(\"Hello, World!\");")
+        );
+    }
+
+    @Test
+    public void createJavaTranspilationVisitorTest() {
+        JavaTranspilationVisitor visitor = new JavaTranspilationVisitor();
+        Assertions.assertNotNull(visitor);
+    }
+    @Test
+    public void visitJavaTranspilationVisitorTest() {
+        JavaTranspilationVisitor visitor = new JavaTranspilationVisitor();
+        for (Node tree : treeCodeMap.keySet()) {
+            Result treeVisitResult = tree.accept(visitor);
+            if (!treeVisitResult.isSuccessful()) {
+                Assertions.fail(((IncorrectResult) treeVisitResult).errorMessage());
+            }
+            String code = ((CorrectResult<String>) treeVisitResult).newObject();
+            Assertions.assertEquals(treeCodeMap.get(tree), code);
+        }
+    }
+}

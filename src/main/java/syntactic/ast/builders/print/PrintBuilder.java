@@ -46,7 +46,7 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
         Result buildExpressionResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
         if (!buildExpressionResult.isSuccessful()){return buildExpressionResult;}
         Node expression = ((CorrectResult<Node>) buildExpressionResult).newObject();
-        root.addExpression(expression);
+        root.setExpression(expression);
 
         if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful()) return new IncorrectResult("Cannot consume right parenthesis token");
 

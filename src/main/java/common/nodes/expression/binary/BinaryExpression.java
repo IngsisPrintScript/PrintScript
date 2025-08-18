@@ -12,10 +12,10 @@ public abstract class BinaryExpression extends CompositeNode {
     }
 
     public Boolean hasLeftChild(){
-        return this.children.get(0).isNil();
+        return !this.children.get(0).isNil();
     }
     public Boolean hasRightChild(){
-        return this.children.get(1).isNil();
+        return !this.children.get(1).isNil();
     }
 
     public Result leftChild(){

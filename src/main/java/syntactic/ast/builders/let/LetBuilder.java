@@ -42,13 +42,13 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
 
         LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
         Node ascriptionNode = ( (CorrectResult<Node>) buildAscritionResult).newObject();
-        letNode.addDeclaration(ascriptionNode);
+        letNode.setAscription(ascriptionNode);
 
         if (tokenStream.consume(assignationTokenTemplate).isSuccessful()){
             Result buildLiteralResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
             Node expressionNode = ( (CorrectResult<Node>) buildLiteralResult).newObject();
-            letNode.addExpression(expressionNode);
+            letNode.setExpression(expressionNode);
         }
 
         if (!tokenStream.consume(eolTokenTemplate).isSuccessful()) return nextBuilder().build(tokenStream);

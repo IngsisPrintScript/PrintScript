@@ -18,10 +18,10 @@ public class AscriptionNode extends CompositeNode {
     }
 
     public Boolean hasType(){
-        return this.children.get(0).isNil();
+        return !this.children.get(0).isNil();
     }
     public Boolean hasIdentifier(){
-        return this.children.get(1).isNil();
+        return !this.children.get(1).isNil();
     }
 
     public Result type(){
