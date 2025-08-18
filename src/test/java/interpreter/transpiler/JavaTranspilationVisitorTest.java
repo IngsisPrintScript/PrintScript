@@ -8,6 +8,7 @@ import common.nodes.statements.PrintStatementNode;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
+import interpreter.transpiler.visitor.JavaTranspilationVisitor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -21,7 +21,7 @@ public record DefaultJavaCodeWriter(Path path) implements CodeWriterInterface {
                     }
                     """.formatted(code);
             Files.writeString(path, wrappedCode);
-            return new CorrectResult<>(path.toAbsolutePath().toString());
+            return new CorrectResult<>(path);
         } catch (Exception e) {
             return new IncorrectResult(e.getMessage());
         }

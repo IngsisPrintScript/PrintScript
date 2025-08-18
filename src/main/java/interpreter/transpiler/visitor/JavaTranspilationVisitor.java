@@ -1,4 +1,4 @@
-package interpreter.transpiler;
+package interpreter.transpiler.visitor;
 
 import common.nodes.NilNode;
 import common.nodes.Node;
@@ -11,8 +11,9 @@ import common.nodes.statements.LetStatementNode;
 import common.nodes.statements.PrintStatementNode;
 import common.responses.CorrectResult;
 import common.responses.Result;
+import common.visitor.VisitorInterface;
 
-public class JavaTranspilationVisitor extends TranspilerVisitor {
+public class JavaTranspilationVisitor implements VisitorInterface {
     @Override
     public Result visit(LetStatementNode node) {
         Result getDeclarationResult = node.ascription();
