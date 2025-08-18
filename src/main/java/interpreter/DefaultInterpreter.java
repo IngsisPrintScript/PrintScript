@@ -1,5 +1,6 @@
 package interpreter;
 
+import common.nodes.Node;
 import common.responses.CorrectResult;
 import common.responses.Result;
 import interpreter.executor.CodeExecutorInterface;
@@ -10,8 +11,8 @@ import java.nio.file.Path;
 
 public record DefaultInterpreter(TranspilerInterface transpiler, CodeWriterInterface writer, CodeExecutorInterface executor) implements InterpreterInterface{
     @Override
-    public Result interpret() {
-        Result transpilationResult = transpiler().transpile();
+    public Result interpret(Node tree) {
+        Result transpilationResult = transpiler().transpile(tree);
         if (!transpilationResult.isSuccessful()) return transpilationResult;
         String code = ((CorrectResult<String>) transpilationResult).newObject();
         Result codeWritingResult = writer().writeCode(code);

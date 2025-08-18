@@ -1,7 +1,8 @@
 package interpreter;
 
+import common.nodes.Node;
 import common.responses.Result;
 
 public interface InterpreterInterface {
-    Result interpret();
+    Result interpret(Node tree);
 }
