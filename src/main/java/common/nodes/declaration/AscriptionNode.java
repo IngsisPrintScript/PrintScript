@@ -7,8 +7,8 @@ import common.responses.IncorrectResult;
 import common.responses.Result;
 import common.visitor.VisitorInterface;
 
-public class DeclarationNode extends CompositeNode {
-    public DeclarationNode(){
+public class AscriptionNode extends CompositeNode {
+    public AscriptionNode(){
         super(2);
     }
 
@@ -16,27 +16,28 @@ public class DeclarationNode extends CompositeNode {
     public Result accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
-    public Boolean hasLeftChild(){
+
+    public Boolean hasType(){
         return this.children.get(0).isNil();
     }
-    public Boolean hasRightChild(){
+    public Boolean hasIdentifier(){
         return this.children.get(1).isNil();
     }
 
-    public Result leftChild(){
-        if (hasLeftChild()){
+    public Result type(){
+        if (hasType()){
             return new CorrectResult<>(this.children.get(0));
         } else {
-            return new IncorrectResult("Declaration node has no left child.");
+            return new IncorrectResult("Ascription node has no type.");
         }
     }
-    public Result rightChild(){
-        if (hasLeftChild()){
+    public Result identifier(){
+        if (hasIdentifier()){
             return new CorrectResult<>(this.children.get(1));
         } else {
-            return new IncorrectResult("Declaration node has no right child.");
+            return new IncorrectResult("Ascription node has no identifier.");
         }
     }
-    public Result addLeftChild(Node node){ return new CorrectResult<>(this.children.set(0, node)); }
-    public Result addRightChild(Node node){ return new CorrectResult<>(this.children.set(1, node)); }
+    public Result setType(Node node){ return new CorrectResult<>(this.children.set(0, node)); }
+    public Result setIdentifier(Node node){ return new CorrectResult<>(this.children.set(1, node)); }
 }

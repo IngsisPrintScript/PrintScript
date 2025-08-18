@@ -3,7 +3,7 @@ package syntactic.ast.builders.ascription;
 import common.factories.nodes.NodeFactory;
 import common.factories.tokens.TokenFactory;
 import common.nodes.Node;
-import common.nodes.declaration.DeclarationNode;
+import common.nodes.declaration.AscriptionNode;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
@@ -38,11 +38,11 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
         if (!buildTypeResult.isSuccessful()) return buildTypeResult;
 
         Node identifierNode = ( (CorrectResult<Node>) buildIdentifierResult).newObject();
-        DeclarationNode ascriptionNode = (DeclarationNode) new NodeFactory().createDeclarationNode();
+        AscriptionNode ascriptionNode = (AscriptionNode) new NodeFactory().createAscriptionNode();
         Node typeNode = ( (CorrectResult<Node>) buildTypeResult).newObject();
 
-        ascriptionNode.addLeftChild(typeNode);
-        ascriptionNode.addRightChild(identifierNode);
+        ascriptionNode.setType(typeNode);
+        ascriptionNode.setIdentifier(identifierNode);
 
         return new CorrectResult<>(ascriptionNode);
     }
