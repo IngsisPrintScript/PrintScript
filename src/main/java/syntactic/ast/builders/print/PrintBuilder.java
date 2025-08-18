@@ -11,12 +11,18 @@ import common.tokens.TokenInterface;
 import common.tokens.stream.TokenStreamInterface;
 import syntactic.ast.builders.ASTreeBuilderInterface;
 import syntactic.factories.builders.AstBuilderFactory;
+import syntactic.factories.builders.AstBuilderFactoryInterface;
 
-public record PrintBuilder() implements ASTreeBuilderInterface {
+public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
+    private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
     private static final TokenInterface printTemplate = new TokenFactory().createPrintlnKeywordToken();
     private static final TokenInterface leftParenthesisTemplate = new TokenFactory().createLeftParenthesisToken();
     private static final TokenInterface rightParenthesisTemplate = new TokenFactory().createRightParenthesisToken();
     private static final TokenInterface eolTemplate = new TokenFactory().createEndOfLineToken();
+
+    public PrintBuilder(){
+        this(builderFactory.createFinalBuilder());
+    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
@@ -30,14 +36,14 @@ public record PrintBuilder() implements ASTreeBuilderInterface {
 
     @Override
     public Result build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)){return new IncorrectResult("Cannot build print node");}
+        if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
 
         if (!tokenStream.consume(printTemplate).isSuccessful()) return new IncorrectResult("Cannot consume print token");
         PrintStatementNode root = (PrintStatementNode) new NodeFactory().createPrintlnStatementNode();
 
         if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful()) return new IncorrectResult("Cannot consume left parenthesis token");
 
-        Result buildExpressionResult = new AstBuilderFactory().createBinaryExpressionBuilder().build(tokenStream);
+        Result buildExpressionResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
         if (!buildExpressionResult.isSuccessful()){return buildExpressionResult;}
         Node expression = ((CorrectResult<Node>) buildExpressionResult).newObject();
         root.addExpression(expression);
