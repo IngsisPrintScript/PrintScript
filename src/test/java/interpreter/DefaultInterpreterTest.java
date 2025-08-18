@@ -1,0 +1,67 @@
+package interpreter;
+
+import common.factories.nodes.NodeFactory;
+import common.nodes.Node;
+import common.nodes.declaration.AscriptionNode;
+import common.nodes.statements.LetStatementNode;
+import common.nodes.statements.PrintStatementNode;
+import common.responses.Result;
+import interpreter.executor.CodeExecutorInterface;
+import interpreter.executor.JavaCodeExecutor;
+import interpreter.transpiler.DefaultJavaTranspiler;
+import interpreter.transpiler.TranspilerInterface;
+import interpreter.writer.CodeWriterInterface;
+import interpreter.writer.JavaCodeWriter;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Map;
+
+public class DefaultInterpreterTest {
+    private static TranspilerInterface transpiler;
+    private static CodeWriterInterface writer;
+    private static CodeExecutorInterface executor;
+    private static Map<Node, String> treeCodeMap;
+    private static final NodeFactory nodeFactory = new NodeFactory();
+    private static final Path filePath = Paths.get("./.testFiles/interpreter/ClassTest.java");
+
+    @BeforeAll
+    public static void setUp() {
+        transpiler = new DefaultJavaTranspiler();
+        writer = new JavaCodeWriter(filePath, "ClassTest");
+        executor = new JavaCodeExecutor("ClassTest");
+        LetStatementNode letNodeOne = (LetStatementNode) nodeFactory.createLetStatementNode();
+        AscriptionNode ascriptionNode = (AscriptionNode) nodeFactory.createAscriptionNode();
+        ascriptionNode.setIdentifier(nodeFactory.createIdentifierNode("identifier"));
+        ascriptionNode.setType(nodeFactory.createTypeNode("String"));
+        letNodeOne.setAscription(ascriptionNode);
+        LetStatementNode letNodeTwo = (LetStatementNode) nodeFactory.createLetStatementNode();
+        letNodeTwo.setAscription(ascriptionNode);
+        letNodeTwo.setExpression(nodeFactory.createLiteralNode("\"placeholder\""));
+        PrintStatementNode printNode = (PrintStatementNode) nodeFactory.createPrintlnStatementNode();
+        printNode.setExpression(nodeFactory.createLiteralNode("\"Hello, World!\""));
+        treeCodeMap = Map.ofEntries(
+                Map.entry(letNodeOne, "String identifier;"),
+                Map.entry(letNodeTwo, "String identifier = \"placeholder\";"),
+                Map.entry(printNode, "System.out.println(\"Hello, World!\");")
+        );
+    }
+
+    @Test
+    public void createInterpreterTest() {
+        DefaultInterpreter interpreter = new DefaultInterpreter(transpiler, writer, executor);
+        Assertions.assertNotNull(interpreter);
+    }
+
+    @Test
+    public void interpretInterpreterTest() {
+        DefaultInterpreter interpreter = new DefaultInterpreter(transpiler, writer, executor);
+        for (Node tree: treeCodeMap.keySet()) {
+            Result interpretResult = interpreter.interpret(tree);
+            Assertions.assertTrue(interpretResult.isSuccessful());
+        }
+    }
+}
