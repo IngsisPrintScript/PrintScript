@@ -3,13 +3,12 @@ package common.visitor;
 import common.nodes.NilNode;
 import common.nodes.declaration.AscriptionNode;
 import common.nodes.declaration.IdentifierNode;
-import common.nodes.declaration.TypeNode;
+import common.nodes.declaration.TypeNode.TypeNode;
 import common.nodes.expression.binary.AdditionNode;
 import common.nodes.expression.literal.LiteralNode;
 import common.nodes.statements.LetStatementNode;
 import common.nodes.statements.PrintStatementNode;
 import common.responses.Result;
-import common.nodes.Declaration.DeclarationNode;
 
 public interface VisitorInterface {
     Result visit(LetStatementNode node);
@@ -20,6 +19,5 @@ public interface VisitorInterface {
     Result visit(IdentifierNode node);
     Result visit(TypeNode node);
     Result visit(NilNode node);
-    Result visit(DeclarationNode node);
 
 }

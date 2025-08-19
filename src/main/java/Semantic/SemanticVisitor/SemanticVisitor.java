@@ -2,10 +2,11 @@ package Semantic.SemanticVisitor;
 
 import Semantic.SemanticHandler.SemanticHandler;
 import Semantic.Context.SemanticVisitorContext;
-import common.nodes.Declaration.TypeNode.TypeNode;
+import common.nodes.NilNode;
 import common.nodes.Node;
-import common.nodes.Declaration.DeclarationNode;
-import common.nodes.Declaration.Identifier.IdentifierNode;
+import common.nodes.declaration.AscriptionNode;
+import common.nodes.declaration.IdentifierNode;
+import common.nodes.declaration.TypeNode.TypeNode;
 import common.nodes.expression.binary.AdditionNode;
 import common.nodes.expression.literal.LiteralNode;
 import common.nodes.statements.LetStatementNode;
@@ -60,12 +61,17 @@ public record SemanticVisitor(SemanticVisitorContext context, Map<Class<?>, Sema
     }
 
     @Override
-    public Result visit(DeclarationNode node) {
+    public Result visit(AscriptionNode node) {
         return dispatch(node);
     }
 
     @Override
     public Result visit(TypeNode node) {
+        return dispatch(node);
+    }
+
+    @Override
+    public Result visit(NilNode node) {
         return dispatch(node);
     }
 

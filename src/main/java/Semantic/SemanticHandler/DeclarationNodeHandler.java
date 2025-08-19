@@ -4,18 +4,18 @@ import Semantic.SemanticVisitor.SemanticVisitor;
 import Semantic.Context.SemanticVisitorContext;
 import common.Symbol.Symbol;
 import common.nodes.Node;
-import common.nodes.Declaration.DeclarationNode;
-import common.nodes.Declaration.Identifier.IdentifierNode;
+import common.nodes.declaration.IdentifierNode;
+import common.nodes.declaration.AscriptionNode;
 import common.nodes.expression.literal.LiteralNode;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
 
-public class DeclarationNodeHandler implements SemanticHandler<DeclarationNode>{
+public class DeclarationNodeHandler implements SemanticHandler<AscriptionNode>{
     @Override
-    public Result handleSemantic(DeclarationNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
-        Object leftChild = ((CorrectResult<?>) node.leftChild()).newObject();
-        Object rightChild = ((CorrectResult<?>) node.rightChild()).newObject();
+    public Result handleSemantic(AscriptionNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
+        Object leftChild = ((CorrectResult<?>) node.type()).newObject();
+        Object rightChild = ((CorrectResult<?>) node.identifier()).newObject();
         Result resolved = context.variablesTable().variablesTable().getValue(((IdentifierNode) rightChild).value());
         if(!resolved.isSuccessful()){
             return resolved;
@@ -32,6 +32,6 @@ public class DeclarationNodeHandler implements SemanticHandler<DeclarationNode>{
 
     @Override
     public boolean canHandle(Node node) {
-        return node instanceof DeclarationNode;
+        return node instanceof AscriptionNode;
     }
 }

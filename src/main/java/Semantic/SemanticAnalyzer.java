@@ -12,7 +12,6 @@ import java.util.Map;
 
 public record SemanticAnalyzer(SemanticVisitorContext variablesTable,
                                Map<Class<?>, SemanticHandler<?>> handlerMap, Node root){
-
     public Result analyze(){
         if(variablesTable == null || handlerMap == null || root == null){
             return new IncorrectResult("Variables are null.");

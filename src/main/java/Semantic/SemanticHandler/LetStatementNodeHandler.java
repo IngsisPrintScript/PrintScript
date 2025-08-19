@@ -3,7 +3,7 @@ package Semantic.SemanticHandler;
 import Semantic.SemanticVisitor.SemanticVisitor;
 import Semantic.Context.SemanticVisitorContext;
 import common.nodes.Node;
-import common.nodes.Declaration.DeclarationNode;
+import common.nodes.declaration.AscriptionNode;
 import common.nodes.expression.literal.LiteralNode;
 import common.nodes.statements.LetStatementNode;
 import common.responses.CorrectResult;
@@ -19,7 +19,7 @@ public class LetStatementNodeHandler implements SemanticHandler<LetStatementNode
         if(!leftChild.isSuccessful()){
             return new IncorrectResult("Need DeclarationNode");
         }
-        DeclarationNode declarationNode = (DeclarationNode) ((CorrectResult<?>) leftChild).newObject();
+        AscriptionNode declarationNode = (AscriptionNode) ((CorrectResult<?>) leftChild).newObject();
         if(!(rightChild.isSuccessful())){
             return context.variablesTable().addOnlyVariable(declarationNode);
         }

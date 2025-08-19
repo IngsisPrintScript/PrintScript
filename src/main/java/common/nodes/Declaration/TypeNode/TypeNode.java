@@ -1,4 +1,4 @@
-package common.nodes.Declaration.TypeNode;
+package common.nodes.declaration.TypeNode;
 
 import common.nodes.LeafNode;
 import common.nodes.Node;
