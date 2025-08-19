@@ -9,18 +9,42 @@ import common.visitor.VisitorInterface;
 
 public class LetStatementNode extends CompositeNode {
     public LetStatementNode() {
-        super(2);
+        super();
     }
     @Override
     public Result accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
-
-    public Boolean hasAscription(){
-        return !this.children.get(0).isNil();
+    public Boolean hasDeclaration(){
+        try {
+            this.children.get(0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public Result declaration(){
+        if(hasDeclaration()){
+            return new CorrectResult<>(children.get(0));
+        } else {
+            return new IncorrectResult("Let statement has no declaration.");
+        }
+    }
+    public Result addDeclaration(Node expression){
+        try {
+            this.children.set(0, expression);
+            return new CorrectResult<>(expression);
+        } catch (ClassCastException e) {
+            return new IncorrectResult(e.getMessage());
+        }
     }
     public Boolean hasExpression(){
-        return !this.children.get(1).isNil();
+        try {
+            this.children.get(0);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public Result expression(){

@@ -9,6 +9,7 @@ import common.nodes.expression.literal.LiteralNode;
 import common.nodes.statements.LetStatementNode;
 import common.nodes.statements.PrintStatementNode;
 import common.responses.Result;
+import common.nodes.Declaration.DeclarationNode;
 
 public interface VisitorInterface {
     Result visit(LetStatementNode node);
@@ -19,4 +20,6 @@ public interface VisitorInterface {
     Result visit(IdentifierNode node);
     Result visit(TypeNode node);
     Result visit(NilNode node);
+    Result visit(DeclarationNode node);
+
 }
