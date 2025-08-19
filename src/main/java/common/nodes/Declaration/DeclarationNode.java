@@ -1,4 +1,4 @@
-package common.nodes.expression.Declaration;
+package common.nodes.Declaration;
 
 import common.nodes.CompositeNode;
 import common.nodes.Node;

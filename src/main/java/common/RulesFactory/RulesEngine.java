@@ -11,7 +11,7 @@ import java.util.List;
 
 public record RulesEngine(List<SemanticRulesInterface> semanticRulesInterface) {
 
-    public Result checkRules(Node leftLiteral, Node rightLiteral, BinaryExpression operator) {
+    public Result checkRules(Node leftLiteral, Node rightLiteral, Node operator) {
         for(SemanticRulesInterface semanticRulesInterface : semanticRulesInterface){
             if (semanticRulesInterface.match(operator)){
                 return semanticRulesInterface.checkRules(leftLiteral,rightLiteral);

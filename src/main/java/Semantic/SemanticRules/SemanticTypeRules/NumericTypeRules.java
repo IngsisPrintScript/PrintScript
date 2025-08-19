@@ -1,34 +1,32 @@
 package Semantic.SemanticRules.SemanticTypeRules;
 
 import Semantic.SemanticRules.SemanticRulesInterface;
-import common.nodes.expression.binary.BinaryExpression;
+import common.nodes.Declaration.TypeNode.TypeNode;
+import common.nodes.Node;
 import common.nodes.expression.literal.LiteralNode;
+import common.nodes.statements.LetStatementNode;
+import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
 
-public record NumericTypeRules(SemanticRulesInterface nextSemanticVisitor) implements SemanticRulesInterface {
+public class NumericTypeRules implements SemanticRulesInterface {
     @Override
-    public boolean match(LiteralNode leftLiteralNode, LiteralNode rightLiteralNode, BinaryExpression operator) {
-        if(operator != null){
-            return false;
-        }
-        if(!leftLiteralNode.value().equals("Number")){
-            return false;
-        }
-        try {
-            Double.parseDouble(leftLiteralNode.value());
-            Double.parseDouble(rightLiteralNode.value());
-        }catch (NumberFormatException e){
-            return false;
-        }
-        return true;
+    public boolean match(Node operator) {
+        return operator instanceof LetStatementNode;
     }
 
     @Override
-    public Result checkRules(LiteralNode leftLiteral, LiteralNode rightLiteral, BinaryExpression operator) {
-        if(match(leftLiteral,rightLiteral,operator)){
-            return nextSemanticVisitor.checkRules(leftLiteral,rightLiteral,operator);
+    public Result checkRules(Node leftLiteral, Node rightLiteral) {
+        TypeNode leftType = (TypeNode) leftLiteral;
+        String rightNode = ((LiteralNode) rightLiteral).value();
+        if ("Number".equalsIgnoreCase(leftType.value())) {
+            try {
+                Double value = Double.parseDouble(rightNode);
+                return new CorrectResult<>(value);
+            } catch (NumberFormatException e) {
+                return new IncorrectResult("Type mismatch: expected Number but got " + rightNode);
+            }
         }
-        return new IncorrectResult("Let statement has no declaration.");
+        return new IncorrectResult("Unsupported type in NumericTypeRules: " + leftType.value());
     }
 }

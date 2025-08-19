@@ -2,35 +2,38 @@ package Semantic.SemanticRules.SemanticTypeRules;
 
 import Semantic.SemanticRules.SemanticRulesInterface;
 import Semantic.SemanticVisitor.SemanticVisitor;
+import common.nodes.Declaration.TypeNode.TypeNode;
 import common.nodes.Node;
 import common.nodes.expression.binary.BinaryExpression;
 import common.nodes.expression.literal.LiteralNode;
+import common.nodes.statements.LetStatementNode;
+import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
 
 import java.util.List;
 import java.util.function.BinaryOperator;
 
-public record StringTypeRule(SemanticRulesInterface nextSemanticVisitor) implements SemanticRulesInterface {
+public class StringTypeRule implements SemanticRulesInterface {
 
     @Override
-    public boolean match(LiteralNode leftLiteralNode, LiteralNode rightLiteralNode, BinaryExpression operator) {
-        if(operator != null && !leftLiteralNode.value().equals("String")){
-            return false;
-        }try {
-            Double.parseDouble(leftLiteralNode.value());
-            Double.parseDouble(rightLiteralNode.value());
-        }catch (NumberFormatException e){
-            return true;
-        }
-        return false;
+    public boolean match(Node operator) {
+        return operator instanceof LetStatementNode;
     }
 
     @Override
-    public Result checkRules(LiteralNode leftLiteral, LiteralNode rightLiteral, BinaryExpression operator){
-        if(match(leftLiteral,rightLiteral,operator)){
-            return nextSemanticVisitor.checkRules(leftLiteral,rightLiteral,operator);
+    public Result checkRules(Node leftLiteral, Node rightLiteral) {
+        TypeNode leftType = (TypeNode) leftLiteral;
+        String rightNode = ((LiteralNode) rightLiteral).value();
+        if ("String".equalsIgnoreCase(leftType.value())) {
+            try {
+                Double.parseDouble(rightNode);
+                return new IncorrectResult("Type mismatch: expected Number but got " + rightNode);
+
+            } catch (NumberFormatException e) {
+                return new CorrectResult<>(rightNode);
+            }
         }
-        return new IncorrectResult("Let statement has no declaration.");
+        return new IncorrectResult("Unsupported type in NumericTypeRules: " + leftType.value());
     }
 }
