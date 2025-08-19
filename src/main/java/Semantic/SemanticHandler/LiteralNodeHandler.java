@@ -10,7 +10,7 @@ import common.responses.Result;
 public class LiteralNodeHandler implements SemanticHandler<LiteralNode> {
     @Override
     public Result handleSemantic(LiteralNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
-        return new CorrectResult<>(node.value());
+        return new CorrectResult<>(node);
     }
 
     @Override

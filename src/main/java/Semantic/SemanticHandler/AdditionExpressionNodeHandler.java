@@ -4,13 +4,14 @@ import Semantic.SemanticVisitor.SemanticVisitor;
 import Semantic.Context.SemanticVisitorContext;
 import common.nodes.Node;
 import common.nodes.expression.binary.AdditionNode;
+import common.nodes.expression.literal.LiteralNode;
 import common.responses.CorrectResult;
 import common.responses.Result;
 
-public class AdditionExpressionNode implements SemanticHandler<AdditionNode>{
+public class AdditionExpressionNodeHandler implements SemanticHandler<AdditionNode>{
     @Override
     public Result handleSemantic(AdditionNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
-        return new CorrectResult<>(new BinaryExpressionHandler().handleSemantic(node, context,visitor));
+        return new CorrectResult<>(new LiteralNode((String)((CorrectResult<?>) new BinaryExpressionHandler().handleSemantic(node, context,visitor)).newObject()));
     }
 
     @Override
