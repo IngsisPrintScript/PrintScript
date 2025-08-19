@@ -10,6 +10,6 @@ import java.util.function.BinaryOperator;
 
 public interface SemanticRulesInterface {
 
-    boolean match(LiteralNode leftLiteralNode, LiteralNode rightLiteralNode, BinaryExpression operator);
-    Result checkRules(LiteralNode leftLiteral, LiteralNode rightLiteral, BinaryExpression operator);
+    boolean match(BinaryExpression operator);
+    Result checkRules(Node leftLiteral, Node rightLiteral);
 }

@@ -7,7 +7,9 @@ import common.nodes.Node;
 import common.responses.IncorrectResult;
 import common.responses.Result;
 
-public record SemanticAnalyzer(VariablesTableInterface variablesTable, SemanticRulesInterface semanticRules, Node root){
+import java.util.List;
+
+public record SemanticAnalyzer(VariablesTableInterface variablesTable, List<SemanticRulesInterface> semanticRules, Node root){
 
     public Result analyze(){
         if(variablesTable == null || semanticRules == null || root == null){

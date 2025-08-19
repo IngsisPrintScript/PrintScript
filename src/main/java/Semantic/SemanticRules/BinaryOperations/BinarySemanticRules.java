@@ -13,10 +13,13 @@ public record BinarySemanticRules(SemanticRulesInterface nextSemanticRule) imple
         if(!(operator instanceof AdditionNode)){
             return false;
         }
-        return  (rightLiteralNode.value().matches("^\"-?\\d+(\\.\\d+)?\"$")
-                || rightLiteralNode.value().matches("^'-?\\d+(\\.\\d+)?'$")) &&
-                (leftLiteralNode.value().matches("^\"-?\\d+(\\.\\d+)?\"$")
-                || leftLiteralNode.value().matches("^'-?\\d+(\\.\\d+)?'$"));
+        try{
+            Double.parseDouble(leftLiteralNode.value());
+            Double.parseDouble(rightLiteralNode.value());
+        }catch(NumberFormatException e){
+            return false;
+        }
+        return true;
     }
 
     @Override

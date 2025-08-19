@@ -15,8 +15,13 @@ public record NumericTypeRules(SemanticRulesInterface nextSemanticVisitor) imple
         if(!leftLiteralNode.value().equals("Number")){
             return false;
         }
-        return rightLiteralNode.value().matches("^\"-?\\d+(\\.\\d+)?\"$")
-                || rightLiteralNode.value().matches("^'-?\\d+(\\.\\d+)?'$");
+        try {
+            Double.parseDouble(leftLiteralNode.value());
+            Double.parseDouble(rightLiteralNode.value());
+        }catch (NumberFormatException e){
+            return false;
+        }
+        return true;
     }
 
     @Override

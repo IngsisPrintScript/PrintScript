@@ -17,9 +17,13 @@ public record StringTypeRule(SemanticRulesInterface nextSemanticVisitor) impleme
     public boolean match(LiteralNode leftLiteralNode, LiteralNode rightLiteralNode, BinaryExpression operator) {
         if(operator != null && !leftLiteralNode.value().equals("String")){
             return false;
+        }try {
+            Double.parseDouble(leftLiteralNode.value());
+            Double.parseDouble(rightLiteralNode.value());
+        }catch (NumberFormatException e){
+            return true;
         }
-        return ((rightLiteralNode.value().startsWith("\"") && rightLiteralNode.value().endsWith("\""))
-                || (rightLiteralNode.value().startsWith("'") && rightLiteralNode.value().endsWith("'")));
+        return false;
     }
 
     @Override
