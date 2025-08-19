@@ -9,43 +9,20 @@ import common.visitor.VisitorInterface;
 
 public class LetStatementNode extends CompositeNode {
     public LetStatementNode() {
-        super();
+        super(2);
     }
     @Override
     public Result accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
-    public Boolean hasDeclaration(){
-        try {
-            this.children.get(0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-    public Result declaration(){
-        if(hasDeclaration()){
-            return new CorrectResult<>(children.get(0));
-        } else {
-            return new IncorrectResult("Let statement has no declaration.");
-        }
-    }
-    public Result addDeclaration(Node expression){
-        try {
-            this.children.set(0, expression);
-            return new CorrectResult<>(expression);
-        } catch (ClassCastException e) {
-            return new IncorrectResult(e.getMessage());
-        }
+
+    public Boolean hasAscription(){
+        return !this.children.get(0).isNil();
     }
     public Boolean hasExpression(){
-        try {
-            this.children.get(0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return !this.children.get(1).isNil();
     }
+
     public Result expression(){
         if(hasExpression()){
             return new CorrectResult<>(children.get(1));
@@ -53,12 +30,20 @@ public class LetStatementNode extends CompositeNode {
             return new IncorrectResult("Let statement has no expression.");
         }
     }
-    public Result addExpression(Node expression){
-        try {
-            this.children.set(1, expression);
-            return new CorrectResult<>(expression);
-        } catch (ClassCastException e) {
-            return new IncorrectResult(e.getMessage());
+    public Result ascription(){
+        if(hasAscription()){
+            return new CorrectResult<>(children.get(0));
+        } else {
+            return new IncorrectResult("Let statement has no declaration.");
         }
+    }
+
+    public Result setAscription(Node declaration){
+        this.children.set(0, declaration);
+        return new CorrectResult<>(declaration);
+    }
+    public Result setExpression(Node expression){
+        this.children.set(1, expression);
+        return new CorrectResult<>(expression);
     }
 }

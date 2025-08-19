@@ -1,5 +1,6 @@
 package common.nodes.expression.binary;
 
+import common.nodes.Node;
 import common.responses.Result;
 import common.visitor.VisitorInterface;
 

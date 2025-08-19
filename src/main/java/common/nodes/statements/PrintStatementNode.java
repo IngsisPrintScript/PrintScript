@@ -8,31 +8,26 @@ import common.responses.Result;
 import common.visitor.VisitorInterface;
 
 public class PrintStatementNode extends CompositeNode {
+    public PrintStatementNode() {
+        super(1);
+    }
+
     @Override
     public Result accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
     public Boolean hasExpression(){
-        try {
-            this.children.get(0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return !this.children.get(0).isNil();
     }
     public Result expression(){
         if(hasExpression()){
-            return new CorrectResult<>(children.get(1));
+            return new CorrectResult<>(children.get(0));
         }  else {
             return new IncorrectResult("Print statement has no expression.");
         }
     }
-    public Result addExpression(Node expression){
-        try {
-            this.children.set(1, expression);
-            return new CorrectResult<>(expression);
-        } catch (ClassCastException e) {
-            return new IncorrectResult(e.getMessage());
-        }
+    public Result setExpression(Node expression){
+        this.children.set(0, expression);
+        return new CorrectResult<>(expression);
     }
 }
