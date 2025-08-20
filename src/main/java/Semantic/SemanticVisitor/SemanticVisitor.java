@@ -25,25 +25,7 @@ public record SemanticVisitor(SemanticVisitorContext context, Map<Class<?>, Sema
     }
 
     @Override
-    public Result visit(PrintStatementNode node) {
-/*
-        Result expr = node.expression();
-        if (!expr.isSuccessful()) {
-            return new IncorrectResult("Invalid expression in print statement.");
-        }
-        Object obj = ((CorrectResult<?>) expr).newObject();
-
-        if (obj instanceof IdentifierNode id) {
-            Result symbol = value.variablesTable().getValue(id.value());
-            if (!symbol.isSuccessful()) {
-                return new IncorrectResult("Variable " + id.value() + " is not defined.");
-            }
-            return new CorrectResult<>(((Symbol) ((CorrectResult<?>) symbol).newObject()).value());
-        }
-*/
-
-        return dispatch(node);
-    }
+    public Result visit(PrintStatementNode node) {return dispatch(node);}
 
     @Override
     public Result visit(AdditionNode node){

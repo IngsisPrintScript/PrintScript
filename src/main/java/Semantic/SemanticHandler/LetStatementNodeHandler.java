@@ -15,7 +15,7 @@ public class LetStatementNodeHandler implements SemanticHandler<LetStatementNode
     @Override
     public Result handleSemantic(LetStatementNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
         Result rightChild = node.expression();
-        Result leftChild = node.declaration();
+        Result leftChild = node.ascription();
         if(!leftChild.isSuccessful()){
             return new IncorrectResult("Need DeclarationNode");
         }
@@ -26,7 +26,7 @@ public class LetStatementNodeHandler implements SemanticHandler<LetStatementNode
         Object obj = ((CorrectResult<?>) rightChild).newObject();
         Result resolved = visitor.dispatch(obj);
 
-        Result typeCheck = context.semanticRules().checkSemanticRules(declarationNode.leftChild(), resolved, node);
+        Result typeCheck = context.semanticRules().checkSemanticRules(declarationNode.type(), resolved, node);
         if(typeCheck.isSuccessful()){
             return typeCheck;
         }
