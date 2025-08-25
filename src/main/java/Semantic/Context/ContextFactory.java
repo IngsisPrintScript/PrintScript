@@ -15,7 +15,9 @@ import java.util.List;
 public class ContextFactory {
 
     public SemanticVisitorContext DefaultFactory() {
-        CheckSemanticRules semanticRules = new CheckSemanticRules(new RulesEngine(List.of(new AdditionSemanticRules(), new NumericTypeRules(), new StringTypeRule())));
+        CheckSemanticRules semanticRules = new CheckSemanticRules(
+                new RulesEngine(
+                        List.of(new AdditionSemanticRules(), new NumericTypeRules(), new StringTypeRule())));
         VariablesValue variablesValue = new VariablesValue(new VariablesTable(new HashMap<String, Symbol>()));
         return new SemanticVisitorContext(variablesValue, semanticRules);
     }
