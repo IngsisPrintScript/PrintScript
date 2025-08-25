@@ -1,0 +1,13 @@
+plugins {
+    id 'application'
+}
+
+dependencies {
+    implementation project(":interpreter")
+    implementation project(":formatter")
+    implementation project(":analyzer")
+}
+
+application {
+    mainClass = "com.ingsis.cli.Main"
+}
