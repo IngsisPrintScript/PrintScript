@@ -19,13 +19,9 @@ public class AdditionSemanticRules implements SemanticRulesInterface {
 
     @Override
     public Result checkRules(Node leftLiteral, Node rightLiteral) {
-        double leftValue, rightValue;
-        try{
-            leftValue = Double.parseDouble(((LiteralNode) leftLiteral).value());
-            rightValue = Double.parseDouble(((LiteralNode) rightLiteral).value());
-        }catch(NumberFormatException e){
-            return new IncorrectResult("Operands must be numeric literals");
+        if(!(leftLiteral instanceof LiteralNode left) || !(rightLiteral instanceof LiteralNode right)){
+            return new IncorrectResult("Addition operation must be between two literals");
         }
-        return new CorrectResult<>(new LiteralNode(String.valueOf(leftValue+rightValue)));
+        return new CorrectResult<>(left.value() + right.value());
     }
 }

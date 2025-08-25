@@ -10,12 +10,12 @@ import common.responses.Result;
 import java.util.Map;
 
 
-public record SemanticAnalyzer(SemanticVisitorContext variablesTable,
+public record SemanticAnalyzer(SemanticVisitorContext context,
                                Map<Class<?>, SemanticHandler<?>> handlerMap, Node root){
     public Result analyze(){
-        if(variablesTable == null || handlerMap == null || root == null){
+        if(context == null || handlerMap == null || root == null){
             return new IncorrectResult("Variables are null.");
         }
-        return root.accept(new SemanticVisitor(variablesTable,handlerMap));
+        return root.accept(new SemanticVisitor(context,handlerMap));
     }
 }

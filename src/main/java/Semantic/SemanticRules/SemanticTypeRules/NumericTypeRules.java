@@ -1,8 +1,8 @@
 package Semantic.SemanticRules.SemanticTypeRules;
 
 import Semantic.SemanticRules.SemanticRulesInterface;
-import common.nodes.Declaration.TypeNode.TypeNode;
 import common.nodes.Node;
+import common.nodes.declaration.TypeNode.TypeNode;
 import common.nodes.expression.literal.LiteralNode;
 import common.nodes.statements.LetStatementNode;
 import common.responses.CorrectResult;

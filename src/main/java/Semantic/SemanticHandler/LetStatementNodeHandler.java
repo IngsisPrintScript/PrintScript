@@ -27,7 +27,7 @@ public class LetStatementNodeHandler implements SemanticHandler<LetStatementNode
         Result resolved = visitor.dispatch(obj);
 
         Result typeCheck = context.semanticRules().checkSemanticRules(declarationNode.type(), resolved, node);
-        if(typeCheck.isSuccessful()){
+        if(!typeCheck.isSuccessful()){
             return typeCheck;
         }
         return context.variablesTable().addValue(declarationNode, (LiteralNode) obj);

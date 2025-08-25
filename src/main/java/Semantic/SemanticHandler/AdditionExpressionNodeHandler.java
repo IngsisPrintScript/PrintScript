@@ -11,7 +11,7 @@ import common.responses.Result;
 public class AdditionExpressionNodeHandler implements SemanticHandler<AdditionNode>{
     @Override
     public Result handleSemantic(AdditionNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
-        return new CorrectResult<>(new LiteralNode((String)((CorrectResult<?>) new BinaryExpressionHandler().handleSemantic(node, context,visitor)).newObject()));
+        return new BinaryExpressionHandler().handleSemantic(node, context, visitor);
     }
 
     @Override

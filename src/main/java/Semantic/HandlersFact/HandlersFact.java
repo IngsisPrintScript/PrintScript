@@ -1,12 +1,13 @@
 package Semantic.HandlersFact;
 
 import Semantic.SemanticHandler.*;
-import common.nodes.Declaration.Identifier.IdentifierNode;
-import common.nodes.Declaration.TypeNode.TypeNode;
 import common.nodes.declaration.AscriptionNode;
+import common.nodes.declaration.IdentifierNode;
+import common.nodes.declaration.TypeNode.TypeNode;
 import common.nodes.expression.binary.AdditionNode;
 import common.nodes.expression.literal.LiteralNode;
 import common.nodes.statements.LetStatementNode;
+import common.nodes.statements.PrintStatementNode;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +21,9 @@ public class HandlersFact {
         handlers.put(AscriptionNode.class, new DeclarationNodeHandler());
         handlers.put(LetStatementNode.class, new LetStatementNodeHandler());
         handlers.put(LiteralNode.class, new LiteralNodeHandler());
-        handlers.put(common.nodes.declaration.TypeNode.TypeNode.class, new TypeNodeHandler());
-        handlers.put(common.nodes.declaration.IdentifierNode.class, new IdentifierNodeHandler());
+        handlers.put(TypeNode.class, new TypeNodeHandler());
+        handlers.put(IdentifierNode.class, new IdentifierNodeHandler());
+        handlers.put(PrintStatementNode.class, new PrintStatementNodeHandler());
 
         return handlers;
     }
