@@ -26,7 +26,7 @@ public abstract class BinaryExpression extends CompositeNode {
         }
     }
     public Result rightChild(){
-        if (hasLeftChild()){
+        if (hasRightChild()){
             return new CorrectResult<>(this.children.get(1));
         } else {
             return new IncorrectResult("Binary expression has no right child.");
