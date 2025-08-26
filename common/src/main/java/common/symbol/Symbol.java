@@ -1,4 +1,4 @@
-package common.Symbol;
+package common.symbol;
 
 public record Symbol(String type, Object value) {
 }

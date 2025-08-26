@@ -6,8 +6,8 @@ import parser.Semantic.SemanticRules.SemanticTypeRules.NumericTypeRules;
 import parser.Semantic.SemanticRules.SemanticTypeRules.StringTypeRule;
 import parser.Semantic.TableInteractions.VariablesValue;
 import parser.Semantic.RulesFactory.RulesEngine;
-import common.Symbol.Symbol;
-import common.VariablesTable.VariablesTable;
+import common.symbol.Symbol;
+import common.variablesTable.VariablesTable;
 
 import java.util.HashMap;
 import java.util.List;

@@ -2,7 +2,7 @@ package parser.Semantic.SemanticHandler;
 
 import parser.Semantic.SemanticVisitor.SemanticVisitor;
 import parser.Semantic.Context.SemanticVisitorContext;
-import common.Symbol.Symbol;
+import common.symbol.Symbol;
 import common.nodes.Node;
 import common.nodes.declaration.IdentifierNode;
 import common.nodes.declaration.AscriptionNode;

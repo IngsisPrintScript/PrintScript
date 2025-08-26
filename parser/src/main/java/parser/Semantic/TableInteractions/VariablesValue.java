@@ -1,7 +1,7 @@
 package parser.Semantic.TableInteractions;
 
-import common.Symbol.Symbol;
-import common.VariablesTable.VariablesTableInterface;
+import common.symbol.Symbol;
+import common.variablesTable.VariablesTableInterface;
 import common.nodes.declaration.AscriptionNode;
 import common.nodes.declaration.IdentifierNode;
 

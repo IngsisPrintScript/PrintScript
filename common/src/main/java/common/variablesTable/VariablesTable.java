@@ -1,6 +1,6 @@
-package common.VariablesTable;
+package common.variablesTable;
 
-import common.Symbol.Symbol;
+import common.symbol.Symbol;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
