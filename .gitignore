@@ -44,3 +44,6 @@ bin/
 
 ### test files
 interpreter/.testFiles
+
+### Idea
+.idea
