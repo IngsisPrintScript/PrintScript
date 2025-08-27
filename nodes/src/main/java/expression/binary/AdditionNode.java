@@ -1,7 +1,8 @@
-package common.nodes.expression.binary;
+package expression.binary;
+
 
 import common.responses.Result;
-import common.visitor.VisitorInterface;
+import visitor.VisitorInterface;
 
 public class AdditionNode extends BinaryExpression{
     @Override

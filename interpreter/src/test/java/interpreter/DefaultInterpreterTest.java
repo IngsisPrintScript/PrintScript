@@ -1,11 +1,10 @@
 package interpreter;
 
-import common.factories.nodes.NodeFactory;
-import common.nodes.Node;
-import common.nodes.declaration.AscriptionNode;
-import common.nodes.statements.LetStatementNode;
-import common.nodes.statements.PrintStatementNode;
+
+import common.Node;
 import common.responses.Result;
+import declaration.AscriptionNode;
+import factories.NodeFactory;
 import interpreter.executor.CodeExecutorInterface;
 import interpreter.executor.JavaCodeExecutor;
 import interpreter.transpiler.DefaultJavaTranspiler;
@@ -15,6 +14,8 @@ import interpreter.writer.JavaCodeWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import statements.LetStatementNode;
+import statements.PrintStatementNode;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,7 +27,7 @@ public class DefaultInterpreterTest {
     private static CodeExecutorInterface executor;
     private static Map<Node, String> treeCodeMap;
     private static final NodeFactory nodeFactory = new NodeFactory();
-    private static final Path filePath = Paths.get("./.testFiles/interpreter/ClassTest.java");
+    private static final Path filePath = Paths.get("./.testFiles/interpret/ClassTest.java");
 
     @BeforeAll
     public static void setUp() {

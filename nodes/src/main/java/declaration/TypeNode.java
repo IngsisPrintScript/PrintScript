@@ -1,9 +1,9 @@
-package common.nodes.declaration;
+package declaration;
 
-import common.nodes.LeafNode;
-import common.nodes.Node;
+
+import common.LeafNode;
 import common.responses.Result;
-import common.visitor.VisitorInterface;
+import visitor.VisitorInterface;
 
 public class TypeNode extends LeafNode {
 

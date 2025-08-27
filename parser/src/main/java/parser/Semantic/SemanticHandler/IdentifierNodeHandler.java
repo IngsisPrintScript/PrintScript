@@ -1,11 +1,12 @@
 package parser.Semantic.SemanticHandler;
 
-import parser.Semantic.SemanticVisitor.SemanticVisitor;
-import parser.Semantic.Context.SemanticVisitorContext;
-import common.nodes.Node;
-import common.nodes.declaration.IdentifierNode;
-import common.nodes.expression.literal.LiteralNode;
+
+import common.Node;
 import common.responses.Result;
+import declaration.IdentifierNode;
+import expression.literal.LiteralNode;
+import parser.Semantic.Context.SemanticVisitorContext;
+import parser.Semantic.SemanticVisitor.SemanticVisitor;
 
 public class IdentifierNodeHandler implements SemanticHandler<IdentifierNode> {
     @Override

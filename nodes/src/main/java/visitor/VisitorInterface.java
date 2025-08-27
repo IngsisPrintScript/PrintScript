@@ -1,5 +1,6 @@
-package common;
+package visitor;
 
+import common.NilNode;
 import common.responses.Result;
 import declaration.AscriptionNode;
 import declaration.IdentifierNode;

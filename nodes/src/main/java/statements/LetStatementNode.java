@@ -1,11 +1,12 @@
-package common.nodes.statements;
+package statements;
 
-import common.nodes.CompositeNode;
-import common.nodes.Node;
+
+import common.CompositeNode;
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.visitor.VisitorInterface;
+import visitor.VisitorInterface;
 
 public class LetStatementNode extends CompositeNode {
     public LetStatementNode() {

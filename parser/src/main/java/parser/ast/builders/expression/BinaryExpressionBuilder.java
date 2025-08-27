@@ -1,18 +1,19 @@
 package parser.ast.builders.expression;
 
-import common.factories.nodes.NodeFactory;
-import common.factories.nodes.NodeFactoryInterface;
-import common.factories.tokens.TokenFactory;
-import common.nodes.Node;
-import common.nodes.expression.binary.BinaryExpression;
+
+import common.Node;
+import common.TokenInterface;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStreamInterface;
+import expression.binary.BinaryExpression;
+import factories.NodeFactory;
+import factories.NodeFactoryInterface;
+import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.factories.AstBuilderFactory;
 import parser.factories.AstBuilderFactoryInterface;
+import stream.TokenStreamInterface;
 
 public class BinaryExpressionBuilder implements ASTreeBuilderInterface {
     private final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
@@ -22,9 +23,9 @@ public class BinaryExpressionBuilder implements ASTreeBuilderInterface {
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result peekResult =  tokenStream.peek();
+        Result peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ( (CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
         return token.equals(literalTemplate) || token.equals(identifierTemplate);
     }
 
@@ -33,12 +34,17 @@ public class BinaryExpressionBuilder implements ASTreeBuilderInterface {
         if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build expression.");
 
         Result consumeResult = tokenStream.consume();
-        if (!consumeResult.isSuccessful()) {return new IncorrectResult("Cannot consume id or var token.");}
-        TokenInterface consumedToken = (( CorrectResult<TokenInterface>) consumeResult).newObject();
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult("Cannot consume id or var token.");
+        }
+        TokenInterface consumedToken = ((CorrectResult<TokenInterface>) consumeResult).newObject();
 
         Node expressionLeftChild;
-        if (consumedToken.equals(literalTemplate)) {expressionLeftChild = nodeFactory.createLiteralNode(consumedToken.value());}
-        else {expressionLeftChild = nodeFactory.createIdentifierNode(consumedToken.value());}
+        if (consumedToken.equals(literalTemplate)) {
+            expressionLeftChild = nodeFactory.createLiteralNode(consumedToken.value());
+        } else {
+            expressionLeftChild = nodeFactory.createIdentifierNode(consumedToken.value());
+        }
 
         Result buildOperatorResult = builderFactory.createOperatorBuilder().build(tokenStream);
 
@@ -46,8 +52,10 @@ public class BinaryExpressionBuilder implements ASTreeBuilderInterface {
             BinaryExpression root = ((CorrectResult<BinaryExpression>) buildOperatorResult).newObject();
             root.addLeftChild(expressionLeftChild);
             Result buildRightChildResult = this.build(tokenStream);
-            if (!buildRightChildResult.isSuccessful()) {return buildRightChildResult;}
-            Node rightChild = ( (CorrectResult<Node>) buildRightChildResult).newObject();
+            if (!buildRightChildResult.isSuccessful()) {
+                return buildRightChildResult;
+            }
+            Node rightChild = ((CorrectResult<Node>) buildRightChildResult).newObject();
             root.addRightChild(rightChild);
             return new CorrectResult<>(root);
         }

@@ -1,9 +1,9 @@
 package lexer.tokenizers;
 
+import common.TokenInterface;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.tokens.TokenInterface;
 import lexer.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;
 import lexer.tokenizers.punctuation.parenthesis.RightParenthesisTokenizer;
 import org.junit.jupiter.api.Assertions;

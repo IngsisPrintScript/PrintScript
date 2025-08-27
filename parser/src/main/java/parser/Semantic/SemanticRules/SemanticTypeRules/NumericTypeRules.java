@@ -1,13 +1,14 @@
 package parser.Semantic.SemanticRules.SemanticTypeRules;
 
-import common.nodes.declaration.TypeNode;
-import parser.Semantic.SemanticRules.SemanticRulesInterface;
-import common.nodes.Node;
-import common.nodes.expression.literal.LiteralNode;
-import common.nodes.statements.LetStatementNode;
+
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
+import declaration.TypeNode;
+import expression.literal.LiteralNode;
+import parser.Semantic.SemanticRules.SemanticRulesInterface;
+import statements.LetStatementNode;
 
 public class NumericTypeRules implements SemanticRulesInterface {
     @Override

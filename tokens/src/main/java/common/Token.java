@@ -1,4 +1,4 @@
-package common.tokens;
+package common;
 
 public record Token(String name, String value) implements TokenInterface {
     @Override

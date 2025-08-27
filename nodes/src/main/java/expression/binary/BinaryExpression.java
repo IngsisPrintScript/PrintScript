@@ -1,7 +1,7 @@
-package common.nodes.expression.binary;
+package expression.binary;
 
-import common.nodes.CompositeNode;
-import common.nodes.Node;
+import common.CompositeNode;
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
