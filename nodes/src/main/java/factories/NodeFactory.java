@@ -1,6 +1,7 @@
-package common.factories.nodes;
+package factories;
 
-import common.nodes.Node;
+
+import common.Node;
 import declaration.AscriptionNode;
 import declaration.IdentifierNode;
 import declaration.TypeNode;

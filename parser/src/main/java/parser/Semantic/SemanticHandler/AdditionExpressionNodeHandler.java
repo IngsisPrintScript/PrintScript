@@ -1,12 +1,12 @@
 package parser.Semantic.SemanticHandler;
 
-import parser.Semantic.SemanticVisitor.SemanticVisitor;
-import parser.Semantic.Context.SemanticVisitorContext;
-import common.nodes.Node;
-import common.nodes.expression.binary.AdditionNode;
+import common.Node;
 import common.responses.Result;
+import expression.binary.AdditionNode;
+import parser.Semantic.Context.SemanticVisitorContext;
+import parser.Semantic.SemanticVisitor.SemanticVisitor;
 
-public class AdditionExpressionNodeHandler implements SemanticHandler<AdditionNode>{
+public class AdditionExpressionNodeHandler implements SemanticHandler<AdditionNode> {
     @Override
     public Result handleSemantic(AdditionNode node, SemanticVisitorContext context, SemanticVisitor visitor) {
         return new BinaryExpressionHandler().handleSemantic(node, context, visitor);

@@ -1,5 +1,8 @@
+package common;
+
 import common.responses.IncorrectResult;
 import common.responses.Result;
+import visitor.VisitorInterface;
 
 public class NilNode implements Node{
     @Override

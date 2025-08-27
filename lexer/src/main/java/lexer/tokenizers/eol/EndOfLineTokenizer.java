@@ -1,8 +1,8 @@
 package lexer.tokenizers.eol;
 
-import common.factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.Result;
+import factories.tokens.TokenFactory;
 import lexer.tokenizers.TokenizerInterface;
 
 public record EndOfLineTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {

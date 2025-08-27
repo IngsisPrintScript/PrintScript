@@ -1,9 +1,9 @@
 package lexer.tokenizers;
 
+import common.TokenInterface;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.tokens.TokenInterface;
 import lexer.tokenizers.identifier.IdentifierTokenizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

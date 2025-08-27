@@ -1,8 +1,9 @@
-package common.nodes.expression.literal;
+package expression.literal;
 
-import common.nodes.LeafNode;
+
+import common.LeafNode;
 import common.responses.Result;
-import common.visitor.VisitorInterface;
+import visitor.VisitorInterface;
 
 public class LiteralNode extends LeafNode {
     public LiteralNode(String value) {

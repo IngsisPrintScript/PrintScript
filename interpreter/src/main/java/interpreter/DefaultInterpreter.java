@@ -1,6 +1,7 @@
 package interpreter;
 
-import common.nodes.Node;
+
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.Result;
 import interpreter.executor.CodeExecutorInterface;

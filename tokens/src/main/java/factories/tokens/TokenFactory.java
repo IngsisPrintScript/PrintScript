@@ -1,7 +1,8 @@
-package common.factories.tokens;
+package factories.tokens;
 
-import common.tokens.common.Token;
-import common.tokens.common.TokenInterface;
+
+import common.Token;
+import common.TokenInterface;
 
 public class TokenFactory implements TokenFactoryInterface {
     @Override

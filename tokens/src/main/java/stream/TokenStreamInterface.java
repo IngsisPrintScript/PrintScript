@@ -1,7 +1,7 @@
-package common.tokens.stream;
+package stream;
 
 import common.responses.Result;
-import common.tokens.TokenInterface;
+import common.TokenInterface;
 
 public interface TokenStreamInterface {
     Result peek();

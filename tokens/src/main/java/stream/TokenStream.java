@@ -1,10 +1,10 @@
-package common.tokens.stream;
+package stream;
 
-import common.factories.tokens.TokenFactory;
+import factories.tokens.TokenFactory;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.tokens.TokenInterface;
+import common.TokenInterface;
 
 import java.util.List;
 

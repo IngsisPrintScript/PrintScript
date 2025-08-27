@@ -1,11 +1,11 @@
-package common.nodes.declaration;
+package declaration;
 
-import common.nodes.CompositeNode;
-import common.nodes.Node;
+import common.CompositeNode;
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.visitor.VisitorInterface;
+import visitor.VisitorInterface;
 
 public class AscriptionNode extends CompositeNode {
     public AscriptionNode(){

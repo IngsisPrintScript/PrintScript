@@ -1,11 +1,12 @@
 package parser.Semantic.SemanticHandler;
 
-import parser.Semantic.SemanticVisitor.SemanticVisitor;
-import parser.Semantic.Context.SemanticVisitorContext;
-import common.nodes.Node;
-import common.nodes.expression.literal.LiteralNode;
+
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.Result;
+import expression.literal.LiteralNode;
+import parser.Semantic.Context.SemanticVisitorContext;
+import parser.Semantic.SemanticVisitor.SemanticVisitor;
 
 public class LiteralNodeHandler implements SemanticHandler<LiteralNode> {
     @Override

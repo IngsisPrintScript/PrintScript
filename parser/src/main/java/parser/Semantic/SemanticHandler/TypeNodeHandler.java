@@ -1,12 +1,12 @@
 package parser.Semantic.SemanticHandler;
 
-import common.nodes.declaration.TypeNode;
-import parser.Semantic.SemanticVisitor.SemanticVisitor;
-import parser.Semantic.Context.SemanticVisitorContext;
 
-import common.nodes.Node;
+import common.Node;
 import common.responses.CorrectResult;
 import common.responses.Result;
+import declaration.TypeNode;
+import parser.Semantic.Context.SemanticVisitorContext;
+import parser.Semantic.SemanticVisitor.SemanticVisitor;
 
 public class TypeNodeHandler implements SemanticHandler<TypeNode> {
     @Override

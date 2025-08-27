@@ -1,8 +1,9 @@
 package lexer;
 
+
+import common.TokenInterface;
 import common.responses.CorrectResult;
 import common.responses.Result;
-import common.tokens.TokenInterface;
 import lexer.tokenizers.TokenizerInterface;
 
 import java.util.ArrayList;

@@ -1,6 +1,7 @@
-package common.factories.tokens;
+package factories.tokens;
 
-import common.tokens.common.TokenInterface;
+
+import common.TokenInterface;
 
 public interface TokenFactoryInterface {
     TokenInterface createLetKeywordToken();

@@ -1,20 +1,27 @@
 package parser.Semantic.HandlersFact;
 
-import common.nodes.declaration.AscriptionNode;
-import common.nodes.declaration.IdentifierNode;
-import common.nodes.declaration.TypeNode;
-import common.nodes.expression.binary.AdditionNode;
-import common.nodes.expression.literal.LiteralNode;
-import common.nodes.statements.LetStatementNode;
-import common.nodes.statements.PrintStatementNode;
-import parser.Semantic.SemanticHandler.*;
+import declaration.AscriptionNode;
+import declaration.IdentifierNode;
+import declaration.TypeNode;
+import expression.binary.AdditionNode;
+import expression.literal.LiteralNode;
+import parser.Semantic.SemanticHandler.AdditionExpressionNodeHandler;
+import parser.Semantic.SemanticHandler.DeclarationNodeHandler;
+import parser.Semantic.SemanticHandler.IdentifierNodeHandler;
+import parser.Semantic.SemanticHandler.LetStatementNodeHandler;
+import parser.Semantic.SemanticHandler.LiteralNodeHandler;
+import parser.Semantic.SemanticHandler.PrintStatementNodeHandler;
+import parser.Semantic.SemanticHandler.SemanticHandler;
+import parser.Semantic.SemanticHandler.TypeNodeHandler;
+import statements.LetStatementNode;
+import statements.PrintStatementNode;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class HandlersFact {
 
-    public Map<Class<?>, SemanticHandler<?>>  createMap() {
+    public Map<Class<?>, SemanticHandler<?>> createMap() {
         Map<Class<?>, SemanticHandler<?>> handlers = new HashMap<>();
 
         handlers.put(AdditionNode.class, new AdditionExpressionNodeHandler());

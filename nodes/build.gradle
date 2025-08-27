@@ -2,20 +2,15 @@ plugins {
     id 'java'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
+group = 'com.ingsis'
+version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation project(':parser')
-    implementation project(":common")
-    implementation project(":nodes")
+    implementation project(':common')
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -25,4 +20,3 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-

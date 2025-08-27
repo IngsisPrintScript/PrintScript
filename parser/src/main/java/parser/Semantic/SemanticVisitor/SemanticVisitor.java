@@ -1,23 +1,24 @@
 package parser.Semantic.SemanticVisitor;
 
-import common.nodes.declaration.TypeNode;
-import parser.Semantic.SemanticHandler.SemanticHandler;
-import parser.Semantic.Context.SemanticVisitorContext;
-import common.nodes.NilNode;
-import common.nodes.Node;
-import common.nodes.declaration.AscriptionNode;
-import common.nodes.declaration.IdentifierNode;
-import common.nodes.expression.binary.AdditionNode;
-import common.nodes.expression.literal.LiteralNode;
-import common.nodes.statements.LetStatementNode;
-import common.nodes.statements.PrintStatementNode;
+import common.NilNode;
+import common.Node;
 import common.responses.IncorrectResult;
 import common.responses.Result;
-import common.visitor.VisitorInterface;
+import declaration.AscriptionNode;
+import declaration.IdentifierNode;
+import declaration.TypeNode;
+import expression.binary.AdditionNode;
+import expression.literal.LiteralNode;
+import parser.Semantic.Context.SemanticVisitorContext;
+import parser.Semantic.SemanticHandler.SemanticHandler;
+import statements.LetStatementNode;
+import statements.PrintStatementNode;
+import visitor.VisitorInterface;
 
 import java.util.Map;
 
-public record SemanticVisitor(SemanticVisitorContext context, Map<Class<?>, SemanticHandler<?>> handlerMap) implements VisitorInterface {
+public record SemanticVisitor(SemanticVisitorContext context,
+                              Map<Class<?>, SemanticHandler<?>> handlerMap) implements VisitorInterface {
 
     @Override
     public Result visit(LetStatementNode node) {
@@ -25,10 +26,12 @@ public record SemanticVisitor(SemanticVisitorContext context, Map<Class<?>, Sema
     }
 
     @Override
-    public Result visit(PrintStatementNode node) {return dispatch(node);}
+    public Result visit(PrintStatementNode node) {
+        return dispatch(node);
+    }
 
     @Override
-    public Result visit(AdditionNode node){
+    public Result visit(AdditionNode node) {
         return dispatch(node);
     }
 
@@ -58,11 +61,11 @@ public record SemanticVisitor(SemanticVisitorContext context, Map<Class<?>, Sema
     }
 
 
-    public <T> Result dispatch(T node){
-        for(Map.Entry<Class<?>, SemanticHandler<?>> entry : handlerMap.entrySet()){
+    public <T> Result dispatch(T node) {
+        for (Map.Entry<Class<?>, SemanticHandler<?>> entry : handlerMap.entrySet()) {
             SemanticHandler<?> handler = entry.getValue();
-            if(handler.canHandle((Node) node)){
-                return ((SemanticHandler<Node>) handler).handleSemantic((Node) node, context,this);
+            if (handler.canHandle((Node) node)) {
+                return ((SemanticHandler<Node>) handler).handleSemantic((Node) node, context, this);
             }
         }
         return new IncorrectResult("No handler found for node: " + node.getClass().getSimpleName());

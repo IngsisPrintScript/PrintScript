@@ -1,3 +1,5 @@
+package common;
+
 import common.responses.IncorrectResult;
 import common.responses.Result;
 
