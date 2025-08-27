@@ -1,9 +1,9 @@
-package common.VariablesTable;
+package common;
 
 import common.Symbol.Symbol;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 
 import java.util.HashMap;
 

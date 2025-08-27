@@ -2,7 +2,7 @@ package parser.Semantic.SemanticRules;
 
 
 import common.Node;
-import common.responses.Result;
+import responses.Result;
 
 public interface SemanticRulesInterface {
 

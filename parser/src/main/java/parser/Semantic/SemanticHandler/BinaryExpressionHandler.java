@@ -1,7 +1,7 @@
 package parser.Semantic.SemanticHandler;
 
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
 import expression.binary.BinaryExpression;
 import parser.Semantic.Context.SemanticVisitorContext;
 import parser.Semantic.SemanticVisitor.SemanticVisitor;

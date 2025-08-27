@@ -2,8 +2,8 @@ package parser.ast.builders.let;
 
 import common.Node;
 import common.TokenInterface;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;

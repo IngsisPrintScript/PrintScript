@@ -1,6 +1,6 @@
 package lexer.tokenizers;
 
-import common.responses.Result;
+import responses.Result;
 
 public interface TokenizerInterface {
     Boolean canTokenize(String input);

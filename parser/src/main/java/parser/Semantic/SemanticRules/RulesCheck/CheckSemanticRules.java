@@ -2,8 +2,8 @@ package parser.Semantic.SemanticRules.RulesCheck;
 
 
 import common.Node;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
 import parser.Semantic.RulesFactory.RulesEngine;
 
 public record CheckSemanticRules(RulesEngine semanticRules) {

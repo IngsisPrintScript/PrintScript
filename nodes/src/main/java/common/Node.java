@@ -1,6 +1,6 @@
 package common;
 
-import common.responses.Result;
+import responses.Result;
 import visitor.VisitableInterface;
 
 public interface Node extends VisitableInterface {

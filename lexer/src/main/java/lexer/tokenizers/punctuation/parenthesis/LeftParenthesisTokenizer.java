@@ -1,8 +1,8 @@
 package lexer.tokenizers.punctuation.parenthesis;
 
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import factories.tokens.TokenFactory;
 import lexer.tokenizers.punctuation.PunctuationTokenizer;
 

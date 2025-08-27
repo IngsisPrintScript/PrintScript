@@ -3,9 +3,9 @@ package parser.Semantic.SemanticHandler;
 
 import common.Node;
 import common.Symbol.Symbol;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import declaration.AscriptionNode;
 import declaration.IdentifierNode;
 import expression.literal.LiteralNode;

@@ -1,6 +1,6 @@
 package lexer.tokenizers.keyword;
 
-import common.responses.Result;
+import responses.Result;
 import lexer.tokenizers.TokenizerInterface;
 
 import java.util.List;

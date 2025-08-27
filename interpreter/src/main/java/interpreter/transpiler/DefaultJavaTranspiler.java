@@ -2,7 +2,7 @@ package interpreter.transpiler;
 
 
 import common.Node;
-import common.responses.Result;
+import responses.Result;
 import interpreter.transpiler.visitor.JavaTranspilationVisitor;
 import visitor.VisitorInterface;
 

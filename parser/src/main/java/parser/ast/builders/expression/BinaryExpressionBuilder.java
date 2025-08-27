@@ -3,9 +3,9 @@ package parser.ast.builders.expression;
 
 import common.Node;
 import common.TokenInterface;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import expression.binary.BinaryExpression;
 import factories.NodeFactory;
 import factories.NodeFactoryInterface;

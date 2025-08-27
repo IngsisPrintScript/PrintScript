@@ -1,9 +1,9 @@
 package stream;
 
 import factories.tokens.TokenFactory;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import common.TokenInterface;
 
 import java.util.List;

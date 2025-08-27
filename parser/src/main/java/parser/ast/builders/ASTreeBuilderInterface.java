@@ -1,6 +1,6 @@
 package parser.ast.builders;
 
-import common.responses.Result;
+import responses.Result;
 import stream.TokenStreamInterface;
 
 public interface ASTreeBuilderInterface {

@@ -2,8 +2,8 @@ package parser.Semantic.SemanticHandler;
 
 
 import common.Node;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
 import expression.literal.LiteralNode;
 import parser.Semantic.Context.SemanticVisitorContext;
 import parser.Semantic.SemanticVisitor.SemanticVisitor;

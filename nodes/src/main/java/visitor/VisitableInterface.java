@@ -1,6 +1,6 @@
 package visitor;
 
-import common.responses.Result;
+import responses.Result;
 
 public interface VisitableInterface {
     Result accept(VisitorInterface visitor);

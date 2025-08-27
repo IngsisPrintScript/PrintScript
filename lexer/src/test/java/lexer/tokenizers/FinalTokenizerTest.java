@@ -1,6 +1,6 @@
 package lexer.tokenizers;
 
-import common.responses.IncorrectResult;
+import responses.IncorrectResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

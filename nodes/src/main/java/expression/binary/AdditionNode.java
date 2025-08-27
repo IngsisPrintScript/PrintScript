@@ -1,7 +1,7 @@
 package expression.binary;
 
 
-import common.responses.Result;
+import responses.Result;
 import visitor.VisitorInterface;
 
 public class AdditionNode extends BinaryExpression{

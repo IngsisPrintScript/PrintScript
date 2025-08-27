@@ -1,8 +1,8 @@
 package parser.Semantic.RulesFactory;
 
 import common.Node;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
 import parser.Semantic.SemanticRules.SemanticRulesInterface;
 
 import java.util.List;
