@@ -1,7 +1,7 @@
 package parser.ast.builders.expression.operators;
 
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.IncorrectResult;
+import responses.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;
 

@@ -1,7 +1,7 @@
 package lexer.tokenizers;
 
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.IncorrectResult;
+import responses.Result;
 
 public class FinalTokenizer implements TokenizerInterface {
     @Override

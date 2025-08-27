@@ -2,8 +2,8 @@ package parser.Semantic.SemanticVisitor;
 
 import common.NilNode;
 import common.Node;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.IncorrectResult;
+import responses.Result;
 import declaration.AscriptionNode;
 import declaration.IdentifierNode;
 import declaration.TypeNode;

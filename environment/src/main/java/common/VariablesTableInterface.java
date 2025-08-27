@@ -1,7 +1,7 @@
-package common.VariablesTable;
+package common;
 
 import common.Symbol.Symbol;
-import common.responses.Result;
+import responses.Result;
 
 public interface VariablesTableInterface {
 

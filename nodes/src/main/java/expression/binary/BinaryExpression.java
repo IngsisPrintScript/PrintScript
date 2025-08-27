@@ -2,9 +2,9 @@ package expression.binary;
 
 import common.CompositeNode;
 import common.Node;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 
 public abstract class BinaryExpression extends CompositeNode {
     public BinaryExpression(){

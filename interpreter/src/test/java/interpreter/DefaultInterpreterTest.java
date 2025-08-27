@@ -2,7 +2,7 @@ package interpreter;
 
 
 import common.Node;
-import common.responses.Result;
+import responses.Result;
 import declaration.AscriptionNode;
 import factories.NodeFactory;
 import interpreter.executor.CodeExecutorInterface;

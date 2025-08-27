@@ -2,7 +2,7 @@ package declaration;
 
 
 import common.LeafNode;
-import common.responses.Result;
+import responses.Result;
 import visitor.VisitorInterface;
 
 public class IdentifierNode extends LeafNode {

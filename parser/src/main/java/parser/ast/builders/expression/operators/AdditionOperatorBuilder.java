@@ -1,9 +1,9 @@
 package parser.ast.builders.expression.operators;
 
 import common.TokenInterface;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import stream.TokenStreamInterface;

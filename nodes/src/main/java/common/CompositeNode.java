@@ -1,7 +1,7 @@
 package common;
 
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
 
 import java.util.ArrayList;
 import java.util.Collections;

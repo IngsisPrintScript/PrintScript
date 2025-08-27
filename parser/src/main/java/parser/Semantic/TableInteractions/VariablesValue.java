@@ -1,9 +1,9 @@
 package parser.Semantic.TableInteractions;
 
 import common.Symbol.Symbol;
-import common.VariablesTable.VariablesTableInterface;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import common.VariablesTableInterface;
+import responses.CorrectResult;
+import responses.Result;
 import declaration.AscriptionNode;
 import declaration.IdentifierNode;
 import declaration.TypeNode;

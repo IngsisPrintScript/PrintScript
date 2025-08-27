@@ -1,6 +1,6 @@
 package parser;
 
-import common.responses.Result;
+import responses.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStream;
 

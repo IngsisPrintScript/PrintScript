@@ -1,4 +1,4 @@
-package common.responses;
+package responses;
 
 public record CorrectResult<T>(T newObject) implements Result {
     @Override

@@ -3,9 +3,9 @@ package statements;
 
 import common.CompositeNode;
 import common.Node;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import visitor.VisitorInterface;
 
 public class LetStatementNode extends CompositeNode {

@@ -1,7 +1,8 @@
 package parser.Semantic.Context;
 
+
 import common.Symbol.Symbol;
-import common.VariablesTable.VariablesTable;
+import common.VariablesTable;
 import parser.Semantic.RulesFactory.RulesEngine;
 import parser.Semantic.SemanticRules.BinaryOperations.AdditionSemanticRules;
 import parser.Semantic.SemanticRules.RulesCheck.CheckSemanticRules;

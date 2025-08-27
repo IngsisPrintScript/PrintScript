@@ -1,7 +1,7 @@
 package common;
 
-import common.responses.IncorrectResult;
-import common.responses.Result;
+import responses.IncorrectResult;
+import responses.Result;
 
 public abstract class LeafNode implements Node {
     private final String value;

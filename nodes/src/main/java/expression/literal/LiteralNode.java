@@ -2,7 +2,7 @@ package expression.literal;
 
 
 import common.LeafNode;
-import common.responses.Result;
+import responses.Result;
 import visitor.VisitorInterface;
 
 public class LiteralNode extends LeafNode {

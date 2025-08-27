@@ -1,6 +1,6 @@
 package stream;
 
-import common.responses.Result;
+import responses.Result;
 import common.TokenInterface;
 
 public interface TokenStreamInterface {
