@@ -1,5 +1,3 @@
-package common.nodes;
-
 import common.responses.CorrectResult;
 import common.responses.Result;
 

@@ -43,7 +43,9 @@ bin/
 .DS_Store
 
 ### test files
-interpreter/.testFiles
+interpreter/.testFiles/execute/*
+interpreter/.testFiles/write/*
+interpreter/.testFiles/trasnpile/*
 
 ### Idea
 .idea
