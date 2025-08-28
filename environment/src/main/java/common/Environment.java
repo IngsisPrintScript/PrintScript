@@ -7,7 +7,7 @@ import responses.Result;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Environment {
+public class Environment implements EnvironmentInterface {
     private final Map<String, String> idTypeMap;
     private final Map<String, Object> idValueMap;
 
@@ -23,10 +23,10 @@ public class Environment {
     public static Environment getInstance() {
         return EnvironmentHelper.INSTANCE;
     }
-
+    @Override
     public Result putIdType(String id, String type) {
         try{
-            if (idTypeMap.containsKey(id)) {
+            if (variableIsDeclared(id)) {
                 return new IncorrectResult("Id has already been declared.");
             }
             idTypeMap.put(id, type);
@@ -35,9 +35,10 @@ public class Environment {
             return new IncorrectResult(e.getMessage());
         }
     }
+    @Override
     public Record putIdValue(String id, Object value) {
         try {
-            if (!idTypeMap.containsKey(id)) {
+            if (!variableIsDeclared(id)) {
                 return new IncorrectResult("Id has not been declared.");
             }
             idValueMap.put(id, value);
@@ -46,10 +47,10 @@ public class Environment {
             return new IncorrectResult(e.getMessage());
         }
     }
-
+    @Override
     public Result getIdType(String id) {
         try{
-            if (!idTypeMap.containsKey(id)) {
+            if (!variableIsDeclared(id)) {
                 return new IncorrectResult("Id has not been declared.");
             }
             return new CorrectResult<String>(idTypeMap.get(id));
@@ -57,14 +58,20 @@ public class Environment {
             return new IncorrectResult(e.getMessage());
         }
     }
+    @Override
     public Result getIdValue(String id) {
         try {
-            if (!idTypeMap.containsKey(id)) {
+            if (!variableIsDeclared(id)) {
                 return new IncorrectResult("Id has not been declared.");
             }
             return new CorrectResult<Object>(idValueMap.get(id));
         } catch (Exception e){
             return new IncorrectResult(e.getMessage());
         }
+    }
+
+    @Override
+    public Boolean variableIsDeclared(String id) {
+        return idTypeMap.containsKey(id);
     }
 }

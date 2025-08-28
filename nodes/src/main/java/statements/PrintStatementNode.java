@@ -5,9 +5,11 @@ import common.Node;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
+import visitor.RuleVisitor;
+import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
 
-public class PrintStatementNode extends CompositeNode {
+public class PrintStatementNode extends CompositeNode implements SemanticallyCheckable {
     public PrintStatementNode() {
         super(1);
     }
@@ -29,5 +31,10 @@ public class PrintStatementNode extends CompositeNode {
     public Result setExpression(Node expression){
         this.children.set(0, expression);
         return new CorrectResult<>(expression);
+    }
+
+    @Override
+    public Result acceptCheck(RuleVisitor checker) {
+        return checker.check(this);
     }
 }
