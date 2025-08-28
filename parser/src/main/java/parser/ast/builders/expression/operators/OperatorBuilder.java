@@ -1,9 +1,9 @@
 package parser.ast.builders.expression.operators;
 
-import common.responses.IncorrectResult;
-import common.responses.Result;
-import common.tokens.stream.TokenStreamInterface;
+import responses.IncorrectResult;
+import responses.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
+import stream.TokenStreamInterface;
 
 import java.util.List;
 
@@ -13,12 +13,13 @@ public class OperatorBuilder implements ASTreeBuilderInterface {
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         for (Class<? extends OperatorBuilder> subclass : subclasses) {
-            try{
+            try {
                 OperatorBuilder subclassBuilder = subclass.getDeclaredConstructor().newInstance();
                 if (subclassBuilder.canBuild(tokenStream)) {
                     return true;
                 }
-            } catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         return false;
     }
@@ -26,12 +27,13 @@ public class OperatorBuilder implements ASTreeBuilderInterface {
     @Override
     public Result build(TokenStreamInterface tokenStream) {
         for (Class<? extends OperatorBuilder> subclass : subclasses) {
-            try{
+            try {
                 OperatorBuilder subclassBuilder = subclass.getDeclaredConstructor().newInstance();
                 if (subclassBuilder.canBuild(tokenStream)) {
                     return subclassBuilder.build(tokenStream);
                 }
-            } catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         return new IncorrectResult("There was no operator builder able to manage that operation.");
     }

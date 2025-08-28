@@ -1,12 +1,13 @@
 package parser.ast.builders;
 
-import common.factories.tokens.TokenFactory;
-import common.tokens.stream.TokenStream;
-import common.tokens.stream.TokenStreamInterface;
+
+import factories.tokens.TokenFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import parser.ast.builders.let.LetBuilder;
+import stream.TokenStream;
+import stream.TokenStreamInterface;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class LetBuilderTest {
     private static List<TokenStreamInterface> invalidTokenStreams;
 
     @BeforeAll
-    public static void setUp(){
+    public static void setUp() {
         TokenFactory tokenFactory = new TokenFactory();
         TokenStreamInterface validTokenStreamOne = new TokenStream(
                 List.of(
@@ -71,17 +72,18 @@ public class LetBuilderTest {
     }
 
     @Test
-    public void createLetBuilderTest(){
+    public void createLetBuilderTest() {
         LetBuilder builder = new LetBuilder();
         Assertions.assertNotNull(builder);
     }
+
     @Test
-    public void buildLetBuilderTest(){
+    public void buildLetBuilderTest() {
         LetBuilder builder = new LetBuilder();
         for (TokenStreamInterface tokenStream : validTokenStreams) {
             Assertions.assertTrue(builder.build(tokenStream).isSuccessful());
         }
-        for(TokenStreamInterface tokenStream : invalidTokenStreams){
+        for (TokenStreamInterface tokenStream : invalidTokenStreams) {
             Assertions.assertFalse(builder.build(tokenStream).isSuccessful());
         }
     }

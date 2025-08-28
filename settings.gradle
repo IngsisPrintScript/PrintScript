@@ -1,2 +1,10 @@
 rootProject.name = 'PrintScript'
-include("common","lexer", "parser", "interpreter", "formatter", "analyzer", "cli")
+include("common", "lexer", "parser", "interpreter", "formatter", "analyzer", "cli")
+include 'nodes'
+include 'tokens'
+include 'visitor'
+include 'Visitable'
+include 'visitable'
+include 'ast-api'
+include 'enviroment'
+include 'environment'

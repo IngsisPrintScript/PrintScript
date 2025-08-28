@@ -43,4 +43,9 @@ bin/
 .DS_Store
 
 ### test files
-.testFiles
+interpreter/.testFiles/execute/*
+interpreter/.testFiles/write/*
+interpreter/.testFiles/interpret/*
+
+### Idea
+.idea

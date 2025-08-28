@@ -1,15 +1,15 @@
 package formatter;
 
-import common.nodes.NilNode;
-import common.nodes.declaration.AscriptionNode;
-import common.nodes.declaration.IdentifierNode;
-import common.nodes.declaration.TypeNode;
-import common.nodes.expression.binary.AdditionNode;
-import common.nodes.expression.literal.LiteralNode;
-import common.nodes.statements.LetStatementNode;
-import common.nodes.statements.PrintStatementNode;
-import common.responses.Result;
-import common.visitor.VisitorInterface;
+import common.NilNode;
+import declaration.AscriptionNode;
+import declaration.IdentifierNode;
+import declaration.TypeNode;
+import expression.binary.AdditionNode;
+import expression.literal.LiteralNode;
+import responses.Result;
+import statements.LetStatementNode;
+import statements.PrintStatementNode;
+import visitor.VisitorInterface;
 
 public class Formatter implements VisitorInterface {
     @Override
@@ -51,6 +51,4 @@ public class Formatter implements VisitorInterface {
     public Result visit(NilNode node) {
         return null;
     }
-
-
 }

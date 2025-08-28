@@ -1,8 +1,8 @@
 package lexer.tokenizers.type.assignation;
 
-import common.factories.tokens.TokenFactory;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
+import factories.tokens.TokenFactory;
 import lexer.tokenizers.TokenizerInterface;
 
 public record TypeAssignationTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {

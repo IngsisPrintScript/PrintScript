@@ -1,13 +1,14 @@
 package interpreter.transpiler;
 
-import common.factories.nodes.NodeFactory;
-import common.nodes.Node;
-import common.nodes.declaration.AscriptionNode;
-import common.nodes.statements.LetStatementNode;
-import common.nodes.statements.PrintStatementNode;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
+
+import common.Node;
+import declaration.AscriptionNode;
+import factories.NodeFactory;
+import statements.LetStatementNode;
+import statements.PrintStatementNode;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
 import interpreter.transpiler.visitor.JavaTranspilationVisitor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

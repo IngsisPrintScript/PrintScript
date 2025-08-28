@@ -1,17 +1,17 @@
 package parser.ast.builders.print;
 
-import common.factories.nodes.NodeFactory;
-import common.factories.tokens.TokenFactory;
-import common.nodes.Node;
-import common.nodes.statements.PrintStatementNode;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
-import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStreamInterface;
+import common.Node;
+import common.TokenInterface;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
+import factories.NodeFactory;
+import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.factories.AstBuilderFactory;
 import parser.factories.AstBuilderFactoryInterface;
+import statements.PrintStatementNode;
+import stream.TokenStreamInterface;
 
 public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
     private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
@@ -20,17 +20,17 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
     private static final TokenInterface rightParenthesisTemplate = new TokenFactory().createRightParenthesisToken();
     private static final TokenInterface eolTemplate = new TokenFactory().createEndOfLineToken();
 
-    public PrintBuilder(){
+    public PrintBuilder() {
         this(builderFactory.createFinalBuilder());
     }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek();
-        if (!peekResult.isSuccessful()){
+        if (!peekResult.isSuccessful()) {
             return false;
         }
-        TokenInterface token = ( (CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
         return token.equals(printTemplate);
     }
 
@@ -38,17 +38,22 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
     public Result build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
 
-        if (!tokenStream.consume(printTemplate).isSuccessful()) return new IncorrectResult("Cannot consume print token");
+        if (!tokenStream.consume(printTemplate).isSuccessful())
+            return new IncorrectResult("Cannot consume print token");
         PrintStatementNode root = (PrintStatementNode) new NodeFactory().createPrintlnStatementNode();
 
-        if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful()) return new IncorrectResult("Cannot consume left parenthesis token");
+        if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful())
+            return new IncorrectResult("Cannot consume left parenthesis token");
 
         Result buildExpressionResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
-        if (!buildExpressionResult.isSuccessful()){return buildExpressionResult;}
+        if (!buildExpressionResult.isSuccessful()) {
+            return buildExpressionResult;
+        }
         Node expression = ((CorrectResult<Node>) buildExpressionResult).newObject();
         root.setExpression(expression);
 
-        if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful()) return new IncorrectResult("Cannot consume right parenthesis token");
+        if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful())
+            return new IncorrectResult("Cannot consume right parenthesis token");
 
         if (!tokenStream.consume(eolTemplate).isSuccessful()) return new IncorrectResult("Missing EOL token.");
 

@@ -1,7 +1,7 @@
 package interpreter.executor;
 
 
-import common.responses.Result;
+import responses.Result;
 import interpreter.writer.JavaCodeWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

@@ -13,15 +13,16 @@ public class AstBuilderFactoryTest {
         AstBuilderFactoryInterface astBuilderFactory = new AstBuilderFactory();
         Assertions.assertNotNull(astBuilderFactory);
     }
+
     @Test
     public void createAstBuilderFactoryMethodsTest() {
         AstBuilderFactoryInterface astBuilderFactory = new AstBuilderFactory();
-        for (Method method: AstBuilderFactory.class.getDeclaredMethods()) {
+        for (Method method : AstBuilderFactory.class.getDeclaredMethods()) {
             if (!method.getName().startsWith("create")) continue;
             try {
                 Object result = method.invoke(astBuilderFactory);
                 Assertions.assertNotNull(result);
-            } catch (Exception e){
+            } catch (Exception e) {
                 Assertions.fail(e.getMessage());
             }
         }

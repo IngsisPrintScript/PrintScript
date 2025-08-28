@@ -1,6 +1,6 @@
 package parser;
 
-import common.responses.Result;
+import responses.Result;
 
 public interface SyntacticInterface {
     Result buildAbstractSyntaxTree();
