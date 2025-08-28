@@ -1,8 +1,8 @@
 package parser;
 
-import common.responses.Result;
-import common.tokens.stream.TokenStream;
+import responses.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
+import stream.TokenStream;
 
 public record Syntactic(TokenStream tokenStream, ASTreeBuilderInterface treeBuilder) implements SyntacticInterface {
     @Override

@@ -1,16 +1,16 @@
 package parser.ast.builders.let;
 
-import common.factories.nodes.NodeFactory;
-import common.factories.tokens.TokenFactory;
-import common.nodes.Node;
-import common.nodes.statements.LetStatementNode;
-import common.responses.CorrectResult;
-import common.responses.Result;
-import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStreamInterface;
+import common.Node;
+import common.TokenInterface;
+import responses.CorrectResult;
+import responses.Result;
+import factories.NodeFactory;
+import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.factories.AstBuilderFactory;
 import parser.factories.AstBuilderFactoryInterface;
+import statements.LetStatementNode;
+import stream.TokenStreamInterface;
 
 public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
     final private static TokenInterface letTokenTemplate = new TokenFactory().createLetKeywordToken();
@@ -19,7 +19,7 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
     private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
 
 
-    public LetBuilder(){
+    public LetBuilder() {
         this(builderFactory.createFinalBuilder());
     }
 
@@ -41,13 +41,13 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
         if (!buildAscritionResult.isSuccessful()) return buildAscritionResult;
 
         LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
-        Node ascriptionNode = ( (CorrectResult<Node>) buildAscritionResult).newObject();
+        Node ascriptionNode = ((CorrectResult<Node>) buildAscritionResult).newObject();
         letNode.setAscription(ascriptionNode);
 
-        if (tokenStream.consume(assignationTokenTemplate).isSuccessful()){
+        if (tokenStream.consume(assignationTokenTemplate).isSuccessful()) {
             Result buildLiteralResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
-            Node expressionNode = ( (CorrectResult<Node>) buildLiteralResult).newObject();
+            Node expressionNode = ((CorrectResult<Node>) buildLiteralResult).newObject();
             letNode.setExpression(expressionNode);
         }
 

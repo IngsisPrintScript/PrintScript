@@ -1,17 +1,18 @@
 package parser.ast.builders.expression.operators;
 
-import common.factories.nodes.NodeFactory;
-import common.factories.tokens.TokenFactory;
-import common.responses.CorrectResult;
-import common.responses.IncorrectResult;
-import common.responses.Result;
-import common.tokens.TokenInterface;
-import common.tokens.stream.TokenStreamInterface;
+import common.TokenInterface;
+import responses.CorrectResult;
+import responses.IncorrectResult;
+import responses.Result;
+import factories.NodeFactory;
+import factories.tokens.TokenFactory;
+import stream.TokenStreamInterface;
 
 public class AdditionOperatorBuilder extends OperatorBuilder {
     private final TokenInterface template = new TokenFactory().createAdditionToken();
 
-    public AdditionOperatorBuilder() {}
+    public AdditionOperatorBuilder() {
+    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {

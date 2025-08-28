@@ -1,6 +1,6 @@
 package lexer.tokenizers.punctuation;
 
-import common.responses.Result;
+import responses.Result;
 import lexer.tokenizers.FinalTokenizer;
 import lexer.tokenizers.TokenizerInterface;
 import lexer.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;

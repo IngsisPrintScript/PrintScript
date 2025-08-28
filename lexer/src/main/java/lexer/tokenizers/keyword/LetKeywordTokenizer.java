@@ -1,8 +1,8 @@
 package lexer.tokenizers.keyword;
 
-import common.factories.tokens.TokenFactory;
-import common.responses.CorrectResult;
-import common.responses.Result;
+import responses.CorrectResult;
+import responses.Result;
+import factories.tokens.TokenFactory;
 import lexer.tokenizers.FinalTokenizer;
 import lexer.tokenizers.TokenizerInterface;
 

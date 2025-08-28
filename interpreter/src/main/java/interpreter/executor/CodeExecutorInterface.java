@@ -1,6 +1,6 @@
 package interpreter.executor;
 
-import common.responses.Result;
+import responses.Result;
 
 import java.nio.file.Path;
 

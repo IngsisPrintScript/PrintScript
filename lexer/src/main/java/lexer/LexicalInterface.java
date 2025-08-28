@@ -1,6 +1,6 @@
 package lexer;
 
-import common.responses.Result;
+import responses.Result;
 
 import java.util.List;
 

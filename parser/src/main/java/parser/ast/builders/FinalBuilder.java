@@ -1,8 +1,8 @@
 package parser.ast.builders;
 
-import common.responses.IncorrectResult;
-import common.responses.Result;
-import common.tokens.stream.TokenStreamInterface;
+import responses.IncorrectResult;
+import responses.Result;
+import stream.TokenStreamInterface;
 
 public record FinalBuilder() implements ASTreeBuilderInterface {
     @Override

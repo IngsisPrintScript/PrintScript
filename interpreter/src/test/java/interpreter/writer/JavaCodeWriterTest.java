@@ -1,6 +1,6 @@
 package interpreter.writer;
 
-import common.responses.Result;
+import responses.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
