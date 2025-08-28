@@ -6,9 +6,11 @@ import common.Node;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
+import visitor.RuleVisitor;
+import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
 
-public class LetStatementNode extends CompositeNode {
+public class LetStatementNode extends CompositeNode implements SemanticallyCheckable {
     public LetStatementNode() {
         super(2);
     }
@@ -46,5 +48,10 @@ public class LetStatementNode extends CompositeNode {
     public Result setExpression(Node expression){
         this.children.set(1, expression);
         return new CorrectResult<>(expression);
+    }
+
+    @Override
+    public Result acceptCheck(RuleVisitor checker) {
+        return  checker.check(this);
     }
 }

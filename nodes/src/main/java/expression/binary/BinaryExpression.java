@@ -5,8 +5,10 @@ import common.Node;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
+import visitor.RuleVisitor;
+import visitor.SemanticallyCheckable;
 
-public abstract class BinaryExpression extends CompositeNode {
+public abstract class BinaryExpression extends CompositeNode implements SemanticallyCheckable {
     public BinaryExpression(){
         super(2);
     }
@@ -37,5 +39,10 @@ public abstract class BinaryExpression extends CompositeNode {
     }
     public Result addRightChild(Node node){
         return new CorrectResult<>(this.children.set(1, node));
+    }
+
+    @Override
+    public Result acceptCheck(RuleVisitor checker){
+        return checker.check(this);
     }
 }
