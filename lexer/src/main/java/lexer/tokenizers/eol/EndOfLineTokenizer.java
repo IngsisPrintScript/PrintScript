@@ -1,5 +1,6 @@
 package lexer.tokenizers.eol;
 
+import common.TokenInterface;
 import responses.CorrectResult;
 import responses.Result;
 import factories.tokens.TokenFactory;
@@ -12,7 +13,7 @@ public record EndOfLineTokenizer(TokenizerInterface nextTokenizer) implements To
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         if (canTokenize(input)) {
             return new CorrectResult<>(new TokenFactory().createEndOfLineToken());
         } else {

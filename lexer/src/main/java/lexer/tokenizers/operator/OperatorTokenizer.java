@@ -1,5 +1,6 @@
 package lexer.tokenizers.operator;
 
+import common.TokenInterface;
 import responses.Result;
 import lexer.tokenizers.TokenizerInterface;
 
@@ -29,7 +30,7 @@ public class OperatorTokenizer implements TokenizerInterface {
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         for (Class<? extends OperatorTokenizer> subclass : subclasses) {
             try{
                 TokenizerInterface subclassTokenizer = subclass.getDeclaredConstructor().newInstance();

@@ -1,5 +1,6 @@
 package lexer.tokenizers.punctuation;
 
+import common.TokenInterface;
 import responses.Result;
 import lexer.tokenizers.FinalTokenizer;
 import lexer.tokenizers.TokenizerInterface;
@@ -33,7 +34,7 @@ public class PunctuationTokenizer implements TokenizerInterface {
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         for (Class<? extends PunctuationTokenizer> subclass : subclasses) {
             try {
                 TokenizerInterface tokenizer = subclass.getDeclaredConstructor().newInstance();

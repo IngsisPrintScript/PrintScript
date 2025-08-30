@@ -1,5 +1,6 @@
 package lexer.tokenizers.literal;
 
+import common.TokenInterface;
 import responses.CorrectResult;
 import responses.Result;
 import factories.tokens.TokenFactory;
@@ -25,7 +26,7 @@ public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements Toke
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         if (canTokenize(input)) {
             return new CorrectResult<>(new TokenFactory().createLiteralToken(input));
         } else {

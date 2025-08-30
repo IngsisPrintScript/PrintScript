@@ -1,5 +1,6 @@
 package lexer.tokenizers.identifier;
 
+import common.TokenInterface;
 import responses.CorrectResult;
 import responses.Result;
 import factories.tokens.TokenFactory;
@@ -18,7 +19,7 @@ public record IdentifierTokenizer(TokenizerInterface nextTokenizer) implements T
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         if (canTokenize(input)) {
             return new CorrectResult<>(new TokenFactory().createIdentifierToken(input));
         } else {
