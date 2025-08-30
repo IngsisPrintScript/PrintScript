@@ -8,5 +8,5 @@ public interface SemanticRule {
 
     boolean match(Node node);
 
-    Result checkRules(Node nodeToCheck);
+    Result<String> checkRules(Node nodeToCheck);
 }

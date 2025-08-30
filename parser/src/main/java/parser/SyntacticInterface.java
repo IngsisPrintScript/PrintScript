@@ -1,7 +1,8 @@
 package parser;
 
+import common.Node;
 import responses.Result;
 
 public interface SyntacticInterface {
-    Result buildAbstractSyntaxTree();
+    Result<? extends Node> buildAbstractSyntaxTree();
 }

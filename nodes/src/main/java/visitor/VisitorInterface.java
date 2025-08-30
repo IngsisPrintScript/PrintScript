@@ -11,13 +11,13 @@ import statements.LetStatementNode;
 import statements.PrintStatementNode;
 
 public interface VisitorInterface {
-    Result visit(LetStatementNode node);
-    Result visit(PrintStatementNode node);
-    Result visit(AscriptionNode node);
-    Result visit(AdditionNode node);
-    Result visit(LiteralNode node);
-    Result visit(IdentifierNode node);
-    Result visit(TypeNode node);
-    Result visit(NilNode node);
+    Result<String> visit(LetStatementNode node);
+    Result<String> visit(PrintStatementNode node);
+    Result<String> visit(AscriptionNode node);
+    Result<String> visit(AdditionNode node);
+    Result<String> visit(LiteralNode node);
+    Result<String> visit(IdentifierNode node);
+    Result<String> visit(TypeNode node);
+    Result<String> visit(NilNode node);
 
 }

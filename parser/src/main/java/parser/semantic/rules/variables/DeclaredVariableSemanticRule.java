@@ -18,15 +18,15 @@ public record DeclaredVariableSemanticRule() implements SemanticRule {
     }
 
     @Override
-    public Result checkRules(Node nodeToCheck) {
-        if (!(nodeToCheck instanceof IdentifierNode idNode)) {
-            return new IncorrectResult("This rule does not apply to the received node");
+    public Result<String> checkRules(Node nodeToCheck) {
+        if (!(nodeToCheck instanceof IdentifierNode(String name))) {
+            return new IncorrectResult<>("This rule does not apply to the received node");
         }
         EnvironmentInterface environment = Environment.getInstance();
-        if (environment.variableIsDeclared(idNode.value())){
+        if (environment.variableIsDeclared(name)){
             return new CorrectResult<String>("Variable has already been declared.");
         } else {
-            return new IncorrectResult("Variable has not been declared.");
+            return new IncorrectResult<>("Variable has not been declared.");
         }
     }
 }

@@ -5,5 +5,5 @@ import responses.Result;
 import java.nio.file.Path;
 
 public interface CodeExecutorInterface {
-    Result executeCode(Path path);
+    Result<String> executeCode(Path path);
 }

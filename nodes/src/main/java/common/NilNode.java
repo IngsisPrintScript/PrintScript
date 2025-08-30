@@ -14,7 +14,7 @@ public class NilNode implements Node, ExpressionNode {
     }
 
     @Override
-    public Result accept(VisitorInterface visitor) {
+    public Result<String> accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
 
@@ -24,7 +24,12 @@ public class NilNode implements Node, ExpressionNode {
     }
 
     @Override
-    public Object evaluate() {
+    public Result<Object> evaluate() {
         throw new UnsupportedOperationException("Nil node can't be evaluated.");
+    }
+
+    @Override
+    public Result<String> prettyPrint() {
+        throw new UnsupportedOperationException("Nil node can't be printed.");
     }
 }

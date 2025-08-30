@@ -72,4 +72,12 @@ public class TokenStream implements TokenStreamInterface {
     private List<TokenInterface> tokens(){
         return tokens;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof TokenStream stream)) {
+            return false;
+        }
+        return stream.tokens.equals(this.tokens);
+    }
 }

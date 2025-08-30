@@ -3,7 +3,9 @@ package interpreter.transpiler.visitor;
 
 import common.NilNode;
 import common.Node;
+import expression.ExpressionNode;
 import responses.CorrectResult;
+import responses.IncorrectResult;
 import responses.Result;
 import declaration.AscriptionNode;
 import expression.identifier.IdentifierNode;
@@ -16,34 +18,38 @@ import visitor.VisitorInterface;
 
 public class JavaTranspilationVisitor implements VisitorInterface {
     @Override
-    public Result visit(LetStatementNode node) {
-        Result getDeclarationResult = node.ascription();
-        if (!getDeclarationResult.isSuccessful()) return getDeclarationResult;
-        Node declarationNode = ( (CorrectResult<Node>) getDeclarationResult).result();
-        Result visitDeclarationResult = declarationNode.accept(this);
+    public Result<String> visit(LetStatementNode node) {
+        Result<AscriptionNode> getDeclarationResult = node.ascription();
+        if (!getDeclarationResult.isSuccessful()) {
+            return new IncorrectResult<>("The declaration of a let statement is incorrect.");
+        }
+        AscriptionNode declarationNode = getDeclarationResult.result();
+        Result<String> visitDeclarationResult = declarationNode.accept(this);
         if (!visitDeclarationResult.isSuccessful()) return visitDeclarationResult;
-        String declarationString = ( (CorrectResult<String>) visitDeclarationResult).result();
+        String declarationString = visitDeclarationResult.result();
 
-        Result getExpressionResult = node.expression();
+        Result<ExpressionNode> getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) {
             return new CorrectResult<>(declarationString + ";");
         }
-        Node expressionNode = ( (CorrectResult<Node>) getExpressionResult).result();
-        Result visitExpressionResult = expressionNode.accept(this);
+        ExpressionNode expressionNode = getExpressionResult.result();
+        Result<String> visitExpressionResult = expressionNode.accept(this);
         if (!visitExpressionResult.isSuccessful()) return visitExpressionResult;
-        String expresionString = ( (CorrectResult<String>) visitExpressionResult).result();
+        String expresionString = visitExpressionResult.result();
 
         return new CorrectResult<>(declarationString + " = " + expresionString + ";");
     }
 
     @Override
-    public Result visit(PrintStatementNode node) {
-        Result getExpressionResult = node.expression();
-        if (!getExpressionResult.isSuccessful()) return getExpressionResult;
-        Node expressionNode = ( (CorrectResult<Node>) getExpressionResult).result();
-        Result visitExpressionResult = expressionNode.accept(this);
+    public Result<String> visit(PrintStatementNode node) {
+        Result<ExpressionNode> getExpressionResult = node.expression();
+        if (!getExpressionResult.isSuccessful()) {
+            return new IncorrectResult<>("The expression of a print statement is incorrect.");
+        }
+        ExpressionNode expressionNode = getExpressionResult.result();
+        Result<String> visitExpressionResult = expressionNode.accept(this);
         if (!visitExpressionResult.isSuccessful()) return visitExpressionResult;
-        String expresionString = ( (CorrectResult<String>) visitExpressionResult).result();
+        String expresionString = visitExpressionResult.result();
 
         String resultString = "System.out.println(" + expresionString + ");";
 
@@ -51,60 +57,68 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     }
 
     @Override
-    public Result visit(AscriptionNode node) {
-        Result getTypeResult = node.type();
-        if (!getTypeResult.isSuccessful()) return getTypeResult;
-        Node typeNode = ( (CorrectResult<Node>) getTypeResult).result();
-        Result visitTypeResult = typeNode.accept(this);
+    public Result<String > visit(AscriptionNode node) {
+        Result<TypeNode> getTypeResult = node.type();
+        if (!getTypeResult.isSuccessful()) {
+            return new IncorrectResult<>("The type of a ascription node is incorrect.");
+        }
+        TypeNode typeNode = getTypeResult.result();
+        Result<String> visitTypeResult = typeNode.accept(this);
         if (!visitTypeResult.isSuccessful()) return visitTypeResult;
-        String typeString = ( (CorrectResult<String>) visitTypeResult).result();
+        String typeString = visitTypeResult.result();
 
-        Result getIdentifierResult = node.identifier();
-        if (!getIdentifierResult.isSuccessful()) return getIdentifierResult;
-        Node identifierNode = ( (CorrectResult<Node>) getIdentifierResult).result();
-        Result visitIdentifierResult = identifierNode.accept(this);
+        Result<IdentifierNode> getIdentifierResult = node.identifier();
+        if (!getIdentifierResult.isSuccessful()) {
+            return new IncorrectResult<>("The identifier of a ascription node is incorrect.");
+        }
+        IdentifierNode identifierNode = getIdentifierResult.result();
+        Result<String> visitIdentifierResult = identifierNode.accept(this);
         if (!visitIdentifierResult.isSuccessful()) return visitIdentifierResult;
-        String identifierString = ( (CorrectResult<String>) visitIdentifierResult).result();
+        String identifierString = visitIdentifierResult.result();
 
         return new CorrectResult<>(typeString + " " + identifierString);
     }
 
     @Override
-    public Result visit(AdditionNode node) {
-        Result getLeftChildResult = node.leftChild();
-        if (!getLeftChildResult.isSuccessful()) return getLeftChildResult;
-        Node leftChildNode = ( (CorrectResult<Node>) getLeftChildResult).result();
-        Result visitLeftChildResult = leftChildNode.accept(this);
+    public Result<String> visit(AdditionNode node) {
+        Result<ExpressionNode> getLeftChildResult = node.getLeftChild();
+        if (!getLeftChildResult.isSuccessful()) {
+            return new IncorrectResult<>("The left child of a addition node is incorrect.");
+        }
+        ExpressionNode leftChildNode = getLeftChildResult.result();
+        Result<String> visitLeftChildResult = leftChildNode.accept(this);
         if (!visitLeftChildResult.isSuccessful()) return visitLeftChildResult;
-        String leftChildString = ( (CorrectResult<String>) visitLeftChildResult).result();
+        String leftChildString = visitLeftChildResult.result();
 
-        Result getRightChildResult = node.rightChild();
-        if (!getRightChildResult.isSuccessful()) return getRightChildResult;
-        Node rightChildNode = ( (CorrectResult<Node>) getRightChildResult).result();
-        Result visitRightChildResult = rightChildNode.accept(this);
+        Result<ExpressionNode> getRightChildResult = node.getRightChild();
+        if (!getRightChildResult.isSuccessful()) {
+            return new IncorrectResult<>("The right child of a addition node is incorrect.");
+        }
+        ExpressionNode rightChildNode = getRightChildResult.result();
+        Result<String> visitRightChildResult = rightChildNode.accept(this);
         if (!visitRightChildResult.isSuccessful()) return visitRightChildResult;
-        String rightChildString = ( (CorrectResult<String>) visitRightChildResult).result();
+        String rightChildString = visitRightChildResult.result();
 
         return new CorrectResult<>(leftChildString + " + " + rightChildString);
     }
 
     @Override
-    public Result visit(LiteralNode node) {
+    public Result<String> visit(LiteralNode node) {
         return new CorrectResult<>(node.value());
     }
 
     @Override
-    public Result visit(IdentifierNode node) {
-        return new CorrectResult<>(node.value());
+    public Result<String> visit(IdentifierNode node) {
+        return new CorrectResult<>(node.name());
     }
 
     @Override
-    public Result visit(TypeNode node) {
-        return new CorrectResult<>(node.value());
+    public Result<String> visit(TypeNode node) {
+        return new CorrectResult<>(node.type());
     }
 
     @Override
-    public Result visit(NilNode node) {
+    public Result<String> visit(NilNode node) {
         return new CorrectResult<>("");
     }
 }

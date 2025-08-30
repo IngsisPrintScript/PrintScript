@@ -10,15 +10,17 @@ import lexer.tokenizers.TokenizerInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import stream.TokenStream;
+import stream.TokenStreamInterface;
 
 import java.util.List;
 
 public class LexicalTest {
     public static TokenizerInterface tokenizer;
     public static List<String> stringVarInputs;
-    public static List<TokenInterface> stringVarTokens;
+    public static TokenStreamInterface stringVarTokens;
     public static List<String> numberVarInputs;
-    public static List<TokenInterface> numberVarTokens;
+    public static TokenStreamInterface numberVarTokens;
     public static List<String> invalidInputs;
 
     @BeforeAll
@@ -26,24 +28,28 @@ public class LexicalTest {
         TokenFactory tokenFactory = new TokenFactory();
         tokenizer = new TokenizerFactory().createDefaultTokenizer();
         stringVarInputs = List.of("let", "aVar", ":", "String", "=", "\"aStr\"", ";");
-        stringVarTokens = List.of(
-                tokenFactory.createLetKeywordToken(),
-                tokenFactory.createIdentifierToken("aVar"),
-                tokenFactory.createTypeAssignationToken(),
-                tokenFactory.createTypeToken("String"),
-                tokenFactory.createAssignationToken(),
-                tokenFactory.createLiteralToken("\"aStr\""),
-                tokenFactory.createEndOfLineToken()
+        stringVarTokens = new TokenStream(
+                List.of(
+                        tokenFactory.createLetKeywordToken(),
+                        tokenFactory.createIdentifierToken("aVar"),
+                        tokenFactory.createTypeAssignationToken(),
+                        tokenFactory.createTypeToken("String"),
+                        tokenFactory.createAssignationToken(),
+                        tokenFactory.createLiteralToken("\"aStr\""),
+                        tokenFactory.createEndOfLineToken()
+                )
         );
         numberVarInputs = List.of("let", "aVar", ":", "Number", "=", "9", ";");
-        numberVarTokens = List.of(
-                tokenFactory.createLetKeywordToken(),
-                tokenFactory.createIdentifierToken("aVar"),
-                tokenFactory.createTypeAssignationToken(),
-                tokenFactory.createTypeToken("Number"),
-                tokenFactory.createAssignationToken(),
-                tokenFactory.createLiteralToken("9"),
-                tokenFactory.createEndOfLineToken()
+        numberVarTokens = new TokenStream(
+                List.of(
+                        tokenFactory.createLetKeywordToken(),
+                        tokenFactory.createIdentifierToken("aVar"),
+                        tokenFactory.createTypeAssignationToken(),
+                        tokenFactory.createTypeToken("Number"),
+                        tokenFactory.createAssignationToken(),
+                        tokenFactory.createLiteralToken("9"),
+                        tokenFactory.createEndOfLineToken()
+                )
         );
         invalidInputs = List.of("let", "aVar", ":", "Number", "=", "9asd", ";");
     }
@@ -58,14 +64,14 @@ public class LexicalTest {
     public void analyzeLexicalTest(){
         LexicalInterface lexical = new Lexical(tokenizer);
 
-        Result analysisResult = lexical.analyze(stringVarInputs);
+        Result<TokenStreamInterface> analysisResult = lexical.analyze(stringVarInputs);
         Assertions.assertInstanceOf(CorrectResult.class, analysisResult);
-        List<TokenInterface> tokens = ( (CorrectResult<List<TokenInterface>>) analysisResult).result();
+        TokenStreamInterface tokens = analysisResult.result();
         Assertions.assertEquals(stringVarTokens, tokens);
 
         analysisResult = lexical.analyze(numberVarInputs);
         Assertions.assertInstanceOf(CorrectResult.class, analysisResult);
-        tokens = ( (CorrectResult<List<TokenInterface>>) analysisResult).result();
+        tokens = analysisResult.result();
         Assertions.assertEquals(numberVarTokens, tokens);
 
         analysisResult = lexical.analyze(invalidInputs);
