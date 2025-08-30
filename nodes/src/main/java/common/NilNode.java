@@ -1,13 +1,16 @@
 package common;
 
+import expression.ExpressionNode;
 import responses.IncorrectResult;
 import responses.Result;
 import visitor.VisitorInterface;
 
-public class NilNode implements Node{
+import java.util.List;
+
+public class NilNode implements Node, ExpressionNode {
     @Override
-    public Result children() {
-        return new IncorrectResult("Nil node has no children.");
+    public List<Node> children() {
+        return List.of();
     }
 
     @Override
@@ -18,5 +21,10 @@ public class NilNode implements Node{
     @Override
     public Boolean isNil() {
         return true;
+    }
+
+    @Override
+    public Object evaluate() {
+        throw new UnsupportedOperationException("Nil node can't be evaluated.");
     }
 }

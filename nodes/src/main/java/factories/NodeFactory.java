@@ -3,7 +3,7 @@ package factories;
 
 import common.Node;
 import declaration.AscriptionNode;
-import declaration.IdentifierNode;
+import expression.identifier.IdentifierNode;
 import declaration.TypeNode;
 import expression.binary.AdditionNode;
 import expression.literal.LiteralNode;

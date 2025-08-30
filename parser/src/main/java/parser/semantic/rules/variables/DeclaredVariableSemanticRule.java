@@ -3,7 +3,7 @@ package parser.semantic.rules.variables;
 import common.Environment;
 import common.EnvironmentInterface;
 import common.Node;
-import declaration.IdentifierNode;
+import expression.identifier.IdentifierNode;
 import factories.NodeFactory;
 import parser.semantic.rules.SemanticRule;
 import responses.CorrectResult;
