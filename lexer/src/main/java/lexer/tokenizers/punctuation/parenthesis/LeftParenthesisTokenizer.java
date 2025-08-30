@@ -1,5 +1,6 @@
 package lexer.tokenizers.punctuation.parenthesis;
 
+import common.TokenInterface;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
@@ -14,8 +15,8 @@ public class LeftParenthesisTokenizer extends PunctuationTokenizer {
     }
 
     @Override
-    public Result tokenize(String input) {
-        if (!canTokenize(input)) {return new IncorrectResult("Cannot tokenize provided input");
+    public Result<TokenInterface> tokenize(String input) {
+        if (!canTokenize(input)) {return new IncorrectResult<>("Cannot tokenize provided input");
         }
         return new CorrectResult<>(new TokenFactory().createLeftParenthesisToken());
     }

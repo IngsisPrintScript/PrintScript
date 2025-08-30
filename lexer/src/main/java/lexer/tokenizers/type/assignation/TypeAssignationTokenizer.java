@@ -1,5 +1,6 @@
 package lexer.tokenizers.type.assignation;
 
+import common.TokenInterface;
 import responses.CorrectResult;
 import responses.Result;
 import factories.tokens.TokenFactory;
@@ -13,7 +14,7 @@ public record TypeAssignationTokenizer(TokenizerInterface nextTokenizer) impleme
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         if (canTokenize(input)) {
             return new CorrectResult<>(new TokenFactory().createTypeAssignationToken());
         } else {

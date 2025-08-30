@@ -1,5 +1,6 @@
 package lexer.tokenizers.type;
 
+import common.TokenInterface;
 import responses.CorrectResult;
 import responses.Result;
 import factories.tokens.TokenFactory;
@@ -20,7 +21,7 @@ public final class NumberTypeTokenizer extends TypeTokenizer {
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         return new CorrectResult<>(new TokenFactory().createTypeToken(input));
     }
 }

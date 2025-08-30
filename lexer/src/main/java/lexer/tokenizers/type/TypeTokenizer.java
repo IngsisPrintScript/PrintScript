@@ -1,5 +1,6 @@
 package lexer.tokenizers.type;
 
+import common.TokenInterface;
 import responses.Result;
 import lexer.tokenizers.TokenizerInterface;
 
@@ -29,7 +30,7 @@ public class TypeTokenizer implements TokenizerInterface {
     }
 
     @Override
-    public Result tokenize(String input) {
+    public Result<TokenInterface> tokenize(String input) {
         for (Class<? extends TypeTokenizer> subclass : subclasses) {
             try{
                 TokenizerInterface subclassTokenizer = subclass.getDeclaredConstructor().newInstance();
