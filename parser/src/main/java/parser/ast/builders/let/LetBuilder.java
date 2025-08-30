@@ -27,7 +27,7 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
         return token.equals(letTokenTemplate);
     }
 
@@ -41,13 +41,13 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
         if (!buildAscritionResult.isSuccessful()) return buildAscritionResult;
 
         LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
-        Node ascriptionNode = ((CorrectResult<Node>) buildAscritionResult).newObject();
+        Node ascriptionNode = ((CorrectResult<Node>) buildAscritionResult).result();
         letNode.setAscription(ascriptionNode);
 
         if (tokenStream.consume(assignationTokenTemplate).isSuccessful()) {
             Result buildLiteralResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
-            Node expressionNode = ((CorrectResult<Node>) buildLiteralResult).newObject();
+            Node expressionNode = ((CorrectResult<Node>) buildLiteralResult).result();
             letNode.setExpression(expressionNode);
         }
 

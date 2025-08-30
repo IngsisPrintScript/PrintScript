@@ -36,7 +36,7 @@ public class TypeTokenizerTest {
         // Asserting the result is what is expected
         // String
         Result tokenizeResult = eolTokenizer.tokenize("String");
-        Object object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        Object object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         TokenInterface token = (TokenInterface) object;
         Assertions.assertNotNull(token);
@@ -45,7 +45,7 @@ public class TypeTokenizerTest {
         // Asserting the result is what is expected
         // String
         tokenizeResult = eolTokenizer.tokenize("Number");
-        object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         token = (TokenInterface) object;
         Assertions.assertNotNull(token);

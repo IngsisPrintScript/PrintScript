@@ -36,7 +36,7 @@ public class KeywordTokenizerTest {
         // Asserting the result is what is expected
         // Let
         Result tokenizeResult = eolTokenizer.tokenize("let");
-        Object object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        Object object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         TokenInterface token = (TokenInterface) object;
         Assertions.assertNotNull(token);
@@ -44,7 +44,7 @@ public class KeywordTokenizerTest {
         Assertions.assertEquals("let", token.value());
         // Println
         tokenizeResult = eolTokenizer.tokenize("println");
-        object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         token = (TokenInterface) object;
         Assertions.assertNotNull(token);

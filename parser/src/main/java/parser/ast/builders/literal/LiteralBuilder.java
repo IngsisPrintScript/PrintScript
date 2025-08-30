@@ -18,7 +18,7 @@ public record LiteralBuilder() implements ASTreeBuilderInterface {
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
         return token.equals(template);
     }
 
@@ -27,7 +27,7 @@ public record LiteralBuilder() implements ASTreeBuilderInterface {
         if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build literal node.");
         Result consumeResult = tokenStream.consume(template);
         if (!consumeResult.isSuccessful()) return consumeResult;
-        TokenInterface token = ((CorrectResult<TokenInterface>) consumeResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) consumeResult).result();
         Node literalNode = new NodeFactory().createLiteralNode(token.value());
         return new CorrectResult<>(literalNode);
     }

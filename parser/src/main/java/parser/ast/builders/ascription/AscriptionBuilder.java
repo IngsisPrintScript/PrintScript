@@ -22,7 +22,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek(1);
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
         return token.equals(template);
     }
 
@@ -39,9 +39,9 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
         Result buildTypeResult = builderFactory.createTypeBuilder().build(tokenStream);
         if (!buildTypeResult.isSuccessful()) return buildTypeResult;
 
-        Node identifierNode = ((CorrectResult<Node>) buildIdentifierResult).newObject();
+        Node identifierNode = ((CorrectResult<Node>) buildIdentifierResult).result();
         AscriptionNode ascriptionNode = (AscriptionNode) new NodeFactory().createAscriptionNode();
-        Node typeNode = ((CorrectResult<Node>) buildTypeResult).newObject();
+        Node typeNode = ((CorrectResult<Node>) buildTypeResult).result();
 
         ascriptionNode.setType(typeNode);
         ascriptionNode.setIdentifier(identifierNode);

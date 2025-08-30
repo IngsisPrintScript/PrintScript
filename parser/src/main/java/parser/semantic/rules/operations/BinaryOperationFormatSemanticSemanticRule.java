@@ -27,7 +27,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         }
         Result getLeftNodeResult = binaryExpression.leftChild();
         if (!getLeftNodeResult.isSuccessful()) return getLeftNodeResult;
-        Node leftChild = ((CorrectResult<Node>) getLeftNodeResult).newObject();
+        Node leftChild = ((CorrectResult<Node>) getLeftNodeResult).result();
         String expectedType;
         if (leftChild instanceof LiteralNode literalLeftNode) {
             expectedType =  typeGetter.getType(literalLeftNode);
@@ -41,7 +41,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
 
         Result getRightNodeResult = binaryExpression.rightChild();
         if (!getRightNodeResult.isSuccessful()) return getRightNodeResult;
-        Node rightChild = ((CorrectResult<Node>) getRightNodeResult).newObject();
+        Node rightChild = ((CorrectResult<Node>) getRightNodeResult).result();
         if (rightChild instanceof LiteralNode literalRightNode) {
             if (!expectedType.equals(typeGetter.getType(literalRightNode))) {
                 return new IncorrectResult("This node does not pass the check.");

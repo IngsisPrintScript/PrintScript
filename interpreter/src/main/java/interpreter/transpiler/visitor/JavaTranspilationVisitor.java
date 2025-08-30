@@ -19,19 +19,19 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     public Result visit(LetStatementNode node) {
         Result getDeclarationResult = node.ascription();
         if (!getDeclarationResult.isSuccessful()) return getDeclarationResult;
-        Node declarationNode = ( (CorrectResult<Node>) getDeclarationResult).newObject();
+        Node declarationNode = ( (CorrectResult<Node>) getDeclarationResult).result();
         Result visitDeclarationResult = declarationNode.accept(this);
         if (!visitDeclarationResult.isSuccessful()) return visitDeclarationResult;
-        String declarationString = ( (CorrectResult<String>) visitDeclarationResult).newObject();
+        String declarationString = ( (CorrectResult<String>) visitDeclarationResult).result();
 
         Result getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) {
             return new CorrectResult<>(declarationString + ";");
         }
-        Node expressionNode = ( (CorrectResult<Node>) getExpressionResult).newObject();
+        Node expressionNode = ( (CorrectResult<Node>) getExpressionResult).result();
         Result visitExpressionResult = expressionNode.accept(this);
         if (!visitExpressionResult.isSuccessful()) return visitExpressionResult;
-        String expresionString = ( (CorrectResult<String>) visitExpressionResult).newObject();
+        String expresionString = ( (CorrectResult<String>) visitExpressionResult).result();
 
         return new CorrectResult<>(declarationString + " = " + expresionString + ";");
     }
@@ -40,10 +40,10 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     public Result visit(PrintStatementNode node) {
         Result getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) return getExpressionResult;
-        Node expressionNode = ( (CorrectResult<Node>) getExpressionResult).newObject();
+        Node expressionNode = ( (CorrectResult<Node>) getExpressionResult).result();
         Result visitExpressionResult = expressionNode.accept(this);
         if (!visitExpressionResult.isSuccessful()) return visitExpressionResult;
-        String expresionString = ( (CorrectResult<String>) visitExpressionResult).newObject();
+        String expresionString = ( (CorrectResult<String>) visitExpressionResult).result();
 
         String resultString = "System.out.println(" + expresionString + ");";
 
@@ -54,17 +54,17 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     public Result visit(AscriptionNode node) {
         Result getTypeResult = node.type();
         if (!getTypeResult.isSuccessful()) return getTypeResult;
-        Node typeNode = ( (CorrectResult<Node>) getTypeResult).newObject();
+        Node typeNode = ( (CorrectResult<Node>) getTypeResult).result();
         Result visitTypeResult = typeNode.accept(this);
         if (!visitTypeResult.isSuccessful()) return visitTypeResult;
-        String typeString = ( (CorrectResult<String>) visitTypeResult).newObject();
+        String typeString = ( (CorrectResult<String>) visitTypeResult).result();
 
         Result getIdentifierResult = node.identifier();
         if (!getIdentifierResult.isSuccessful()) return getIdentifierResult;
-        Node identifierNode = ( (CorrectResult<Node>) getIdentifierResult).newObject();
+        Node identifierNode = ( (CorrectResult<Node>) getIdentifierResult).result();
         Result visitIdentifierResult = identifierNode.accept(this);
         if (!visitIdentifierResult.isSuccessful()) return visitIdentifierResult;
-        String identifierString = ( (CorrectResult<String>) visitIdentifierResult).newObject();
+        String identifierString = ( (CorrectResult<String>) visitIdentifierResult).result();
 
         return new CorrectResult<>(typeString + " " + identifierString);
     }
@@ -73,17 +73,17 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     public Result visit(AdditionNode node) {
         Result getLeftChildResult = node.leftChild();
         if (!getLeftChildResult.isSuccessful()) return getLeftChildResult;
-        Node leftChildNode = ( (CorrectResult<Node>) getLeftChildResult).newObject();
+        Node leftChildNode = ( (CorrectResult<Node>) getLeftChildResult).result();
         Result visitLeftChildResult = leftChildNode.accept(this);
         if (!visitLeftChildResult.isSuccessful()) return visitLeftChildResult;
-        String leftChildString = ( (CorrectResult<String>) visitLeftChildResult).newObject();
+        String leftChildString = ( (CorrectResult<String>) visitLeftChildResult).result();
 
         Result getRightChildResult = node.rightChild();
         if (!getRightChildResult.isSuccessful()) return getRightChildResult;
-        Node rightChildNode = ( (CorrectResult<Node>) getRightChildResult).newObject();
+        Node rightChildNode = ( (CorrectResult<Node>) getRightChildResult).result();
         Result visitRightChildResult = rightChildNode.accept(this);
         if (!visitRightChildResult.isSuccessful()) return visitRightChildResult;
-        String rightChildString = ( (CorrectResult<String>) visitRightChildResult).newObject();
+        String rightChildString = ( (CorrectResult<String>) visitRightChildResult).result();
 
         return new CorrectResult<>(leftChildString + " + " + rightChildString);
     }

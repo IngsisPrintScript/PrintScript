@@ -22,16 +22,16 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
     public Result check(LetStatementNode node) {
         Result getAscriptionResult = node.ascription();
         if (!getAscriptionResult.isSuccessful()) return getAscriptionResult;
-        AscriptionNode ascription = ((CorrectResult<AscriptionNode>) getAscriptionResult).newObject();
+        AscriptionNode ascription = ((CorrectResult<AscriptionNode>) getAscriptionResult).result();
         Result getIdentifierNodeResult = ascription.identifier();
         if (!getIdentifierNodeResult.isSuccessful()) return getIdentifierNodeResult;
-        LiteralNode literal = ((CorrectResult<LiteralNode>) getIdentifierNodeResult).newObject();
+        LiteralNode literal = ((CorrectResult<LiteralNode>) getIdentifierNodeResult).result();
         Result checkIdIsNotDeclaredResult = notDeclaredVariableSemanticRuleChecker.checkRules(literal);
         if (!checkIdIsNotDeclaredResult.isSuccessful()) return checkIdIsNotDeclaredResult;
 
         Result getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) return getExpressionResult;
-        BinaryExpression expression = ((CorrectResult<BinaryExpression>) getExpressionResult).newObject();
+        BinaryExpression expression = ((CorrectResult<BinaryExpression>) getExpressionResult).result();
         return this.check(expression);
     }
 
@@ -39,7 +39,7 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
     public Result check(PrintStatementNode node) {
         Result getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) return getExpressionResult;
-        BinaryExpression expression = ((CorrectResult<BinaryExpression>) getExpressionResult).newObject();
+        BinaryExpression expression = ((CorrectResult<BinaryExpression>) getExpressionResult).result();
         return this.check(expression);
     }
 
@@ -48,13 +48,13 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
     public Result check(BinaryExpression node) {
         Result getLeftChildResult = node.leftChild();
         if (!getLeftChildResult.isSuccessful()) return getLeftChildResult;
-        Node leftChild = ((CorrectResult<Node>) getLeftChildResult).newObject();
+        Node leftChild = ((CorrectResult<Node>) getLeftChildResult).result();
         Result checkRulesForLeftChild = checkRulesForChild(leftChild);
         if (!checkRulesForLeftChild.isSuccessful()) return checkRulesForLeftChild;
 
         Result getRightChildResult = node.rightChild();
         if (!getRightChildResult.isSuccessful()) return getRightChildResult;
-        Node rightChild = ((CorrectResult<Node>) getRightChildResult).newObject();
+        Node rightChild = ((CorrectResult<Node>) getRightChildResult).result();
         Result checkRulesForRightChild = checkRulesForChild(rightChild);
         if (!checkRulesForRightChild.isSuccessful()) return checkRulesForRightChild;
 

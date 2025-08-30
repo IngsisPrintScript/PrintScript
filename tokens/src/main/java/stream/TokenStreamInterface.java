@@ -4,10 +4,10 @@ import responses.Result;
 import common.TokenInterface;
 
 public interface TokenStreamInterface {
-    Result peek();
-    Result peek(Integer offset);
-    Result consume();
-    Result consume(TokenInterface expectedToken);
+    Result<TokenInterface> peek();
+    Result<TokenInterface> peek(Integer offset);
+    Result<TokenInterface> consume();
+    Result<TokenInterface> consume(TokenInterface expectedToken);
     Boolean isEndOfStream();
     Boolean contains(TokenInterface token);
 }

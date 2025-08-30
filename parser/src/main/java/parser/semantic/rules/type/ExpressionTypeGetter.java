@@ -14,7 +14,7 @@ public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
         if (node instanceof IdentifierNode identifierNode){
             Result getIdType = Environment.getInstance().getIdType(identifierNode.value());
             if (!getIdType.isSuccessful()) return "UnknownType";
-            return ((CorrectResult<String>) getIdType).newObject();
+            return ((CorrectResult<String>) getIdType).result();
         }
         if (node instanceof LiteralNode literalNode) {
             String literal = literalNode.value();
@@ -38,7 +38,7 @@ public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
             if (!(node instanceof BinaryExpression binaryExpression)) return "UnknownType";
             Result getLeftChildResult = binaryExpression.leftChild();
             if (!getLeftChildResult.isSuccessful()) return "UnknownType";
-            Node leftChild = ((CorrectResult<Node>) getLeftChildResult).newObject();
+            Node leftChild = ((CorrectResult<Node>) getLeftChildResult).result();
             return this.getType(leftChild);
         }
     }

@@ -60,12 +60,12 @@ public class LexicalTest {
 
         Result analysisResult = lexical.analyze(stringVarInputs);
         Assertions.assertInstanceOf(CorrectResult.class, analysisResult);
-        List<TokenInterface> tokens = ( (CorrectResult<List<TokenInterface>>) analysisResult).newObject();
+        List<TokenInterface> tokens = ( (CorrectResult<List<TokenInterface>>) analysisResult).result();
         Assertions.assertEquals(stringVarTokens, tokens);
 
         analysisResult = lexical.analyze(numberVarInputs);
         Assertions.assertInstanceOf(CorrectResult.class, analysisResult);
-        tokens = ( (CorrectResult<List<TokenInterface>>) analysisResult).newObject();
+        tokens = ( (CorrectResult<List<TokenInterface>>) analysisResult).result();
         Assertions.assertEquals(numberVarTokens, tokens);
 
         analysisResult = lexical.analyze(invalidInputs);

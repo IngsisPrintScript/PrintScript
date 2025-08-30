@@ -12,7 +12,6 @@ import responses.IncorrectResult;
 import responses.Result;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
-import visitor.RuleVisitor;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     private final ExpressionTypeGetter expressionTypeGetter = new ExpressionTypeGetter();
@@ -23,15 +22,15 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     public Result check(LetStatementNode node) {
         Result getAscriptionNodeResult = node.ascription();
         if (!getAscriptionNodeResult.isSuccessful()) return getAscriptionNodeResult;
-        AscriptionNode ascriptionNode = ((CorrectResult<AscriptionNode>) getAscriptionNodeResult).newObject();
+        AscriptionNode ascriptionNode = ((CorrectResult<AscriptionNode>) getAscriptionNodeResult).result();
         Result getTypeNodeResult = ascriptionNode.type();
         if (!getTypeNodeResult.isSuccessful()) return getTypeNodeResult;
-        TypeNode typeNode = ((CorrectResult<TypeNode>) getTypeNodeResult).newObject();
+        TypeNode typeNode = ((CorrectResult<TypeNode>) getTypeNodeResult).result();
         typeRule = new TypeSemanticRule(typeNode.value());
 
         Result getExpressionNodeResult = node.expression();
         if (!getExpressionNodeResult.isSuccessful()) return getExpressionNodeResult;
-        Node expressionNode = ((CorrectResult<Node>) getExpressionNodeResult).newObject();
+        Node expressionNode = ((CorrectResult<Node>) getExpressionNodeResult).result();
         if (expressionNode instanceof BinaryExpression binaryExpression) {
             return check(binaryExpression);
         }
@@ -43,7 +42,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     public Result check(PrintStatementNode node) {
         Result getExpressionNodeResult = node.expression();
         if (!getExpressionNodeResult.isSuccessful()) return getExpressionNodeResult;
-        Node expressionNode = ((CorrectResult<Node>) getExpressionNodeResult).newObject();
+        Node expressionNode = ((CorrectResult<Node>) getExpressionNodeResult).result();
 
         typeRule = new TypeSemanticRule("String");
 

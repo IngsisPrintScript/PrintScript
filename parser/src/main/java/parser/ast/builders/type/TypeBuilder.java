@@ -17,7 +17,7 @@ public record TypeBuilder() implements ASTreeBuilderInterface {
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
         return token.equals(template);
     }
 
@@ -26,7 +26,7 @@ public record TypeBuilder() implements ASTreeBuilderInterface {
         if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build type node.");
         Result consumeResult = tokenStream.consume(template);
         if (!consumeResult.isSuccessful()) return consumeResult;
-        TokenInterface token = ((CorrectResult<TokenInterface>) consumeResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) consumeResult).result();
         Node typeNode = new NodeFactory().createTypeNode(token.value());
         return new CorrectResult<>(typeNode);
     }
