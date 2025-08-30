@@ -2,7 +2,7 @@ package parser.semantic.enforcers;
 
 import common.Node;
 import declaration.AscriptionNode;
-import declaration.IdentifierNode;
+import expression.identifier.IdentifierNode;
 import expression.binary.BinaryExpression;
 import expression.literal.LiteralNode;
 import parser.semantic.rules.SemanticRule;

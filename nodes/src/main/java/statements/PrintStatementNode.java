@@ -1,7 +1,8 @@
 package statements;
 
-import common.CompositeNode;
+import common.NilNode;
 import common.Node;
+import expression.ExpressionNode;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
@@ -9,32 +10,48 @@ import visitor.RuleVisitor;
 import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
 
-public class PrintStatementNode extends CompositeNode implements SemanticallyCheckable {
+import java.util.List;
+
+public class PrintStatementNode implements Node, SemanticallyCheckable {
+    private Node expression;
+
     public PrintStatementNode() {
-        super(1);
+        this.expression = new NilNode();
     }
 
     @Override
     public Result accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
+
     public Boolean hasExpression(){
-        return !this.children.get(0).isNil();
+        return !this.expression.isNil();
     }
-    public Result expression(){
+
+    public Result<ExpressionNode> expression(){
         if(hasExpression()){
-            return new CorrectResult<>(children.get(0));
+            return new CorrectResult<>((ExpressionNode) this.expression);
         }  else {
-            return new IncorrectResult("Print statement has no expression.");
+            return new IncorrectResult<>("Print statement has no expression.");
         }
     }
-    public Result setExpression(Node expression){
-        this.children.set(0, expression);
+    public Result<ExpressionNode> setExpression(ExpressionNode expression){
+        this.expression = expression;
         return new CorrectResult<>(expression);
     }
 
     @Override
     public Result acceptCheck(RuleVisitor checker) {
         return checker.check(this);
+    }
+
+    @Override
+    public List<Node> children() {
+        return List.of(expression);
+    }
+
+    @Override
+    public Boolean isNil() {
+        return false;
     }
 }

@@ -1,8 +1,10 @@
 package statements;
 
 
-import common.CompositeNode;
+import common.NilNode;
 import common.Node;
+import declaration.AscriptionNode;
+import expression.ExpressionNode;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
@@ -10,48 +12,65 @@ import visitor.RuleVisitor;
 import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
 
-public class LetStatementNode extends CompositeNode implements SemanticallyCheckable {
+import java.util.List;
+
+public class LetStatementNode implements Node, SemanticallyCheckable {
+    private Node ascription;
+    private Node expression;
+
     public LetStatementNode() {
-        super(2);
+        this.ascription = new NilNode();
+        this.expression = new NilNode();
     }
+
     @Override
     public Result accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
 
     public Boolean hasAscription(){
-        return !this.children.get(0).isNil();
+        return !this.ascription.isNil();
     }
     public Boolean hasExpression(){
-        return !this.children.get(1).isNil();
+        return !this.expression.isNil();
     }
 
-    public Result expression(){
+    public Result<ExpressionNode> expression(){
         if(hasExpression()){
-            return new CorrectResult<>(children.get(1));
+            return new CorrectResult<>((ExpressionNode) expression);
         }  else {
-            return new IncorrectResult("Let statement has no expression.");
+            return new IncorrectResult<>("Let statement has no expression.");
         }
     }
-    public Result ascription(){
+    public Result<AscriptionNode> ascription(){
         if(hasAscription()){
-            return new CorrectResult<>(children.get(0));
+            return new CorrectResult<>((AscriptionNode) ascription);
         } else {
-            return new IncorrectResult("Let statement has no declaration.");
+            return new IncorrectResult<>("Let statement has no declaration.");
         }
     }
 
-    public Result setAscription(Node declaration){
-        this.children.set(0, declaration);
+    public Result<AscriptionNode> setAscription(AscriptionNode declaration){
+        this.ascription = declaration;
         return new CorrectResult<>(declaration);
     }
-    public Result setExpression(Node expression){
-        this.children.set(1, expression);
+    public Result<ExpressionNode> setExpression(ExpressionNode expression){
+        this.expression = expression;
         return new CorrectResult<>(expression);
     }
 
     @Override
     public Result acceptCheck(RuleVisitor checker) {
         return  checker.check(this);
+    }
+
+    @Override
+    public List<Node> children() {
+        return List.of();
+    }
+
+    @Override
+    public Boolean isNil() {
+        return null;
     }
 }

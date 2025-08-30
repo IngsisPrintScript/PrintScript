@@ -59,14 +59,14 @@ public class Environment implements EnvironmentInterface {
         }
     }
     @Override
-    public Result getIdValue(String id) {
+    public Result<Object> getIdValue(String id) {
         try {
             if (!variableIsDeclared(id)) {
-                return new IncorrectResult("Id has not been declared.");
+                return new IncorrectResult<>("Id has not been declared.");
             }
             return new CorrectResult<Object>(idValueMap.get(id));
         } catch (Exception e){
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<>(e.getMessage());
         }
     }
 

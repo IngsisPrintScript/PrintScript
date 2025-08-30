@@ -6,7 +6,7 @@ import common.Node;
 import responses.CorrectResult;
 import responses.Result;
 import declaration.AscriptionNode;
-import declaration.IdentifierNode;
+import expression.identifier.IdentifierNode;
 import declaration.TypeNode;
 import expression.binary.AdditionNode;
 import expression.literal.LiteralNode;
