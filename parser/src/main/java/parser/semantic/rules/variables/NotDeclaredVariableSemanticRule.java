@@ -14,9 +14,9 @@ public record NotDeclaredVariableSemanticRule() implements SemanticRule {
     }
 
     @Override
-    public Result checkRules(Node nodeToCheck) {
+    public Result<String> checkRules(Node nodeToCheck) {
         if (OPPOSITE_SEMANTIC_RULE.checkRules(nodeToCheck).isSuccessful()){
-            return new IncorrectResult("The variable is already declared.");
+            return new IncorrectResult<>("The variable is already declared.");
         } else {
             return new CorrectResult<String>("The variable is not declared.");
         }

@@ -2,7 +2,12 @@ package parser.ast.builders.let;
 
 import common.Node;
 import common.TokenInterface;
+import declaration.AscriptionNode;
+import expression.ExpressionNode;
+import parser.ast.builders.ascription.AscriptionBuilder;
+import parser.ast.builders.expression.ExpressionBuilder;
 import responses.CorrectResult;
+import responses.IncorrectResult;
 import responses.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
@@ -25,29 +30,36 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result peekResult = tokenStream.peek();
+        Result<TokenInterface> peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
+        TokenInterface token = peekResult.result();
         return token.equals(letTokenTemplate);
     }
 
     @Override
-    public Result build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
+    public Result<? extends Node> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)) {
+            return nextBuilder().build(tokenStream);
+        }
 
-        if (!tokenStream.consume(letTokenTemplate).isSuccessful()) return nextBuilder().build(tokenStream);
+        if (!tokenStream.consume(letTokenTemplate).isSuccessful()) {
+            return nextBuilder().build(tokenStream);
+        }
 
-        Result buildAscritionResult = builderFactory.createAscriptionBuilder().build(tokenStream);
-        if (!buildAscritionResult.isSuccessful()) return buildAscritionResult;
+        Result<AscriptionNode> buildAscritionResult =
+                ((AscriptionBuilder) builderFactory.createAscriptionBuilder()).build(tokenStream);
+        if (!buildAscritionResult.isSuccessful()) {
+            return new IncorrectResult<>("Cannot build let ast.");
+        }
 
         LetStatementNode letNode = (LetStatementNode) new NodeFactory().createLetStatementNode();
-        Node ascriptionNode = ((CorrectResult<Node>) buildAscritionResult).result();
-        letNode.setAscription(ascriptionNode);
+        letNode.setAscription(buildAscritionResult.result());
 
         if (tokenStream.consume(assignationTokenTemplate).isSuccessful()) {
-            Result buildLiteralResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
+            Result<ExpressionNode> buildLiteralResult =
+                    ((ExpressionBuilder) builderFactory.createExpressionBuilder()).build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
-            Node expressionNode = ((CorrectResult<Node>) buildLiteralResult).result();
+            ExpressionNode expressionNode = buildLiteralResult.result();
             letNode.setExpression(expressionNode);
         }
 

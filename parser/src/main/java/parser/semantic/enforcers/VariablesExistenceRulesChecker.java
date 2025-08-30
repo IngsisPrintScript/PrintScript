@@ -1,7 +1,10 @@
 package parser.semantic.enforcers;
 
+import common.Environment;
 import common.Node;
 import declaration.AscriptionNode;
+import declaration.TypeNode;
+import expression.ExpressionNode;
 import expression.identifier.IdentifierNode;
 import expression.binary.BinaryExpression;
 import expression.literal.LiteralNode;
@@ -19,55 +22,88 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
     private final SemanticRule declaredVariableSemanticRuleChecker = new DeclaredVariableSemanticRule();
 
     @Override
-    public Result check(LetStatementNode node) {
-        Result getAscriptionResult = node.ascription();
-        if (!getAscriptionResult.isSuccessful()) return getAscriptionResult;
-        AscriptionNode ascription = ((CorrectResult<AscriptionNode>) getAscriptionResult).result();
-        Result getIdentifierNodeResult = ascription.identifier();
-        if (!getIdentifierNodeResult.isSuccessful()) return getIdentifierNodeResult;
-        LiteralNode literal = ((CorrectResult<LiteralNode>) getIdentifierNodeResult).result();
-        Result checkIdIsNotDeclaredResult = notDeclaredVariableSemanticRuleChecker.checkRules(literal);
-        if (!checkIdIsNotDeclaredResult.isSuccessful()) return checkIdIsNotDeclaredResult;
+    public Result<String> check(LetStatementNode node) {
+        Result<AscriptionNode> getAscriptionResult = node.ascription();
+        if (!getAscriptionResult.isSuccessful()) {
+            return new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        AscriptionNode ascription = getAscriptionResult.result();
+        Result<IdentifierNode> getIdentifierNodeResult = ascription.identifier();
+        if (!getIdentifierNodeResult.isSuccessful()){
+            return new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        IdentifierNode identifier = getIdentifierNodeResult.result();
+        Result<String> checkIdIsNotDeclaredResult = notDeclaredVariableSemanticRuleChecker.checkRules(identifier);
+        if (!checkIdIsNotDeclaredResult.isSuccessful()){
+            return checkIdIsNotDeclaredResult;
+        };
+        Result<TypeNode> getTypeNodeResult = ascription.type();
+        if (!getTypeNodeResult.isSuccessful()){
+            return new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        TypeNode type = getTypeNodeResult.result();
 
-        Result getExpressionResult = node.expression();
-        if (!getExpressionResult.isSuccessful()) return getExpressionResult;
-        BinaryExpression expression = ((CorrectResult<BinaryExpression>) getExpressionResult).result();
-        return this.check(expression);
-    }
+        Environment.getInstance().putIdType(identifier.name(), type.type());
+
+        Result<ExpressionNode> getExpressionResult = node.expression();
+        if (!getExpressionResult.isSuccessful()) {
+            return new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        ExpressionNode expression = getExpressionResult.result();
+        if (expression instanceof BinaryExpression binaryExpression) {
+            return this.check(binaryExpression);
+        }
+
+        return new IncorrectResult<>("Unmanaged expression.");    }
 
     @Override
-    public Result check(PrintStatementNode node) {
-        Result getExpressionResult = node.expression();
-        if (!getExpressionResult.isSuccessful()) return getExpressionResult;
-        BinaryExpression expression = ((CorrectResult<BinaryExpression>) getExpressionResult).result();
-        return this.check(expression);
+    public Result<String> check(PrintStatementNode node) {
+        Result<ExpressionNode> getExpressionResult = node.expression();
+        if (!getExpressionResult.isSuccessful()) {
+            return  new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        ExpressionNode expression = getExpressionResult.result();
+
+        if (expression instanceof BinaryExpression binaryExpression) {
+            return this.check(binaryExpression);
+        }
+
+        return new IncorrectResult<>("Unmanaged expression.");
     }
 
 
     @Override
-    public Result check(BinaryExpression node) {
-        Result getLeftChildResult = node.leftChild();
-        if (!getLeftChildResult.isSuccessful()) return getLeftChildResult;
-        Node leftChild = ((CorrectResult<Node>) getLeftChildResult).result();
-        Result checkRulesForLeftChild = checkRulesForChild(leftChild);
-        if (!checkRulesForLeftChild.isSuccessful()) return checkRulesForLeftChild;
+    public Result<String> check(BinaryExpression node) {
+        Result<ExpressionNode> getLeftChildResult = node.getLeftChild();
+        if (!getLeftChildResult.isSuccessful()) {
+            return new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        ExpressionNode leftChild = getLeftChildResult.result();
+        Result<String> checkRulesForLeftChild = checkRulesForChild(leftChild);
+        if (!checkRulesForLeftChild.isSuccessful()) {
+            return checkRulesForLeftChild;
+        }
 
-        Result getRightChildResult = node.rightChild();
-        if (!getRightChildResult.isSuccessful()) return getRightChildResult;
-        Node rightChild = ((CorrectResult<Node>) getRightChildResult).result();
-        Result checkRulesForRightChild = checkRulesForChild(rightChild);
-        if (!checkRulesForRightChild.isSuccessful()) return checkRulesForRightChild;
+        Result<ExpressionNode> getRightChildResult = node.getRightChild();
+        if (!getRightChildResult.isSuccessful()) {
+            return new IncorrectResult<>("This tree does not pass this rule.");
+        }
+        ExpressionNode rightChild = getRightChildResult.result();
+        Result<String> checkRulesForRightChild = checkRulesForChild(rightChild);
+        if (!checkRulesForRightChild.isSuccessful()) {
+            return checkRulesForRightChild;
+        }
 
         return new CorrectResult<>("The node passes this check.");
     }
 
-    private Result checkRulesForChild(Node child) {
+    private Result<String> checkRulesForChild(Node child) {
         if (child instanceof IdentifierNode identifierNode) {
             if (!declaredVariableSemanticRuleChecker.checkRules(identifierNode).isSuccessful()){
-                return new IncorrectResult("The variable " + identifierNode.value() + " has not been declared.");
+                return new IncorrectResult<>("The variable " + identifierNode.name() + " has not been declared.");
             };
         } else {
-            Result checkLeftChildResult = this.check((BinaryExpression) child);
+            Result<String> checkLeftChildResult = this.check((BinaryExpression) child);
             if (!checkLeftChildResult.isSuccessful()) return checkLeftChildResult;
         }
         return new CorrectResult<>("The node passes this check.");

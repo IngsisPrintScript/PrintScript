@@ -26,7 +26,7 @@ public class OperationFormatSemanticRule implements SemanticRule {
     }
 
     @Override
-    public Result checkRules(Node nodeToCheck) {
+    public Result<String> checkRules(Node nodeToCheck) {
         try {
             for (Class<? extends OperationFormatSemanticRule> specificOperationRule : specificOperationRules) {
                 SemanticRule semanticRule = specificOperationRule.getDeclaredConstructor().newInstance();
@@ -34,9 +34,9 @@ public class OperationFormatSemanticRule implements SemanticRule {
                     return semanticRule.checkRules(nodeToCheck);
                 }
             }
-            return new IncorrectResult("There was no specific rule for that operator.");
+            return new IncorrectResult<>("There was no specific rule for that operator.");
         } catch (Exception e) {
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<>(e.getMessage());
         }
     }
 }

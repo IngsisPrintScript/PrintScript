@@ -2,6 +2,7 @@ package parser.semantic.rules.type;
 
 import common.Environment;
 import common.Node;
+import expression.ExpressionNode;
 import expression.identifier.IdentifierNode;
 import expression.binary.BinaryExpression;
 import expression.literal.LiteralNode;
@@ -11,20 +12,19 @@ import responses.Result;
 public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
     @Override
     public String getType(Node node) {
-        if (node instanceof IdentifierNode identifierNode){
-            Result getIdType = Environment.getInstance().getIdType(identifierNode.value());
+        if (node instanceof IdentifierNode(String name)){
+            Result<String> getIdType = Environment.getInstance().getIdType(name);
             if (!getIdType.isSuccessful()) return "UnknownType";
-            return ((CorrectResult<String>) getIdType).result();
+            return getIdType.result();
         }
-        if (node instanceof LiteralNode literalNode) {
-            String literal = literalNode.value();
-            if (literal.startsWith("\"") && literal.endsWith("\"")) {
+        if (node instanceof LiteralNode(String value)) {
+            if (value.startsWith("\"") && value.endsWith("\"")) {
                 return "String";
-            } else if (literal.startsWith("'") && literal.endsWith("'")) {
+            } else if (value.startsWith("'") && value.endsWith("'")) {
                 return "String";
             }
             boolean isNumber = true;
-            for (char c: literal.toCharArray()){
+            for (char c: value.toCharArray()){
                 if (!Character.isDigit(c)){
                     isNumber = false;
                 }
@@ -36,9 +36,9 @@ public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
             }
         } else {
             if (!(node instanceof BinaryExpression binaryExpression)) return "UnknownType";
-            Result getLeftChildResult = binaryExpression.leftChild();
+            Result<ExpressionNode> getLeftChildResult = binaryExpression.getLeftChild();
             if (!getLeftChildResult.isSuccessful()) return "UnknownType";
-            Node leftChild = ((CorrectResult<Node>) getLeftChildResult).result();
+            ExpressionNode leftChild = getLeftChildResult.result();
             return this.getType(leftChild);
         }
     }

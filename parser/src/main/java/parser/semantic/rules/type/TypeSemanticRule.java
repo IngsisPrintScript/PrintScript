@@ -21,14 +21,14 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
     }
 
     @Override
-    public Result checkRules(Node nodeToCheck) {
+    public Result<String> checkRules(Node nodeToCheck) {
         if (!(nodeToCheck instanceof LiteralNode literalNode)) {
-            return new IncorrectResult("This rule does not apply to the received type of node");
+            return new IncorrectResult<>("This rule does not apply to the received type of node");
         }
         if (expectedType.equals(typeGetter.getType(nodeToCheck))){
             return new CorrectResult<String>("Literal type is equal to the expected type");
         } else {
-            return new IncorrectResult("Literal type is not equal to the expected type");
+            return new IncorrectResult<>("Literal type is not equal to the expected type");
         }
     }
 }

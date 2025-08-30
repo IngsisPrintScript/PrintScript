@@ -20,10 +20,10 @@ public record JavaCodeExecutor(JavaCompiler compiler, String className) implemen
         this(ToolProvider.getSystemJavaCompiler(), className);
     }
     @Override
-    public Result executeCode(Path path) {
-        if (compiler() == null) return new IncorrectResult("compiler is null.");
+    public Result<String> executeCode(Path path) {
+        if (compiler() == null) return new IncorrectResult<>("compiler is null.");
         int result = compiler().run(null, null, null,  path.toAbsolutePath().toString());
-        if (result != 0) return new IncorrectResult("compiler result is " + result);
+        if (result != 0) return new IncorrectResult<>("compiler result is " + result);
         File currentDir = new File(path.getParent().toString());
         try{
             URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] {currentDir.toURI().toURL()});
@@ -33,7 +33,7 @@ public record JavaCodeExecutor(JavaCompiler compiler, String className) implemen
             main.invoke(null, (Object) args);
             return new CorrectResult<>("Compiled file has ben executed successfully.");
         } catch (Exception e){
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<>(e.getMessage());
         }
     }
 }

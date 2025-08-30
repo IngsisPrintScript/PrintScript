@@ -3,6 +3,7 @@ package parser.ast.builders.literal;
 
 import common.Node;
 import common.TokenInterface;
+import expression.literal.LiteralNode;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
@@ -16,19 +17,23 @@ public record LiteralBuilder() implements ASTreeBuilderInterface {
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result peekResult = tokenStream.peek();
+        Result<TokenInterface> peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
+        TokenInterface token = peekResult.result();
         return token.equals(template);
     }
 
     @Override
-    public Result build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build literal node.");
-        Result consumeResult = tokenStream.consume(template);
-        if (!consumeResult.isSuccessful()) return consumeResult;
-        TokenInterface token = ((CorrectResult<TokenInterface>) consumeResult).result();
+    public Result<LiteralNode> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)){
+            return new IncorrectResult<>("Cannot build literal node.");
+        }
+        Result<TokenInterface> consumeResult = tokenStream.consume(template);
+        if (!consumeResult.isSuccessful()){
+            return new IncorrectResult<>("Cannot build literal node.");
+        };
+        TokenInterface token = consumeResult.result();
         Node literalNode = new NodeFactory().createLiteralNode(token.value());
-        return new CorrectResult<>(literalNode);
+        return new CorrectResult<>((LiteralNode) literalNode);
     }
 }

@@ -18,44 +18,44 @@ public class SemanticRulesChecker implements RuleVisitor {
     }
 
     @Override
-    public Result check(LetStatementNode node) {
+    public Result<String> check(LetStatementNode node) {
         try{
             for (Class<? extends SemanticRulesChecker> rule : rules) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
-                Result checkResult = checker.check(node);
+                Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
         }catch (Exception e){
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<>(e.getMessage());
         }
         return new CorrectResult<String>("AST passed all semantic rules.");
     }
 
     @Override
-    public Result check(PrintStatementNode node) {
+    public Result<String> check(PrintStatementNode node) {
         try{
             for (Class<? extends SemanticRulesChecker> rule : rules) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
-                Result checkResult = checker.check(node);
+                Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
         }catch (Exception e){
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<>(e.getMessage());
         }
         return new CorrectResult<String>("AST passed all semantic rules.");
     }
 
 
     @Override
-    public Result check(BinaryExpression node) {
+    public Result<String> check(BinaryExpression node) {
         try{
             for (Class<? extends SemanticRulesChecker> rule : rules) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
-                Result checkResult = checker.check(node);
+                Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
         }catch (Exception e){
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<String>(e.getMessage());
         }
         return new CorrectResult<String>("AST passed all semantic rules.");
     }

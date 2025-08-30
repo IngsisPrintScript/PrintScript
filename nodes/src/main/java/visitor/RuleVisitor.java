@@ -6,7 +6,7 @@ import statements.LetStatementNode;
 import statements.PrintStatementNode;
 
 public interface RuleVisitor {
-    Result check(LetStatementNode node);
-    Result check(PrintStatementNode node);
-    Result check(BinaryExpression node);
+    Result<String> check(LetStatementNode node);
+    Result<String> check(PrintStatementNode node);
+    Result<String> check(BinaryExpression node);
 }
