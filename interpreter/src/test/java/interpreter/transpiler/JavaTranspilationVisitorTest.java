@@ -52,7 +52,7 @@ public class JavaTranspilationVisitorTest {
             if (!treeVisitResult.isSuccessful()) {
                 Assertions.fail(((IncorrectResult) treeVisitResult).errorMessage());
             }
-            String code = ((CorrectResult<String>) treeVisitResult).newObject();
+            String code = ((CorrectResult<String>) treeVisitResult).result();
             Assertions.assertEquals(treeCodeMap.get(tree), code);
         }
     }

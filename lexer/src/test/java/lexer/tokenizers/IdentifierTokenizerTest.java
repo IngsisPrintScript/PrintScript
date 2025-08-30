@@ -33,7 +33,7 @@ public class IdentifierTokenizerTest {
         Assertions.assertInstanceOf(CorrectResult.class, eolTokenizer.tokenize("validIdentifier"));
         Result tokenizeResult = eolTokenizer.tokenize("validIdentifier");
         // Asserting the result is what is expected
-        Object object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        Object object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         TokenInterface token = (TokenInterface) object;
         Assertions.assertNotNull(token);

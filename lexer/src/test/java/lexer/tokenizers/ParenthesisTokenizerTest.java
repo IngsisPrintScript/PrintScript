@@ -36,7 +36,7 @@ public class ParenthesisTokenizerTest {
         Assertions.assertInstanceOf(CorrectResult.class, rightParenthesisTokenizer.tokenize(")"));
         Result tokenizeResult = rightParenthesisTokenizer.tokenize(")");
         // Asserting the result is what is expected
-        Object object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        Object object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         TokenInterface token = (TokenInterface) object;
         Assertions.assertNotNull(token);
@@ -50,7 +50,7 @@ public class ParenthesisTokenizerTest {
         Assertions.assertInstanceOf(CorrectResult.class, leftParenthesisTokenizer.tokenize("("));
         tokenizeResult = leftParenthesisTokenizer.tokenize("(");
         // Asserting the result is what is expected
-        object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         token = (TokenInterface) object;
         Assertions.assertNotNull(token);

@@ -30,7 +30,7 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
         if (!peekResult.isSuccessful()) {
             return false;
         }
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
         return token.equals(printTemplate);
     }
 
@@ -49,7 +49,7 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
         if (!buildExpressionResult.isSuccessful()) {
             return buildExpressionResult;
         }
-        Node expression = ((CorrectResult<Node>) buildExpressionResult).newObject();
+        Node expression = ((CorrectResult<Node>) buildExpressionResult).result();
         root.setExpression(expression);
 
         if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful())

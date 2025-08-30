@@ -33,7 +33,7 @@ public class OperatorTokenizerTest {
         Assertions.assertInstanceOf(CorrectResult.class, eolTokenizer.tokenize("="));
         // Asserting the result is what is expected
         Result tokenizeResult = eolTokenizer.tokenize("=");
-        Object object = ( (CorrectResult<?>)tokenizeResult).newObject();
+        Object object = ( (CorrectResult<?>)tokenizeResult).result();
         Assertions.assertInstanceOf(TokenInterface.class, object);
         TokenInterface token = (TokenInterface) object;
         Assertions.assertNotNull(token);

@@ -18,7 +18,7 @@ public record Lexical(TokenizerInterface tokenizer) implements LexicalInterface 
             if (!result.isSuccessful()) {
                 return result;
             }
-            TokenInterface token = ( (CorrectResult<TokenInterface>) result).newObject();
+            TokenInterface token = ( (CorrectResult<TokenInterface>) result).result();
             tokens.add(token);
         }
         return new CorrectResult<>(tokens);

@@ -1,6 +1,6 @@
 package responses;
 
-public record CorrectResult<T>(T newObject) implements Result {
+public record CorrectResult<T>(T result) implements Result<T> {
     @Override
     public Boolean isSuccessful() {
         return true;
