@@ -60,7 +60,7 @@ public class LetStatementNode implements Node, SemanticallyCheckable {
     }
 
     @Override
-    public Result acceptCheck(RuleVisitor checker) {
+    public Result<String> acceptCheck(RuleVisitor checker) {
         return  checker.check(this);
     }
 
