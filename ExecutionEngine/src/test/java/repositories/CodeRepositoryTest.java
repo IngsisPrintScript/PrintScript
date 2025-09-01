@@ -6,13 +6,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 public class CodeRepositoryTest {
     private static CodeIteratorInterface iterator;
-    private static String code;
+    private static List<String> code;
 
     @BeforeAll
     public static void setUp() {
-        code = "placeholder";
+        code = List.of("placeholder");
         iterator = new MockCodeIterator(code);
     }
 
@@ -26,7 +28,7 @@ public class CodeRepositoryTest {
     public void functionsCodeRepositoryTest(){
         CodeRepositoryInterface repository = new CodeRepository(iterator);
         Assertions.assertTrue(repository.hasMoreCode());
-        Assertions.assertEquals(code, repository.nextChunkOfCode());
+        Assertions.assertEquals(code.getFirst(), repository.nextChunkOfCode());
         Assertions.assertFalse(repository.hasMoreCode());
     }
 }

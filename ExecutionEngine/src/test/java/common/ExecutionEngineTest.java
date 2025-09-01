@@ -27,6 +27,7 @@ import tokenizers.factories.TokenizerFactory;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class ExecutionEngineTest {
     private static CodeRepositoryInterface repository;
@@ -38,7 +39,10 @@ public class ExecutionEngineTest {
 
     @BeforeAll
     static void setUp() {
-        String code = "println(\"aStr\");";
+        List<String> code = List.of(
+                "let var:String = \"aStr\";",
+                "println(var);"
+        );
         CodeIteratorInterface iterator = new MockCodeIterator(code);
         repository = new CodeRepository(iterator);
         TokenizerInterface tokenizer = new TokenizerFactory().createDefaultTokenizer();
