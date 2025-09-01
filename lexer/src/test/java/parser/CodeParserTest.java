@@ -9,13 +9,17 @@ import tokenizers.factories.TokenizerFactory;
 
 public class CodeParserTest {
     private static TokenizerInterface tokenizer;
-    private static String validString;
+    private static String letValidString;
+    private static String printValidString;
+    private static String expressionValidString;
     private static String invalidString;
 
     @BeforeAll
     static void setup() {
         tokenizer = new TokenizerFactory().createDefaultTokenizer();
-        validString = "let var:String=\"aString\";";
+        letValidString = "let var:String=\"aString\";";
+        printValidString = "println(id);";
+        expressionValidString = "4+4;";
         invalidString = "let varString=\"aString\"";
     }
 
@@ -28,7 +32,9 @@ public class CodeParserTest {
     @Test
     public void parseTest(){
         CodeParserInterface parser = new CodeParser(tokenizer);
-        Assertions.assertTrue(parser.parse(validString).isSuccessful());
+        Assertions.assertTrue(parser.parse(letValidString).isSuccessful());
+        Assertions.assertTrue(parser.parse(printValidString).isSuccessful());
+        Assertions.assertTrue(parser.parse(expressionValidString).isSuccessful());
         Assertions.assertFalse(parser.parse(invalidString).isSuccessful());
     }
 
