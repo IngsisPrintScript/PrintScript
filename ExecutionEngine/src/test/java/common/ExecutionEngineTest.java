@@ -40,11 +40,9 @@ public class ExecutionEngineTest {
     @BeforeAll
     static void setUp() {
         List<String> code = List.of(
-                "let var:String = \"aStr\";",
-                "println(var);",
-                "let varA:String = \"aStr\";",
-                "varA=\"anotherStr\";",
-                "println(varA);"
+                "let varOne:String = \"varA\";",
+                "let varTwo:String = \"varB\";",
+                "println(varOne + varTwo);"
         );
         CodeIteratorInterface iterator = new MockCodeIterator(code);
         repository = new CodeRepository(iterator);
