@@ -5,7 +5,7 @@ import common.TokenInterface;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
-import lexer.tokenizers.TokenizerInterface;
+import tokenizers.TokenizerInterface;
 import stream.TokenStream;
 import stream.TokenStreamInterface;
 
