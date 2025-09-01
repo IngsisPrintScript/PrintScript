@@ -1,6 +1,6 @@
 package interpreter.writer;
 
-import responses.Result;
+import results.Result;
 
 import java.nio.file.Path;
 

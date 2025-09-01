@@ -2,9 +2,9 @@ package lexer;
 
 
 import common.TokenInterface;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import tokenizers.TokenizerInterface;
 import stream.TokenStream;
 import stream.TokenStreamInterface;

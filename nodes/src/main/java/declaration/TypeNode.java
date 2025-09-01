@@ -2,7 +2,7 @@ package declaration;
 
 
 import common.Node;
-import responses.Result;
+import results.Result;
 import visitor.VisitorInterface;
 
 import java.util.List;

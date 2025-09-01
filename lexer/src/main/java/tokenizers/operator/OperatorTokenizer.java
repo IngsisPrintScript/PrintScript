@@ -1,7 +1,7 @@
 package tokenizers.operator;
 
 import common.TokenInterface;
-import responses.Result;
+import results.Result;
 import tokenizers.TokenizerInterface;
 
 import java.util.List;

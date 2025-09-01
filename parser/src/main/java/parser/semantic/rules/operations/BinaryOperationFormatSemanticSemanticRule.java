@@ -3,13 +3,14 @@ package parser.semantic.rules.operations;
 import common.Node;
 import expression.ExpressionNode;
 import expression.binary.BinaryExpression;
+import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
 import factories.NodeFactory;
 import parser.semantic.rules.type.ExpressionTypeGetter;
 import parser.semantic.rules.type.ExpressionTypeGetterInterface;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSemanticRule {
     private static final Node template = new NodeFactory().createAdditionNode();
@@ -18,7 +19,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
 
     @Override
     public boolean match(Node node) {
-        return node.equals(template);
+        return node instanceof BinaryExpression;
     }
 
     @Override
@@ -34,6 +35,8 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         String expectedType;
         if (leftChild instanceof LiteralNode literalLeftNode) {
             expectedType =  typeGetter.getType(literalLeftNode);
+        } else if (leftChild instanceof IdentifierNode identifierLeftNode) {
+            expectedType = typeGetter.getType(identifierLeftNode);
         } else {
             boolean leftChildIsCorrectlyFormatted = new OperationFormatSemanticRule().checkRules(nodeToCheck).isSuccessful();
             if (!leftChildIsCorrectlyFormatted) {
@@ -49,6 +52,10 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         Node rightChild = getRightNodeResult.result();
         if (rightChild instanceof LiteralNode literalRightNode) {
             if (!expectedType.equals(typeGetter.getType(literalRightNode))) {
+                return new IncorrectResult<>("This node does not pass the check.");
+            }
+        } else if (rightChild instanceof IdentifierNode identifierRightNode ) {
+            if (!expectedType.equals(typeGetter.getType(identifierRightNode))) {
                 return new IncorrectResult<>("This node does not pass the check.");
             }
         } else {

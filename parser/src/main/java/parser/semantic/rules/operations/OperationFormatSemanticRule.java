@@ -2,8 +2,8 @@ package parser.semantic.rules.operations;
 
 import common.Node;
 import parser.semantic.rules.SemanticRule;
-import responses.IncorrectResult;
-import responses.Result;
+import results.IncorrectResult;
+import results.Result;
 
 import java.util.List;
 

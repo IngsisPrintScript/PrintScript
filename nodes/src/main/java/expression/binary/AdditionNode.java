@@ -1,10 +1,9 @@
 package expression.binary;
 
 
-import expression.ExpressionNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import visitor.VisitorInterface;
 
 public class AdditionNode extends BinaryExpression{

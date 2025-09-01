@@ -2,9 +2,8 @@ package interpreter;
 
 
 import common.Node;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.IncorrectResult;
+import results.Result;
 import interpreter.executor.CodeExecutorInterface;
 import interpreter.transpiler.TranspilerInterface;
 import interpreter.writer.CodeWriterInterface;

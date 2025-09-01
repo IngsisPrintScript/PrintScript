@@ -1,11 +1,10 @@
 package parser;
 
 import common.Node;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
-import stream.TokenStream;
 import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 

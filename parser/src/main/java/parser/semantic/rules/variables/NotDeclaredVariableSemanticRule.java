@@ -2,9 +2,9 @@ package parser.semantic.rules.variables;
 
 import common.Node;
 import parser.semantic.rules.SemanticRule;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 public record NotDeclaredVariableSemanticRule() implements SemanticRule {
     private static final SemanticRule OPPOSITE_SEMANTIC_RULE = new DeclaredVariableSemanticRule();
