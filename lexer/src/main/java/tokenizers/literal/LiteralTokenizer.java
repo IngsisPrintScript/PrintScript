@@ -9,12 +9,11 @@ import tokenizers.TokenizerInterface;
 public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
-        if (input.length() <2) return false;
         char[] tokenChars = input.toCharArray();
         if (input.startsWith("'") && input.endsWith("'")) {
-            return true;
+            return input.length() >=2;
         } else if (input.startsWith("\"") && input.endsWith("\"")) {
-            return true;
+            return input.length() >=2;
         }
 
         for(Character c : tokenChars){
