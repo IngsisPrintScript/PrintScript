@@ -64,17 +64,17 @@ public class LexicalTest {
         LexicalInterface lexical = new Lexical(tokenizer);
 
         Result<TokenStreamInterface> analysisResult = lexical.analyze(stringVarInputs);
-        Assertions.assertInstanceOf(CorrectResult.class, analysisResult);
+        Assertions.assertTrue(analysisResult.isSuccessful());
         TokenStreamInterface tokens = analysisResult.result();
         Assertions.assertEquals(stringVarTokens, tokens);
 
         analysisResult = lexical.analyze(numberVarInputs);
-        Assertions.assertInstanceOf(CorrectResult.class, analysisResult);
+        Assertions.assertTrue(analysisResult.isSuccessful());
         tokens = analysisResult.result();
         Assertions.assertEquals(numberVarTokens, tokens);
 
         analysisResult = lexical.analyze(invalidInputs);
-        Assertions.assertInstanceOf(IncorrectResult.class, analysisResult);
+        Assertions.assertFalse(analysisResult.isSuccessful());
 
     }
 }
