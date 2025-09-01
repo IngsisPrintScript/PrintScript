@@ -15,10 +15,10 @@ public record DefaultInterpreter(TranspilerInterface transpiler, CodeWriterInter
     public Result interpret(Node tree) {
         Result transpilationResult = transpiler().transpile(tree);
         if (!transpilationResult.isSuccessful()) return transpilationResult;
-        String code = ((CorrectResult<String>) transpilationResult).newObject();
+        String code = ((CorrectResult<String>) transpilationResult).result();
         Result codeWritingResult = writer().writeCode(code);
         if (!codeWritingResult.isSuccessful()) return codeWritingResult;
-        Path filePath = ((CorrectResult<Path>) codeWritingResult).newObject();
+        Path filePath = ((CorrectResult<Path>) codeWritingResult).result();
         return executor().executeCode(filePath);
     }
 }

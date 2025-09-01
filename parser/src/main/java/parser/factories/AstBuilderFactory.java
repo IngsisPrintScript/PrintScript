@@ -3,8 +3,9 @@ package parser.factories;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.ast.builders.FinalBuilder;
 import parser.ast.builders.ascription.AscriptionBuilder;
-import parser.ast.builders.expression.BinaryExpressionBuilder;
-import parser.ast.builders.expression.operators.OperatorBuilder;
+import parser.ast.builders.expression.ExpressionBuilder;
+import parser.ast.builders.expression.binary.BinaryExpressionBuilder;
+import parser.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
 import parser.ast.builders.identifier.IdentifierBuilder;
 import parser.ast.builders.let.LetBuilder;
 import parser.ast.builders.literal.LiteralBuilder;
@@ -43,7 +44,12 @@ public record AstBuilderFactory() implements AstBuilderFactoryInterface {
 
     @Override
     public ASTreeBuilderInterface createOperatorBuilder() {
-        return new OperatorBuilder();
+        return new BinaryOperatorBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createExpressionBuilder() {
+        return new ExpressionBuilder();
     }
 
     @Override

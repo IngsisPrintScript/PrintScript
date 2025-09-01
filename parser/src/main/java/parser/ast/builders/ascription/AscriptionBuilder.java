@@ -3,6 +3,10 @@ package parser.ast.builders.ascription;
 
 import common.Node;
 import common.TokenInterface;
+import declaration.TypeNode;
+import expression.identifier.IdentifierNode;
+import parser.ast.builders.identifier.IdentifierBuilder;
+import parser.ast.builders.type.TypeBuilder;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
@@ -20,28 +24,36 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result peekResult = tokenStream.peek(1);
+        Result<TokenInterface> peekResult = tokenStream.peek(1);
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = peekResult.result();
         return token.equals(template);
     }
 
     @Override
-    public Result build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build identifier node.");
+    public Result<AscriptionNode> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)) {
+            return new IncorrectResult<>("Cannot build identifier node.");
+        }
 
-        Result buildIdentifierResult = builderFactory.createIdentifierBuilder().build(tokenStream);
-        if (!buildIdentifierResult.isSuccessful()) return buildIdentifierResult;
+        Result<IdentifierNode> buildIdentifierResult =
+                ((IdentifierBuilder) builderFactory.createIdentifierBuilder()).build(tokenStream);
+        if (!buildIdentifierResult.isSuccessful()) {
+            return new IncorrectResult<>("Cannot build identifier node.");
+        }
 
         if (!tokenStream.consume(template).isSuccessful())
-            return new IncorrectResult("Token is not an ascription token.");
+            return new IncorrectResult<>("Token is not an ascription token.");
 
-        Result buildTypeResult = builderFactory.createTypeBuilder().build(tokenStream);
-        if (!buildTypeResult.isSuccessful()) return buildTypeResult;
+        Result<TypeNode> buildTypeResult =
+                ((TypeBuilder) builderFactory.createTypeBuilder()).build(tokenStream);
+        if (!buildTypeResult.isSuccessful()) {
+            return new IncorrectResult<>("Cannot build type node.");
+        }
 
-        Node identifierNode = ((CorrectResult<Node>) buildIdentifierResult).newObject();
+        IdentifierNode identifierNode = buildIdentifierResult.result();
         AscriptionNode ascriptionNode = (AscriptionNode) new NodeFactory().createAscriptionNode();
-        Node typeNode = ((CorrectResult<Node>) buildTypeResult).newObject();
+        TypeNode typeNode = buildTypeResult.result();
 
         ascriptionNode.setType(typeNode);
         ascriptionNode.setIdentifier(identifierNode);

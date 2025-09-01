@@ -3,7 +3,9 @@ package common;
 import responses.Result;
 import visitor.VisitableInterface;
 
+import java.util.List;
+
 public interface Node extends VisitableInterface {
-    Result children();
+    List<Node> children();
     Boolean isNil();
 }
