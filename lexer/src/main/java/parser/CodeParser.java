@@ -30,7 +30,7 @@ public record CodeParser(TokenizerInterface tokenizer) implements CodeParserInte
                     continue;
                 }
             }
-            if (tokenizer().tokenize(possibleToken).isSuccessful()){
+            if (tokenizer().tokenize(possibleToken).isSuccessful() && !possibleToken.isEmpty()){
                 validToken = true;
                 tempCharBuffer.clear();
                 tempCharBuffer.addAll(charBuffer);

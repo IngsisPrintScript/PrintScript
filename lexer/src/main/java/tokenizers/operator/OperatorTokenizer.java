@@ -8,7 +8,7 @@ import java.util.List;
 
 public class OperatorTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final List<Class<? extends OperatorTokenizer>> subclasses = List.of(AssignationOperatorTokenizer.class);
+    private final List<Class<? extends OperatorTokenizer>> subclasses = List.of(AssignationOperatorTokenizer.class, AdditionOperatorTokenizer.class);
 
     public OperatorTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
