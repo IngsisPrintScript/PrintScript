@@ -1,6 +1,6 @@
 package visitor;
 
-import responses.Result;
+import results.Result;
 
 public interface SemanticallyCheckable {
     Result<String> acceptCheck(RuleVisitor checker);

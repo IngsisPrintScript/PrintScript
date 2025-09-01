@@ -1,6 +1,6 @@
 package common;
 
-import responses.Result;
+import results.Result;
 
 public interface ExecutionEngineInterface {
     Result<String> execute();

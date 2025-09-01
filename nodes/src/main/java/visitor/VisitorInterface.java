@@ -1,7 +1,8 @@
 package visitor;
 
 import common.NilNode;
-import responses.Result;
+import expression.binary.AssignationNode;
+import results.Result;
 import declaration.AscriptionNode;
 import expression.identifier.IdentifierNode;
 import declaration.TypeNode;
@@ -15,6 +16,7 @@ public interface VisitorInterface {
     Result<String> visit(PrintStatementNode node);
     Result<String> visit(AscriptionNode node);
     Result<String> visit(AdditionNode node);
+    Result<String> visit(AssignationNode node);
     Result<String> visit(LiteralNode node);
     Result<String> visit(IdentifierNode node);
     Result<String> visit(TypeNode node);

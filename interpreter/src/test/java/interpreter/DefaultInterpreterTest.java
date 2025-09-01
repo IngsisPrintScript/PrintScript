@@ -5,7 +5,7 @@ import common.Node;
 import declaration.TypeNode;
 import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
-import responses.Result;
+import results.Result;
 import declaration.AscriptionNode;
 import factories.NodeFactory;
 import interpreter.executor.CodeExecutorInterface;

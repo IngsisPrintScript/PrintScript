@@ -1,8 +1,8 @@
 package common;
 
 import expression.ExpressionNode;
-import responses.IncorrectResult;
-import responses.Result;
+import results.Result;
+import visitor.RuleVisitor;
 import visitor.VisitorInterface;
 
 import java.util.List;
@@ -31,5 +31,10 @@ public class NilNode implements Node, ExpressionNode {
     @Override
     public Result<String> prettyPrint() {
         throw new UnsupportedOperationException("Nil node can't be printed.");
+    }
+
+    @Override
+    public Result<String> acceptCheck(RuleVisitor checker) {
+        throw new UnsupportedOperationException("Nil node can't be acceptCheck.");
     }
 }

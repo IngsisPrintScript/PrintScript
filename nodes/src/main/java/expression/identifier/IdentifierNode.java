@@ -4,9 +4,10 @@ package expression.identifier;
 import common.Environment;
 import common.Node;
 import expression.ExpressionNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
+import visitor.RuleVisitor;
 import visitor.VisitorInterface;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
 public record IdentifierNode(String name) implements Node, ExpressionNode {
 
     @Override
-    public Result accept(VisitorInterface visitor) {
+    public Result<String> accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
 
@@ -41,5 +42,10 @@ public record IdentifierNode(String name) implements Node, ExpressionNode {
     @Override
     public Result<String> prettyPrint() {
         return new CorrectResult<>(this.name());
+    }
+
+    @Override
+    public Result<String> acceptCheck(RuleVisitor checker) {
+        return checker.check(this);
     }
 }

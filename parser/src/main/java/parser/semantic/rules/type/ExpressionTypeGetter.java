@@ -6,8 +6,7 @@ import expression.ExpressionNode;
 import expression.identifier.IdentifierNode;
 import expression.binary.BinaryExpression;
 import expression.literal.LiteralNode;
-import responses.CorrectResult;
-import responses.Result;
+import results.Result;
 
 public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
     @Override

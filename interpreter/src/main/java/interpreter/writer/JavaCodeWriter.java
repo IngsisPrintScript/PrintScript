@@ -1,8 +1,8 @@
 package interpreter.writer;
 
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

@@ -1,8 +1,8 @@
 package tokenizers;
 
 import common.TokenInterface;
-import responses.IncorrectResult;
-import responses.Result;
+import results.IncorrectResult;
+import results.Result;
 
 public class FinalTokenizer implements TokenizerInterface {
     @Override

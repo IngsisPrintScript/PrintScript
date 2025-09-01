@@ -6,9 +6,9 @@ import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
 import factories.NodeFactory;
 import parser.semantic.rules.SemanticRule;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterface typeGetter) implements SemanticRule {
     private static final Node template = new NodeFactory().createTypeNode("placeholder");

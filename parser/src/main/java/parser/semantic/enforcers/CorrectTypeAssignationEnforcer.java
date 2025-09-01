@@ -1,16 +1,18 @@
 package parser.semantic.enforcers;
 
-import common.Node;
+import common.Environment;
 import declaration.AscriptionNode;
 import declaration.TypeNode;
 import expression.ExpressionNode;
 import expression.binary.BinaryExpression;
+import expression.identifier.IdentifierNode;
+import expression.literal.LiteralNode;
 import parser.semantic.rules.operations.OperationFormatSemanticRule;
 import parser.semantic.rules.type.ExpressionTypeGetter;
 import parser.semantic.rules.type.TypeSemanticRule;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
 
@@ -42,7 +44,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
             return check(binaryExpression);
         }
 
-        return typeRule.checkRules(expressionNode);
+        return expressionNode.acceptCheck(this);
     }
 
     @Override
@@ -59,15 +61,34 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
             return check(binaryExpression);
         }
 
-        return typeRule.checkRules(expressionNode);
+        return expressionNode.acceptCheck(this);
     }
 
     @Override
     public Result<String> check(BinaryExpression node) {
-        if (operationFormatRule.checkRules(node).isSuccessful()){
-            return typeRule.checkRules(node);
+        if (typeRule == null) {
+            typeRule = new TypeSemanticRule(expressionTypeGetter.getType(node));
+        }
+
+        if (operationFormatRule.checkRules(node).isSuccessful()) {
+            Result<ExpressionNode> getLeftExpressionResult = node.getLeftChild();
+            if (!getLeftExpressionResult.isSuccessful()) {
+                return new IncorrectResult<>("This rule does not apply to the received node.");
+            }
+            ExpressionNode leftExpression = getLeftExpressionResult.result();
+            return leftExpression.acceptCheck(this);
         } else {
             return new IncorrectResult<>("Expression did not pass the check");
         }
+    }
+
+    @Override
+    public Result<String> check(IdentifierNode node) {
+        typeRule = new TypeSemanticRule(Environment.getInstance().getIdType(node.name()).result());
+        return typeRule.checkRules(node);
+    }
+    @Override
+    public Result<String> check(LiteralNode node) {
+        return typeRule.checkRules(node);
     }
 }

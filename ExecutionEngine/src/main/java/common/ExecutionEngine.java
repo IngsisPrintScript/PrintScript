@@ -6,9 +6,9 @@ import parser.CodeParserInterface;
 import parser.SyntacticInterface;
 import parser.semantic.SemanticInterface;
 import repositories.CodeRepositoryInterface;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 
