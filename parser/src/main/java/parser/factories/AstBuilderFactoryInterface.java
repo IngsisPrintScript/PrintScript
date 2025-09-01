@@ -17,5 +17,7 @@ public interface AstBuilderFactoryInterface {
 
     ASTreeBuilderInterface createOperatorBuilder();
 
+    ASTreeBuilderInterface createExpressionBuilder();
+
     ASTreeBuilderInterface createFinalBuilder();
 }

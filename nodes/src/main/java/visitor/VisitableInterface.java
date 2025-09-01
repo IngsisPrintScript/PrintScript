@@ -3,5 +3,5 @@ package visitor;
 import responses.Result;
 
 public interface VisitableInterface {
-    Result accept(VisitorInterface visitor);
+    Result<String> accept(VisitorInterface visitor);
 }

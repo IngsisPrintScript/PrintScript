@@ -2,6 +2,9 @@ package interpreter;
 
 
 import common.Node;
+import declaration.TypeNode;
+import expression.identifier.IdentifierNode;
+import expression.literal.LiteralNode;
 import responses.Result;
 import declaration.AscriptionNode;
 import factories.NodeFactory;
@@ -36,14 +39,14 @@ public class DefaultInterpreterTest {
         executor = new JavaCodeExecutor("ClassTest");
         LetStatementNode letNodeOne = (LetStatementNode) nodeFactory.createLetStatementNode();
         AscriptionNode ascriptionNode = (AscriptionNode) nodeFactory.createAscriptionNode();
-        ascriptionNode.setIdentifier(nodeFactory.createIdentifierNode("identifier"));
-        ascriptionNode.setType(nodeFactory.createTypeNode("String"));
+        ascriptionNode.setIdentifier((IdentifierNode) nodeFactory.createIdentifierNode("identifier"));
+        ascriptionNode.setType((TypeNode) nodeFactory.createTypeNode("String"));
         letNodeOne.setAscription(ascriptionNode);
         LetStatementNode letNodeTwo = (LetStatementNode) nodeFactory.createLetStatementNode();
         letNodeTwo.setAscription(ascriptionNode);
-        letNodeTwo.setExpression(nodeFactory.createLiteralNode("\"placeholder\""));
+        letNodeTwo.setExpression((LiteralNode) nodeFactory.createLiteralNode("\"placeholder\""));
         PrintStatementNode printNode = (PrintStatementNode) nodeFactory.createPrintlnStatementNode();
-        printNode.setExpression(nodeFactory.createLiteralNode("\"Hello, World!\""));
+        printNode.setExpression((LiteralNode) nodeFactory.createLiteralNode("\"Hello, World!\""));
         treeCodeMap = Map.ofEntries(
                 Map.entry(letNodeOne, "String identifier;"),
                 Map.entry(letNodeTwo, "String identifier = \"placeholder\";"),
