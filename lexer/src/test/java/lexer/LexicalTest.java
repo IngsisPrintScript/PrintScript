@@ -1,12 +1,11 @@
 package lexer;
 
-import common.TokenInterface;
 import responses.CorrectResult;
 import responses.IncorrectResult;
 import responses.Result;
 import factories.tokens.TokenFactory;
-import lexer.tokenizers.factories.TokenizerFactory;
-import lexer.tokenizers.TokenizerInterface;
+import tokenizers.factories.TokenizerFactory;
+import tokenizers.TokenizerInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
