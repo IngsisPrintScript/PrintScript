@@ -52,6 +52,10 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
         ExpressionNode expression = getExpressionResult.result();
         if (expression instanceof BinaryExpression binaryExpression) {
             return this.check(binaryExpression);
+        } else if (expression instanceof LiteralNode) {
+            return new CorrectResult<>("This tree does pass this rule.");
+        } else if (expression instanceof IdentifierNode) {
+            return new CorrectResult<>("This tree does pass this rule.");
         }
 
         return new IncorrectResult<>("Unmanaged expression.");    }
@@ -66,6 +70,10 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
 
         if (expression instanceof BinaryExpression binaryExpression) {
             return this.check(binaryExpression);
+        } else if (expression instanceof LiteralNode) {
+            return new CorrectResult<>("This tree does pass this rule.");
+        } else if (expression instanceof IdentifierNode) {
+            return new CorrectResult<>("This tree does pass this rule.");
         }
 
         return new IncorrectResult<>("Unmanaged expression.");

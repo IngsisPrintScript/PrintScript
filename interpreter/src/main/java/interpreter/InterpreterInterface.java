@@ -5,5 +5,5 @@ import common.Node;
 import responses.Result;
 
 public interface InterpreterInterface {
-    Result interpret(Node tree);
+    Result<String> interpret(Node tree);
 }

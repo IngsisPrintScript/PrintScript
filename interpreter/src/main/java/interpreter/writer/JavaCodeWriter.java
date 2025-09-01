@@ -14,7 +14,7 @@ public record JavaCodeWriter(Path path, String className) implements CodeWriterI
     }
 
     @Override
-    public Result writeCode(String code) {
+    public Result<Path> writeCode(String code) {
         try {
             String wrappedCode =
                     """
@@ -27,7 +27,7 @@ public record JavaCodeWriter(Path path, String className) implements CodeWriterI
             Files.writeString(path, wrappedCode);
             return new CorrectResult<>(path);
         } catch (Exception e) {
-            return new IncorrectResult(e.getMessage());
+            return new IncorrectResult<>(e.getMessage());
         }
     }
 }
