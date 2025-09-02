@@ -1,9 +1,9 @@
-package common;
+package nodes.common;
 
-import expression.ExpressionNode;
+import nodes.expression.ExpressionNode;
 import results.Result;
-import visitor.RuleVisitor;
-import visitor.VisitorInterface;
+import nodes.visitor.RuleVisitor;
+import nodes.visitor.VisitorInterface;
 
 import java.util.List;
 

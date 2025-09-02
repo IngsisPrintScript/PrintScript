@@ -1,7 +1,7 @@
 package parser.semantic;
 
-import visitor.RuleVisitor;
-import visitor.SemanticallyCheckable;
+import nodes.visitor.RuleVisitor;
+import nodes.visitor.SemanticallyCheckable;
 
 
 public record SemanticAnalyzer(RuleVisitor rulesEnforcer) implements SemanticInterface {

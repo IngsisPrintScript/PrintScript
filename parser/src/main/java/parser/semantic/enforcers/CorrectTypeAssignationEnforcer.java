@@ -1,20 +1,19 @@
 package parser.semantic.enforcers;
 
 import common.Environment;
-import declaration.AscriptionNode;
-import declaration.TypeNode;
-import expression.ExpressionNode;
-import expression.binary.BinaryExpression;
-import expression.identifier.IdentifierNode;
-import expression.literal.LiteralNode;
+import nodes.declaration.AscriptionNode;
+import nodes.declaration.TypeNode;
+import nodes.expression.ExpressionNode;
+import nodes.expression.binary.BinaryExpression;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.literal.LiteralNode;
 import parser.semantic.rules.operations.OperationFormatSemanticRule;
 import parser.semantic.rules.type.ExpressionTypeGetter;
 import parser.semantic.rules.type.TypeSemanticRule;
-import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
+import nodes.statements.LetStatementNode;
+import nodes.statements.PrintStatementNode;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     private final ExpressionTypeGetter expressionTypeGetter = new ExpressionTypeGetter();

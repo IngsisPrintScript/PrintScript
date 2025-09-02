@@ -1,6 +1,6 @@
 package parser.ast.builders.expression;
 
-import expression.ExpressionNode;
+import nodes.expression.ExpressionNode;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.ast.builders.FinalBuilder;
 import parser.ast.builders.expression.binary.BinaryExpressionBuilder;

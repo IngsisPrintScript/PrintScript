@@ -1,12 +1,12 @@
-package expression.literal;
+package nodes.expression.literal;
 
 
-import common.Node;
-import expression.ExpressionNode;
+import nodes.common.Node;
+import nodes.expression.ExpressionNode;
 import results.CorrectResult;
 import results.Result;
-import visitor.RuleVisitor;
-import visitor.VisitorInterface;
+import nodes.visitor.RuleVisitor;
+import nodes.visitor.VisitorInterface;
 
 import java.util.List;
 

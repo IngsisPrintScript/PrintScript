@@ -1,14 +1,14 @@
-package expression.identifier;
+package nodes.expression.identifier;
 
 
 import common.Environment;
-import common.Node;
-import expression.ExpressionNode;
+import nodes.common.Node;
+import nodes.expression.ExpressionNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import visitor.RuleVisitor;
-import visitor.VisitorInterface;
+import nodes.visitor.RuleVisitor;
+import nodes.visitor.VisitorInterface;
 
 import java.util.List;
 

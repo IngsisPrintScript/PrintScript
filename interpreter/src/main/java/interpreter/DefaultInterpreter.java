@@ -1,7 +1,7 @@
 package interpreter;
 
 
-import common.Node;
+import nodes.common.Node;
 import results.IncorrectResult;
 import results.Result;
 import interpreter.executor.CodeExecutorInterface;

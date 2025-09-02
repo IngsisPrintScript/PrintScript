@@ -2,17 +2,17 @@ package parser.ast.builders.expression.binary;
 
 
 import common.TokenInterface;
-import expression.ExpressionNode;
-import expression.identifier.IdentifierNode;
-import expression.literal.LiteralNode;
+import nodes.expression.ExpressionNode;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.literal.LiteralNode;
 import parser.ast.builders.expression.ExpressionBuilder;
 import parser.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import expression.binary.BinaryExpression;
-import factories.NodeFactory;
-import factories.NodeFactoryInterface;
+import nodes.expression.binary.BinaryExpression;
+import nodes.factories.NodeFactory;
+import nodes.factories.NodeFactoryInterface;
 import factories.tokens.TokenFactory;
 import parser.factories.AstBuilderFactory;
 import parser.factories.AstBuilderFactoryInterface;

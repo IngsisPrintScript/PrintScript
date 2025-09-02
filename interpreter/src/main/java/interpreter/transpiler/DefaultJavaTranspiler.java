@@ -1,10 +1,10 @@
 package interpreter.transpiler;
 
 
-import common.Node;
+import nodes.common.Node;
 import results.Result;
 import interpreter.transpiler.visitor.JavaTranspilationVisitor;
-import visitor.VisitorInterface;
+import nodes.visitor.VisitorInterface;
 
 public record DefaultJavaTranspiler() implements TranspilerInterface {
     @Override

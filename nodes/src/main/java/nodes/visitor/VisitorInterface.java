@@ -1,15 +1,15 @@
-package visitor;
+package nodes.visitor;
 
-import common.NilNode;
-import expression.binary.AssignationNode;
+import nodes.common.NilNode;
+import nodes.expression.binary.AssignationNode;
 import results.Result;
-import declaration.AscriptionNode;
-import expression.identifier.IdentifierNode;
-import declaration.TypeNode;
-import expression.binary.AdditionNode;
-import expression.literal.LiteralNode;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
+import nodes.declaration.AscriptionNode;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.declaration.TypeNode;
+import nodes.expression.binary.AdditionNode;
+import nodes.expression.literal.LiteralNode;
+import nodes.statements.LetStatementNode;
+import nodes.statements.PrintStatementNode;
 
 public interface VisitorInterface {
     Result<String> visit(LetStatementNode node);

@@ -1,16 +1,15 @@
 package parser.ast.builders.identifier;
 
-import common.Node;
+import nodes.common.Node;
 import common.TokenInterface;
-import expression.ExpressionNode;
-import expression.identifier.IdentifierNode;
+import nodes.expression.ExpressionNode;
+import nodes.expression.identifier.IdentifierNode;
 import parser.ast.builders.expression.ExpressionBuilder;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import factories.NodeFactory;
+import nodes.factories.NodeFactory;
 import factories.tokens.TokenFactory;
-import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;
 
 public class IdentifierBuilder extends ExpressionBuilder {

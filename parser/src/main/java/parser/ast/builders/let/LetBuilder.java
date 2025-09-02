@@ -1,20 +1,20 @@
 package parser.ast.builders.let;
 
-import common.Node;
+import nodes.common.Node;
 import common.TokenInterface;
-import declaration.AscriptionNode;
-import expression.ExpressionNode;
+import nodes.declaration.AscriptionNode;
+import nodes.expression.ExpressionNode;
 import parser.ast.builders.ascription.AscriptionBuilder;
 import parser.ast.builders.expression.ExpressionBuilder;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import factories.NodeFactory;
+import nodes.factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.factories.AstBuilderFactory;
 import parser.factories.AstBuilderFactoryInterface;
-import statements.LetStatementNode;
+import nodes.statements.LetStatementNode;
 import stream.TokenStreamInterface;
 
 public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {

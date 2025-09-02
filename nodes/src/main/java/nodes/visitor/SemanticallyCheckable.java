@@ -1,4 +1,4 @@
-package visitor;
+package nodes.visitor;
 
 import results.Result;
 

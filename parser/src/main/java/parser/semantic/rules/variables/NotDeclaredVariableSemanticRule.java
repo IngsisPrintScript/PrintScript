@@ -1,6 +1,6 @@
 package parser.semantic.rules.variables;
 
-import common.Node;
+import nodes.common.Node;
 import parser.semantic.rules.SemanticRule;
 import results.CorrectResult;
 import results.IncorrectResult;

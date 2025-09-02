@@ -1,18 +1,18 @@
 package parser.ast.builders.print;
 
-import common.Node;
+import nodes.common.Node;
 import common.TokenInterface;
-import expression.ExpressionNode;
+import nodes.expression.ExpressionNode;
 import parser.ast.builders.expression.ExpressionBuilder;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import factories.NodeFactory;
+import nodes.factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.factories.AstBuilderFactory;
 import parser.factories.AstBuilderFactoryInterface;
-import statements.PrintStatementNode;
+import nodes.statements.PrintStatementNode;
 import stream.TokenStreamInterface;
 
 public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {

@@ -1,14 +1,14 @@
-package statements;
+package nodes.statements;
 
-import common.NilNode;
-import common.Node;
-import expression.ExpressionNode;
+import nodes.common.NilNode;
+import nodes.common.Node;
+import nodes.expression.ExpressionNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import visitor.RuleVisitor;
-import visitor.SemanticallyCheckable;
-import visitor.VisitorInterface;
+import nodes.visitor.RuleVisitor;
+import nodes.visitor.SemanticallyCheckable;
+import nodes.visitor.VisitorInterface;
 
 import java.util.List;
 

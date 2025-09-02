@@ -1,30 +1,6 @@
 package interpreter;
 
 
-import common.Node;
-import declaration.TypeNode;
-import expression.identifier.IdentifierNode;
-import expression.literal.LiteralNode;
-import results.Result;
-import declaration.AscriptionNode;
-import factories.NodeFactory;
-import interpreter.executor.CodeExecutorInterface;
-import interpreter.executor.JavaCodeExecutor;
-import interpreter.transpiler.DefaultJavaTranspiler;
-import interpreter.transpiler.TranspilerInterface;
-import interpreter.writer.CodeWriterInterface;
-import interpreter.writer.JavaCodeWriter;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
-
-import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Map;
 /*
 public class DefaultInterpreterTest {
     private static TranspilerInterface transpiler;

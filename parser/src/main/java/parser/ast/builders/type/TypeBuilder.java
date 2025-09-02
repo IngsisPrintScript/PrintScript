@@ -1,12 +1,12 @@
 package parser.ast.builders.type;
 
-import common.Node;
+import nodes.common.Node;
 import common.TokenInterface;
-import declaration.TypeNode;
+import nodes.declaration.TypeNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import factories.NodeFactory;
+import nodes.factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;

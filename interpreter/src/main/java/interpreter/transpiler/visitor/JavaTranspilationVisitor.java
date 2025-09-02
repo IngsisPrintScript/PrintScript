@@ -1,20 +1,20 @@
 package interpreter.transpiler.visitor;
 
 
-import common.NilNode;
-import expression.ExpressionNode;
-import expression.binary.AssignationNode;
+import nodes.common.NilNode;
+import nodes.expression.ExpressionNode;
+import nodes.expression.binary.AssignationNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import declaration.AscriptionNode;
-import expression.identifier.IdentifierNode;
-import declaration.TypeNode;
-import expression.binary.AdditionNode;
-import expression.literal.LiteralNode;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
-import visitor.VisitorInterface;
+import nodes.declaration.AscriptionNode;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.declaration.TypeNode;
+import nodes.expression.binary.AdditionNode;
+import nodes.expression.literal.LiteralNode;
+import nodes.statements.LetStatementNode;
+import nodes.statements.PrintStatementNode;
+import nodes.visitor.VisitorInterface;
 
 public class JavaTranspilationVisitor implements VisitorInterface {
     @Override

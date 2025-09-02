@@ -1,6 +1,6 @@
 package parser.ast.builders;
 
-import common.Node;
+import nodes.common.Node;
 import results.Result;
 import stream.TokenStreamInterface;
 

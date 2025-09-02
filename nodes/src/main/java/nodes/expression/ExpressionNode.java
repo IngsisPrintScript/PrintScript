@@ -1,8 +1,8 @@
-package expression;
+package nodes.expression;
 
-import common.Node;
+import nodes.common.Node;
 import results.Result;
-import visitor.SemanticallyCheckable;
+import nodes.visitor.SemanticallyCheckable;
 
 
 public interface ExpressionNode extends Node, SemanticallyCheckable {

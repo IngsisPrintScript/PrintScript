@@ -1,13 +1,13 @@
-package expression.binary;
+package nodes.expression.binary;
 
-import common.NilNode;
-import common.Node;
-import expression.ExpressionNode;
+import nodes.common.NilNode;
+import nodes.common.Node;
+import nodes.expression.ExpressionNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import visitor.RuleVisitor;
-import visitor.SemanticallyCheckable;
+import nodes.visitor.RuleVisitor;
+import nodes.visitor.SemanticallyCheckable;
 
 import java.util.List;
 

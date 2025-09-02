@@ -1,11 +1,11 @@
 package parser.semantic.rules.operations;
 
-import common.Node;
-import expression.ExpressionNode;
-import expression.binary.BinaryExpression;
-import expression.identifier.IdentifierNode;
-import expression.literal.LiteralNode;
-import factories.NodeFactory;
+import nodes.common.Node;
+import nodes.expression.ExpressionNode;
+import nodes.expression.binary.BinaryExpression;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.literal.LiteralNode;
+import nodes.factories.NodeFactory;
 import parser.semantic.rules.type.ExpressionTypeGetter;
 import parser.semantic.rules.type.ExpressionTypeGetterInterface;
 import results.CorrectResult;

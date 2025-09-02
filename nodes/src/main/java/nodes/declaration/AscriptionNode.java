@@ -1,12 +1,12 @@
-package declaration;
+package nodes.declaration;
 
-import common.NilNode;
-import common.Node;
-import expression.identifier.IdentifierNode;
+import nodes.common.NilNode;
+import nodes.common.Node;
+import nodes.expression.identifier.IdentifierNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import visitor.VisitorInterface;
+import nodes.visitor.VisitorInterface;
 
 import java.util.List;
 

@@ -1,11 +1,11 @@
 package parser.semantic.rules.type;
 
 import common.Environment;
-import common.Node;
-import expression.ExpressionNode;
-import expression.identifier.IdentifierNode;
-import expression.binary.BinaryExpression;
-import expression.literal.LiteralNode;
+import nodes.common.Node;
+import nodes.expression.ExpressionNode;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.binary.BinaryExpression;
+import nodes.expression.literal.LiteralNode;
 import results.Result;
 
 public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {

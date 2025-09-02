@@ -1,11 +1,11 @@
-package visitor;
+package nodes.visitor;
 
-import expression.binary.BinaryExpression;
-import expression.identifier.IdentifierNode;
-import expression.literal.LiteralNode;
+import nodes.expression.binary.BinaryExpression;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.literal.LiteralNode;
 import results.Result;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
+import nodes.statements.LetStatementNode;
+import nodes.statements.PrintStatementNode;
 
 public interface RuleVisitor {
     Result<String> check(LetStatementNode node);

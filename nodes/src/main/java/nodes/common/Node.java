@@ -1,6 +1,6 @@
-package common;
+package nodes.common;
 
-import visitor.VisitableInterface;
+import nodes.visitor.VisitableInterface;
 
 import java.util.List;
 

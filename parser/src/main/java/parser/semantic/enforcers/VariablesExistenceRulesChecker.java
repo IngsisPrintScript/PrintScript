@@ -1,20 +1,20 @@
 package parser.semantic.enforcers;
 
 import common.Environment;
-import declaration.AscriptionNode;
-import declaration.TypeNode;
-import expression.ExpressionNode;
-import expression.identifier.IdentifierNode;
-import expression.binary.BinaryExpression;
-import expression.literal.LiteralNode;
+import nodes.declaration.AscriptionNode;
+import nodes.declaration.TypeNode;
+import nodes.expression.ExpressionNode;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.binary.BinaryExpression;
+import nodes.expression.literal.LiteralNode;
 import parser.semantic.rules.SemanticRule;
 import parser.semantic.rules.variables.DeclaredVariableSemanticRule;
 import parser.semantic.rules.variables.NotDeclaredVariableSemanticRule;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
+import nodes.statements.LetStatementNode;
+import nodes.statements.PrintStatementNode;
 
 public class VariablesExistenceRulesChecker extends parser.semantic.enforcers.SemanticRulesChecker {
     private final SemanticRule notDeclaredVariableSemanticRuleChecker = new NotDeclaredVariableSemanticRule();

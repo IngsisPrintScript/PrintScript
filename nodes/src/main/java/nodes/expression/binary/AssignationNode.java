@@ -1,10 +1,10 @@
-package expression.binary;
+package nodes.expression.binary;
 
 import common.Environment;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import visitor.VisitorInterface;
+import nodes.visitor.VisitorInterface;
 
 public class AssignationNode extends BinaryExpression{
 

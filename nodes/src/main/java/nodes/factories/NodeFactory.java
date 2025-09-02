@@ -1,15 +1,15 @@
-package factories;
+package nodes.factories;
 
 
-import common.Node;
-import declaration.AscriptionNode;
-import expression.binary.AssignationNode;
-import expression.identifier.IdentifierNode;
-import declaration.TypeNode;
-import expression.binary.AdditionNode;
-import expression.literal.LiteralNode;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
+import nodes.common.Node;
+import nodes.declaration.AscriptionNode;
+import nodes.expression.binary.AssignationNode;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.declaration.TypeNode;
+import nodes.expression.binary.AdditionNode;
+import nodes.expression.literal.LiteralNode;
+import nodes.statements.LetStatementNode;
+import nodes.statements.PrintStatementNode;
 
 public class NodeFactory implements NodeFactoryInterface {
     @Override

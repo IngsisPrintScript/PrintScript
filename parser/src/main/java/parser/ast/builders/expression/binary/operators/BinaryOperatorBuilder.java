@@ -1,6 +1,6 @@
 package parser.ast.builders.expression.binary.operators;
 
-import expression.binary.BinaryExpression;
+import nodes.expression.binary.BinaryExpression;
 import results.IncorrectResult;
 import results.Result;
 import parser.ast.builders.ASTreeBuilderInterface;

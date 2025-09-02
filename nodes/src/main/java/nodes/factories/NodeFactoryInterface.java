@@ -1,7 +1,7 @@
-package factories;
+package nodes.factories;
 
 
-import common.Node;
+import nodes.common.Node;
 
 public interface NodeFactoryInterface {
     Node createLetStatementNode();

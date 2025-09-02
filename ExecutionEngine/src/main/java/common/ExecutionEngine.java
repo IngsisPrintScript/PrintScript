@@ -10,7 +10,8 @@ import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
 import stream.TokenStreamInterface;
-import visitor.SemanticallyCheckable;
+import nodes.visitor.SemanticallyCheckable;
+import nodes.common.Node;
 
 import java.util.List;
 

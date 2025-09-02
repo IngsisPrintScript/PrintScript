@@ -1,6 +1,6 @@
 package parser.semantic;
 
-import visitor.SemanticallyCheckable;
+import nodes.visitor.SemanticallyCheckable;
 
 public interface SemanticInterface {
     Boolean isSemanticallyValid(SemanticallyCheckable tree);

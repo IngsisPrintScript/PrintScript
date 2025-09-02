@@ -1,9 +1,9 @@
-package declaration;
+package nodes.declaration;
 
 
-import common.Node;
+import nodes.common.Node;
 import results.Result;
-import visitor.VisitorInterface;
+import nodes.visitor.VisitorInterface;
 
 import java.util.List;
 

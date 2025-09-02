@@ -2,9 +2,9 @@ package parser.semantic.rules.variables;
 
 import common.Environment;
 import common.EnvironmentInterface;
-import common.Node;
-import expression.identifier.IdentifierNode;
-import factories.NodeFactory;
+import nodes.common.Node;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.factories.NodeFactory;
 import parser.semantic.rules.SemanticRule;
 import results.CorrectResult;
 import results.IncorrectResult;

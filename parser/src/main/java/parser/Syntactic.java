@@ -1,12 +1,12 @@
 package parser;
 
-import common.Node;
+import nodes.common.Node;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;
-import visitor.SemanticallyCheckable;
+import nodes.visitor.SemanticallyCheckable;
 
 public record Syntactic(ASTreeBuilderInterface treeBuilder) implements SyntacticInterface {
     @Override

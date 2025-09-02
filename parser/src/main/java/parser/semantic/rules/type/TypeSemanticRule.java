@@ -1,10 +1,10 @@
 package parser.semantic.rules.type;
 
 import common.Environment;
-import common.Node;
-import expression.identifier.IdentifierNode;
-import expression.literal.LiteralNode;
-import factories.NodeFactory;
+import nodes.common.Node;
+import nodes.expression.identifier.IdentifierNode;
+import nodes.expression.literal.LiteralNode;
+import nodes.factories.NodeFactory;
 import parser.semantic.rules.SemanticRule;
 import results.CorrectResult;
 import results.IncorrectResult;

@@ -1,7 +1,7 @@
 package interpreter.transpiler;
 
 
-import common.Node;
+import nodes.common.Node;
 import results.Result;
 
 public interface TranspilerInterface {

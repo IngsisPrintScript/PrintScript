@@ -2,16 +2,16 @@ package parser.ast.builders.ascription;
 
 
 import common.TokenInterface;
-import declaration.TypeNode;
-import expression.ExpressionNode;
-import expression.identifier.IdentifierNode;
+import nodes.declaration.TypeNode;
+import nodes.expression.ExpressionNode;
+import nodes.expression.identifier.IdentifierNode;
 import parser.ast.builders.identifier.IdentifierBuilder;
 import parser.ast.builders.type.TypeBuilder;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import declaration.AscriptionNode;
-import factories.NodeFactory;
+import nodes.declaration.AscriptionNode;
+import nodes.factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.factories.AstBuilderFactory;
