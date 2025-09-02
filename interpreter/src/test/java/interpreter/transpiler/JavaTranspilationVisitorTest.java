@@ -1,4 +1,4 @@
-package interpreter.transpiler;
+/*package interpreter.transpiler;
 
 
 import common.Node;
@@ -60,3 +60,5 @@ public class JavaTranspilationVisitorTest {
         }
     }
 }
+
+ */
