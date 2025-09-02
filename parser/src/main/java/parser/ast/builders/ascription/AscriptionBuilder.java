@@ -50,7 +50,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
                 ((TypeBuilder) builderFactory.createTypeBuilder()).build(tokenStream);
 
         if (!buildTypeResult.isSuccessful()) {
-            return new IncorrectResult<>(buildIdentifierResult.errorMessage());
+            return new IncorrectResult<>(buildTypeResult.errorMessage());
         }
 
         IdentifierNode identifierNode = (IdentifierNode) buildIdentifierResult.result();

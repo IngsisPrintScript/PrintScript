@@ -42,7 +42,7 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
             return nextBuilder().build(tokenStream);
         }
 
-        Result<TokenInterface> consumeResult = tokenStream.peek();
+        Result<TokenInterface> consumeResult = tokenStream.consume(printTemplate);
         if (!consumeResult.isSuccessful()) {
             return new IncorrectResult<>(consumeResult.errorMessage());
         }
@@ -66,7 +66,7 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
             return new IncorrectResult<>(consumeResult.errorMessage());
         }
         consumeResult = tokenStream.consume(eolTemplate);
-        if (!tokenStream.consume(eolTemplate).isSuccessful()) {
+        if (!consumeResult.isSuccessful()) {
             return new IncorrectResult<>(consumeResult.errorMessage());
         }
 

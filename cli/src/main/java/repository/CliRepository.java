@@ -1,7 +1,6 @@
 package repository;
 
 import repositories.CodeRepositoryInterface;
-
 import java.util.Scanner;
 
 public class CliRepository implements CodeRepositoryInterface {
@@ -14,7 +13,10 @@ public class CliRepository implements CodeRepositoryInterface {
         if (nextCode == null && !eofReached) {
             System.out.print(">>> ");
             if (scanner.hasNextLine()) {
-                nextCode = scanner.nextLine();
+                nextCode = scanner.nextLine().trim();
+                if (nextCode.equals("quit();")) {
+                    nextCode = null;
+                }
             } else {
                 eofReached = true;
             }
@@ -29,4 +31,3 @@ public class CliRepository implements CodeRepositoryInterface {
         return code;
     }
 }
-
