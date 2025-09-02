@@ -1,54 +1,13 @@
 package formatter;
 
-import common.NilNode;
-import declaration.AscriptionNode;
-import declaration.IdentifierNode;
-import declaration.TypeNode;
-import expression.binary.AdditionNode;
-import expression.literal.LiteralNode;
-import responses.Result;
-import statements.LetStatementNode;
-import statements.PrintStatementNode;
-import visitor.VisitorInterface;
+import common.Node;
+import formatter.FormatterRules.FactoryFormatterRules;
+import formatter.FormatterRules.FormatterRules;
 
-public class Formatter implements VisitorInterface {
-    @Override
-    public Result visit(LetStatementNode node) {
-        return null;
-    }
+import java.util.HashMap;
 
-    @Override
-    public Result visit(PrintStatementNode node) {
-        return null;
-    }
-
-    @Override
-    public Result visit(AscriptionNode node) {
-        return null;
-    }
-
-    @Override
-    public Result visit(AdditionNode node) {
-        return null;
-    }
-
-    @Override
-    public Result visit(LiteralNode node) {
-        return null;
-    }
-
-    @Override
-    public Result visit(IdentifierNode node) {
-        return null;
-    }
-
-    @Override
-    public Result visit(TypeNode node) {
-        return null;
-    }
-
-    @Override
-    public Result visit(NilNode node) {
-        return null;
+public class Formatter {
+    public String format(Node root, HashMap<FormatterRules, Boolean> rulesToFormat) {
+        return root.accept(new FormatterVisitor(new FactoryFormatterRules(rulesToFormat))).result();
     }
 }
