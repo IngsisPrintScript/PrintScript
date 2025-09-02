@@ -1,10 +1,13 @@
 package common;
 
-import interpreter.DefaultInterpreter;
+import compiler.DefaultCompiler;
+import compiler.CompilerInterface;
+import compiler.executor.JavaCodeExecutor;
+import compiler.transpiler.DefaultJavaTranspiler;
+import compiler.writer.JavaCodeWriter;
+import interpreter.Interpreter;
 import interpreter.InterpreterInterface;
-import interpreter.executor.JavaCodeExecutor;
-import interpreter.transpiler.DefaultJavaTranspiler;
-import interpreter.writer.JavaCodeWriter;
+import interpreter.visitor.InterpretVisitor;
 import iterator.CodeIteratorInterface;
 import iterator.MockCodeIterator;
 import lexer.Lexical;
@@ -51,11 +54,8 @@ public class ExecutionEngineTest {
         lexical = new Lexical(tokenizer);
         syntactic = new Syntactic(new ChanBuilder().createDefaultChain());
         semantic = new SemanticAnalyzer(new SemanticRulesChecker());
-        Path filePath = Paths.get("./.testFiles/interpret/ClassTest.java");
-        interpreter = new DefaultInterpreter(
-                new DefaultJavaTranspiler(),
-                new JavaCodeWriter(filePath, "ClassTest"),
-                new JavaCodeExecutor("ClassTest")
+        interpreter = new Interpreter(
+                new InterpretVisitor()
         );
     }
 

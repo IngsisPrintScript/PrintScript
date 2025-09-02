@@ -1,4 +1,4 @@
-package interpreter;
+package compiler;
 
 
 import common.Node;
@@ -8,19 +8,18 @@ import expression.literal.LiteralNode;
 import results.Result;
 import declaration.AscriptionNode;
 import factories.NodeFactory;
-import interpreter.executor.CodeExecutorInterface;
-import interpreter.executor.JavaCodeExecutor;
-import interpreter.transpiler.DefaultJavaTranspiler;
-import interpreter.transpiler.TranspilerInterface;
-import interpreter.writer.CodeWriterInterface;
-import interpreter.writer.JavaCodeWriter;
+import compiler.executor.CodeExecutorInterface;
+import compiler.executor.JavaCodeExecutor;
+import compiler.transpiler.DefaultJavaTranspiler;
+import compiler.transpiler.TranspilerInterface;
+import compiler.writer.CodeWriterInterface;
+import compiler.writer.JavaCodeWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -58,15 +57,15 @@ public class DefaultInterpreterTest {
 
     @Test
     public void createInterpreterTest() {
-        DefaultInterpreter interpreter = new DefaultInterpreter(transpiler, writer, executor);
+        DefaultCompiler interpreter = new DefaultCompiler(transpiler, writer, executor);
         Assertions.assertNotNull(interpreter);
     }
 
     @Test
     public void interpretInterpreterTest() {
-        DefaultInterpreter interpreter = new DefaultInterpreter(transpiler, writer, executor);
+        DefaultCompiler interpreter = new DefaultCompiler(transpiler, writer, executor);
         for (Node tree: treeCodeMap.keySet()) {
-            Result interpretResult = interpreter.interpret(tree);
+            Result interpretResult = interpreter.compile(tree);
             Assertions.assertTrue(interpretResult.isSuccessful());
             try {
                 Files.deleteIfExists(filePath);

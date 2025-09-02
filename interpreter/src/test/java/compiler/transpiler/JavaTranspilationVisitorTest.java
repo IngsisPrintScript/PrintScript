@@ -1,4 +1,4 @@
-package interpreter.transpiler;
+package compiler.transpiler;
 
 
 import common.Node;
@@ -12,7 +12,7 @@ import statements.PrintStatementNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import interpreter.transpiler.visitor.JavaTranspilationVisitor;
+import compiler.transpiler.visitor.JavaTranspilationVisitor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
