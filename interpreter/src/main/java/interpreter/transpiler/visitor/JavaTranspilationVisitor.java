@@ -2,11 +2,11 @@ package interpreter.transpiler.visitor;
 
 
 import common.NilNode;
-import common.Node;
 import expression.ExpressionNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import expression.binary.AssignationNode;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import declaration.AscriptionNode;
 import expression.identifier.IdentifierNode;
 import declaration.TypeNode;
@@ -100,6 +100,24 @@ public class JavaTranspilationVisitor implements VisitorInterface {
         String rightChildString = visitRightChildResult.result();
 
         return new CorrectResult<>(leftChildString + " + " + rightChildString);
+    }
+
+    @Override
+    public Result<String> visit(AssignationNode node) {
+        Result<ExpressionNode> getIdentifierNodeResult = node.getLeftChild();
+        if (!getIdentifierNodeResult.isSuccessful()) {
+            return new IncorrectResult<>("The identifier of a assignation node is incorrect.");
+        }
+        IdentifierNode identifierNode = (IdentifierNode) getIdentifierNodeResult.result();
+
+        Result<ExpressionNode> getRightChildResult = node.getRightChild();
+        if (!getRightChildResult.isSuccessful()) {
+            return new IncorrectResult<>("The right child of a assignation node is incorrect.");
+        }
+        ExpressionNode expressionNode = getRightChildResult.result();
+
+
+        return new CorrectResult<>(identifierNode.name() + " = " + expressionNode.accept(this).result() + ";");
     }
 
     @Override

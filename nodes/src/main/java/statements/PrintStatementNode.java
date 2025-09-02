@@ -3,9 +3,9 @@ package statements;
 import common.NilNode;
 import common.Node;
 import expression.ExpressionNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import visitor.RuleVisitor;
 import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
@@ -41,7 +41,7 @@ public class PrintStatementNode implements Node, SemanticallyCheckable {
     }
 
     @Override
-    public Result acceptCheck(RuleVisitor checker) {
+    public Result<String> acceptCheck(RuleVisitor checker) {
         return checker.check(this);
     }
 

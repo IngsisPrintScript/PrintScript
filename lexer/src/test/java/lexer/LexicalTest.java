@@ -1,8 +1,6 @@
 package lexer;
 
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.Result;
 import factories.tokens.TokenFactory;
 import tokenizers.factories.TokenizerFactory;
 import tokenizers.TokenizerInterface;

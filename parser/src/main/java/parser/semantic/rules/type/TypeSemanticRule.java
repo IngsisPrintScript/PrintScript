@@ -1,12 +1,14 @@
 package parser.semantic.rules.type;
 
+import common.Environment;
 import common.Node;
+import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
 import factories.NodeFactory;
 import parser.semantic.rules.SemanticRule;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterface typeGetter) implements SemanticRule {
     private static final Node template = new NodeFactory().createTypeNode("placeholder");
@@ -22,13 +24,23 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
 
     @Override
     public Result<String> checkRules(Node nodeToCheck) {
-        if (!(nodeToCheck instanceof LiteralNode literalNode)) {
+        if (!(nodeToCheck instanceof LiteralNode)) {
+            if (nodeToCheck instanceof IdentifierNode(String name)) {
+                Result<String> getTypeResult = Environment.getInstance().getIdType(name);
+                if (!getTypeResult.isSuccessful()) return getTypeResult;
+                String type = getTypeResult.result();
+                if (type.equals(expectedType)) {
+                    return new CorrectResult<>("Type is equal to the expected type");
+                } else {
+                    return new IncorrectResult<>("Type is not equal to the expected type");
+                }
+            }
             return new IncorrectResult<>("This rule does not apply to the received type of node");
         }
         if (expectedType.equals(typeGetter.getType(nodeToCheck))){
-            return new CorrectResult<String>("Literal type is equal to the expected type");
+            return new CorrectResult<String>("Type is equal to the expected type");
         } else {
-            return new IncorrectResult<>("Literal type is not equal to the expected type");
+            return new IncorrectResult<>("Type is not equal to the expected type");
         }
     }
 }

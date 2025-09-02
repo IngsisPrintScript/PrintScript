@@ -1,7 +1,7 @@
 package tokenizers;
 
 import common.TokenInterface;
-import responses.Result;
+import results.Result;
 
 public interface TokenizerInterface {
     Boolean canTokenize(String input);

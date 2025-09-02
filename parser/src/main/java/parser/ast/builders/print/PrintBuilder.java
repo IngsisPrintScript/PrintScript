@@ -4,9 +4,9 @@ import common.Node;
 import common.TokenInterface;
 import expression.ExpressionNode;
 import parser.ast.builders.expression.ExpressionBuilder;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
@@ -32,13 +32,15 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
         if (!peekResult.isSuccessful()) {
             return false;
         }
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).result();
+        TokenInterface token = peekResult.result();
         return token.equals(printTemplate);
     }
 
     @Override
     public Result<? extends Node> build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
+        if (!canBuild(tokenStream)) {
+            return nextBuilder().build(tokenStream);
+        }
 
         if (!tokenStream.consume(printTemplate).isSuccessful()) {
             return new IncorrectResult<>("Cannot consume print token");

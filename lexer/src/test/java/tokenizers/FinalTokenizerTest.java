@@ -1,10 +1,8 @@
 package tokenizers;
 
-import responses.IncorrectResult;
+import results.IncorrectResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import tokenizers.FinalTokenizer;
-import tokenizers.TokenizerInterface;
 
 public class FinalTokenizerTest {
     @Test

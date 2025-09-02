@@ -4,14 +4,16 @@ import expression.ExpressionNode;
 import parser.ast.builders.ASTreeBuilderInterface;
 import parser.ast.builders.FinalBuilder;
 import parser.ast.builders.expression.binary.BinaryExpressionBuilder;
-import responses.IncorrectResult;
-import responses.Result;
+import parser.ast.builders.identifier.IdentifierBuilder;
+import parser.ast.builders.literal.LiteralBuilder;
+import results.IncorrectResult;
+import results.Result;
 import stream.TokenStreamInterface;
 
 import java.util.List;
 
 public class ExpressionBuilder implements ASTreeBuilderInterface {
-    private final List<Class<? extends ExpressionBuilder>> expressionsBuilders = List.of(BinaryExpressionBuilder.class);
+    private final List<Class<? extends ExpressionBuilder>> expressionsBuilders = List.of(BinaryExpressionBuilder.class, LiteralBuilder.class, IdentifierBuilder.class);
     private final ASTreeBuilderInterface nextBuilder;
     public ExpressionBuilder(ASTreeBuilderInterface nextBuilder) {
         this.nextBuilder = nextBuilder;

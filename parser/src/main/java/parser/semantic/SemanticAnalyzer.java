@@ -4,10 +4,10 @@ import visitor.RuleVisitor;
 import visitor.SemanticallyCheckable;
 
 
-public record SemanticAnalyzer(RuleVisitor rulesChecker) implements SemanticInterface {
+public record SemanticAnalyzer(RuleVisitor rulesEnforcer) implements SemanticInterface {
     @Override
     public Boolean isSemanticallyValid(SemanticallyCheckable tree) {
-        return tree.acceptCheck(rulesChecker()).isSuccessful();
+        return tree.acceptCheck(rulesEnforcer()).isSuccessful();
     }
 }
 

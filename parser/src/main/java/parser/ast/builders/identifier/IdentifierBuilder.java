@@ -2,16 +2,18 @@ package parser.ast.builders.identifier;
 
 import common.Node;
 import common.TokenInterface;
+import expression.ExpressionNode;
 import expression.identifier.IdentifierNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import parser.ast.builders.expression.ExpressionBuilder;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;
 
-public record IdentifierBuilder() implements ASTreeBuilderInterface {
+public class IdentifierBuilder extends ExpressionBuilder {
     private static final TokenInterface template = new TokenFactory().createIdentifierToken("placeholder");
 
     @Override
@@ -23,7 +25,7 @@ public record IdentifierBuilder() implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result<IdentifierNode> build(TokenStreamInterface tokenStream) {
+    public Result<ExpressionNode> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) {
             return new IncorrectResult<>("Cannot build identifier node.");
         }

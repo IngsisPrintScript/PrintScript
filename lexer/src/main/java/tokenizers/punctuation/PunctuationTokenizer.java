@@ -1,7 +1,7 @@
 package tokenizers.punctuation;
 
 import common.TokenInterface;
-import responses.Result;
+import results.Result;
 import tokenizers.FinalTokenizer;
 import tokenizers.TokenizerInterface;
 import tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;

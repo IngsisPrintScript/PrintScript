@@ -6,9 +6,9 @@ import common.Node;
 import expression.identifier.IdentifierNode;
 import factories.NodeFactory;
 import parser.semantic.rules.SemanticRule;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 public record DeclaredVariableSemanticRule() implements SemanticRule {
     private static final Node template = new NodeFactory().createIdentifierNode("placeholder");

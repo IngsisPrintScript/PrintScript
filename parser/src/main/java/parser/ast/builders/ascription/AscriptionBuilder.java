@@ -1,15 +1,15 @@
 package parser.ast.builders.ascription;
 
 
-import common.Node;
 import common.TokenInterface;
 import declaration.TypeNode;
+import expression.ExpressionNode;
 import expression.identifier.IdentifierNode;
 import parser.ast.builders.identifier.IdentifierBuilder;
 import parser.ast.builders.type.TypeBuilder;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import declaration.AscriptionNode;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
@@ -36,7 +36,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
             return new IncorrectResult<>("Cannot build identifier node.");
         }
 
-        Result<IdentifierNode> buildIdentifierResult =
+        Result<ExpressionNode> buildIdentifierResult =
                 ((IdentifierBuilder) builderFactory.createIdentifierBuilder()).build(tokenStream);
         if (!buildIdentifierResult.isSuccessful()) {
             return new IncorrectResult<>("Cannot build identifier node.");
@@ -51,7 +51,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
             return new IncorrectResult<>("Cannot build type node.");
         }
 
-        IdentifierNode identifierNode = buildIdentifierResult.result();
+        IdentifierNode identifierNode = (IdentifierNode) buildIdentifierResult.result();
         AscriptionNode ascriptionNode = (AscriptionNode) new NodeFactory().createAscriptionNode();
         TypeNode typeNode = buildTypeResult.result();
 

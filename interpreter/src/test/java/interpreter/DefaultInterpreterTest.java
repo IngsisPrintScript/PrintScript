@@ -5,7 +5,7 @@ import common.Node;
 import declaration.TypeNode;
 import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
-import responses.Result;
+import results.Result;
 import declaration.AscriptionNode;
 import factories.NodeFactory;
 import interpreter.executor.CodeExecutorInterface;
@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
@@ -66,6 +68,10 @@ public class DefaultInterpreterTest {
         for (Node tree: treeCodeMap.keySet()) {
             Result interpretResult = interpreter.interpret(tree);
             Assertions.assertTrue(interpretResult.isSuccessful());
+            try {
+                Files.deleteIfExists(filePath);
+            } catch (Exception ignore) {
+            }
         }
     }
 }

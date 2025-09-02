@@ -1,4 +1,4 @@
-package responses;
+package results;
 
 public record IncorrectResult<T>(String errorMessage) implements Result<T> {
     @Override

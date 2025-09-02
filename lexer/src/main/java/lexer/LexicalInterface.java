@@ -1,6 +1,6 @@
 package lexer;
 
-import responses.Result;
+import results.Result;
 import stream.TokenStreamInterface;
 
 import java.util.List;

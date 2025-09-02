@@ -1,15 +1,15 @@
 package parser.ast.builders.expression.binary.operators;
 
 import expression.binary.BinaryExpression;
-import responses.IncorrectResult;
-import responses.Result;
+import results.IncorrectResult;
+import results.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;
 
 import java.util.List;
 
 public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
-    private final List<Class<? extends BinaryOperatorBuilder>> subclasses = List.of(AdditionOperatorBuilder.class);
+    private final List<Class<? extends BinaryOperatorBuilder>> subclasses = List.of(AdditionOperatorBuilder.class, AssignationOperatorBuilder.class);
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {

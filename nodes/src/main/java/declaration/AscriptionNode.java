@@ -3,9 +3,9 @@ package declaration;
 import common.NilNode;
 import common.Node;
 import expression.identifier.IdentifierNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import visitor.VisitorInterface;
 
 import java.util.List;

@@ -2,8 +2,8 @@ package interpreter;
 
 
 import common.Node;
-import responses.Result;
+import results.Result;
 
 public interface InterpreterInterface {
-    Result interpret(Node tree);
+    Result<String> interpret(Node tree);
 }

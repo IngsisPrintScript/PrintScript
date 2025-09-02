@@ -1,8 +1,8 @@
 package interpreter.executor;
 
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;

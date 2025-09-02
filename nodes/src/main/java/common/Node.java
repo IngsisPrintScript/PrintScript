@@ -1,6 +1,5 @@
 package common;
 
-import responses.Result;
 import visitor.VisitableInterface;
 
 import java.util.List;

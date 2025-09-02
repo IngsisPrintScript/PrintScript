@@ -1,16 +1,15 @@
 package parser.ast.builders.expression.binary;
 
 
-import common.Node;
 import common.TokenInterface;
 import expression.ExpressionNode;
 import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
 import parser.ast.builders.expression.ExpressionBuilder;
 import parser.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import expression.binary.BinaryExpression;
 import factories.NodeFactory;
 import factories.NodeFactoryInterface;

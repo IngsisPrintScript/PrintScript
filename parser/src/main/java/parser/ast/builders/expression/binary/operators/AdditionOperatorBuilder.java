@@ -2,9 +2,9 @@ package parser.ast.builders.expression.binary.operators;
 
 import common.TokenInterface;
 import expression.binary.BinaryExpression;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import stream.TokenStreamInterface;
