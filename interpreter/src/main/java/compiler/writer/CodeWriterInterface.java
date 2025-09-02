@@ -1,4 +1,4 @@
-package interpreter.writer;
+package compiler.writer;
 
 import results.Result;
 

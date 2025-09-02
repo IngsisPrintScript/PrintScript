@@ -6,13 +6,15 @@ import expression.ExpressionNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
+import visitor.InterpretVisitor;
+import visitor.InterpretableNode;
 import visitor.RuleVisitor;
 import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
 
 import java.util.List;
 
-public class PrintStatementNode implements Node, SemanticallyCheckable {
+public class PrintStatementNode implements Node, SemanticallyCheckable, InterpretableNode {
     private Node expression;
 
     public PrintStatementNode() {
@@ -53,5 +55,10 @@ public class PrintStatementNode implements Node, SemanticallyCheckable {
     @Override
     public Boolean isNil() {
         return false;
+    }
+
+    @Override
+    public Result<String> acceptInterpreter(InterpretVisitor interpreter) {
+        return interpreter.interpret(this);
     }
 }

@@ -1,4 +1,4 @@
-package interpreter.transpiler;
+package compiler.transpiler;
 
 
 import common.Node;
