@@ -23,6 +23,9 @@ subprojects {
             configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
         }
     }
+    plugins.withId('java') {
+        apply plugin: 'printscript.conventions.publish'
+    }
 
 }
 
