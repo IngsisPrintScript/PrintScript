@@ -6,27 +6,24 @@ import formatter.FormatterRules.AssignationRules.SpaceAfterAssignation;
 import formatter.FormatterRules.AssignationRules.SpaceBeforeAssignation;
 import formatter.FormatterRules.PrintlnRules.ZeroJumpsBeforePrint;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 
 public record FactoryFormatterRules(HashMap<FormatterRules, Boolean> rules) {
 
     public String SpaceBeforeColon(){
-        return new ColonSpacingBefore().format();
+        return rules.get(new ColonSpacingBefore()) ? new ColonSpacingBefore().format() : "";
     }
 
     public String SpaceAfterColon() {
-        return new ColonSpacingAfter().format();
+        return rules.get(new ColonSpacingAfter()) ?  new ColonSpacingAfter().format() : "";
     }
 
     public String SpaceAfterAssignation() {
-       return new SpaceAfterAssignation().format();
+       return rules.get(new SpaceBeforeAssignation())  ? new SpaceAfterAssignation().format() : "";
     }
 
     public String SpaceBeforeAssignation() {
-        return new SpaceBeforeAssignation().format();
+        return rules.get(new SpaceBeforeAssignation()) ? new SpaceBeforeAssignation().format() : "";
     }
 
     public String JumpsBeforePrint(){

@@ -18,6 +18,8 @@ dependencies {
     implementation project(":parser")
     implementation project(":nodes")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     implementation("org.yaml:snakeyaml:2.0")
 
 }
