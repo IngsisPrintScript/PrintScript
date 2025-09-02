@@ -1,0 +1,5 @@
+ColonSpacingAfter: false
+ColonSpacingBefore: true
+SpaceAfterAssignation: true
+SpaceBeforeAssignation: true
+JumpsBeforePrint: 2
