@@ -1,5 +1,7 @@
 package formatter;
 
+import formatter.FormatterRules.FormatterRules;
+
 import java.io.InputStream;
 import java.util.HashMap;
 
