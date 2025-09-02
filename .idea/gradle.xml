@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
+  <component name="GradleSettings">
+    <option name="linkedExternalProjectsSettings">
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleHome" value="" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/ExecutionEngine" />
+            <option value="$PROJECT_DIR$/Visitable" />
+            <option value="$PROJECT_DIR$/analyzer" />
+            <option value="$PROJECT_DIR$/ast-api" />
+            <option value="$PROJECT_DIR$/cli" />
+            <option value="$PROJECT_DIR$/common" />
+            <option value="$PROJECT_DIR$/enviroment" />
+            <option value="$PROJECT_DIR$/environment" />
+            <option value="$PROJECT_DIR$/formatter" />
+            <option value="$PROJECT_DIR$/interpreter" />
+            <option value="$PROJECT_DIR$/lexer" />
+            <option value="$PROJECT_DIR$/nodes" />
+            <option value="$PROJECT_DIR$/parser" />
+            <option value="$PROJECT_DIR$/tokens" />
+            <option value="$PROJECT_DIR$/visitable" />
+            <option value="$PROJECT_DIR$/visitor" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+    </option>
+  </component>
+</project>
