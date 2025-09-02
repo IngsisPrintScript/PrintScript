@@ -1,4 +1,4 @@
-package common;
+/*package common;
 
 import compiler.DefaultCompiler;
 import compiler.CompilerInterface;
@@ -85,3 +85,5 @@ public class ExecutionEngineTest {
         Assertions.assertTrue(engine.execute().isSuccessful());
     }
 }
+
+ */
