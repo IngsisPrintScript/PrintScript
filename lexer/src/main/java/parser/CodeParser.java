@@ -1,8 +1,8 @@
 package parser;
 
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import tokenizers.TokenizerInterface;
 
 import java.util.ArrayList;
@@ -21,7 +21,9 @@ public record CodeParser(TokenizerInterface tokenizer) implements CodeParserInte
             String possibleToken = getBufferString(charBuffer);
             if (validToken) {
                 if (!tokenizer().tokenize(possibleToken).isSuccessful()){
-                    strings.add(getBufferString(tempCharBuffer));
+                    if (!getBufferString(tempCharBuffer).isEmpty()) {
+                        strings.add(getBufferString(tempCharBuffer));
+                    }
                     validToken = false;
                     charBuffer.removeAll(tempCharBuffer);
                     charBuffer.removeIf(c -> c == ' ');
@@ -40,7 +42,7 @@ public record CodeParser(TokenizerInterface tokenizer) implements CodeParserInte
                 charBuffer.clear();
                 tempCharBuffer.clear();
                 if (code.charAt(charIndex-1) == ';') {
-                    strings.add(getBufferString(tempCharBuffer));
+                    strings.add(";");
                 } else {
                     return new IncorrectResult<>("Did not ended on ;");
                 }

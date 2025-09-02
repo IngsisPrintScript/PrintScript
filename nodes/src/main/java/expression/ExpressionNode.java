@@ -1,10 +1,11 @@
 package expression;
 
 import common.Node;
-import responses.Result;
+import results.Result;
+import visitor.SemanticallyCheckable;
 
 
-public interface ExpressionNode extends Node {
+public interface ExpressionNode extends Node, SemanticallyCheckable {
     Result<Object> evaluate();
     Result<String> prettyPrint();
 }

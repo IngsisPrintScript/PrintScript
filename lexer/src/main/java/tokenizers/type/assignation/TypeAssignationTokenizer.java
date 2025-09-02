@@ -1,8 +1,8 @@
 package tokenizers.type.assignation;
 
 import common.TokenInterface;
-import responses.CorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.Result;
 import factories.tokens.TokenFactory;
 import tokenizers.TokenizerInterface;
 

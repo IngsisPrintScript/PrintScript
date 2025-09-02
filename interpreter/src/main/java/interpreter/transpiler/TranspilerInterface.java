@@ -2,7 +2,7 @@ package interpreter.transpiler;
 
 
 import common.Node;
-import responses.Result;
+import results.Result;
 
 public interface TranspilerInterface {
     Result<String> transpile(Node tree);

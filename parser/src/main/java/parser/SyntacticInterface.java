@@ -1,8 +1,9 @@
 package parser;
 
-import common.Node;
-import responses.Result;
+import results.Result;
+import stream.TokenStreamInterface;
+import visitor.SemanticallyCheckable;
 
 public interface SyntacticInterface {
-    Result<? extends Node> buildAbstractSyntaxTree();
+    Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream);
 }

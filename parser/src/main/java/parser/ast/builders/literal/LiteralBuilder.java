@@ -3,16 +3,18 @@ package parser.ast.builders.literal;
 
 import common.Node;
 import common.TokenInterface;
+import expression.ExpressionNode;
 import expression.literal.LiteralNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import parser.ast.builders.expression.ExpressionBuilder;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStreamInterface;
 
-public record LiteralBuilder() implements ASTreeBuilderInterface {
+public class LiteralBuilder extends ExpressionBuilder {
     private static final TokenInterface template = new TokenFactory().createLiteralToken("placeholder");
 
     @Override
@@ -24,7 +26,7 @@ public record LiteralBuilder() implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result<LiteralNode> build(TokenStreamInterface tokenStream) {
+    public Result<ExpressionNode> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)){
             return new IncorrectResult<>("Cannot build literal node.");
         }

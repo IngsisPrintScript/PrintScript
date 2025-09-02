@@ -1,9 +1,11 @@
 package parser.semantic.enforcers;
 
 import expression.binary.BinaryExpression;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import expression.identifier.IdentifierNode;
+import expression.literal.LiteralNode;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
 import visitor.RuleVisitor;
@@ -48,6 +50,34 @@ public class SemanticRulesChecker implements RuleVisitor {
 
     @Override
     public Result<String> check(BinaryExpression node) {
+        try{
+            for (Class<? extends SemanticRulesChecker> rule : rules) {
+                RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
+                Result<String> checkResult = checker.check(node);
+                if (!checkResult.isSuccessful()) return checkResult;
+            }
+        }catch (Exception e){
+            return new IncorrectResult<String>(e.getMessage());
+        }
+        return new CorrectResult<String>("AST passed all semantic rules.");
+    }
+
+    @Override
+    public Result<String> check(IdentifierNode node) {
+        try{
+            for (Class<? extends SemanticRulesChecker> rule : rules) {
+                RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
+                Result<String> checkResult = checker.check(node);
+                if (!checkResult.isSuccessful()) return checkResult;
+            }
+        }catch (Exception e){
+            return new IncorrectResult<String>(e.getMessage());
+        }
+        return new CorrectResult<String>("AST passed all semantic rules.");
+    }
+
+    @Override
+    public Result<String> check(LiteralNode node) {
         try{
             for (Class<? extends SemanticRulesChecker> rule : rules) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();

@@ -1,8 +1,8 @@
 package common;
 
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

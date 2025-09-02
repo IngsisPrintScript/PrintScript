@@ -3,6 +3,7 @@ package factories;
 
 import common.Node;
 import declaration.AscriptionNode;
+import expression.binary.AssignationNode;
 import expression.identifier.IdentifierNode;
 import declaration.TypeNode;
 import expression.binary.AdditionNode;
@@ -29,6 +30,10 @@ public class NodeFactory implements NodeFactoryInterface {
     @Override
     public Node createAscriptionNode() {
             return new AscriptionNode();
+    }
+
+    public Node createAssignationNode() {
+            return new AssignationNode();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package common;
 
-import responses.Result;
+import results.Result;
 
 public interface EnvironmentInterface {
     Result<String> putIdType(String id, String type);

@@ -1,11 +1,9 @@
 package tokenizers;
 
 import common.TokenInterface;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
-import tokenizers.FinalTokenizer;
-import tokenizers.TokenizerInterface;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import tokenizers.identifier.IdentifierTokenizer;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

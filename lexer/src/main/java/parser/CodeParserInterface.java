@@ -1,6 +1,6 @@
 package parser;
 
-import responses.Result;
+import results.Result;
 
 import java.util.List;
 
