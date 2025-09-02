@@ -10,7 +10,9 @@ public class CliApp {
     public static void main(String[] args) {
         ExecutionEngineInterface engine = new DefaultEngineFactory().getInterpreterEngine(new CliRepository());
         Result<String> result = engine.execute();
-        System.out.println(result);
+        if (!result.isSuccessful()) {
+            System.out.println(result.errorMessage());
+        }
         main(args);
     }
 }

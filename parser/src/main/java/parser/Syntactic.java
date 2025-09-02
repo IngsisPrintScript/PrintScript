@@ -12,6 +12,9 @@ public record Syntactic(ASTreeBuilderInterface treeBuilder) implements Syntactic
     @Override
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
         Result<? extends Node> buildResult = treeBuilder().build(tokenStream);
+        if (!buildResult.isSuccessful()) {
+            return new IncorrectResult<>(buildResult.errorMessage());
+        }
         Node root = buildResult.result();
         if (!(root instanceof SemanticallyCheckable semanticallyCheckableNode)) {
             return new IncorrectResult<>("Has built a tree which is not semantically checkable");

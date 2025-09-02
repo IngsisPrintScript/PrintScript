@@ -18,19 +18,19 @@ public class AssignationNode extends BinaryExpression{
     public Result<Object> evaluate() {
         Result<ExpressionNode> getLeftChild = this.getLeftChild();
         if (!getLeftChild.isSuccessful()){
-            return new IncorrectResult<>("Identifier not found to evaluate assignation.");
+            return new IncorrectResult<>(getLeftChild.errorMessage());
         }
         IdentifierNode identifier = (IdentifierNode) getLeftChild.result();
 
         Result<ExpressionNode> getRightChild = this.getRightChild();
         if (!getRightChild.isSuccessful()){
-            return new IncorrectResult<>("Literal not found to evaluate assignation.");
+            return new IncorrectResult<>(getRightChild.errorMessage());
         }
         ExpressionNode rightChild = getRightChild.result();
 
         Result<Object> evaluateExpressionResult = rightChild.evaluate();
         if (!evaluateExpressionResult.isSuccessful()){
-            return new IncorrectResult<>("Error evaluating assignation.");
+            return new IncorrectResult<>(evaluateExpressionResult.errorMessage());
         }
         Object result = evaluateExpressionResult.result();
 
@@ -46,13 +46,13 @@ public class AssignationNode extends BinaryExpression{
     public Result<String> prettyPrint() {
         Result<ExpressionNode>  getLeftChild = this.getLeftChild();
         if (!getLeftChild.isSuccessful()){
-            return new IncorrectResult<>("Identifier not found to pretty print.");
+            return new IncorrectResult<>(getLeftChild().errorMessage());
         }
         ExpressionNode leftChild = getLeftChild.result();
 
         Result<ExpressionNode> getRightChild = this.getRightChild();
         if (!getRightChild.isSuccessful()){
-            return new IncorrectResult<>("Expression not found to pretty print.");
+            return new IncorrectResult<>(getRightChild.errorMessage());
         }
         ExpressionNode rightChild = getRightChild.result();
 

@@ -21,11 +21,14 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     public Result<String> visit(LetStatementNode node) {
         Result<AscriptionNode> getDeclarationResult = node.ascription();
         if (!getDeclarationResult.isSuccessful()) {
-            return new IncorrectResult<>("The declaration of a let statement is incorrect.");
+            return new IncorrectResult<>(getDeclarationResult.errorMessage());
         }
         AscriptionNode declarationNode = getDeclarationResult.result();
+
         Result<String> visitDeclarationResult = declarationNode.accept(this);
-        if (!visitDeclarationResult.isSuccessful()) return visitDeclarationResult;
+        if (!visitDeclarationResult.isSuccessful()) {
+            return new IncorrectResult<>(visitDeclarationResult.errorMessage());
+        }
         String declarationString = visitDeclarationResult.result();
 
         Result<ExpressionNode> getExpressionResult = node.expression();

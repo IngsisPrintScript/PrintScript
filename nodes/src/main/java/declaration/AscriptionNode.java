@@ -20,7 +20,7 @@ public class AscriptionNode implements Node {
     }
 
     @Override
-    public Result accept(VisitorInterface visitor) {
+    public Result<String> accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
 

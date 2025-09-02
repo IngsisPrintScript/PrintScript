@@ -25,19 +25,19 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     public Result<String> check(LetStatementNode node) {
         Result<AscriptionNode> getAscriptionNodeResult = node.ascription();
         if (!getAscriptionNodeResult.isSuccessful()) {
-            return new IncorrectResult<>("This rule does not apply to the received node.");
+            return new IncorrectResult<>(getAscriptionNodeResult.errorMessage());
         }
         AscriptionNode ascriptionNode = getAscriptionNodeResult.result();
         Result<TypeNode> getTypeNodeResult = ascriptionNode.type();
         if (!getTypeNodeResult.isSuccessful()) {
-            return new IncorrectResult<>("This rule does not apply to the received node.");
+            return new IncorrectResult<>(getTypeNodeResult.errorMessage());
         }
         TypeNode typeNode = getTypeNodeResult.result();
         typeRule = new TypeSemanticRule(typeNode.type());
 
         Result<ExpressionNode> getExpressionNodeResult = node.expression();
         if (!getExpressionNodeResult.isSuccessful()) {
-            return new IncorrectResult<>("This rule does not apply to the received node.");
+            return new IncorrectResult<>(getExpressionNodeResult.errorMessage());
         }
         ExpressionNode expressionNode = getExpressionNodeResult.result();
         if (expressionNode instanceof BinaryExpression binaryExpression) {
@@ -51,7 +51,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     public Result<String> check(PrintStatementNode node) {
         Result<ExpressionNode> getExpressionNodeResult = node.expression();
         if (!getExpressionNodeResult.isSuccessful()) {
-            return new IncorrectResult<>("This rule does not apply to the received node.");
+            return new IncorrectResult<>(getExpressionNodeResult.errorMessage());
         }
         ExpressionNode expressionNode = getExpressionNodeResult.result();
 
@@ -64,15 +64,17 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
             typeRule = new TypeSemanticRule(expressionTypeGetter.getType(node));
         }
 
-        if (operationFormatRule.checkRules(node).isSuccessful()) {
+        Result<String> checkResult = operationFormatRule.checkRules(node);
+
+        if (checkResult.isSuccessful()) {
             Result<ExpressionNode> getLeftExpressionResult = node.getLeftChild();
             if (!getLeftExpressionResult.isSuccessful()) {
-                return new IncorrectResult<>("This rule does not apply to the received node.");
+                return new IncorrectResult<>(getLeftExpressionResult.errorMessage());
             }
             ExpressionNode leftExpression = getLeftExpressionResult.result();
             return leftExpression.acceptCheck(this);
         } else {
-            return new IncorrectResult<>("Expression did not pass the check");
+            return new IncorrectResult<>(checkResult.errorMessage());
         }
     }
 

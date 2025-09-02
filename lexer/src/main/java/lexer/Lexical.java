@@ -19,7 +19,7 @@ public record Lexical(TokenizerInterface tokenizer) implements LexicalInterface 
         for (String input : inputs) {
             Result<TokenInterface> result = tokenizer.tokenize(input);
             if (!result.isSuccessful()) {
-                return new IncorrectResult<>("There was no tokenizer to tokenize: " + input);
+                return new IncorrectResult<>(result.errorMessage());
             }
             TokenInterface token = result.result();
             tokens.add(token);
