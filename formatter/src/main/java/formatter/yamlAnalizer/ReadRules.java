@@ -1,4 +1,4 @@
-package formatter;
+package formatter.yamlAnalizer;
 
 import formatter.FormatterRules.AscriptionRules.ColonSpacingAfter;
 import formatter.FormatterRules.AscriptionRules.ColonSpacingBefore;
@@ -13,7 +13,7 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.InputStream;
 import java.util.HashMap;
 
-public class ReadRules implements ReadRulesInterface{
+public class ReadRules implements ReadRulesInterface {
     @Override
     public HashMap<FormatterRules, Boolean> readRules() {
         Yaml yaml = new Yaml();

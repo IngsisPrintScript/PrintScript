@@ -1,4 +1,5 @@
-package formatter;
+package formatter.yamlAnalizer;
+
 
 import formatter.FormatterRules.FormatterRules;
 
