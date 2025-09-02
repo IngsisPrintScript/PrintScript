@@ -15,6 +15,45 @@ spotless {
     }
 }
 
+jacoco {
+    // versión reciente y estable
+    toolVersion = '0.8.12'
+}
+
 tasks.named('check').configure {
     dependsOn(tasks.named('spotlessCheck'))
+}
+
+def mainClassesDir = layout.buildDirectory.dir("classes/java/main")
+
+tasks.named('jacocoTestReport').configure {
+    dependsOn(tasks.named('test'))
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+    onlyIf { mainClassesDir.get().asFile.exists() }
+}
+
+tasks.named('jacocoTestCoverageVerification').configure {
+    dependsOn(tasks.named('test'))
+    violationRules {
+        rule {
+            element = 'BUNDLE'
+            // "statements": en JaCoCo lo más cercano es INSTRUCTION.
+            limit {
+                counter = 'INSTRUCTION'
+                value   = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+        }
+    }
+    onlyIf { mainClassesDir.get().asFile.exists() }
+}
+
+tasks.named('check').configure {
+    dependsOn(tasks.named('spotlessCheck'))
+    dependsOn(tasks.named('jacocoTestReport'))
+    dependsOn(tasks.named('jacocoTestCoverageVerification'))
 }
