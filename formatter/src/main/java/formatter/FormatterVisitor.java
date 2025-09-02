@@ -1,10 +1,18 @@
 package formatter;
 
-
+import common.NilNode;
+import declaration.AscriptionNode;
+import declaration.TypeNode;
+import expression.binary.AdditionNode;
+import expression.binary.AssignationNode;
+import expression.identifier.IdentifierNode;
+import expression.literal.LiteralNode;
 import formatter.FormatterRules.FactoryFormatterRules;
-import responses.CorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import statements.LetStatementNode;
+import statements.PrintStatementNode;
 import visitor.VisitorInterface;
 
 public class FormatterVisitor implements VisitorInterface {
@@ -16,14 +24,14 @@ public class FormatterVisitor implements VisitorInterface {
     }
 
     @Override
-    public Result visit(LetStatementNode node) {
+    public Result<String> visit(LetStatementNode node) {
         StringBuilder sentence = new StringBuilder("let ");
         if(!node.hasExpression()){
             Result<String> declaration = this.visit(node.ascription().result());
             return new CorrectResult<String>((sentence
                     .append(declaration.result())
                     .append(";")
-                    .append())
+                    .append("\n"))
                     .toString());
 
         }

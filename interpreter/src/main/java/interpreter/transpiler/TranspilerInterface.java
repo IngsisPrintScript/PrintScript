@@ -2,8 +2,8 @@ package interpreter.transpiler;
 
 
 import common.Node;
-import responses.Result;
+import results.Result;
 
 public interface TranspilerInterface {
-    Result transpile(Node tree);
+    Result<String> transpile(Node tree);
 }

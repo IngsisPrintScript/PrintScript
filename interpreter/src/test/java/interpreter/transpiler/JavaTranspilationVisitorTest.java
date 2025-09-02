@@ -3,12 +3,15 @@ package interpreter.transpiler;
 
 import common.Node;
 import declaration.AscriptionNode;
+import declaration.TypeNode;
+import expression.identifier.IdentifierNode;
+import expression.literal.LiteralNode;
 import factories.NodeFactory;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import interpreter.transpiler.visitor.JavaTranspilationVisitor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,14 +27,14 @@ public class JavaTranspilationVisitorTest {
     public static void setup() {
         LetStatementNode letNodeOne = (LetStatementNode) nodeFactory.createLetStatementNode();
         AscriptionNode ascriptionNode = (AscriptionNode) nodeFactory.createAscriptionNode();
-        ascriptionNode.setIdentifier(nodeFactory.createIdentifierNode("identifier"));
-        ascriptionNode.setType(nodeFactory.createTypeNode("Type"));
+        ascriptionNode.setIdentifier((IdentifierNode) nodeFactory.createIdentifierNode("identifier"));
+        ascriptionNode.setType((TypeNode) nodeFactory.createTypeNode("Type"));
         letNodeOne.setAscription(ascriptionNode);
         LetStatementNode letNodeTwo = (LetStatementNode) nodeFactory.createLetStatementNode();
         letNodeTwo.setAscription(ascriptionNode);
-        letNodeTwo.setExpression(nodeFactory.createLiteralNode("\"placeholder\""));
+        letNodeTwo.setExpression((LiteralNode) nodeFactory.createLiteralNode("\"placeholder\""));
         PrintStatementNode printNode = (PrintStatementNode) nodeFactory.createPrintlnStatementNode();
-        printNode.setExpression(nodeFactory.createLiteralNode("\"Hello, World!\""));
+        printNode.setExpression((LiteralNode) nodeFactory.createLiteralNode("\"Hello, World!\""));
         treeCodeMap = Map.ofEntries(
                 Map.entry(letNodeOne, "Type identifier;"),
                 Map.entry(letNodeTwo, "Type identifier = \"placeholder\";"),
@@ -52,7 +55,7 @@ public class JavaTranspilationVisitorTest {
             if (!treeVisitResult.isSuccessful()) {
                 Assertions.fail(((IncorrectResult) treeVisitResult).errorMessage());
             }
-            String code = ((CorrectResult<String>) treeVisitResult).newObject();
+            String code = ((CorrectResult<String>) treeVisitResult).result();
             Assertions.assertEquals(treeCodeMap.get(tree), code);
         }
     }

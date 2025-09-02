@@ -1,7 +1,8 @@
 package parser.ast.builders;
 
-import responses.IncorrectResult;
-import responses.Result;
+import common.Node;
+import results.IncorrectResult;
+import results.Result;
 import stream.TokenStreamInterface;
 
 public record FinalBuilder() implements ASTreeBuilderInterface {
@@ -11,7 +12,7 @@ public record FinalBuilder() implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result build(TokenStreamInterface tokenStream) {
-        return new IncorrectResult("There was no builder able to handle that token stream.");
+    public Result<Node> build(TokenStreamInterface tokenStream) {
+        return new IncorrectResult<>("There was no builder able to handle token stream " + tokenStream);
     }
 }

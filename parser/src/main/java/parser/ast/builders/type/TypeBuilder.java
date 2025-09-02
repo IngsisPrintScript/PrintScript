@@ -2,9 +2,10 @@ package parser.ast.builders.type;
 
 import common.Node;
 import common.TokenInterface;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import declaration.TypeNode;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
@@ -15,19 +16,23 @@ public record TypeBuilder() implements ASTreeBuilderInterface {
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result peekResult = tokenStream.peek();
+        Result<TokenInterface> peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = peekResult.result();
         return token.equals(template);
     }
 
     @Override
-    public Result build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) return new IncorrectResult("Cannot build type node.");
-        Result consumeResult = tokenStream.consume(template);
-        if (!consumeResult.isSuccessful()) return consumeResult;
-        TokenInterface token = ((CorrectResult<TokenInterface>) consumeResult).newObject();
+    public Result<TypeNode> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)){
+            return new IncorrectResult<>("Cannot build type node.");
+        }
+        Result<TokenInterface> consumeResult = tokenStream.consume(template);
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult<>("Cannot build type node.");
+        }
+        TokenInterface token = consumeResult.result();
         Node typeNode = new NodeFactory().createTypeNode(token.value());
-        return new CorrectResult<>(typeNode);
+        return new CorrectResult<>((TypeNode) typeNode);
     }
 }

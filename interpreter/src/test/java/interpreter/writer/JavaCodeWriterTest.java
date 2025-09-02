@@ -1,6 +1,6 @@
 package interpreter.writer;
 
-import responses.Result;
+import results.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

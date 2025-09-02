@@ -2,15 +2,13 @@ package parser.Semantic.SemanticVisitor;
 
 import common.NilNode;
 import common.Node;
+import expression.identifier.IdentifierNode;
 import responses.IncorrectResult;
 import responses.Result;
 import declaration.AscriptionNode;
-import declaration.IdentifierNode;
 import declaration.TypeNode;
 import expression.binary.AdditionNode;
 import expression.literal.LiteralNode;
-import parser.Semantic.Context.SemanticVisitorContext;
-import parser.Semantic.SemanticHandler.SemanticHandler;
 import statements.LetStatementNode;
 import statements.PrintStatementNode;
 import visitor.VisitorInterface;
