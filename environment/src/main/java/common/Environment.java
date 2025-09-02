@@ -71,6 +71,18 @@ public class Environment implements EnvironmentInterface {
     }
 
     @Override
+    public Result<String> clearTypeMap() {
+        idTypeMap.clear();
+        return new CorrectResult<>("Type map was cleared correctly.");
+    }
+
+    @Override
+    public Result<String> clearValueMap() {
+        idValueMap.clear();
+        return new CorrectResult<>("Value map was cleared correctly.");
+    }
+
+    @Override
     public Boolean variableIsDeclared(String id) {
         return idTypeMap.containsKey(id);
     }

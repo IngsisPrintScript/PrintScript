@@ -1,9 +1,9 @@
-package interpreter.transpiler;
+package compiler.transpiler;
 
 
 import common.Node;
 import results.Result;
-import interpreter.transpiler.visitor.JavaTranspilationVisitor;
+import compiler.transpiler.visitor.JavaTranspilationVisitor;
 import visitor.VisitorInterface;
 
 public record DefaultJavaTranspiler() implements TranspilerInterface {

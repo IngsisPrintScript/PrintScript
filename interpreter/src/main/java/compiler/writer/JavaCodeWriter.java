@@ -1,4 +1,4 @@
-package interpreter.writer;
+package compiler.writer;
 
 import results.CorrectResult;
 import results.IncorrectResult;
@@ -21,6 +21,10 @@ public record JavaCodeWriter(Path path, String className) implements CodeWriterI
     @Override
     public Result<Path> writeCode(String code) {
         try {
+            Path parent = path.getParent();
+            if (parent != null) {
+                Files.createDirectories(parent);
+            }
             String wrappedCode =
                     """
                     public class %s {

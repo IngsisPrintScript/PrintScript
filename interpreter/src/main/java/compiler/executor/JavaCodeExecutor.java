@@ -1,4 +1,4 @@
-package interpreter.executor;
+package compiler.executor;
 
 import results.CorrectResult;
 import results.IncorrectResult;
