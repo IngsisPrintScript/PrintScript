@@ -7,7 +7,7 @@ import expression.binary.AdditionNode;
 import expression.binary.AssignationNode;
 import expression.identifier.IdentifierNode;
 import expression.literal.LiteralNode;
-import formatter.FormatterRules.FactoryFormatterRules;
+import formatter.FormatterRules.SeparationFormatter;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
@@ -17,9 +17,9 @@ import visitor.VisitorInterface;
 
 public class FormatterVisitor implements VisitorInterface {
 
-    private final FactoryFormatterRules formatterRules;
+    private final SeparationFormatter formatterRules;
 
-    public FormatterVisitor(FactoryFormatterRules rules) {
+    public FormatterVisitor(SeparationFormatter rules) {
         formatterRules = rules;
     }
 
