@@ -23,11 +23,13 @@ public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
                 return "String";
             }
             boolean isNumber = true;
-            for (char c: value.toCharArray()){
-                if (!Character.isDigit(c)){
-                    isNumber = false;
-                }
+
+            try{
+                Double.parseDouble(value);
+            } catch(Exception ignore) {
+                isNumber = false;
             }
+
             if (isNumber){
                 return "Number";
             } else {

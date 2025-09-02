@@ -55,12 +55,6 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
         }
         ExpressionNode expressionNode = getExpressionNodeResult.result();
 
-        typeRule = new TypeSemanticRule("String");
-
-        if (expressionNode instanceof BinaryExpression binaryExpression) {
-            return check(binaryExpression);
-        }
-
         return expressionNode.acceptCheck(this);
     }
 
@@ -89,6 +83,9 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     }
     @Override
     public Result<String> check(LiteralNode node) {
+        if (typeRule == null) {
+            return new CorrectResult<>("The literal defines the type.");
+        }
         return typeRule.checkRules(node);
     }
 }
