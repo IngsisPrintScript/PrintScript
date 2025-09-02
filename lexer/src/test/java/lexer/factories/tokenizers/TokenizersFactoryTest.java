@@ -1,7 +1,7 @@
 package lexer.factories.tokenizers;
 
-import lexer.tokenizers.factories.TokenizerFactory;
-import lexer.tokenizers.factories.TokenizerFactoryInterface;
+import tokenizers.factories.TokenizerFactory;
+import tokenizers.factories.TokenizerFactoryInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

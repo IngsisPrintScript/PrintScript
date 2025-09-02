@@ -2,9 +2,11 @@ package parser.ast.builders.print;
 
 import common.Node;
 import common.TokenInterface;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import expression.ExpressionNode;
+import parser.ast.builders.expression.ExpressionBuilder;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import factories.NodeFactory;
 import factories.tokens.TokenFactory;
 import parser.ast.builders.ASTreeBuilderInterface;
@@ -26,36 +28,43 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result peekResult = tokenStream.peek();
+        Result<TokenInterface> peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) {
             return false;
         }
-        TokenInterface token = ((CorrectResult<TokenInterface>) peekResult).newObject();
+        TokenInterface token = peekResult.result();
         return token.equals(printTemplate);
     }
 
     @Override
-    public Result build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) return nextBuilder().build(tokenStream);
+    public Result<? extends Node> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)) {
+            return nextBuilder().build(tokenStream);
+        }
 
-        if (!tokenStream.consume(printTemplate).isSuccessful())
-            return new IncorrectResult("Cannot consume print token");
+        if (!tokenStream.consume(printTemplate).isSuccessful()) {
+            return new IncorrectResult<>("Cannot consume print token");
+        }
         PrintStatementNode root = (PrintStatementNode) new NodeFactory().createPrintlnStatementNode();
 
-        if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful())
-            return new IncorrectResult("Cannot consume left parenthesis token");
+        if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful()) {
+            return new IncorrectResult<>("Cannot consume left parenthesis token");
+        }
 
-        Result buildExpressionResult = builderFactory.createBinaryExpressionBuilder().build(tokenStream);
+        Result<ExpressionNode> buildExpressionResult =
+                ((ExpressionBuilder) builderFactory.createExpressionBuilder()).build(tokenStream);
         if (!buildExpressionResult.isSuccessful()) {
             return buildExpressionResult;
         }
-        Node expression = ((CorrectResult<Node>) buildExpressionResult).newObject();
+        ExpressionNode expression = buildExpressionResult.result();
         root.setExpression(expression);
 
-        if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful())
-            return new IncorrectResult("Cannot consume right parenthesis token");
-
-        if (!tokenStream.consume(eolTemplate).isSuccessful()) return new IncorrectResult("Missing EOL token.");
+        if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful()) {
+            return new IncorrectResult<>("Cannot consume right parenthesis token");
+        }
+        if (!tokenStream.consume(eolTemplate).isSuccessful()) {
+            return new IncorrectResult<>("Missing EOL token.");
+        }
 
         return new CorrectResult<>(root);
     }

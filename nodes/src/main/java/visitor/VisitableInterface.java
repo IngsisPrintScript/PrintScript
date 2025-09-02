@@ -1,7 +1,7 @@
 package visitor;
 
-import responses.Result;
+import results.Result;
 
 public interface VisitableInterface {
-    Result accept(VisitorInterface visitor);
+    Result<String> accept(VisitorInterface visitor);
 }

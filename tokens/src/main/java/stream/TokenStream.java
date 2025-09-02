@@ -1,9 +1,9 @@
 package stream;
 
 import factories.tokens.TokenFactory;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import common.TokenInterface;
 
 import java.util.List;
@@ -17,37 +17,37 @@ public class TokenStream implements TokenStreamInterface {
     }
 
     @Override
-    public Result peek() {
+    public Result<TokenInterface> peek() {
         if (isEndOfStream()){
-            return new IncorrectResult("The stream has no more tokens");
+            return new IncorrectResult<>("The stream has no more tokens");
         }
         return new CorrectResult<>(this.tokens().get(index));
     }
 
     @Override
-    public Result peek(Integer offset) {
+    public Result<TokenInterface> peek(Integer offset) {
         if (isEndOfStream()){
-            return new IncorrectResult("The stream has no more tokens.");
+            return new IncorrectResult<>("The stream has no more tokens.");
         }
         return new CorrectResult<>(this.tokens().get(index + offset));
     }
 
     @Override
-    public Result consume() {
+    public Result<TokenInterface> consume() {
         if (isEndOfStream()){
-            return new IncorrectResult("The stream has no more tokens.");
+            return new IncorrectResult<>("The stream has no more tokens.");
         }
         return new CorrectResult<>(this.tokens().get(index++));
     }
 
     @Override
-    public Result consume(TokenInterface expectedToken) {
+    public Result<TokenInterface> consume(TokenInterface expectedToken) {
         if (isEndOfStream()) {
-            return new IncorrectResult("The stream has no more tokens.");
+            return new IncorrectResult<>("The stream has no more tokens.");
         }
         TokenInterface token = this.tokens().get(index);
         if (!token.equals(expectedToken)) {
-            return new IncorrectResult("The actual token is not of the expected type.");
+            return new IncorrectResult<>("The actual token is not of the expected type.");
         }
         index++;
         return new CorrectResult<>(token);
@@ -71,5 +71,13 @@ public class TokenStream implements TokenStreamInterface {
 
     private List<TokenInterface> tokens(){
         return tokens;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof TokenStream stream)) {
+            return false;
+        }
+        return stream.tokens.equals(this.tokens);
     }
 }

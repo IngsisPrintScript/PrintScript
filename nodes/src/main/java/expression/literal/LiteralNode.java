@@ -1,17 +1,43 @@
 package expression.literal;
 
 
-import common.LeafNode;
-import responses.Result;
+import common.Node;
+import expression.ExpressionNode;
+import results.CorrectResult;
+import results.Result;
+import visitor.RuleVisitor;
 import visitor.VisitorInterface;
 
-public class LiteralNode extends LeafNode {
-    public LiteralNode(String value) {
-        super(value);
+import java.util.List;
+
+public record LiteralNode(String value) implements Node, ExpressionNode {
+    @Override
+    public Result<String> accept(VisitorInterface visitor) {
+        return visitor.visit(this);
     }
 
     @Override
-    public Result accept(VisitorInterface visitor) {
-        return visitor.visit(this);
+    public List<Node> children() {
+        return List.of();
+    }
+
+    @Override
+    public Boolean isNil() {
+        return false;
+    }
+
+    @Override
+    public Result<Object> evaluate() {
+        return new CorrectResult<>(this.value);
+    }
+
+    @Override
+    public Result<String> prettyPrint() {
+        return new CorrectResult<>(this.value());
+    }
+
+    @Override
+    public Result<String> acceptCheck(RuleVisitor checker) {
+        return checker.check(this);
     }
 }

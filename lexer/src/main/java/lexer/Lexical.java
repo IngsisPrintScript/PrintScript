@@ -2,25 +2,28 @@ package lexer;
 
 
 import common.TokenInterface;
-import responses.CorrectResult;
-import responses.Result;
-import lexer.tokenizers.TokenizerInterface;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
+import tokenizers.TokenizerInterface;
+import stream.TokenStream;
+import stream.TokenStreamInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public record Lexical(TokenizerInterface tokenizer) implements LexicalInterface {
     @Override
-    public Result analyze(List<String> inputs) {
+    public Result<TokenStreamInterface> analyze(List<String> inputs) {
         List<TokenInterface> tokens = new ArrayList<>();
         for (String input : inputs) {
-            Result result = tokenizer.tokenize(input);
+            Result<TokenInterface> result = tokenizer.tokenize(input);
             if (!result.isSuccessful()) {
-                return result;
+                return new IncorrectResult<>("There was no tokenizer to tokenize: " + input);
             }
-            TokenInterface token = ( (CorrectResult<TokenInterface>) result).newObject();
+            TokenInterface token = result.result();
             tokens.add(token);
         }
-        return new CorrectResult<>(tokens);
+        return new CorrectResult<>(new TokenStream(tokens));
     }
 }

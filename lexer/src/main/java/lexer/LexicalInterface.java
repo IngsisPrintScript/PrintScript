@@ -1,9 +1,10 @@
 package lexer;
 
-import responses.Result;
+import results.Result;
+import stream.TokenStreamInterface;
 
 import java.util.List;
 
 public interface LexicalInterface {
-    Result analyze(List<String> inputs);
+    Result<TokenStreamInterface> analyze(List<String> inputs);
 }

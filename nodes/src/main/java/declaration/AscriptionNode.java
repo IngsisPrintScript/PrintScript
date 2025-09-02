@@ -1,15 +1,22 @@
 package declaration;
 
-import common.CompositeNode;
+import common.NilNode;
 import common.Node;
-import responses.CorrectResult;
-import responses.IncorrectResult;
-import responses.Result;
+import expression.identifier.IdentifierNode;
+import results.CorrectResult;
+import results.IncorrectResult;
+import results.Result;
 import visitor.VisitorInterface;
 
-public class AscriptionNode extends CompositeNode {
+import java.util.List;
+
+public class AscriptionNode implements Node {
+    private Node type;
+    private Node identifier;
+
     public AscriptionNode(){
-        super(2);
+        this.type = new NilNode();
+        this.identifier = new NilNode();
     }
 
     @Override
@@ -18,26 +25,42 @@ public class AscriptionNode extends CompositeNode {
     }
 
     public Boolean hasType(){
-        return !this.children.get(0).isNil();
+        return !this.type.isNil();
     }
     public Boolean hasIdentifier(){
-        return !this.children.get(1).isNil();
+        return !this.identifier.isNil();
     }
 
-    public Result type(){
+    public Result<TypeNode> type(){
         if (hasType()){
-            return new CorrectResult<>(this.children.get(0));
+            return new CorrectResult<>((TypeNode) this.type);
         } else {
-            return new IncorrectResult("Ascription node has no type.");
+            return new IncorrectResult<>("Ascription node has no type.");
         }
     }
-    public Result identifier(){
+    public Result<IdentifierNode> identifier(){
         if (hasIdentifier()){
-            return new CorrectResult<>(this.children.get(1));
+            return new CorrectResult<>((IdentifierNode) this.identifier);
         } else {
-            return new IncorrectResult("Ascription node has no identifier.");
+            return new IncorrectResult<>("Ascription node has no identifier.");
         }
     }
-    public Result setType(Node node){ return new CorrectResult<>(this.children.set(0, node)); }
-    public Result setIdentifier(Node node){ return new CorrectResult<>(this.children.set(1, node)); }
+    public Result<TypeNode> setType(TypeNode node){
+        this.type = node;
+        return new CorrectResult<>(node);
+    }
+    public Result<IdentifierNode> setIdentifier(IdentifierNode node){
+        this.identifier = node;
+        return new CorrectResult<>(node);
+    }
+
+    @Override
+    public List<Node> children() {
+        return List.of(type, identifier);
+    }
+
+    @Override
+    public Boolean isNil() {
+        return false;
+    }
 }
