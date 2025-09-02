@@ -13,6 +13,7 @@ allprojects {
 
 subprojects {
     apply plugin: 'printscript.conventions.quality'
+    apply plugin: 'printscript.conventions.publish'
     plugins.withId('checkstyle') {
         checkstyle {
             toolVersion = '10.17.0'
@@ -22,9 +23,6 @@ subprojects {
         tasks.withType(Checkstyle).configureEach {
             configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
         }
-    }
-    plugins.withId('java') {
-        apply plugin: 'printscript.conventions.publish'
     }
 
 }
