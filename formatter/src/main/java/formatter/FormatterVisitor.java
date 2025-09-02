@@ -2,11 +2,11 @@ package formatter;
 
 import common.NilNode;
 import declaration.AscriptionNode;
+import declaration.IdentifierNode;
 import declaration.TypeNode;
 import expression.binary.AdditionNode;
 import expression.literal.LiteralNode;
 import formatter.FormatterRules.FactoryFormatterRules;
-
 import responses.CorrectResult;
 import responses.Result;
 import statements.LetStatementNode;
@@ -22,7 +22,7 @@ public class FormatterVisitor implements VisitorInterface {
     }
 
     @Override
-    public Result<String> visit(LetStatementNode node) {
+    public Result visit(LetStatementNode node) {
         StringBuilder sentence = new StringBuilder("let ");
         if(!node.hasExpression()){
             Result<String> declaration = this.visit(node.ascription().result());
