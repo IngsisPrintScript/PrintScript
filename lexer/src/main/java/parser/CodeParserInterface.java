@@ -1,9 +1,8 @@
 package parser;
 
+import java.util.List;
 import results.Result;
 
-import java.util.List;
-
 public interface CodeParserInterface {
-    Result<List<String>> parse(String code);
+  Result<List<String>> parse(String code);
 }

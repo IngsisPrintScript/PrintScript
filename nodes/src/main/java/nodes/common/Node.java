@@ -1,10 +1,10 @@
 package nodes.common;
 
+import java.util.List;
 import nodes.visitor.VisitableInterface;
 
-import java.util.List;
-
 public interface Node extends VisitableInterface {
-    List<Node> children();
-    Boolean isNil();
+  List<Node> children();
+
+  Boolean isNil();
 }

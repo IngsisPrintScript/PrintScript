@@ -1,7 +1,10 @@
 package common;
 
 import interpreter.InterpreterInterface;
+import java.util.List;
 import lexer.LexicalInterface;
+import nodes.common.Node;
+import nodes.visitor.SemanticallyCheckable;
 import parser.CodeParserInterface;
 import parser.SyntacticInterface;
 import parser.semantic.SemanticInterface;
@@ -10,46 +13,43 @@ import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
 import stream.TokenStreamInterface;
-import nodes.visitor.SemanticallyCheckable;
-import nodes.common.Node;
-
-import java.util.List;
 
 public record ExecutionEngine(
-        CodeRepositoryInterface repository,
-        CodeParserInterface codeParser,
-        LexicalInterface lexical,
-        SyntacticInterface syntactic,
-        SemanticInterface semantic,
-        InterpreterInterface interpreter
-) implements ExecutionEngineInterface{
+    CodeRepositoryInterface repository,
+    CodeParserInterface codeParser,
+    LexicalInterface lexical,
+    SyntacticInterface syntactic,
+    SemanticInterface semantic,
+    InterpreterInterface interpreter)
+    implements ExecutionEngineInterface {
 
-    @Override
-    public Result<String> execute() {
-        while (repository().hasMoreCode()) {
-            String code = repository.nextChunkOfCode();
-            Result<List<String>> parseResult = codeParser().parse(code);
-            if (!parseResult.isSuccessful()) {
-                return new IncorrectResult<>("Error parsing code.");
-            }
-            List<String> tokens = parseResult.result();
-            Result<TokenStreamInterface> tokenizeResult = lexical().analyze(tokens);
-            if (!tokenizeResult.isSuccessful()) {
-                return new IncorrectResult<>("Error tokenizing code.");
-            }
-            TokenStreamInterface tokenStream = tokenizeResult.result();
-            Result<SemanticallyCheckable> buildAstResult = syntactic().buildAbstractSyntaxTree(tokenStream);
-            if (!buildAstResult.isSuccessful()) {
-                return new IncorrectResult<>("Error syntactic building code.");
-            }
-            if (!semantic().isSemanticallyValid(buildAstResult.result())){
-                return new IncorrectResult<>("Semantic validation failed.");
-            }
-            Result<String> interpretResult = interpreter().interpret((Node) buildAstResult.result());
-            if (!interpretResult.isSuccessful()) {
-                return interpretResult;
-            }
-        }
-        return new CorrectResult<>("Execution of printscript program was successful.");
+  @Override
+  public Result<String> execute() {
+    while (repository().hasMoreCode()) {
+      String code = repository.nextChunkOfCode();
+      Result<List<String>> parseResult = codeParser().parse(code);
+      if (!parseResult.isSuccessful()) {
+        return new IncorrectResult<>("Error parsing code.");
+      }
+      List<String> tokens = parseResult.result();
+      Result<TokenStreamInterface> tokenizeResult = lexical().analyze(tokens);
+      if (!tokenizeResult.isSuccessful()) {
+        return new IncorrectResult<>("Error tokenizing code.");
+      }
+      TokenStreamInterface tokenStream = tokenizeResult.result();
+      Result<SemanticallyCheckable> buildAstResult =
+          syntactic().buildAbstractSyntaxTree(tokenStream);
+      if (!buildAstResult.isSuccessful()) {
+        return new IncorrectResult<>("Error syntactic building code.");
+      }
+      if (!semantic().isSemanticallyValid(buildAstResult.result())) {
+        return new IncorrectResult<>("Semantic validation failed.");
+      }
+      Result<String> interpretResult = interpreter().interpret((Node) buildAstResult.result());
+      if (!interpretResult.isSuccessful()) {
+        return interpretResult;
+      }
     }
+    return new CorrectResult<>("Execution of printscript program was successful.");
+  }
 }

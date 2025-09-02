@@ -1,22 +1,24 @@
 package tokenizers.punctuation.parenthesis;
 
 import common.TokenInterface;
+import factories.tokens.TokenFactory;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import factories.tokens.TokenFactory;
 import tokenizers.punctuation.PunctuationTokenizer;
 
 public class RightParenthesisTokenizer extends PunctuationTokenizer {
-    
-    @Override
-    public Boolean canTokenize(String input) {
-        return input.equals(")");
-    }
 
-    @Override
-    public Result<TokenInterface> tokenize(String input) {
-        if (!canTokenize(input)) {return new IncorrectResult<>("Cannot tokenize provided input");}
-        return new CorrectResult<>(new TokenFactory().createRightParenthesisToken());
+  @Override
+  public Boolean canTokenize(String input) {
+    return input.equals(")");
+  }
+
+  @Override
+  public Result<TokenInterface> tokenize(String input) {
+    if (!canTokenize(input)) {
+      return new IncorrectResult<>("Cannot tokenize provided input");
     }
+    return new CorrectResult<>(new TokenFactory().createRightParenthesisToken());
+  }
 }

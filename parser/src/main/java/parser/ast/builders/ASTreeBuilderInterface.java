@@ -5,7 +5,7 @@ import results.Result;
 import stream.TokenStreamInterface;
 
 public interface ASTreeBuilderInterface {
-    Boolean canBuild(TokenStreamInterface tokenStream);
+  Boolean canBuild(TokenStreamInterface tokenStream);
 
-    Result<? extends Node> build(TokenStreamInterface tokenStream);
+  Result<? extends Node> build(TokenStreamInterface tokenStream);
 }

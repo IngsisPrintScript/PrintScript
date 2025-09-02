@@ -1,71 +1,74 @@
 package parser.ast.builders.print;
 
-import nodes.common.Node;
 import common.TokenInterface;
+import factories.tokens.TokenFactory;
+import nodes.common.Node;
 import nodes.expression.ExpressionNode;
+import nodes.factories.NodeFactory;
+import nodes.statements.PrintStatementNode;
+import parser.ast.builders.ASTreeBuilderInterface;
 import parser.ast.builders.expression.ExpressionBuilder;
+import parser.factories.AstBuilderFactory;
+import parser.factories.AstBuilderFactoryInterface;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import nodes.factories.NodeFactory;
-import factories.tokens.TokenFactory;
-import parser.ast.builders.ASTreeBuilderInterface;
-import parser.factories.AstBuilderFactory;
-import parser.factories.AstBuilderFactoryInterface;
-import nodes.statements.PrintStatementNode;
 import stream.TokenStreamInterface;
 
 public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
-    private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
-    private static final TokenInterface printTemplate = new TokenFactory().createPrintlnKeywordToken();
-    private static final TokenInterface leftParenthesisTemplate = new TokenFactory().createLeftParenthesisToken();
-    private static final TokenInterface rightParenthesisTemplate = new TokenFactory().createRightParenthesisToken();
-    private static final TokenInterface eolTemplate = new TokenFactory().createEndOfLineToken();
+  private static final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
+  private static final TokenInterface printTemplate =
+      new TokenFactory().createPrintlnKeywordToken();
+  private static final TokenInterface leftParenthesisTemplate =
+      new TokenFactory().createLeftParenthesisToken();
+  private static final TokenInterface rightParenthesisTemplate =
+      new TokenFactory().createRightParenthesisToken();
+  private static final TokenInterface eolTemplate = new TokenFactory().createEndOfLineToken();
 
-    public PrintBuilder() {
-        this(builderFactory.createFinalBuilder());
+  public PrintBuilder() {
+    this(builderFactory.createFinalBuilder());
+  }
+
+  @Override
+  public Boolean canBuild(TokenStreamInterface tokenStream) {
+    Result<TokenInterface> peekResult = tokenStream.peek();
+    if (!peekResult.isSuccessful()) {
+      return false;
+    }
+    TokenInterface token = peekResult.result();
+    return token.equals(printTemplate);
+  }
+
+  @Override
+  public Result<? extends Node> build(TokenStreamInterface tokenStream) {
+    if (!canBuild(tokenStream)) {
+      return nextBuilder().build(tokenStream);
     }
 
-    @Override
-    public Boolean canBuild(TokenStreamInterface tokenStream) {
-        Result<TokenInterface> peekResult = tokenStream.peek();
-        if (!peekResult.isSuccessful()) {
-            return false;
-        }
-        TokenInterface token = peekResult.result();
-        return token.equals(printTemplate);
+    if (!tokenStream.consume(printTemplate).isSuccessful()) {
+      return new IncorrectResult<>("Cannot consume print token");
+    }
+    PrintStatementNode root = (PrintStatementNode) new NodeFactory().createPrintlnStatementNode();
+
+    if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful()) {
+      return new IncorrectResult<>("Cannot consume left parenthesis token");
     }
 
-    @Override
-    public Result<? extends Node> build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)) {
-            return nextBuilder().build(tokenStream);
-        }
-
-        if (!tokenStream.consume(printTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume print token");
-        }
-        PrintStatementNode root = (PrintStatementNode) new NodeFactory().createPrintlnStatementNode();
-
-        if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume left parenthesis token");
-        }
-
-        Result<ExpressionNode> buildExpressionResult =
-                ((ExpressionBuilder) builderFactory.createExpressionBuilder()).build(tokenStream);
-        if (!buildExpressionResult.isSuccessful()) {
-            return buildExpressionResult;
-        }
-        ExpressionNode expression = buildExpressionResult.result();
-        root.setExpression(expression);
-
-        if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume right parenthesis token");
-        }
-        if (!tokenStream.consume(eolTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Missing EOL token.");
-        }
-
-        return new CorrectResult<>(root);
+    Result<ExpressionNode> buildExpressionResult =
+        ((ExpressionBuilder) builderFactory.createExpressionBuilder()).build(tokenStream);
+    if (!buildExpressionResult.isSuccessful()) {
+      return buildExpressionResult;
     }
+    ExpressionNode expression = buildExpressionResult.result();
+    root.setExpression(expression);
+
+    if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful()) {
+      return new IncorrectResult<>("Cannot consume right parenthesis token");
+    }
+    if (!tokenStream.consume(eolTemplate).isSuccessful()) {
+      return new IncorrectResult<>("Missing EOL token.");
+    }
+
+    return new CorrectResult<>(root);
+  }
 }

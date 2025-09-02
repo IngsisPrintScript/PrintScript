@@ -1,11 +1,11 @@
 package nodes.expression;
 
 import nodes.common.Node;
-import results.Result;
 import nodes.visitor.SemanticallyCheckable;
-
+import results.Result;
 
 public interface ExpressionNode extends Node, SemanticallyCheckable {
-    Result<Object> evaluate();
-    Result<String> prettyPrint();
+  Result<Object> evaluate();
+
+  Result<String> prettyPrint();
 }

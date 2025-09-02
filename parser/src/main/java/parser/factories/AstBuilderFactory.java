@@ -12,48 +12,48 @@ import parser.ast.builders.literal.LiteralBuilder;
 import parser.ast.builders.type.TypeBuilder;
 
 public record AstBuilderFactory() implements AstBuilderFactoryInterface {
-    @Override
-    public ASTreeBuilderInterface createLetBuilder() {
-        return new LetBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createLetBuilder() {
+    return new LetBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createAscriptionBuilder() {
-        return new AscriptionBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createAscriptionBuilder() {
+    return new AscriptionBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createIdentifierBuilder() {
-        return new IdentifierBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createIdentifierBuilder() {
+    return new IdentifierBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createLiteralBuilder() {
-        return new LiteralBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createLiteralBuilder() {
+    return new LiteralBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createTypeBuilder() {
-        return new TypeBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createTypeBuilder() {
+    return new TypeBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createBinaryExpressionBuilder() {
-        return new BinaryExpressionBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createBinaryExpressionBuilder() {
+    return new BinaryExpressionBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createOperatorBuilder() {
-        return new BinaryOperatorBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createOperatorBuilder() {
+    return new BinaryOperatorBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createExpressionBuilder() {
-        return new ExpressionBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createExpressionBuilder() {
+    return new ExpressionBuilder();
+  }
 
-    @Override
-    public ASTreeBuilderInterface createFinalBuilder() {
-        return new FinalBuilder();
-    }
+  @Override
+  public ASTreeBuilderInterface createFinalBuilder() {
+    return new FinalBuilder();
+  }
 }

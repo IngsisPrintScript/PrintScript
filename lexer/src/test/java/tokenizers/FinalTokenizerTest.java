@@ -1,19 +1,20 @@
 package tokenizers;
 
-import results.IncorrectResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import results.IncorrectResult;
 
 public class FinalTokenizerTest {
-    @Test
-    public void createFinalTokenizerTest(){
-        TokenizerInterface finalTokenizer = new FinalTokenizer();
-        Assertions.assertNotNull(finalTokenizer);
-    }
-    @Test
-    public void tokenizeFinalTokenizerTest(){
-        TokenizerInterface finalTokenizer = new FinalTokenizer();
-        Assertions.assertFalse(finalTokenizer.canTokenize("placeholder"));
-        Assertions.assertInstanceOf(IncorrectResult.class, finalTokenizer.tokenize("placeholder"));
-    }
+  @Test
+  public void createFinalTokenizerTest() {
+    TokenizerInterface finalTokenizer = new FinalTokenizer();
+    Assertions.assertNotNull(finalTokenizer);
+  }
+
+  @Test
+  public void tokenizeFinalTokenizerTest() {
+    TokenizerInterface finalTokenizer = new FinalTokenizer();
+    Assertions.assertFalse(finalTokenizer.canTokenize("placeholder"));
+    Assertions.assertInstanceOf(IncorrectResult.class, finalTokenizer.tokenize("placeholder"));
+  }
 }

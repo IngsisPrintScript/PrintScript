@@ -1,6 +1,7 @@
 package repositories;
 
 public interface CodeRepositoryInterface {
-    Boolean hasMoreCode();
-    String nextChunkOfCode();
+  Boolean hasMoreCode();
+
+  String nextChunkOfCode();
 }

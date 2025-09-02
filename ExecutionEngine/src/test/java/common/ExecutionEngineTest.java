@@ -7,6 +7,9 @@ import interpreter.transpiler.DefaultJavaTranspiler;
 import interpreter.writer.JavaCodeWriter;
 import iterator.CodeIteratorInterface;
 import iterator.MockCodeIterator;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
 import lexer.Lexical;
 import lexer.LexicalInterface;
 import org.junit.jupiter.api.Assertions;
@@ -25,65 +28,49 @@ import repositories.CodeRepositoryInterface;
 import tokenizers.TokenizerInterface;
 import tokenizers.factories.TokenizerFactory;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-
 public class ExecutionEngineTest {
-    private static CodeRepositoryInterface repository;
-    private static CodeParserInterface codeParser;
-    private static LexicalInterface lexical;
-    private static SyntacticInterface syntactic;
-    private static SemanticInterface semantic;
-    private static InterpreterInterface interpreter;
+  private static CodeRepositoryInterface repository;
+  private static CodeParserInterface codeParser;
+  private static LexicalInterface lexical;
+  private static SyntacticInterface syntactic;
+  private static SemanticInterface semantic;
+  private static InterpreterInterface interpreter;
 
-    @BeforeAll
-    static void setUp() {
-        List<String> code = List.of(
-                "let var:String = \"aStr\";",
-                "println(var);",
-                "let varA:String = \"aStr\";",
-                "varA=\"anotherStr\";",
-                "println(varA);"
-        );
-        CodeIteratorInterface iterator = new MockCodeIterator(code);
-        repository = new CodeRepository(iterator);
-        TokenizerInterface tokenizer = new TokenizerFactory().createDefaultTokenizer();
-        codeParser = new CodeParser(tokenizer);
-        lexical = new Lexical(tokenizer);
-        syntactic = new Syntactic(new ChanBuilder().createDefaultChain());
-        semantic = new SemanticAnalyzer(new SemanticRulesChecker());
-        Path filePath = Paths.get("./.testFiles/interpret/ClassTest.java");
-        interpreter = new DefaultInterpreter(
-                new DefaultJavaTranspiler(),
-                new JavaCodeWriter(filePath, "ClassTest"),
-                new JavaCodeExecutor("ClassTest")
-        );
-    }
+  @BeforeAll
+  static void setUp() {
+    List<String> code =
+        List.of(
+            "let var:String = \"aStr\";",
+            "println(var);",
+            "let varA:String = \"aStr\";",
+            "varA=\"anotherStr\";",
+            "println(varA);");
+    CodeIteratorInterface iterator = new MockCodeIterator(code);
+    repository = new CodeRepository(iterator);
+    TokenizerInterface tokenizer = new TokenizerFactory().createDefaultTokenizer();
+    codeParser = new CodeParser(tokenizer);
+    lexical = new Lexical(tokenizer);
+    syntactic = new Syntactic(new ChanBuilder().createDefaultChain());
+    semantic = new SemanticAnalyzer(new SemanticRulesChecker());
+    Path filePath = Paths.get("./.testFiles/interpret/ClassTest.java");
+    interpreter =
+        new DefaultInterpreter(
+            new DefaultJavaTranspiler(),
+            new JavaCodeWriter(filePath, "ClassTest"),
+            new JavaCodeExecutor("ClassTest"));
+  }
 
-    @Test
-    public void createExecutionEngineTest() {
-        ExecutionEngineInterface engine = new ExecutionEngine(
-                repository,
-                codeParser,
-                lexical,
-                syntactic,
-                semantic,
-                interpreter
-        );
-        Assertions.assertNotNull(engine);
-    }
+  @Test
+  public void createExecutionEngineTest() {
+    ExecutionEngineInterface engine =
+        new ExecutionEngine(repository, codeParser, lexical, syntactic, semantic, interpreter);
+    Assertions.assertNotNull(engine);
+  }
 
-    @Test
-    public void executeExecutionEngineTest(){
-        ExecutionEngineInterface engine = new ExecutionEngine(
-                repository,
-                codeParser,
-                lexical,
-                syntactic,
-                semantic,
-                interpreter
-        );
-        Assertions.assertTrue(engine.execute().isSuccessful());
-    }
+  @Test
+  public void executeExecutionEngineTest() {
+    ExecutionEngineInterface engine =
+        new ExecutionEngine(repository, codeParser, lexical, syntactic, semantic, interpreter);
+    Assertions.assertTrue(engine.execute().isSuccessful());
+  }
 }

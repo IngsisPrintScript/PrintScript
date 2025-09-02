@@ -1,6 +1,5 @@
 package interpreter;
 
-
 /*
 public class DefaultInterpreterTest {
     private static TranspilerInterface transpiler;

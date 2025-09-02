@@ -1,9 +1,8 @@
 package interpreter.writer;
 
+import java.nio.file.Path;
 import results.Result;
 
-import java.nio.file.Path;
-
 public interface CodeWriterInterface {
-    Result<Path> writeCode(String code);
+  Result<Path> writeCode(String code);
 }

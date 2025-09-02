@@ -3,21 +3,21 @@ package parser.factories;
 import parser.ast.builders.ASTreeBuilderInterface;
 
 public interface AstBuilderFactoryInterface {
-    ASTreeBuilderInterface createLetBuilder();
+  ASTreeBuilderInterface createLetBuilder();
 
-    ASTreeBuilderInterface createAscriptionBuilder();
+  ASTreeBuilderInterface createAscriptionBuilder();
 
-    ASTreeBuilderInterface createIdentifierBuilder();
+  ASTreeBuilderInterface createIdentifierBuilder();
 
-    ASTreeBuilderInterface createLiteralBuilder();
+  ASTreeBuilderInterface createLiteralBuilder();
 
-    ASTreeBuilderInterface createTypeBuilder();
+  ASTreeBuilderInterface createTypeBuilder();
 
-    ASTreeBuilderInterface createBinaryExpressionBuilder();
+  ASTreeBuilderInterface createBinaryExpressionBuilder();
 
-    ASTreeBuilderInterface createOperatorBuilder();
+  ASTreeBuilderInterface createOperatorBuilder();
 
-    ASTreeBuilderInterface createExpressionBuilder();
+  ASTreeBuilderInterface createExpressionBuilder();
 
-    ASTreeBuilderInterface createFinalBuilder();
+  ASTreeBuilderInterface createFinalBuilder();
 }
