@@ -1,16 +1,10 @@
 package formatter;
 
-import common.NilNode;
-import declaration.AscriptionNode;
-import declaration.IdentifierNode;
-import declaration.TypeNode;
-import expression.binary.AdditionNode;
-import expression.literal.LiteralNode;
+
 import formatter.FormatterRules.FactoryFormatterRules;
 import responses.CorrectResult;
 import responses.Result;
 import statements.LetStatementNode;
-import statements.PrintStatementNode;
 import visitor.VisitorInterface;
 
 public class FormatterVisitor implements VisitorInterface {
