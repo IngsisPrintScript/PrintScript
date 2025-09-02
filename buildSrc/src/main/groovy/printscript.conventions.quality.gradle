@@ -2,4 +2,19 @@ plugins {
     id 'java'
     id 'jacoco'
     id 'checkstyle'
+    id 'com.diffplug.spotless'
+}
+
+spotless {
+    java {
+        googleJavaFormat('1.22.0')
+        target 'src/**/*.java'
+        targetExclude '**/build/**', '**/generated/**'
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}
+
+tasks.named('check').configure {
+    dependsOn(tasks.named('spotlessCheck'))
 }
