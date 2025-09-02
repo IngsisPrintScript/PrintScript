@@ -2,10 +2,16 @@ plugins {
     id 'application'
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
 dependencies {
     implementation project(":interpreter")
     implementation project(":formatter")
-    implementation project(":analyzer")
+    implementation project(":linter")
 }
 
 application {
