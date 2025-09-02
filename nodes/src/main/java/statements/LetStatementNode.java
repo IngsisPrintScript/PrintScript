@@ -8,13 +8,15 @@ import expression.ExpressionNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
+import visitor.InterpretVisitor;
+import visitor.InterpretableNode;
 import visitor.RuleVisitor;
 import visitor.SemanticallyCheckable;
 import visitor.VisitorInterface;
 
 import java.util.List;
 
-public class LetStatementNode implements Node, SemanticallyCheckable {
+public class LetStatementNode implements Node, SemanticallyCheckable, InterpretableNode {
     private Node ascription;
     private Node expression;
 
@@ -72,5 +74,10 @@ public class LetStatementNode implements Node, SemanticallyCheckable {
     @Override
     public Boolean isNil() {
         return null;
+    }
+
+    @Override
+    public Result<String> acceptInterpreter(InterpretVisitor interpreter) {
+        return interpreter.interpret(this);
     }
 }

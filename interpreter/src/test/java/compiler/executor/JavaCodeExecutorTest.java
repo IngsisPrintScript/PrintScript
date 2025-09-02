@@ -1,8 +1,8 @@
-package interpreter.executor;
+package compiler.executor;
 
 
 import results.Result;
-import interpreter.writer.JavaCodeWriter;
+import compiler.writer.JavaCodeWriter;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
