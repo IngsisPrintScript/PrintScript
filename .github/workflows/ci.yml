@@ -39,9 +39,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    if: >
-      github.ref == 'refs/heads/main' ||
-      startsWith(github.ref, 'refs/tags/v')
+    if: github.event_name == 'push'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,7 +54,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      # Si es tag vX.Y.Z, usamos esa versión sin el prefijo v
       - name: Compute release version
         if: startsWith(github.ref, 'refs/tags/v')
         run: echo "RELEASE_VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_ENV
