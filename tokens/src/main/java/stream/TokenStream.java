@@ -19,7 +19,7 @@ public class TokenStream implements TokenStreamInterface {
     @Override
     public Result<TokenInterface> peek() {
         if (isEndOfStream()){
-            return new IncorrectResult<>("The stream has no more tokens");
+            return new IncorrectResult<>("The stream has no more tokens to peek.");
         }
         return new CorrectResult<>(this.tokens().get(index));
     }
@@ -28,6 +28,8 @@ public class TokenStream implements TokenStreamInterface {
     public Result<TokenInterface> peek(Integer offset) {
         if (isEndOfStream()){
             return new IncorrectResult<>("The stream has no more tokens.");
+        } else if (index + offset > tokens().size()) {
+            return new IncorrectResult<>("The offset points out of bounds.");
         }
         return new CorrectResult<>(this.tokens().get(index + offset));
     }
@@ -35,7 +37,7 @@ public class TokenStream implements TokenStreamInterface {
     @Override
     public Result<TokenInterface> consume() {
         if (isEndOfStream()){
-            return new IncorrectResult<>("The stream has no more tokens.");
+            return new IncorrectResult<>("The stream has no more tokens to consume.");
         }
         return new CorrectResult<>(this.tokens().get(index++));
     }
@@ -43,11 +45,13 @@ public class TokenStream implements TokenStreamInterface {
     @Override
     public Result<TokenInterface> consume(TokenInterface expectedToken) {
         if (isEndOfStream()) {
-            return new IncorrectResult<>("The stream has no more tokens.");
+            return new IncorrectResult<>("The stream has no more tokens to consume.");
         }
         TokenInterface token = this.tokens().get(index);
         if (!token.equals(expectedToken)) {
-            return new IncorrectResult<>("The actual token is not of the expected type.");
+            return new IncorrectResult<>(
+                    "Tried to consume " + expectedToken.name() + " but got " + token.name()
+            );
         }
         index++;
         return new CorrectResult<>(token);
@@ -55,7 +59,6 @@ public class TokenStream implements TokenStreamInterface {
 
     @Override
     public Boolean isEndOfStream() {
-        TokenInterface template = new TokenFactory().createEndOfLineToken();
         return index >= tokens.size();
     }
 

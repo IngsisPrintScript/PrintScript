@@ -30,24 +30,24 @@ public record ExecutionEngine(
             String code = repository.nextChunkOfCode();
             Result<List<String>> parseResult = codeParser().parse(code);
             if (!parseResult.isSuccessful()) {
-                return new IncorrectResult<>("Error parsing code.");
+                return new IncorrectResult<>(parseResult.errorMessage());
             }
             List<String> tokens = parseResult.result();
             Result<TokenStreamInterface> tokenizeResult = lexical().analyze(tokens);
             if (!tokenizeResult.isSuccessful()) {
-                return new IncorrectResult<>("Error tokenizing code.");
+                return new IncorrectResult<>(tokenizeResult.errorMessage());
             }
             TokenStreamInterface tokenStream = tokenizeResult.result();
             Result<SemanticallyCheckable> buildAstResult = syntactic().buildAbstractSyntaxTree(tokenStream);
             if (!buildAstResult.isSuccessful()) {
-                return new IncorrectResult<>("Error syntactic building code.");
+                return new IncorrectResult<>(buildAstResult.errorMessage());
             }
             if (!semantic().isSemanticallyValid(buildAstResult.result())){
                 return new IncorrectResult<>("Semantic validation failed.");
             }
             Result<String> interpretResult = interpreter().interpreter((Node) buildAstResult.result());
             if (!interpretResult.isSuccessful()) {
-                return interpretResult;
+                return new IncorrectResult<>(interpretResult.errorMessage());
             }
         }
         return new CorrectResult<>("Execution of printscript program was successful.");

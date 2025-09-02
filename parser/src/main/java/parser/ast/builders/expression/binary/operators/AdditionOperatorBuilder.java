@@ -27,7 +27,10 @@ public class AdditionOperatorBuilder extends BinaryOperatorBuilder {
     public Result<BinaryExpression> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) return new IncorrectResult<>("Cannot build addition operator.");
 
-        if (!tokenStream.consume(template).isSuccessful()) return new IncorrectResult<>("Cannot consume addition token.");
+        Result<TokenInterface> consumeResult = tokenStream.consume(template);
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult<>(consumeResult.errorMessage());
+        }
 
         return new CorrectResult<>((BinaryExpression) new NodeFactory().createAdditionNode());
     }

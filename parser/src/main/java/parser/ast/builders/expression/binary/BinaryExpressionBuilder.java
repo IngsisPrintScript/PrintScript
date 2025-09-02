@@ -40,7 +40,7 @@ public class BinaryExpressionBuilder extends ExpressionBuilder {
 
         Result<TokenInterface> consumeResult = tokenStream.consume();
         if (!consumeResult.isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume id or var token.");
+            return new IncorrectResult<>(consumeResult.errorMessage());
         }
         TokenInterface consumedToken = consumeResult.result();
 
@@ -62,7 +62,7 @@ public class BinaryExpressionBuilder extends ExpressionBuilder {
                     ((ExpressionBuilder) builderFactory.createExpressionBuilder()).build(tokenStream);
 
             if (!buildRightChildResult.isSuccessful()) {
-                return new IncorrectResult<>("Cannot build expression.");
+                return new IncorrectResult<>(buildOperatorResult.errorMessage());
             }
 
             ExpressionNode rightChild = buildRightChildResult.result();

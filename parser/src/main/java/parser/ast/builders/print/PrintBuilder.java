@@ -42,13 +42,15 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
             return nextBuilder().build(tokenStream);
         }
 
-        if (!tokenStream.consume(printTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume print token");
+        Result<TokenInterface> consumeResult = tokenStream.peek();
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult<>(consumeResult.errorMessage());
         }
         PrintStatementNode root = (PrintStatementNode) new NodeFactory().createPrintlnStatementNode();
 
-        if (!tokenStream.consume(leftParenthesisTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume left parenthesis token");
+        consumeResult = tokenStream.consume(leftParenthesisTemplate);
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult<>(consumeResult.errorMessage());
         }
 
         Result<ExpressionNode> buildExpressionResult =
@@ -59,11 +61,13 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
         ExpressionNode expression = buildExpressionResult.result();
         root.setExpression(expression);
 
-        if (!tokenStream.consume(rightParenthesisTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Cannot consume right parenthesis token");
+        consumeResult = tokenStream.consume(rightParenthesisTemplate);
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult<>(consumeResult.errorMessage());
         }
+        consumeResult = tokenStream.consume(eolTemplate);
         if (!tokenStream.consume(eolTemplate).isSuccessful()) {
-            return new IncorrectResult<>("Missing EOL token.");
+            return new IncorrectResult<>(consumeResult.errorMessage());
         }
 
         return new CorrectResult<>(root);

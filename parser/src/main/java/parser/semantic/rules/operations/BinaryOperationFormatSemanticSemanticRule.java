@@ -29,7 +29,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         }
         Result<ExpressionNode> getLeftNodeResult = binaryExpression.getLeftChild();
         if (!getLeftNodeResult.isSuccessful()) {
-            return new IncorrectResult<>("This rule does not apply to the received node.");
+            return new IncorrectResult<>(getLeftNodeResult.errorMessage());
         }
         ExpressionNode leftChild = getLeftNodeResult.result();
         String expectedType;
@@ -38,16 +38,16 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         } else if (leftChild instanceof IdentifierNode identifierLeftNode) {
             expectedType = typeGetter.getType(identifierLeftNode);
         } else {
-            boolean leftChildIsCorrectlyFormatted = new OperationFormatSemanticRule().checkRules(nodeToCheck).isSuccessful();
-            if (!leftChildIsCorrectlyFormatted) {
-                return new IncorrectResult<>("This node does not pass the check.");
+            Result<String> checkResult = new OperationFormatSemanticRule().checkRules(nodeToCheck);
+            if (!checkResult.isSuccessful()) {
+                return new IncorrectResult<>(checkResult.errorMessage());
             }
             expectedType = typeGetter.getType(leftChild);
         }
 
         Result<ExpressionNode> getRightNodeResult = binaryExpression.getRightChild();
         if (!getRightNodeResult.isSuccessful()) {
-            return new IncorrectResult<>("This rule does not apply to the received node.");
+            return new IncorrectResult<>(getRightNodeResult.errorMessage());
         }
         Node rightChild = getRightNodeResult.result();
         if (rightChild instanceof LiteralNode literalRightNode) {
@@ -59,9 +59,9 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
                 return new IncorrectResult<>("This node does not pass the check.");
             }
         } else {
-            boolean rightChildIsCorrectlyFormatted = new OperationFormatSemanticRule().checkRules(nodeToCheck).isSuccessful();
-            if (!rightChildIsCorrectlyFormatted) {
-                return new IncorrectResult<>("This node does not pass the check.");
+            Result<String> checkResult = new OperationFormatSemanticRule().checkRules(nodeToCheck);
+            if (!checkResult.isSuccessful()) {
+                return new IncorrectResult<>(checkResult.errorMessage());
             }
             if (!expectedType.equals(typeGetter.getType(rightChild))) {
                 return new IncorrectResult<>("This node does not pass the check.");

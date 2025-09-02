@@ -17,25 +17,25 @@ public class AdditionNode extends BinaryExpression{
     public Result<Object> evaluate() {
         Result<ExpressionNode> getLeftChild = getLeftChild();
         if (!getLeftChild.isSuccessful()){
-            return new IncorrectResult<>("Has no left child.");
+            return new IncorrectResult<>(getLeftChild.errorMessage());
         }
         ExpressionNode leftChild = getLeftChild.result();
 
         Result<Object> evaluateLeftChild = leftChild.evaluate();
         if (!evaluateLeftChild.isSuccessful()){
-            return new IncorrectResult<>("Error evaluating left child.");
+            return new IncorrectResult<>(evaluateLeftChild.errorMessage());
         }
         Object leftResult = evaluateLeftChild.result();
 
         Result<ExpressionNode> getRightChild = getRightChild();
         if (!getRightChild.isSuccessful()){
-            return new IncorrectResult<>("Has no right child.");
+            return new IncorrectResult<>(getLeftChild.errorMessage());
         }
         ExpressionNode rightChild = getRightChild.result();
 
         Result<Object> evaluateRightChild = rightChild.evaluate();
         if (!evaluateRightChild.isSuccessful()){
-            return new IncorrectResult<>("Error evaluating right child.");
+            return new IncorrectResult<>(getRightChild.errorMessage());
         }
         Object rightResult = evaluateRightChild.result();
 

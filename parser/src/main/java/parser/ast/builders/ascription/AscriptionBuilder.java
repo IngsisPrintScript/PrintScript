@@ -39,16 +39,18 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
         Result<ExpressionNode> buildIdentifierResult =
                 ((IdentifierBuilder) builderFactory.createIdentifierBuilder()).build(tokenStream);
         if (!buildIdentifierResult.isSuccessful()) {
-            return new IncorrectResult<>("Cannot build identifier node.");
+            return new IncorrectResult<>(buildIdentifierResult.errorMessage());
         }
-
-        if (!tokenStream.consume(template).isSuccessful())
-            return new IncorrectResult<>("Token is not an ascription token.");
+        Result<TokenInterface> consumeResult = tokenStream.consume(template);
+        if (!consumeResult.isSuccessful()) {
+            return new IncorrectResult<>(consumeResult.errorMessage());
+        }
 
         Result<TypeNode> buildTypeResult =
                 ((TypeBuilder) builderFactory.createTypeBuilder()).build(tokenStream);
+
         if (!buildTypeResult.isSuccessful()) {
-            return new IncorrectResult<>("Cannot build type node.");
+            return new IncorrectResult<>(buildIdentifierResult.errorMessage());
         }
 
         IdentifierNode identifierNode = (IdentifierNode) buildIdentifierResult.result();

@@ -14,11 +14,13 @@ public record DefaultCompiler(TranspilerInterface transpiler, CodeWriterInterfac
     @Override
     public Result<String> compile(Node tree) {
         Result<String> transpilationResult = transpiler().transpile(tree);
-        if (!transpilationResult.isSuccessful()) return transpilationResult;
+        if (!transpilationResult.isSuccessful()) {
+            new IncorrectResult<>(transpilationResult.errorMessage());
+        }
         String code = transpilationResult.result();
         Result<Path> codeWritingResult = writer().writeCode(code);
         if (!codeWritingResult.isSuccessful()) {
-            return new IncorrectResult<>("Code writing failed");
+            return new IncorrectResult<>(codeWritingResult.errorMessage());
         }
         Path filePath = codeWritingResult.result();
         return executor().executeCode(filePath);

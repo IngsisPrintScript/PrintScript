@@ -5,4 +5,9 @@ public record CorrectResult<T>(T result) implements Result<T> {
     public Boolean isSuccessful() {
         return true;
     }
+
+    @Override
+    public String errorMessage() {
+        throw new UnsupportedOperationException("Correct Result does not support errorMessage");
+    }
 }
