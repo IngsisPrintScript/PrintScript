@@ -11,6 +11,17 @@ repositories {
 
 subprojects {
     apply plugin: 'printscript.conventions.quality'
+    plugins.withId('checkstyle') {
+        checkstyle {
+            toolVersion = '10.17.0'
+            config = resources.text.fromFile("$rootDir/config/checkstyle/checkstyle.xml")
+            reportsDir = file("$buildDir/reports/checkstyle")
+        }
+        tasks.withType(Checkstyle).configureEach {
+            configFile = file("$rootDir/config/checkstyle/checkstyle.xml")
+        }
+    }
+
 }
 
 dependencies {
