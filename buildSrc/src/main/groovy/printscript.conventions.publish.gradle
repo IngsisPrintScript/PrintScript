@@ -5,8 +5,12 @@ plugins {
 
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        withType(MavenPublication).configureEach {
             from components.java
+            artifactId = project.name.toLowerCase()
+            if (!group || group == 'unspecified') {
+                groupId = 'com.github.garrotesantiago.printscript'
+            }
         }
     }
     repositories {
