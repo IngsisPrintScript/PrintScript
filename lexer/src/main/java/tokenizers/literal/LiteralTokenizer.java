@@ -16,10 +16,13 @@ public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements Toke
             return input.length() >=2;
         }
 
-        for(Character c : tokenChars){
-            if(!Character.isDigit(c)){
+        try{
+            if (input.contains("+") ||  input.contains("-")) {
                 return false;
             }
+            Double.parseDouble(input);
+        } catch(Exception ignore){
+            return false;
         }
 
         return true;

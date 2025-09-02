@@ -28,7 +28,7 @@ public record LiteralNode(String value) implements Node, ExpressionNode {
 
     @Override
     public Result<Object> evaluate() {
-        return new CorrectResult<>(this.value);
+        return new CorrectResult<>(this.value());
     }
 
     @Override

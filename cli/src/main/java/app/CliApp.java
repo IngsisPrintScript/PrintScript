@@ -11,5 +11,6 @@ public class CliApp {
         ExecutionEngineInterface engine = new DefaultEngineFactory().getInterpreterEngine(new CliRepository());
         Result<String> result = engine.execute();
         System.out.println(result);
+        main(args);
     }
 }

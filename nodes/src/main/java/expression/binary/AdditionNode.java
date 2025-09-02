@@ -1,6 +1,7 @@
 package expression.binary;
 
 
+import expression.ExpressionNode;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
@@ -8,21 +9,53 @@ import visitor.VisitorInterface;
 
 public class AdditionNode extends BinaryExpression{
     @Override
-    public Result accept(VisitorInterface visitor) {
+    public Result<String> accept(VisitorInterface visitor) {
         return visitor.visit(this);
     }
 
     @Override
     public Result<Object> evaluate() {
-        Object leftChildResult = this.getLeftChild().result().evaluate().result();
-        Object rightChildResult = this.getRightChild().result().evaluate().result();
-        if (leftChildResult instanceof String lString &&  rightChildResult instanceof String rString) {
-            return new CorrectResult<>(lString + rString);
-        } else if (leftChildResult instanceof Number lNumber && rightChildResult instanceof Number rNumber) {
-            return new CorrectResult<>(lNumber.floatValue() + rNumber.floatValue());
-        } else {
-            return new IncorrectResult<>("Cannot add different types.");
+        Result<ExpressionNode> getLeftChild = getLeftChild();
+        if (!getLeftChild.isSuccessful()){
+            return new IncorrectResult<>("Has no left child.");
         }
+        ExpressionNode leftChild = getLeftChild.result();
+
+        Result<Object> evaluateLeftChild = leftChild.evaluate();
+        if (!evaluateLeftChild.isSuccessful()){
+            return new IncorrectResult<>("Error evaluating left child.");
+        }
+        Object leftResult = evaluateLeftChild.result();
+
+        Result<ExpressionNode> getRightChild = getRightChild();
+        if (!getRightChild.isSuccessful()){
+            return new IncorrectResult<>("Has no right child.");
+        }
+        ExpressionNode rightChild = getRightChild.result();
+
+        Result<Object> evaluateRightChild = rightChild.evaluate();
+        if (!evaluateRightChild.isSuccessful()){
+            return new IncorrectResult<>("Error evaluating right child.");
+        }
+        Object rightResult = evaluateRightChild.result();
+
+        try {
+            Double leftNumber = Double.parseDouble((String) leftResult);
+            Double rightNumber = Double.parseDouble((String) rightResult);
+            return new CorrectResult<>(leftNumber + rightNumber);
+        } catch (Exception ignore) {
+        }
+
+        try {
+            String leftString = leftResult.toString();
+            String rightString = rightResult.toString();
+            return new CorrectResult<>(leftString.replace("\"","").replace("'","")
+                    + rightString.replace("\"","").replace("'",""));
+        } catch (Exception ignore) {
+        }
+
+        return new IncorrectResult<>("Cannot add different types.");
+
     }
 
     @Override
