@@ -1,5 +1,6 @@
 package common;
 
+import compiler.CompilerInterface;
 import interpreter.InterpreterInterface;
 import lexer.LexicalInterface;
 import parser.CodeParserInterface;
@@ -44,7 +45,7 @@ public record ExecutionEngine(
             if (!semantic().isSemanticallyValid(buildAstResult.result())){
                 return new IncorrectResult<>("Semantic validation failed.");
             }
-            Result<String> interpretResult = interpreter().interpret((Node) buildAstResult.result());
+            Result<String> interpretResult = interpreter().interpreter((Node) buildAstResult.result());
             if (!interpretResult.isSuccessful()) {
                 return interpretResult;
             }
