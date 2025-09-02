@@ -1,5 +1,5 @@
 plugins {
-    id 'java-library'
+    id 'java'
     id 'org.jetbrains.kotlin.jvm'
 }
 
@@ -16,7 +16,10 @@ repositories {
 dependencies {
     implementation project(":common")
     implementation project(":parser")
+    implementation project(":nodes")
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation("org.yaml:snakeyaml:2.0")
+
 }
 
 test {
