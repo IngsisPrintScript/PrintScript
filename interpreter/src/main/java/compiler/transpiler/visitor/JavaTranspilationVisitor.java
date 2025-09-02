@@ -1,4 +1,4 @@
-package interpreter.transpiler.visitor;
+package compiler.transpiler.visitor;
 
 
 import common.NilNode;
