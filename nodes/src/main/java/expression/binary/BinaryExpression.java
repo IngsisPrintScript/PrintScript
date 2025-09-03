@@ -11,7 +11,7 @@ import visitor.SemanticallyCheckable;
 
 import java.util.List;
 
-public abstract class BinaryExpression implements Node, ExpressionNode, SemanticallyCheckable {
+public abstract class BinaryExpression implements Node, ExpressionNode {
     private ExpressionNode leftChild;
     private ExpressionNode rightChild;
 
