@@ -13,14 +13,20 @@ import visitor.SemanticallyCheckable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Queue;
 
 public record Syntactic(
         ASTreeBuilderInterface treeBuilder,
         Iterator<TokenInterface> tokenIterator,
-        List<InterpretableNode> mueCache
+        Queue<InterpretableNode> mueCache
 ) implements SyntacticInterface {
+
+    public Syntactic(ASTreeBuilderInterface treeBuilder, Iterator<TokenInterface> tokenIterator) {
+        this(treeBuilder, tokenIterator, new LinkedList<>());
+    }
 
     @Override
     public Result<InterpretableNode> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
@@ -62,6 +68,6 @@ public record Syntactic(
         if (!hasNext()){
             throw new NoSuchElementException();
         }
-        return mueCache().getLast();
+        return mueCache().poll();
     }
 }
