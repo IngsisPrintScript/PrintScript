@@ -58,6 +58,11 @@ public class TokenStream implements TokenStreamInterface {
     }
 
     @Override
+    public List<TokenInterface> allTokens() {
+        return List.copyOf(tokens);
+    }
+
+    @Override
     public Boolean isEndOfStream() {
         return index >= tokens.size();
     }

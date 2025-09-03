@@ -23,21 +23,6 @@ import tokenizers.factories.TokenizerFactory;
 public class DefaultEngineFactory implements EngineFactoryInterface {
     @Override
     public ExecutionEngineInterface getInterpreterEngine(CodeRepositoryInterface repository) {
-        TokenizerInterface tokenizer = new TokenizerFactory().createDefaultTokenizer();
-        CodeParserInterface codeParser = new CodeParser(tokenizer);
-        LexicalInterface lexical = new Lexical(tokenizer);
-        SyntacticInterface syntactic = new Syntactic(new ChanBuilder().createDefaultChain());
-        SemanticInterface semantic = new SemanticAnalyzer(new SemanticRulesChecker());
-        InterpreterInterface interpreter = new Interpreter(
-                new InterpretVisitor()
-        );
-        return new ExecutionEngine(
-                repository,
-                codeParser,
-                lexical,
-                syntactic,
-                semantic,
-                interpreter
-        );
+        return null;
     }
 }
