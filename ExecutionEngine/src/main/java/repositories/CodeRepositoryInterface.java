@@ -1,6 +1,6 @@
 package repositories;
 
-public interface CodeRepositoryInterface {
-    Boolean hasMoreCode();
-    String nextChunkOfCode();
+import java.util.Iterator;
+
+public interface CodeRepositoryInterface extends Iterator<Character> {
 }
