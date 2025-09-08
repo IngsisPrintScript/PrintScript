@@ -72,4 +72,15 @@ public class CliRepository implements CodeRepositoryInterface, Callable<Result<S
 
         return new CorrectResult<>("CLI ended successfully.");
     }
+
+    @Override
+    public Character peek() {
+        try {
+            BlockingQueue<Character> tempQueue = new LinkedBlockingQueue<>(buffer);
+            return tempQueue.take();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return null;
+        }
+    }
 }

@@ -1,6 +1,7 @@
 package repositories;
 
-import java.util.Iterator;
 
-public interface CodeRepositoryInterface extends Iterator<Character> {
+import common.PeekableIterator;
+
+public interface CodeRepositoryInterface extends PeekableIterator<Character> {
 }

@@ -47,6 +47,7 @@ public class Lexical implements LexicalInterface {
             return false;
         }
         List<Character> charBuffer = new ArrayList<>();
+        TokenInterface candidateToken = null;
         while (characterIterator.hasNext()) {
             charBuffer.add(characterIterator.next());
             StringBuilder builder = new StringBuilder();
@@ -56,11 +57,14 @@ public class Lexical implements LexicalInterface {
             String word = builder.toString();
             Result<TokenInterface> result = tokenizer.tokenize(word);
             if (result.isSuccessful()) {
-                tokenBuffer.add(result.result());
-                return true;
+                candidateToken = result.result();
+            } else {
+                if (candidateToken != null) {
+                    tokenBuffer.add(candidateToken);
+                }
             }
         }
-        return false;
+        return candidateToken != null;
     }
 
     @Override
@@ -69,5 +73,10 @@ public class Lexical implements LexicalInterface {
             throw new NoSuchElementException();
         }
         return tokenBuffer.poll();
+    }
+
+    @Override
+    public TokenInterface peek() {
+        return tokenBuffer.peek();
     }
 }
