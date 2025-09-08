@@ -72,7 +72,7 @@ public class TokenStream implements TokenStreamInterface {
         return false;
     }
 
-    private List<TokenInterface> tokens(){
+    public List<TokenInterface> tokens(){
         return tokens;
     }
 

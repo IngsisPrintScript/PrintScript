@@ -17,11 +17,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Lexical implements LexicalInterface {
     private final TokenizerInterface tokenizer;
     private final Iterator<Character> characterIterator;
-    private BlockingQueue<TokenInterface> tokenBuffer;
+    private final BlockingQueue<TokenInterface> tokenBuffer = new LinkedBlockingQueue<>();
 
     public Lexical(TokenizerInterface tokenizer, Iterator<Character> characterIterator) {
         this.tokenizer = tokenizer;
