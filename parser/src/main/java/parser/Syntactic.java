@@ -8,28 +8,29 @@ import results.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStream;
 import stream.TokenStreamInterface;
+import visitor.InterpretableNode;
 import visitor.SemanticallyCheckable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.NoSuchElementException;
+import java.util.Queue;
 
-public class Syntactic implements SyntacticInterface {
-    private final ASTreeBuilderInterface treeBuilder;
-    private final BlockingQueue<Node> nodeCache = new LinkedBlockingQueue<>();
-    private final Iterator<TokenInterface> tokenIterator;
+public record Syntactic(
+        ASTreeBuilderInterface treeBuilder,
+        Iterator<TokenInterface> tokenIterator,
+        BlockingQueue<Node> nodeCache
+) implements SyntacticInterface {
 
     public Syntactic(ASTreeBuilderInterface treeBuilder, Iterator<TokenInterface> tokenIterator) {
-        this.treeBuilder = treeBuilder;
-        this.tokenIterator = tokenIterator;
+        this(treeBuilder, tokenIterator, new LinkedBlockingQueue<>());
     }
 
     @Override
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
-        Result<? extends Node> buildResult = treeBuilder.build(tokenStream);
+        Result<? extends Node> buildResult = treeBuilder().build(tokenStream);
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
         }

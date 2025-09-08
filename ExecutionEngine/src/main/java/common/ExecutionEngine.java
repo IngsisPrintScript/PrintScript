@@ -10,11 +10,9 @@ import repositories.CodeRepositoryInterface;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
-import stream.TokenStream;
 import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public record ExecutionEngine(
@@ -28,6 +26,6 @@ public record ExecutionEngine(
 
     @Override
     public Result<String> execute() {
-        return null;
+        return new IncorrectResult<>("Not implemented yet.");
     }
 }
