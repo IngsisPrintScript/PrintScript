@@ -13,6 +13,7 @@ repositories {
 dependencies {
     implementation project(':common')
     implementation project(':ExecutionEngine')
+    implementation project(':stream')
 
 
     testImplementation platform('org.junit:junit-bom:5.10.0')

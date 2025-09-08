@@ -16,6 +16,7 @@ dependencies {
     implementation project(':lexer')
     implementation project(':parser')
     implementation project(':interpreter')
+    implementation project(':stream')
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
