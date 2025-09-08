@@ -10,6 +10,7 @@ public interface TokenStreamInterface {
     Result<TokenInterface> peek(Integer offset);
     Result<TokenInterface> consume();
     Result<TokenInterface> consume(TokenInterface expectedToken);
+    Result<Integer> consumeAll(TokenInterface expectedToken);
     List<TokenInterface> tokens();
     Boolean isEndOfStream();
     Boolean contains(TokenInterface token);

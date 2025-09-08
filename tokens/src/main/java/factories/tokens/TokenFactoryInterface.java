@@ -14,5 +14,6 @@ public interface TokenFactoryInterface {
     TokenInterface createAssignationToken();
     TokenInterface createLiteralToken(String literal);
     TokenInterface createAdditionToken();
+    TokenInterface createSpaceSeparatorToken(String characterName);
     TokenInterface createEndOfLineToken();
 }

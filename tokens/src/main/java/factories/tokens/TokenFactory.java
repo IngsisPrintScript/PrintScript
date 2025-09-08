@@ -56,6 +56,11 @@ public class TokenFactory implements TokenFactoryInterface {
     }
 
     @Override
+    public TokenInterface createSpaceSeparatorToken(String characterName) {
+        return new Token(characterName + "_SEPARATOR_TOKEN", " ");
+    }
+
+    @Override
     public TokenInterface createEndOfLineToken() {
         return new Token("EOL_TOKEN", ";");
     }
