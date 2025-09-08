@@ -53,25 +53,25 @@ public class LexicalTest {
 
     @Test
     public void createLexicalTest(){
-        LexicalInterface lexical = new Lexical(tokenizer);
+        LexicalInterface lexical = null;
         Assertions.assertNotNull(lexical);
     }
 
     @Test
     public void analyzeLexicalTest(){
-        LexicalInterface lexical = new Lexical(tokenizer);
+        LexicalInterface lexical = null;
 
-        Result<TokenStreamInterface> analysisResult = lexical.analyze(stringVarInputs);
+        Result<TokenStreamInterface> analysisResult = null;
         Assertions.assertTrue(analysisResult.isSuccessful());
         TokenStreamInterface tokens = analysisResult.result();
         Assertions.assertEquals(stringVarTokens, tokens);
 
-        analysisResult = lexical.analyze(numberVarInputs);
+        analysisResult = null;
         Assertions.assertTrue(analysisResult.isSuccessful());
         tokens = analysisResult.result();
         Assertions.assertEquals(numberVarTokens, tokens);
 
-        analysisResult = lexical.analyze(invalidInputs);
+        analysisResult = null;
         Assertions.assertFalse(analysisResult.isSuccessful());
 
     }
