@@ -1,9 +1,12 @@
 package parser;
 
+import common.Node;
 import results.Result;
 import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 
-public interface SyntacticInterface {
-    Result<SemanticallyCheckable> buildAbstractSyntaxTree();
+import java.util.Iterator;
+
+public interface SyntacticInterface extends Iterator<Node> {
+    Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream);
 }

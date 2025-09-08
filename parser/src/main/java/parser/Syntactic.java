@@ -11,28 +11,26 @@ import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Syntactic implements SyntacticInterface {
-
-    private List<TokenInterface> tokens = new ArrayList<>();
-    private TokenStreamInterface tokenStreams;
     private final ASTreeBuilderInterface treeBuilder;
+    private final BlockingQueue<Node> nodeCache = new LinkedBlockingQueue<>();
+    private final Iterator<TokenInterface> tokenIterator;
 
-    public Syntactic(ASTreeBuilderInterface treeBuilder, ){
+    public Syntactic(ASTreeBuilderInterface treeBuilder, Iterator<TokenInterface> tokenIterator) {
         this.treeBuilder = treeBuilder;
-        this.tokenStreams = new TokenStream(tokens);
-
+        this.tokenIterator = tokenIterator;
     }
 
     @Override
-    public Result<SemanticallyCheckable> buildAbstractSyntaxTree() {
-        tokenStreams = new TokenStream(tokens);
-        Result<? extends Node> buildResult = treeBuilder.build(tokenStreams);
+    public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
+        Result<? extends Node> buildResult = treeBuilder.build(tokenStream);
         if (!buildResult.isSuccessful()) {
-            if(nextToken.hasNext()){
-                return buildAbstractSyntaxTree();
-            }
             return new IncorrectResult<>(buildResult.errorMessage());
         }
         Node root = buildResult.result();
@@ -40,5 +38,34 @@ public class Syntactic implements SyntacticInterface {
             return new IncorrectResult<>("Has built a tree which is not semantically checkable");
         }
         return new CorrectResult<>(semanticallyCheckableNode);
+    }
+
+    @Override
+    public boolean hasNext() {
+        if (!nodeCache.isEmpty()) {
+            return true;
+        }
+        TokenStreamInterface stream = new TokenStream(List.of());
+        while (tokenIterator.hasNext()) {
+            TokenInterface token = tokenIterator.next();
+            List<TokenInterface> tokens = new ArrayList<>(stream.tokens());
+            tokens.add(token);
+            stream = new TokenStream(tokens);
+            Result<? extends Node> buildResult = treeBuilder.build(stream);
+            if (buildResult.isSuccessful()) {
+                Node node = buildResult.result();
+                nodeCache.add(node);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public Node next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return nodeCache.poll();
     }
 }
