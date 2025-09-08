@@ -9,7 +9,7 @@ import common.TokenInterface;
 import java.util.List;
 
 public class TokenStream implements TokenStreamInterface {
-    private final List<TokenInterface> tokens;
+    private List<TokenInterface> tokens;
     private Integer index = 0;
 
     public TokenStream(List<TokenInterface> tokens) {
@@ -18,7 +18,7 @@ public class TokenStream implements TokenStreamInterface {
 
     @Override
     public Result<TokenInterface> peek() {
-        if (isEndOfStream()){
+        if (isEndOfStream()) {
             return new IncorrectResult<>("The stream has no more tokens to peek.");
         }
         return new CorrectResult<>(this.tokens().get(index));
@@ -26,7 +26,7 @@ public class TokenStream implements TokenStreamInterface {
 
     @Override
     public Result<TokenInterface> peek(Integer offset) {
-        if (isEndOfStream()){
+        if (isEndOfStream()) {
             return new IncorrectResult<>("The stream has no more tokens.");
         } else if (index + offset > tokens().size()) {
             return new IncorrectResult<>("The offset points out of bounds.");
@@ -36,7 +36,7 @@ public class TokenStream implements TokenStreamInterface {
 
     @Override
     public Result<TokenInterface> consume() {
-        if (isEndOfStream()){
+        if (isEndOfStream()) {
             return new IncorrectResult<>("The stream has no more tokens to consume.");
         }
         return new CorrectResult<>(this.tokens().get(index++));
@@ -58,9 +58,17 @@ public class TokenStream implements TokenStreamInterface {
     }
 
     @Override
-    public List<TokenInterface> allTokens() {
-        return List.copyOf(tokens);
+    public Result<Integer> consumeAll(TokenInterface expectedToken) {
+        List<TokenInterface> tempList = this.tokens();
+        for (TokenInterface token : this.tokens()) {
+            if (!token.equals(expectedToken)) {
+                tempList.add(token);
+            }
+        }
+        this.tokens = tempList;
+        return new CorrectResult<>(tempList.size());
     }
+
 
     @Override
     public Boolean isEndOfStream() {
