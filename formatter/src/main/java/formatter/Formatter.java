@@ -24,6 +24,10 @@ import java.util.concurrent.Callable;
 public class Formatter implements FormatterInterface, Callable<Result<String>>{
     private final ReadRules readRules = new ReadRules();
 
+    public static void main(String[] args) throws Exception {
+        int exitCode = new CommandLine(new Formatter()).execute(args);
+        System.exit(exitCode);
+    }
 
     @CommandLine.Parameters(index = "0", description = "File to format")
     private Path inputFile;
@@ -39,8 +43,8 @@ public class Formatter implements FormatterInterface, Callable<Result<String>>{
     @Override
     public Result<String> call() throws Exception {
         File txt = inputFile.toFile();
-        Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(),
-                new CodeRepository(txt.toPath()));
+        CodeRepository repo = new CodeRepository(inputFile);
+        Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
         Iterator<Node> nodeIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
         StringBuilder sb = new StringBuilder();
         if(txt.length() == 0) return new CorrectResult<>("The file is empty.");

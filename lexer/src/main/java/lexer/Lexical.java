@@ -65,7 +65,7 @@ public class Lexical implements LexicalInterface {
             for (Character c : charBuffer) {
                 builder.append(c);
                 String word = builder.toString();
-                Result<TokenInterface> result = tokenizer.tokenize(word);
+                Result<TokenInterface> result = analyze(word);
                 if (result.isSuccessful()) {
                     candidateToken = result.result();
                 } else if (candidateToken != null) {
@@ -75,6 +75,9 @@ public class Lexical implements LexicalInterface {
             }
 
             characterIterator.next();
+        }
+        if (candidateToken != null) {
+            tokenBuffer.add(candidateToken);
         }
         return candidateToken != null || !tokenBuffer.isEmpty();
     }
