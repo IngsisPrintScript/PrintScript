@@ -46,7 +46,7 @@ public class Lexical implements LexicalInterface {
         while (characterIterator.hasNext()) {
             Character character = characterIterator.peek();
             if (character == null && candidateToken != null){
-                break;
+                continue;
             }
             charBuffer.add(character);
             StringBuilder builder = new StringBuilder();

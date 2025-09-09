@@ -2,24 +2,43 @@ package repositories;
 
 import iterator.CodeIteratorInterface;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.NoSuchElementException;
 
-public record CodeRepository(
-        CodeIteratorInterface codeIterator
-) implements CodeRepositoryInterface {
+
+public class CodeRepository implements CodeRepositoryInterface {
+    private int index = 0;
+    private final String content;
+
+    public CodeRepository(Path path) {
+        try {
+            this.content = Files.readString(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading the file: " + path, e);
+        }
+    }
 
     @Override
     public Character peek() {
-        return null;
+        if(!hasNext()){
+            throw new NoSuchElementException();
+        }
+        return content.charAt(index);
     }
 
     @Override
     public boolean hasNext() {
-        return false;
+        return content.length() > index;
     }
 
     @Override
     public Character next() {
-        return null;
+        if(!hasNext()){
+            throw new NoSuchElementException();
+        }
+        return content.charAt(index++);
     }
 }
