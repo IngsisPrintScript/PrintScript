@@ -15,8 +15,10 @@ import java.util.Iterator;
 public class ExecutionEngine implements ExecutionEngineInterface{
 
     public static void main(String[] args){
-        Result<String> result = new ExecutionEngine().execute();
-        System.out.println(result);
+        while(true) {
+            Result<String> result = new ExecutionEngine().execute();
+            System.out.println("Failure: " + result.errorMessage());
+        }
     }
 
     @Override
@@ -25,8 +27,6 @@ public class ExecutionEngine implements ExecutionEngineInterface{
         Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(), characterIterator);
         Iterator<Node> nodeIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
         InterpreterInterface interpreter = new Interpreter(new InterpretVisitor(), nodeIterator);
-        Result<String> result = interpreter.interpreter();
-        System.out.println(result);
-        return result;
+        return interpreter.interpreter();
     }
 }
