@@ -21,6 +21,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     implementation("org.yaml:snakeyaml:2.0")
+    implementation 'info.picocli:picocli:4.7.6'
 
 }
 
