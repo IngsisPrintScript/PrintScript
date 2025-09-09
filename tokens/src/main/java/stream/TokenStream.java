@@ -6,6 +6,7 @@ import results.IncorrectResult;
 import results.Result;
 import common.TokenInterface;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TokenStream implements TokenStreamInterface {
@@ -28,7 +29,7 @@ public class TokenStream implements TokenStreamInterface {
     public Result<TokenInterface> peek(Integer offset) {
         if (isEndOfStream()) {
             return new IncorrectResult<>("The stream has no more tokens.");
-        } else if (index + offset > tokens().size()) {
+        } else if (index + offset > tokens().size() - 1) {
             return new IncorrectResult<>("The offset points out of bounds.");
         }
         return new CorrectResult<>(this.tokens().get(index + offset));
@@ -59,7 +60,7 @@ public class TokenStream implements TokenStreamInterface {
 
     @Override
     public Result<Integer> consumeAll(TokenInterface expectedToken) {
-        List<TokenInterface> tempList = this.tokens();
+        List<TokenInterface> tempList = new ArrayList<>();
         for (TokenInterface token : this.tokens()) {
             if (!token.equals(expectedToken)) {
                 tempList.add(token);
