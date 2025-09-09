@@ -4,9 +4,6 @@ import common.Node;
 import common.TokenInterface;
 import formatter.FormatterRules.SeparationFormatter;
 import formatter.yamlAnalizer.ReadRules;
-import interpreter.Interpreter;
-import interpreter.InterpreterInterface;
-import interpreter.visitor.InterpretVisitor;
 import lexer.Lexical;
 import parser.Syntactic;
 import parser.ast.builders.cor.ChanBuilder;
@@ -16,7 +13,6 @@ import results.CorrectResult;
 import results.Result;
 import tokenizers.factories.TokenizerFactory;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
