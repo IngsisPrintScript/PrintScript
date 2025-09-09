@@ -1,0 +1,4 @@
+let name:String = "a";
+println("a");
+let pizza : String ="z";
+println(pizza);
