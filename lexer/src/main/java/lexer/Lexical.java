@@ -1,17 +1,12 @@
 package lexer;
 
 
+import common.PeekableIterator;
 import common.TokenInterface;
-import parser.Reader;
-import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
 import tokenizers.TokenizerInterface;
-import stream.TokenStream;
-import stream.TokenStreamInterface;
 
-import java.nio.Buffer;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,10 +16,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 public class Lexical implements LexicalInterface {
     private final TokenizerInterface tokenizer;
-    private final Iterator<Character> characterIterator;
+    private final PeekableIterator<Character> characterIterator;
     private final BlockingQueue<TokenInterface> tokenBuffer = new LinkedBlockingQueue<>();
 
-    public Lexical(TokenizerInterface tokenizer, Iterator<Character> characterIterator) {
+    public Lexical(TokenizerInterface tokenizer, PeekableIterator<Character> characterIterator) {
         this.tokenizer = tokenizer;
         this.characterIterator = characterIterator;
     }
@@ -49,20 +44,30 @@ public class Lexical implements LexicalInterface {
         List<Character> charBuffer = new ArrayList<>();
         TokenInterface candidateToken = null;
         while (characterIterator.hasNext()) {
-            charBuffer.add(characterIterator.next());
+            Character character = characterIterator.peek();
+            if (character == null && candidateToken != null){
+                break;
+            }
+            charBuffer.add(character);
             StringBuilder builder = new StringBuilder();
             for(Character c : charBuffer) {
                 builder.append(c);
-            }
-            String word = builder.toString();
-            Result<TokenInterface> result = tokenizer.tokenize(word);
-            if (result.isSuccessful()) {
-                candidateToken = result.result();
-            } else {
-                if (candidateToken != null) {
-                    tokenBuffer.add(candidateToken);
+                String word = builder.toString();
+                Result<TokenInterface> result = tokenizer.tokenize(word);
+                if (result.isSuccessful()) {
+                    candidateToken = result.result();
+                } else {
+                    if (candidateToken != null) {
+                        tokenBuffer.add(candidateToken);
+                        candidateToken = null;
+                        return true;
+                    }
                 }
             }
+            if (candidateToken != null) {
+                characterIterator.next();
+            }
+
         }
         return candidateToken != null;
     }
