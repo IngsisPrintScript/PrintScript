@@ -5,12 +5,8 @@ plugins {
 
 publishing {
     publications {
-        withType(MavenPublication).configureEach {
+        gpr(MavenPublication) {
             from components.java
-            artifactId = project.name.toLowerCase()
-            if (!group || group == 'unspecified') {
-                groupId = 'com.github.garrotesantiago.printscript'
-            }
         }
     }
     repositories {
@@ -18,8 +14,8 @@ publishing {
             name = "GitHubPackages"
             url = uri("https://maven.pkg.github.com/GarroteSantiago/PrintScript")
             credentials {
-                username = System.getenv("GITHUB_ACTOR") ?: providers.gradleProperty("gpr.user").orNull
-                password = System.getenv("GITHUB_TOKEN") ?: providers.gradleProperty("gpr.key").orNull
+                username = System.getenv('USERNAME')
+                password = System.getenv('TOKEN')
             }
         }
     }
