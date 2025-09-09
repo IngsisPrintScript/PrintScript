@@ -13,6 +13,7 @@ import results.CorrectResult;
 import results.Result;
 import tokenizers.factories.TokenizerFactory;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -21,11 +22,7 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "formatter", mixinStandardHelpOptions = true, version = "1.0")
 public class Formatter implements FormatterInterface, Callable<Result<String>>{
-    private final ReadRules readRules;
-
-    public Formatter(ReadRules reader){
-        this.readRules = reader;
-    }
+    private final ReadRules readRules = new ReadRules();
 
 
     @CommandLine.Parameters(index = "0", description = "File to format")
@@ -41,15 +38,19 @@ public class Formatter implements FormatterInterface, Callable<Result<String>>{
 
     @Override
     public Result<String> call() throws Exception {
+        File txt = inputFile.toFile();
         Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(),
-                new CodeRepository(inputFile));
+                new CodeRepository(txt.toPath()));
         Iterator<Node> nodeIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
         StringBuilder sb = new StringBuilder();
-        while (nodeIterator.hasNext()) {
+        if(txt.length() == 0) return new CorrectResult<>("The file is empty.");
+        while(nodeIterator.hasNext()) {
             Result<String> formatted = format(nodeIterator.next());
             sb.append(formatted.result());
         }
+        Result<String> lastFormatted = format(nodeIterator.next());
+        sb.append(lastFormatted.result());
         Files.writeString(inputFile, sb.toString());
-        return new CorrectResult<>("Formatted the file");
+        return new CorrectResult<>(sb.toString());
     }
 }

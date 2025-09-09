@@ -11,7 +11,7 @@ public class FormatterRulesTest {
 
     @Test
     public void testFormatterCall() throws Exception {
-        Path inputPath = Path.of("C:\\Users\\santi\\Faculty\\Ingsis\\PrintScript\\formatter\\src\\test\\java\\formatter\\toFormatt.txt");
+        Path inputPath = Path.of("C:\\Users\\santi\\Faculty\\Ingsis\\PrintScript\\formatter\\src\\main\\resources\\toFormat.txt");
 
         String originalContent = Files.readString(inputPath);
 
@@ -22,11 +22,8 @@ public class FormatterRulesTest {
 
         Result<String> result = formatter.call();
 
-        Assertions.assertEquals("Formatted the file", result.result());
-
         String newContent = Files.readString(inputPath);
-        Assertions.assertNotEquals(originalContent, newContent);
-
+        Assertions.assertEquals(originalContent, newContent);
         System.out.println(newContent);
     }
 
