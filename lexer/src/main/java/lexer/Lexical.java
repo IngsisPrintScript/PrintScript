@@ -38,38 +38,45 @@ public class Lexical implements LexicalInterface {
         if (!tokenBuffer.isEmpty()) {
             return true;
         }
-        if (!characterIterator.hasNext()) {
-            return false;
-        }
+
         List<Character> charBuffer = new ArrayList<>();
         TokenInterface candidateToken = null;
+
         while (characterIterator.hasNext()) {
+
             Character character = characterIterator.peek();
-            if (character == null && candidateToken != null){
-                break;
+
+            if (character == null) {
+                if (candidateToken != null) {
+                    tokenBuffer.add(candidateToken);
+                    return true;
+                }
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+                continue;
             }
+
             charBuffer.add(character);
+
             StringBuilder builder = new StringBuilder();
-            for(Character c : charBuffer) {
+            for (Character c : charBuffer) {
                 builder.append(c);
                 String word = builder.toString();
                 Result<TokenInterface> result = tokenizer.tokenize(word);
                 if (result.isSuccessful()) {
                     candidateToken = result.result();
-                } else {
-                    if (candidateToken != null) {
-                        tokenBuffer.add(candidateToken);
-                        candidateToken = null;
-                        return true;
-                    }
+                } else if (candidateToken != null) {
+                    tokenBuffer.add(candidateToken);
+                    return true;
                 }
             }
-            if (candidateToken != null) {
-                characterIterator.next();
-            }
 
+            characterIterator.next();
         }
-        return candidateToken != null;
+        return candidateToken != null || !tokenBuffer.isEmpty();
     }
 
     @Override
