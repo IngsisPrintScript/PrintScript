@@ -4,9 +4,6 @@ import common.Node;
 import common.TokenInterface;
 import formatter.FormatterRules.SeparationFormatter;
 import formatter.yamlAnalizer.ReadRules;
-import interpreter.Interpreter;
-import interpreter.InterpreterInterface;
-import interpreter.visitor.InterpretVisitor;
 import lexer.Lexical;
 import parser.Syntactic;
 import parser.ast.builders.cor.ChanBuilder;
@@ -16,7 +13,6 @@ import results.CorrectResult;
 import results.Result;
 import tokenizers.factories.TokenizerFactory;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -25,11 +21,15 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "formatter", mixinStandardHelpOptions = true, version = "1.0")
 public class Formatter implements FormatterInterface, Callable<Result<String>>{
+    private final ReadRules readRules;
+
+    public Formatter(ReadRules reader){
+        this.readRules = reader;
+    }
+
 
     @CommandLine.Parameters(index = "0", description = "File to format")
     private Path inputFile;
-
-    private final ReadRules readRules = new ReadRules();
 
 
     @Override
