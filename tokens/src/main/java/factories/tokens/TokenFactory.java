@@ -56,8 +56,8 @@ public class TokenFactory implements TokenFactoryInterface {
     }
 
     @Override
-    public TokenInterface createSpaceSeparatorToken(String characterName) {
-        return new Token(characterName + "_SEPARATOR_TOKEN", " ");
+    public TokenInterface createSeparatorToken(String value) {
+        return new Token("SEPARATOR_TOKEN", value);
     }
 
     @Override

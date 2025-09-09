@@ -9,7 +9,6 @@ import results.Result;
 import parser.ast.builders.ASTreeBuilderInterface;
 import stream.TokenStream;
 import stream.TokenStreamInterface;
-import visitor.InterpretableNode;
 import visitor.SemanticallyCheckable;
 
 import java.util.ArrayList;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.NoSuchElementException;
-import java.util.Queue;
 
 public record Syntactic(
         ASTreeBuilderInterface treeBuilder,
@@ -32,7 +30,7 @@ public record Syntactic(
 
     @Override
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
-        tokenStream.consumeAll(new TokenFactory().createSpaceSeparatorToken("SPACE"));
+        tokenStream.consumeAll(new TokenFactory().createSeparatorToken("SPACE"));
         Result<? extends Node> buildResult = treeBuilder().build(tokenStream);
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
