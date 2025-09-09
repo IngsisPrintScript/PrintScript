@@ -2,6 +2,7 @@ package parser;
 
 import common.Node;
 import common.TokenInterface;
+import factories.tokens.TokenFactory;
 import results.CorrectResult;
 import results.IncorrectResult;
 import results.Result;
@@ -31,6 +32,7 @@ public record Syntactic(
 
     @Override
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
+        tokenStream.consumeAll(new TokenFactory().createSpaceSeparatorToken("SPACE"));
         Result<? extends Node> buildResult = treeBuilder().build(tokenStream);
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
@@ -53,9 +55,9 @@ public record Syntactic(
             List<TokenInterface> tokens = new ArrayList<>(stream.tokens());
             tokens.add(token);
             stream = new TokenStream(tokens);
-            Result<? extends Node> buildResult = treeBuilder.build(stream);
+            Result<SemanticallyCheckable> buildResult = this.buildAbstractSyntaxTree(stream);
             if (buildResult.isSuccessful()) {
-                Node node = buildResult.result();
+                Node node = (Node) buildResult.result();
                 nodeCache.add(node);
                 return true;
             }
