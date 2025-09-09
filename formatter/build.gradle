@@ -17,6 +17,11 @@ dependencies {
     implementation project(":common")
     implementation project(":parser")
     implementation project(":nodes")
+    implementation project(":tokens")
+    implementation project(":lexer")
+    implementation project(":ExecutionEngine")
+    implementation project(":stream")
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
