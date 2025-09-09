@@ -2,6 +2,6 @@ package common;
 
 import results.Result;
 
-public interface ExecutionEngineInterface {
+public interface CliAppInterface {
     Result<String> execute();
 }
