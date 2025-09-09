@@ -11,7 +11,7 @@ public class FormatterRulesTest {
 
     @Test
     public void testFormatterCall() throws Exception {
-        Path inputPath = Path.of("C:\\Users\\santi\\Faculty\\Ingsis\\PrintScript\\formatter\\src\\main\\resources\\toFormat.txt");
+        Path inputPath = Path.of("/home/santiagogarrote/Faculty/Ingsis/PrintScript/formatter/src/main/resources/toFormat.txt");
 
         String originalContent = Files.readString(inputPath);
 

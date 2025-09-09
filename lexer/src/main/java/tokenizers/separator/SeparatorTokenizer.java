@@ -9,7 +9,7 @@ import tokenizers.TokenizerInterface;
 public record SeparatorTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
-        return input.matches("[\\\\s]+");
+        return input.matches("\\s+");
     }
 
     @Override
