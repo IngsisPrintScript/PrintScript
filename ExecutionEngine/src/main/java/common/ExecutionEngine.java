@@ -15,10 +15,15 @@ import java.util.Iterator;
 public class ExecutionEngine implements ExecutionEngineInterface{
 
     public static void main(String[] args){
-        while(true) {
-            Result<String> result = new ExecutionEngine().execute();
+        System.out.println("Welcome to the PrintScript CLI.\n"
+                + "Write your code below. Each line will be added to the buffer.\n"
+                + "Type 'exit' to close this CLI.");
+        Result<String> result = new ExecutionEngine().execute();
+        if (!result.isSuccessful()) {
             System.out.println("Failure: " + result.errorMessage());
+            return;
         }
+        main(args);
     }
 
     @Override
