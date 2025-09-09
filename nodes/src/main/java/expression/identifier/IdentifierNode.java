@@ -32,7 +32,11 @@ public record IdentifierNode(String name) implements Node, ExpressionNode {
     @Override
     public Result<Object> evaluate() {
         try {
-            Object identifierValue = Environment.getInstance().getIdValue(this.name()).result();
+            Result<Object> getIdValue = Environment.getInstance().getIdValue(this.name());
+            if (!getIdValue.isSuccessful()){
+                return new IncorrectResult<>(getIdValue.errorMessage());
+            }
+            Object identifierValue = getIdValue.result();
             return new CorrectResult<>(identifierValue);
         } catch (Exception e) {
             return new IncorrectResult<>(e.getMessage());
