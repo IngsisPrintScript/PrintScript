@@ -7,17 +7,19 @@ import java.util.NoSuchElementException;
 public record CodeRepository(
         CodeIteratorInterface codeIterator
 ) implements CodeRepositoryInterface {
+
     @Override
-    public Boolean hasMoreCode() {
-        return codeIterator().hasNext();
+    public Character peek() {
+        return null;
     }
 
     @Override
-    public String nextChunkOfCode() {
-        if (codeIterator().hasNext()) {
-            return codeIterator().next();
-        } else {
-            throw new NoSuchElementException();
-        }
+    public boolean hasNext() {
+        return false;
+    }
+
+    @Override
+    public Character next() {
+        return null;
     }
 }

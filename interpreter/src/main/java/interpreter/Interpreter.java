@@ -11,13 +11,16 @@ import java.util.Iterator;
 
 public record Interpreter(
         InterpretVisitor interpretVisitor,
-        Iterator<InterpretableNode> interpretableNodeIterator
+        Iterator<Node> interpretableNodeIterator
 ) implements InterpreterInterface {
     @Override
     public Result<String> interpreter() {
         while (interpretableNodeIterator.hasNext()) {
-            InterpretableNode tree = interpretableNodeIterator.next();
-            Result<String> interpretResult = tree.acceptInterpreter(interpretVisitor());
+            Node tree = interpretableNodeIterator.next();
+            if (!(tree instanceof InterpretableNode interpretableTree)) {
+                continue;
+            }
+            Result<String> interpretResult = interpretableTree.acceptInterpreter(interpretVisitor());
             if (!interpretResult.isSuccessful()){
                 return new IncorrectResult<String>(interpretResult.errorMessage());
             }

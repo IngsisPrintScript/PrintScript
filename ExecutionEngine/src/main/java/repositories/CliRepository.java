@@ -1,16 +1,17 @@
-package repository;
+package repositories;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
-import repositories.CodeRepositoryInterface;
 import results.CorrectResult;
 import results.Result;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 @Command(name = "RepositoryCLI", mixinStandardHelpOptions = true, version = "1.0",
         description = "Asks the user to write a line of code")
@@ -18,25 +19,29 @@ public class CliRepository implements CodeRepositoryInterface, Callable<Result<S
     private final BlockingQueue<Character> buffer = new LinkedBlockingQueue<>();
     private boolean running = true;
 
-    public static void main(String[] args) {
-        int exitCode = new CommandLine(new CliRepository()).execute(args);
-        System.exit(exitCode);
-    }
-
     @Override
     public boolean hasNext() {
-        return !buffer.isEmpty() || running;
+        StringBuilder builder = new StringBuilder();
+        for (Character character : buffer) {
+            builder.append(character);
+        }
+        String result = builder.toString();
+        return !result.equals("exit");
     }
 
     @Override
     public Character next() {
         try {
-            return buffer.take();
-        }catch (InterruptedException e) {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            return buffer.poll(200, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return null;
         }
     }
+
 
     @Override
     public Result<String> call() throws Exception {
@@ -52,7 +57,7 @@ public class CliRepository implements CodeRepositoryInterface, Callable<Result<S
                         running = false;
                         break;
                     }
-                    for (char c : (line + "\n").toCharArray()) {
+                    for (char c : (line).toCharArray()) {
                         buffer.put(c);
                     }
                 }
@@ -65,22 +70,14 @@ public class CliRepository implements CodeRepositoryInterface, Callable<Result<S
         inputThread.setDaemon(true);
         inputThread.start();
 
-        // keep CLI alive until user exits
-        while (running) {
-            Thread.sleep(200);
-        }
-
         return new CorrectResult<>("CLI ended successfully.");
     }
 
     @Override
     public Character peek() {
-        try {
-            BlockingQueue<Character> tempQueue = new LinkedBlockingQueue<>(buffer);
-            return tempQueue.take();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return null;
+        if (!hasNext()) {
+            throw new NoSuchElementException();
         }
+        return buffer.peek();
     }
 }
