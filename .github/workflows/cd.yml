@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - dev/tooling2
   pull_request:
     branches:
       - main
+      - dev/tooling2
 
 jobs:
   build:
