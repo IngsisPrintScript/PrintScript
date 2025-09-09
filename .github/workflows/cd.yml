@@ -1,18 +1,17 @@
-name: CD
+name: CD Pipeline
 
 on:
   push:
     branches:
       - main
-      - dev/tooling2
   pull_request:
     branches:
       - main
-      - dev/tooling2
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -36,6 +35,7 @@ jobs:
       - name: Publish to GitHub Packages
         if: github.event_name == 'push'
         run: ./gradlew publish
+
         env:
           USERNAME: ${{ secrets.GITHUB_ACTOR }}
           TOKEN: ${{ secrets.GITHUB_TOKEN }}
