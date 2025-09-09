@@ -12,9 +12,6 @@ public class CliRepository implements CodeRepositoryInterface {
     private volatile boolean running = true;
 
     public CliRepository() {
-        System.out.println("Welcome to the PrintScript CLI.\n"
-                + "Write your code below. Each line will be added to the buffer.\n"
-                + "Type 'exit' to close this CLI.");
         startInputThread();
     }
 

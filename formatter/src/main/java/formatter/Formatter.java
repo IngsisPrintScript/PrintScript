@@ -21,11 +21,15 @@ import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "formatter", mixinStandardHelpOptions = true, version = "1.0")
 public class Formatter implements FormatterInterface, Callable<Result<String>>{
+    private final ReadRules readRules;
+
+    public Formatter(ReadRules reader){
+        this.readRules = reader;
+    }
+
 
     @CommandLine.Parameters(index = "0", description = "File to format")
     private Path inputFile;
-
-    private final ReadRules readRules = new ReadRules();
 
 
     @Override
