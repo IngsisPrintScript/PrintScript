@@ -1,12 +1,14 @@
-name: CD Pipeline
+name: CD
 
 on:
   push:
     branches:
       - main
+      - tooling2
   pull_request:
     branches:
       - main
+      - tooling2
 
 jobs:
   build:
