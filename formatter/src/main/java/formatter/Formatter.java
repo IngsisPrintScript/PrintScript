@@ -52,8 +52,6 @@ public class Formatter implements FormatterInterface, Callable<Result<String>>{
             Result<String> formatted = format(nodeIterator.next());
             sb.append(formatted.result());
         }
-        Result<String> lastFormatted = format(nodeIterator.next());
-        sb.append(lastFormatted.result());
         Files.writeString(inputFile, sb.toString());
         return new CorrectResult<>(sb.toString());
     }
