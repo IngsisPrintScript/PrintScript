@@ -18,7 +18,7 @@ dependencies {
     implementation project(":tokens")
     implementation project(":nodes")
     implementation project(":lexer")
-    implementation project(":parser")
+    implementation project(":syntactic")
     implementation project(":semantic")
     implementation project(":cli-app")
     implementation project(":peekable-iterator")
