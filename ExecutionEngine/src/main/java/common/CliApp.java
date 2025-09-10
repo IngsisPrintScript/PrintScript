@@ -7,6 +7,7 @@ import lexer.Lexical;
 import parser.Syntactic;
 import parser.ast.builders.cor.ChanBuilder;
 import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import repositories.CliRepository;
 import results.Result;
 import tokenizers.factories.TokenizerFactory;
@@ -14,12 +15,17 @@ import tokenizers.factories.TokenizerFactory;
 import java.util.Iterator;
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(name = "cliApp", version = "cliApp 0",
-description = "Runs a CLI interpreter for printScript")
+@Command(
+        name = "cliApp",
+        mixinStandardHelpOptions = true,
+        version = "cliApp 0",
+        description = "Runs a CLI interpreter for printScript"
+)
 public class CliApp implements CliAppInterface, Callable<Integer> {
 
     public static void main(String[] args){
-        main(args);
+        int exitCode = new CommandLine(new CliApp()).execute(args);
+        System.exit(exitCode);
     }
 
     @Override

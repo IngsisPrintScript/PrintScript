@@ -2,6 +2,16 @@ plugins {
     id 'java'
 }
 
+
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow'
+}
+
+application {
+    mainClass = 'common.CliApp'
+}
+
 group = 'com.ingsis'
 version = '1.0-SNAPSHOT'
 
