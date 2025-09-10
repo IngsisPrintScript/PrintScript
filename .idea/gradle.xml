@@ -25,6 +25,7 @@
             <option value="$PROJECT_DIR$/parser" />
             <option value="$PROJECT_DIR$/peekable-iterator" />
             <option value="$PROJECT_DIR$/repositories" />
+            <option value="$PROJECT_DIR$/semantic" />
             <option value="$PROJECT_DIR$/stream" />
             <option value="$PROJECT_DIR$/tokens" />
             <option value="$PROJECT_DIR$/visitable" />
