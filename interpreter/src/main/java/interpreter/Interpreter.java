@@ -14,13 +14,17 @@ public record Interpreter(
 ) implements InterpreterInterface {
     @Override
     public Result<String> interpreter() {
+        Result<String> interpretResult = null;
         while (interpretableNodeIterator.hasNext()) {
             InterpretableNode tree = interpretableNodeIterator.next();
-            Result<String> interpretResult = tree.acceptInterpreter(interpretVisitor());
+            interpretResult = tree.acceptInterpreter(interpretVisitor());
             if (!interpretResult.isSuccessful()){
-                return new IncorrectResult<>(interpretResult.errorMessage());
+                interpretResult = new IncorrectResult<>(interpretResult.errorMessage());
             }
         }
-        return new CorrectResult<>("Correctly interpreted the program.");
+        if (interpretResult == null) {
+            return new  IncorrectResult<>("That's not a valid PrintScript line.");
+        }
+        return interpretResult;
     }
 }

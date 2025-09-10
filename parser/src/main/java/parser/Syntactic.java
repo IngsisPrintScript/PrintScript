@@ -55,7 +55,7 @@ public record Syntactic(
             return true;
         }
 
-        Node nextNode = computeNext();
+        SemanticallyCheckable nextNode = computeNext();
         if (nextNode != null) nodeCache.add(nextNode);
 
         return nextNode != null;
@@ -77,7 +77,7 @@ public record Syntactic(
         return nodeCache.peek();
     }
 
-    private Node computeNext(){
+    private SemanticallyCheckable computeNext(){
         TokenStreamInterface stream = new TokenStream(List.of());
         while (tokenIterator.hasNext()) {
             TokenInterface token = tokenIterator.next();
@@ -86,7 +86,7 @@ public record Syntactic(
             stream = new TokenStream(tokens);
             Result<SemanticallyCheckable> buildResult = this.buildAbstractSyntaxTree(stream);
             if (buildResult.isSuccessful()) {
-                return (Node) buildResult.result();
+                return buildResult.result();
             }
         }
         return null;
