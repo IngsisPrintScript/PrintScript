@@ -6,11 +6,15 @@ import interpreter.visitor.InterpretVisitor;
 import lexer.Lexical;
 import parser.Syntactic;
 import parser.ast.builders.cor.ChanBuilder;
+import parser.semantic.SemanticAnalyzer;
+import parser.semantic.enforcers.SemanticRulesChecker;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import repositories.CliRepository;
 import results.Result;
 import tokenizers.factories.TokenizerFactory;
+import visitor.InterpretableNode;
+import visitor.SemanticallyCheckable;
 
 import java.util.Iterator;
 import java.util.concurrent.Callable;
@@ -32,8 +36,9 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
     public Result<String> execute() {
         CliRepository characterIterator = new CliRepository();
         Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(), characterIterator);
-        Iterator<Node> nodeIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
-        InterpreterInterface interpreter = new Interpreter(new InterpretVisitor(), nodeIterator);
+        Iterator<SemanticallyCheckable> checkableNodesIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
+        Iterator<InterpretableNode> interpretableNodesIterator = new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
+        InterpreterInterface interpreter = new Interpreter(new InterpretVisitor(), interpretableNodesIterator);
         return interpreter.interpreter();
     }
 

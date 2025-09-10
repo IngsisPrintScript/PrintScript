@@ -1,12 +1,10 @@
 package parser;
 
-import common.Node;
+import common.PeekableIterator;
 import results.Result;
 import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 
-import java.util.Iterator;
-
-public interface SyntacticInterface extends Iterator<Node> {
+public interface SyntacticInterface extends PeekableIterator<SemanticallyCheckable> {
     Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream);
 }
