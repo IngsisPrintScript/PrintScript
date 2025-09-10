@@ -19,7 +19,7 @@ dependencies {
     implementation project(":nodes")
     implementation project(":tokens")
     implementation project(":lexer")
-    implementation project(":ExecutionEngine")
+    implementation project(":cli-app")
     implementation project(":stream")
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
