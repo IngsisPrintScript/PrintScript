@@ -83,6 +83,6 @@ public class Lexical implements LexicalInterface {
             }
             characterIterator.next();
         }
-        return null;
+        return candidateToken;
     }
 }

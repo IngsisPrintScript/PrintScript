@@ -1,68 +1,28 @@
 package repositories;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import common.PeekableIterator;
+
 import java.util.NoSuchElementException;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
+import java.util.Queue;
 
-public class CliRepository implements CodeRepositoryInterface {
-    private final BlockingQueue<Character> buffer = new LinkedBlockingQueue<>();
-    private volatile boolean running = true;
-
-    public CliRepository() {
-        startInputThread();
-    }
-
-    private void startInputThread() {
-        Thread inputThread = new Thread(() -> {
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if ("exit".equalsIgnoreCase(line.trim())) {
-                        running = false;
-                        break;
-                    }
-                    for (char c : (line).toCharArray()) {
-                        buffer.put(c);
-                    }
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                running = false;
-            }
-        }, "CLI-input-thread");
-
-        inputThread.setDaemon(true);
-        inputThread.start();
-    }
+public record CliRepository(Queue<Character> buffer) implements PeekableIterator<Character> {
 
     @Override
     public boolean hasNext() {
-        return !buffer.isEmpty() || running;
+        return !buffer.isEmpty();
     }
 
     @Override
     public Character next() {
-        try {
-            Character c = buffer.poll(200, TimeUnit.MILLISECONDS);
-            if (c == null && !running) {
-                throw new NoSuchElementException();
-            }
-            return c;
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return null;
+        if (!hasNext()) {
+            throw new NoSuchElementException();
         }
+        return buffer.poll();
     }
 
     @Override
     public Character peek() {
-        Character c = buffer.peek();
-        if (c == null && !running) {
-            throw new NoSuchElementException();
-        }
-        return c;
+        if (!hasNext()) throw new NoSuchElementException();
+        return buffer.peek();
     }
 }
