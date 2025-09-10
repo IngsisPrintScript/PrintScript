@@ -81,7 +81,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
                 + "Type 'exit' to close this CLI.");
         Result<String> result = new CliApp().execute();
         if (!result.isSuccessful()) {
-            System.out.println("a: " + result.errorMessage());
+            System.out.println("Error: " + result.errorMessage());
             return 1;
         }
         return 0;
