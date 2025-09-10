@@ -51,12 +51,7 @@ public class Lexical implements LexicalInterface {
                     tokenBuffer.add(candidateToken);
                     return true;
                 }
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
-                continue;
+                return false;
             }
 
             charBuffer.add(character);
