@@ -15,10 +15,11 @@ repositories {
 
 dependencies {
     implementation project(":common")
-    implementation project(":parser")
-    implementation project(":nodes")
     implementation project(":tokens")
+    implementation project(":nodes")
     implementation project(":lexer")
+    implementation project(":parser")
+    implementation project(":semantic")
     implementation project(":cli-app")
     implementation project(":peekable-iterator")
 
