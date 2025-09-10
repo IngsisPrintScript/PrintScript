@@ -11,9 +11,13 @@ import stream.TokenStream;
 import stream.TokenStreamInterface;
 import visitor.SemanticallyCheckable;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.NoSuchElementException;
@@ -21,11 +25,11 @@ import java.util.NoSuchElementException;
 public record Syntactic(
         ASTreeBuilderInterface treeBuilder,
         Iterator<TokenInterface> tokenIterator,
-        BlockingQueue<Node> nodeCache
+        Deque<SemanticallyCheckable> nodeCache
 ) implements SyntacticInterface {
 
     public Syntactic(ASTreeBuilderInterface treeBuilder, Iterator<TokenInterface> tokenIterator) {
-        this(treeBuilder, tokenIterator, new LinkedBlockingQueue<>());
+        this(treeBuilder, tokenIterator, new ArrayDeque<>());
     }
 
     @Override
@@ -34,6 +38,9 @@ public record Syntactic(
         Result<? extends Node> buildResult = treeBuilder().build(tokenStream);
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
+        }
+        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()){
+            return new IncorrectResult<>("Did not have an End Of Line character.");
         }
         Node root = buildResult.result();
         if (!(root instanceof SemanticallyCheckable semanticallyCheckableNode)) {
@@ -47,6 +54,30 @@ public record Syntactic(
         if (!nodeCache.isEmpty()) {
             return true;
         }
+
+        Node nextNode = computeNext();
+        if (nextNode != null) nodeCache.add(nextNode);
+
+        return nextNode != null;
+    }
+
+    @Override
+    public SemanticallyCheckable next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return nodeCache.poll();
+    }
+
+    @Override
+    public SemanticallyCheckable peek() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return nodeCache.peek();
+    }
+
+    private Node computeNext(){
         TokenStreamInterface stream = new TokenStream(List.of());
         while (tokenIterator.hasNext()) {
             TokenInterface token = tokenIterator.next();
@@ -55,19 +86,9 @@ public record Syntactic(
             stream = new TokenStream(tokens);
             Result<SemanticallyCheckable> buildResult = this.buildAbstractSyntaxTree(stream);
             if (buildResult.isSuccessful()) {
-                Node node = (Node) buildResult.result();
-                nodeCache.add(node);
-                return true;
+                return (Node) buildResult.result();
             }
         }
-        return false;
-    }
-
-    @Override
-    public Node next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return nodeCache.poll();
+        return null;
     }
 }

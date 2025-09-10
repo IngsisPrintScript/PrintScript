@@ -7,11 +7,15 @@ import formatter.yamlAnalizer.ReadRules;
 import lexer.Lexical;
 import parser.Syntactic;
 import parser.ast.builders.cor.ChanBuilder;
+import parser.semantic.SemanticAnalyzer;
+import parser.semantic.enforcers.SemanticRulesChecker;
 import picocli.CommandLine;
 import repositories.CodeRepository;
 import results.CorrectResult;
 import results.Result;
 import tokenizers.factories.TokenizerFactory;
+import visitor.InterpretableNode;
+import visitor.SemanticallyCheckable;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -45,11 +49,12 @@ public class Formatter implements FormatterInterface, Callable<Result<String>>{
         File txt = inputFile.toFile();
         CodeRepository repo = new CodeRepository(inputFile);
         Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
-        Iterator<Node> nodeIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
+        Iterator<SemanticallyCheckable> checkableNodesIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
+        Iterator<InterpretableNode> interpretableNodesIterator = new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
         StringBuilder sb = new StringBuilder();
         if(txt.length() == 0) return new CorrectResult<>("The file is empty.");
-        while(nodeIterator.hasNext()) {
-            Result<String> formatted = format(nodeIterator.next());
+        while(interpretableNodesIterator.hasNext()) {
+            Result<String> formatted = format((Node) interpretableNodesIterator.next());
             sb.append(formatted.result());
         }
         Files.writeString(inputFile, sb.toString());
