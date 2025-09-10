@@ -23,6 +23,7 @@
             <option value="$PROJECT_DIR$/linter" />
             <option value="$PROJECT_DIR$/nodes" />
             <option value="$PROJECT_DIR$/parser" />
+            <option value="$PROJECT_DIR$/peekable-iterator" />
             <option value="$PROJECT_DIR$/repositories" />
             <option value="$PROJECT_DIR$/stream" />
             <option value="$PROJECT_DIR$/tokens" />
