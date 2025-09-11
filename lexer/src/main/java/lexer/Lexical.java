@@ -1,11 +1,12 @@
 package lexer;
 
 
-import common.PeekableIterator;
-import common.TokenInterface;
-import results.IncorrectResult;
-import results.Result;
-import tokenizers.TokenizerInterface;
+import com.ingsis.printscript.lexer.LexicalInterface;
+import com.ingsis.printscript.peekableiterator.PeekableIterator;
+import com.ingsis.printscript.results.IncorrectResult;
+import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.tokenizers.TokenizerInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
 
 import java.util.ArrayList;
 import java.util.Iterator;
