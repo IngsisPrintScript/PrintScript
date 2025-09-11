@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation project(":common")
     implementation project(":tokens")
-    implementation project(":stream")
+    implementation project(":peekable-iterator")
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

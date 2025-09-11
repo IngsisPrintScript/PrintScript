@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/Visitable" />
             <option value="$PROJECT_DIR$/ast-api" />
             <option value="$PROJECT_DIR$/cli" />
+            <option value="$PROJECT_DIR$/cli-app" />
             <option value="$PROJECT_DIR$/common" />
             <option value="$PROJECT_DIR$/enviroment" />
             <option value="$PROJECT_DIR$/environment" />
@@ -22,8 +23,11 @@
             <option value="$PROJECT_DIR$/linter" />
             <option value="$PROJECT_DIR$/nodes" />
             <option value="$PROJECT_DIR$/parser" />
+            <option value="$PROJECT_DIR$/peekable-iterator" />
             <option value="$PROJECT_DIR$/repositories" />
+            <option value="$PROJECT_DIR$/semantic" />
             <option value="$PROJECT_DIR$/stream" />
+            <option value="$PROJECT_DIR$/syntactic" />
             <option value="$PROJECT_DIR$/tokens" />
             <option value="$PROJECT_DIR$/visitable" />
             <option value="$PROJECT_DIR$/visitor" />
