@@ -13,10 +13,10 @@ repositories {
 }
 
 dependencies {
-    implementation project(':nodes')
-    implementation project(':parser')
-    implementation project(':lexer')
     implementation project(':common')
+    implementation project(':nodes')
+    implementation project(':lexer')
+    implementation project(':syntactic')
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
