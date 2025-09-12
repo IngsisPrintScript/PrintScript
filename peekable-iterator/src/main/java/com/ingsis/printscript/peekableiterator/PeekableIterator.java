@@ -1,0 +1,7 @@
+package com.ingsis.printscript.peekableiterator;
+
+import java.util.Iterator;
+
+public interface PeekableIterator<T> extends Iterator<T> {
+    T peek();
+}
