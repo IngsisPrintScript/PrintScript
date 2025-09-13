@@ -9,13 +9,13 @@ import com.ingsis.printscript.formatter.yamlAnalizer.ReadRules;
 import com.ingsis.printscript.lexer.Lexical;
 import com.ingsis.printscript.syntactic.Syntactic;
 import com.ingsis.printscript.syntactic.ast.builders.cor.ChanBuilder;
-import picocli.CommandLine;
 import com.ingsis.printscript.repositories.CodeRepository;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
+import picocli.CommandLine;
 
 import java.io.File;
 import java.nio.file.Files;
