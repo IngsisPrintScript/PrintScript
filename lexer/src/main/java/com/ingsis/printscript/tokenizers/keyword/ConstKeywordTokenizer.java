@@ -12,6 +12,7 @@ public class ConstKeywordTokenizer extends  KeywordTokenizer {
     public ConstKeywordTokenizer() {
         super(new FinalTokenizer());
     }
+
     public ConstKeywordTokenizer(TokenizerInterface nextTokenizer) {
         super(nextTokenizer);
     }
