@@ -9,6 +9,7 @@ plugins {
     id 'com.github.spotbugs'
     id 'checkstyle'
     id 'pmd'
+    id 'jacoco'
 }
 
 repositories {
@@ -39,6 +40,54 @@ tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
 }
+
+jacoco {
+    toolVersion = "0.8.11"
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = true
+        html.required = true
+        csv.required = false
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, excludes: [
+                    '**/generated/**',
+                    '**/config/**',
+                    '**/*Application*'
+            ])
+        }))
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+        rule {
+            element = 'CLASS'
+            excludes = [
+                    '*.Main',
+                    '*.config.*'
+            ]
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.7
+            }
+        }
+    }
+}
+
+
 
 checkstyle {
     toolVersion = '10.15.0'
@@ -108,6 +157,8 @@ tasks.named('check') {
     dependsOn tasks.checkstyleMain
     dependsOn tasks.pmdMain
 }
+
+check.dependsOn jacocoTestCoverageVerification
 
 tasks.named('build') {
     dependsOn tasks.spotlessApply
