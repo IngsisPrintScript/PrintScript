@@ -9,7 +9,7 @@ import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.results.Result;
 
-public interface InterpretVisitor {
+public interface InterpretVisitorInterface {
     Result<String> interpret(LetStatementNode statement);
 
     Result<String> interpret(PrintStatementNode statement);

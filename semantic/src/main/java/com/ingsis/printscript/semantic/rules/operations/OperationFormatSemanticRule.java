@@ -26,6 +26,8 @@ public class OperationFormatSemanticRule implements SemanticRule {
                 }
             }
             return false;
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return false;
         }
@@ -43,6 +45,8 @@ public class OperationFormatSemanticRule implements SemanticRule {
                 }
             }
             return new IncorrectResult<>("There was no specific rule for that operator.");
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return new IncorrectResult<>(e.getMessage());
         }

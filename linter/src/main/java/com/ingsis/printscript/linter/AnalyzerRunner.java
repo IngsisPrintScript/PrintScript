@@ -15,7 +15,7 @@ public final class AnalyzerRunner {
     private final List<Rule> rules;
 
     public AnalyzerRunner(List<Rule> rules) {
-        this.rules = rules;
+        this.rules = List.copyOf(rules);
     }
 
     public List<Violation> analyze(Node root, AnalyzerConfig cfg) {

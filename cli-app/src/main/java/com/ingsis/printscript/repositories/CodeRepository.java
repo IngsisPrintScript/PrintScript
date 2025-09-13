@@ -14,11 +14,13 @@ public class CodeRepository implements CodeRepositoryInterface {
     private final String content;
 
     public CodeRepository(Path path) {
+        String content;
         try {
-            this.content = Files.readString(path);
+            content = Files.readString(path);
         } catch (IOException e) {
-            throw new RuntimeException("Error reading the file: " + path, e);
+            content = "";
         }
+        this.content = content;
     }
 
     @Override

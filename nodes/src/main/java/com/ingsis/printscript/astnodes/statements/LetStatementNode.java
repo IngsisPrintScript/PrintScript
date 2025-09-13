@@ -8,7 +8,7 @@ import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretVisitor;
+import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
@@ -78,11 +78,11 @@ public class LetStatementNode implements Node, SemanticallyCheckable, Interpreta
 
     @Override
     public Boolean isNil() {
-        return null;
+        return false;
     }
 
     @Override
-    public Result<String> acceptInterpreter(InterpretVisitor interpreter) {
+    public Result<String> acceptInterpreter(InterpretVisitorInterface interpreter) {
         return interpreter.interpret(this);
     }
 }

@@ -13,19 +13,23 @@ import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
 import com.ingsis.printscript.linter.api.Rule;
-import com.ingsis.printscript.linter.api.SourceRange;
 import com.ingsis.printscript.linter.api.Violation;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public final class NamingRule implements Rule, RuleVisitor {
     private static final Pattern CAMEL = Pattern.compile("^[a-z]+[a-z0-9]*(?:[A-Z][a-z0-9]*)*$");
     private static final Pattern SNAKE = Pattern.compile("^[a-z]+(?:_[a-z0-9]+)*$");
     private AnalyzerConfig config;
-    private List<Violation> violations;
+    private final List<Violation> VIOLATIONS;
+
+    public NamingRule() {
+        this.VIOLATIONS = new ArrayList<>();
+    }
 
     @Override
     public String id() {
@@ -45,8 +49,8 @@ public final class NamingRule implements Rule, RuleVisitor {
     @Override
     public List<Violation> check(Node root, AnalyzerConfig cfg) {
         this.config = cfg;
-        this.violations = new ArrayList<>();
-        return violations;
+        this.VIOLATIONS.clear();
+        return new ArrayList<>(VIOLATIONS);
     }
 
     @Override
@@ -65,14 +69,18 @@ public final class NamingRule implements Rule, RuleVisitor {
 
     @Override
     public Result<String> check(IdentifierNode node) {
+        if (config == null) {
+            throw new IllegalStateException(
+                    "NamingRule not initialized. Call check(Node, AnalyzerConfig) first.");
+        }
         if (!matches(node.name(), config.naming().style())) {
-            violations.add(
+            VIOLATIONS.add(
                     new Violation(
                             id(),
                             "Identifier '"
                                     + node.name()
                                     + "' must be "
-                                    + config.naming().style().name().toLowerCase(),
+                                    + config.naming().style().name().toLowerCase(Locale.US),
                             null));
         }
         return new CorrectResult<>("");
@@ -98,9 +106,5 @@ public final class NamingRule implements Rule, RuleVisitor {
             case CAMEL -> CAMEL.matcher(name).matches();
             case SNAKE -> SNAKE.matcher(name).matches();
         };
-    }
-
-    private static SourceRange toRange(Object r) {
-        return null;
     }
 }
