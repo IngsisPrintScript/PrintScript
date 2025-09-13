@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic.enforcers;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.enforcers;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
@@ -19,7 +22,8 @@ import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     private final ExpressionTypeGetter expressionTypeGetter = new ExpressionTypeGetter();
-    private final OperationFormatSemanticRule operationFormatRule = new OperationFormatSemanticRule();
+    private final OperationFormatSemanticRule operationFormatRule =
+            new OperationFormatSemanticRule();
     private TypeSemanticRule typeRule;
 
     @Override
@@ -84,6 +88,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
         typeRule = new TypeSemanticRule(Environment.getInstance().getIdType(node.name()).result());
         return typeRule.checkRules(node);
     }
+
     @Override
     public Result<String> check(LiteralNode node) {
         if (typeRule == null) {

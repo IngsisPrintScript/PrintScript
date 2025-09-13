@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.results;
 
 public record CorrectResult<T>(T result) implements Result<T> {
