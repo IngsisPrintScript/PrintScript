@@ -7,6 +7,6 @@ echo "[pre-push] Running quick validation..."
 ./gradlew test --continue
 
 # Opcional: Verificación básica de calidad de código
-./gradlew spotlessCheck
+./gradlew check
 
 echo "[pre-push] Validation passed! Ready to push."
