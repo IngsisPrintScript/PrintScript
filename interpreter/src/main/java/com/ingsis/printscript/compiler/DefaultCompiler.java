@@ -1,16 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.compiler;
 
-
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.results.IncorrectResult;
-import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.compiler.executor.CodeExecutorInterface;
 import com.ingsis.printscript.compiler.transpiler.TranspilerInterface;
 import com.ingsis.printscript.compiler.writer.CodeWriterInterface;
-
+import com.ingsis.printscript.results.IncorrectResult;
+import com.ingsis.printscript.results.Result;
 import java.nio.file.Path;
 
-public record DefaultCompiler(TranspilerInterface transpiler, CodeWriterInterface writer, CodeExecutorInterface executor) implements CompilerInterface {
+public record DefaultCompiler(
+        TranspilerInterface transpiler, CodeWriterInterface writer, CodeExecutorInterface executor)
+        implements CompilerInterface {
     @Override
     public Result<String> compile(Node tree) {
         Result<String> transpilationResult = transpiler().transpile(tree);

@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic.enforcers;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.enforcers;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
@@ -17,9 +20,11 @@ import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
 
-public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
-    private final SemanticRule notDeclaredVariableSemanticRuleChecker = new NotDeclaredVariableSemanticRule();
-    private final SemanticRule declaredVariableSemanticRuleChecker = new DeclaredVariableSemanticRule();
+public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
+    private final SemanticRule notDeclaredVariableSemanticRuleChecker =
+            new NotDeclaredVariableSemanticRule();
+    private final SemanticRule declaredVariableSemanticRuleChecker =
+            new DeclaredVariableSemanticRule();
     private SemanticRule variableSemanticRuleChecker;
 
     @Override
@@ -60,12 +65,11 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
     public Result<String> check(PrintStatementNode node) {
         Result<ExpressionNode> getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) {
-            return  new IncorrectResult<>(getExpressionResult.errorMessage());
+            return new IncorrectResult<>(getExpressionResult.errorMessage());
         }
         ExpressionNode expression = getExpressionResult.result();
         return expression.acceptCheck(this);
     }
-
 
     @Override
     public Result<String> check(BinaryExpression node) {
@@ -99,6 +103,7 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker{
         }
         return variableSemanticRuleChecker.checkRules(node);
     }
+
     @Override
     public Result<String> check(LiteralNode node) {
         return new CorrectResult<>("The node passes this check.");

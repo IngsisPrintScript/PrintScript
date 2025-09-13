@@ -1,16 +1,19 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.tokens.TokenInterface;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
+import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStream;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -21,8 +24,8 @@ import java.util.NoSuchElementException;
 public record Syntactic(
         ASTreeBuilderInterface treeBuilder,
         Iterator<TokenInterface> tokenIterator,
-        Deque<SemanticallyCheckable> nodeCache
-) implements SyntacticInterface {
+        Deque<SemanticallyCheckable> nodeCache)
+        implements SyntacticInterface {
 
     public Syntactic(ASTreeBuilderInterface treeBuilder, Iterator<TokenInterface> tokenIterator) {
         this(treeBuilder, tokenIterator, new ArrayDeque<>());
@@ -35,7 +38,7 @@ public record Syntactic(
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
         }
-        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()){
+        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()) {
             return new IncorrectResult<>("Did not have an End Of Line character.");
         }
         Node root = buildResult.result();
@@ -73,7 +76,7 @@ public record Syntactic(
         return nodeCache.peek();
     }
 
-    private SemanticallyCheckable computeNext(){
+    private SemanticallyCheckable computeNext() {
         TokenStreamInterface stream = new TokenStream(List.of());
         while (tokenIterator.hasNext()) {
             TokenInterface token = tokenIterator.next();

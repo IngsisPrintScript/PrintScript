@@ -10,9 +10,14 @@ plugins {
 repositories {
     // Use the plugin portal to apply community plugins in convention plugins.
     gradlePluginPortal()
+    mavenCentral()
 }
 
 dependencies {
     // Apply the shadow plugin to make easy to execute files
     implementation 'com.github.johnrengelman.shadow:com.github.johnrengelman.shadow.gradle.plugin:8.1.1'
+    // code quality
+    implementation 'com.diffplug.spotless:spotless-plugin-gradle:6.25.0'
+    implementation 'com.github.spotbugs.snom:spotbugs-gradle-plugin:5.2.5'
+    implementation 'org.checkerframework:checker-qual:3.42.0'
 }

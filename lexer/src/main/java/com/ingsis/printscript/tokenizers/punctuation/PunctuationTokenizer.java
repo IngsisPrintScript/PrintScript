@@ -1,21 +1,26 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.punctuation;
 
-import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;
 import com.ingsis.printscript.tokenizers.punctuation.parenthesis.RightParenthesisTokenizer;
-
+import com.ingsis.printscript.tokens.TokenInterface;
 import java.util.List;
 
 public class PunctuationTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final List<Class<? extends PunctuationTokenizer>> subclasses = List.of(LeftParenthesisTokenizer.class, RightParenthesisTokenizer.class);
+    private final List<Class<? extends PunctuationTokenizer>> subclasses =
+            List.of(LeftParenthesisTokenizer.class, RightParenthesisTokenizer.class);
 
     public PunctuationTokenizer() {
         this(new FinalTokenizer());
     }
+
     public PunctuationTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
     }
@@ -28,7 +33,8 @@ public class PunctuationTokenizer implements TokenizerInterface {
                 if (tokenizer.canTokenize(input)) {
                     return true;
                 }
-            } catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         return false;
     }
@@ -41,7 +47,8 @@ public class PunctuationTokenizer implements TokenizerInterface {
                 if (tokenizer.canTokenize(input)) {
                     return tokenizer.tokenize(input);
                 }
-            } catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         return nextTokenizer.tokenize(input);
     }

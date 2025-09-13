@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.ast.builders;
 
 import com.ingsis.printscript.astnodes.Node;

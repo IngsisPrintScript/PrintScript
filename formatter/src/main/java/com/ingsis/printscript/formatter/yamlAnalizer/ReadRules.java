@@ -1,9 +1,12 @@
-package com.ingsis.printscript.formatter.yamlAnalizer;
+/*
+ * My Project
+ */
 
-import org.yaml.snakeyaml.Yaml;
+package com.ingsis.printscript.formatter.yamlAnalizer;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import org.yaml.snakeyaml.Yaml;
 
 public class ReadRules implements ReadRulesInterface {
     @Override
@@ -18,7 +21,6 @@ public class ReadRules implements ReadRulesInterface {
             throw new RuntimeException("Error reading Rules.yml", e);
         }
     }
-
 
     public static void main(String[] args) {
         ReadRules loader = new ReadRules();

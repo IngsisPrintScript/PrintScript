@@ -1,9 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.compiler.writer;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
@@ -12,7 +15,6 @@ import java.util.regex.Pattern;
 
 public record JavaCodeWriter(Path path, String className) implements CodeWriterInterface {
     private static Boolean firstWrite = true;
-
 
     public JavaCodeWriter(Path path) {
         this(path, "TranspiledCode");
@@ -32,7 +34,8 @@ public record JavaCodeWriter(Path path, String className) implements CodeWriterI
                             %s
                         }
                     }
-                    """.formatted(className(), code);
+                    """
+                            .formatted(className(), code);
             if (Files.exists(path) && firstWrite) {
                 Files.delete(path);
                 firstWrite = false;
@@ -40,9 +43,9 @@ public record JavaCodeWriter(Path path, String className) implements CodeWriterI
                 String existingCode = Files.readString(path);
 
                 // Regex to capture the body of main
-                Pattern pattern = Pattern.compile(
-                        "(public\\s+static\\s+void\\s+main\\s*\\([^)]*\\)\\s*\\{)([\\s\\S]*?)(\\})"
-                );
+                Pattern pattern =
+                        Pattern.compile(
+                                "(public\\s+static\\s+void\\s+main\\s*\\([^)]*\\)\\s*\\{)([\\s\\S]*?)(\\})");
                 Matcher matcher = pattern.matcher(existingCode);
 
                 if (matcher.find()) {
@@ -54,9 +57,7 @@ public record JavaCodeWriter(Path path, String className) implements CodeWriterI
                     String updated = matcher.group(1) + newBody + matcher.group(3);
 
                     // Replace only the main method
-                    existingCode = matcher.replaceFirst(
-                            Matcher.quoteReplacement(updated)
-                    );
+                    existingCode = matcher.replaceFirst(Matcher.quoteReplacement(updated));
 
                     Files.writeString(path, existingCode, StandardOpenOption.TRUNCATE_EXISTING);
                     return new CorrectResult<>(path);
