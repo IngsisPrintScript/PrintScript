@@ -1,12 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-echo "[pre-push] Running quick validation..."
+echo "[pre-push] Running full validation..."
 
-# Solo tests relevantes para los cambios (más rápido)
-./gradlew test --continue
-
-# Opcional: Verificación básica de calidad de código
-./gradlew check
+# Ejecuta todos los checks, incluyendo tests y jacoco
+./gradlew check --no-daemon --console=plain
 
 echo "[pre-push] Validation passed! Ready to push."
