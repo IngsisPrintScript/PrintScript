@@ -1,10 +1,13 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
-
+import com.ingsis.printscript.results.Result;
 import java.util.List;
 
 public class NilNode implements Node, ExpressionNode {

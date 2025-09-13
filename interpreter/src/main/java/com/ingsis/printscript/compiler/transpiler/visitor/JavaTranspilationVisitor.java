@@ -1,20 +1,23 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.compiler.transpiler.visitor;
 
-
 import com.ingsis.printscript.astnodes.NilNode;
-import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
-import com.ingsis.printscript.results.CorrectResult;
-import com.ingsis.printscript.results.IncorrectResult;
-import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
-import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
+import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
+import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
+import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
+import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.results.IncorrectResult;
+import com.ingsis.printscript.results.Result;
 
 public class JavaTranspilationVisitor implements VisitorInterface {
     @Override
@@ -60,7 +63,7 @@ public class JavaTranspilationVisitor implements VisitorInterface {
     }
 
     @Override
-    public Result<String > visit(AscriptionNode node) {
+    public Result<String> visit(AscriptionNode node) {
         Result<TypeNode> getTypeResult = node.type();
         if (!getTypeResult.isSuccessful()) {
             return new IncorrectResult<>("The type of a ascription node is incorrect.");
@@ -119,8 +122,8 @@ public class JavaTranspilationVisitor implements VisitorInterface {
         }
         ExpressionNode expressionNode = getRightChildResult.result();
 
-
-        return new CorrectResult<>(identifierNode.name() + " = " + expressionNode.accept(this).result() + ";");
+        return new CorrectResult<>(
+                identifierNode.name() + " = " + expressionNode.accept(this).result() + ";");
     }
 
     @Override

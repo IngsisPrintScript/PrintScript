@@ -1,0 +1,40 @@
+plugins {
+    id 'checkstyle'
+}
+
+checkstyle {
+    toolVersion = '10.15.0'
+    configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+    ignoreFailures = false
+    maxWarnings = 0
+}
+
+tasks.withType(Checkstyle) { task ->
+    reports {
+        xml.required = false
+        html.required = true
+        html.destination = file("$buildDir/reports/checkstyle/checkstyle.html")
+    }
+
+    exclude '**/generated/**'
+}
+
+// Optional: PMD for additional static analysis
+apply plugin: 'pmd'
+
+pmd {
+    toolVersion = '6.55.0'
+    ignoreFailures = false
+    ruleSets = []
+    if (file("${project.rootDir}/config/pmd/ruleset.xml").exists()) {
+        ruleSetFiles = files("${project.rootDir}/config/pmd/ruleset.xml")
+    }
+}
+
+tasks.withType(Pmd) { task ->
+    reports {
+        xml.required = false
+        html.required = true
+        html.destination = file("$buildDir/reports/pmd/pmd.html")
+    }
+}

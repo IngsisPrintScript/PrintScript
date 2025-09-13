@@ -1,5 +1,8 @@
-package lexer;
+/*
+ * My Project
+ */
 
+package lexer;
 
 import com.ingsis.printscript.lexer.LexicalInterface;
 import com.ingsis.printscript.peekableiterator.PeekableIterator;
@@ -7,9 +10,7 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;

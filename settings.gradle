@@ -24,3 +24,33 @@ include('peekable-iterator')
 include('semantic')
 include('syntactic')
 include('tokens')
+
+// Global formatting and linting tasks
+gradle.rootProject {
+    tasks.register('formatAll') {
+        group = 'formatting'
+        description = 'Formats all Java code in all subprojects'
+        dependsOn subprojects.collect { it.tasks.matching { it.name == 'spotlessApply' } }
+    }
+
+    tasks.register('lintAll') {
+        group = 'verification'
+        description = 'Runs all linting checks in all subprojects'
+        dependsOn subprojects.collect { it.tasks.matching { it.name == 'checkstyleMain' } }
+        dependsOn subprojects.collect { it.tasks.matching { it.name == 'spotbugsMain' } }
+        dependsOn subprojects.collect { it.tasks.matching { it.name == 'pmdMain' } }
+    }
+
+    tasks.register('codeQualityAll') {
+        group = 'verification'
+        description = 'Runs all code quality checks including formatting'
+        dependsOn subprojects.collect { it.tasks.matching { it.name == 'spotlessCheck' } }
+        dependsOn lintAll
+    }
+
+    tasks.register('quickCheck') {
+        group = 'verification'
+        description = 'Runs quick code quality checks (formatting only)'
+        dependsOn subprojects.collect { it.tasks.matching { it.name == 'spotlessCheck' } }
+    }
+}

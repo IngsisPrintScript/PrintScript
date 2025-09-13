@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic;
 
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;

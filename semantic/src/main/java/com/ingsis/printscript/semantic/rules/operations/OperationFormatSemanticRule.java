@@ -1,21 +1,26 @@
-package com.ingsis.printscript.semantic.rules.operations;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.rules.operations;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
-
 import java.util.List;
 
 public class OperationFormatSemanticRule implements SemanticRule {
-    private final List<Class<? extends OperationFormatSemanticRule>> specificOperationRules = List.of(BinaryOperationFormatSemanticSemanticRule.class);
+    private final List<Class<? extends OperationFormatSemanticRule>> specificOperationRules =
+            List.of(BinaryOperationFormatSemanticSemanticRule.class);
 
     @Override
     public boolean match(Node node) {
         try {
-            for (Class<? extends OperationFormatSemanticRule> specificOperationRule : specificOperationRules) {
-                SemanticRule semanticRule = specificOperationRule.getDeclaredConstructor().newInstance();
+            for (Class<? extends OperationFormatSemanticRule> specificOperationRule :
+                    specificOperationRules) {
+                SemanticRule semanticRule =
+                        specificOperationRule.getDeclaredConstructor().newInstance();
                 if (semanticRule.match(node)) {
                     return true;
                 }
@@ -29,8 +34,10 @@ public class OperationFormatSemanticRule implements SemanticRule {
     @Override
     public Result<String> checkRules(Node nodeToCheck) {
         try {
-            for (Class<? extends OperationFormatSemanticRule> specificOperationRule : specificOperationRules) {
-                SemanticRule semanticRule = specificOperationRule.getDeclaredConstructor().newInstance();
+            for (Class<? extends OperationFormatSemanticRule> specificOperationRule :
+                    specificOperationRules) {
+                SemanticRule semanticRule =
+                        specificOperationRule.getDeclaredConstructor().newInstance();
                 if (semanticRule.match(nodeToCheck)) {
                     return semanticRule.checkRules(nodeToCheck);
                 }

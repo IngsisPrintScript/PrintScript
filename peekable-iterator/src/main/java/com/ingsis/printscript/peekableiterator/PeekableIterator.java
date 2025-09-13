@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.peekableiterator;
 
 import java.util.Iterator;

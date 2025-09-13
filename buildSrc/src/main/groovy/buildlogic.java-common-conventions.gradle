@@ -3,8 +3,12 @@
  */
 
 plugins {
-    // Apply the java Plugin to add support for Java.
     id 'java'
+    // Code quality
+    id 'com.diffplug.spotless'
+    id 'com.github.spotbugs'
+    id 'checkstyle'
+    id 'pmd'
 }
 
 repositories {
@@ -34,4 +38,77 @@ java {
 tasks.named('test') {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = '10.15.0'
+    configProperties = [
+            'org.checkstyle.java.jdkversion': '17'
+    ]
+}
+
+spotless {
+    java {
+        target 'src/**/*.java'
+
+        // Google Java Format
+        googleJavaFormat('1.22.0').aosp().reflowLongStrings()
+
+        // Remove unused imports
+        removeUnusedImports()
+
+        // License header
+        licenseHeader '/*\n * My Project\n */\n\n'
+
+        // End with newline
+        endWithNewline()
+    }
+
+    kotlinGradle {
+        target '*.gradle.kts'
+        ktlint()
+    }
+
+    format 'misc', {
+        target '*.md', '.gitignore'
+        trimTrailingWhitespace()
+        indentWithSpaces(2)
+        endWithNewline()
+    }
+}
+
+spotbugs {
+    toolVersion = '4.8.3'
+    ignoreFailures = false
+    effort = 'max'
+    reportLevel = 'low'
+}
+
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask) { task ->
+    reports {
+        html {
+            enabled = true
+            destination = file("$buildDir/reports/spotbugs/spotbugs.html")
+        }
+        xml {
+            enabled = false
+        }
+    }
+
+    // Exclude generated code or test files if needed
+    if (file("${project.rootDir}/config/spotbugs/exclude.xml").exists()) {
+        excludeFilter = file("${project.rootDir}/config/spotbugs/exclude.xml")
+    }
+}
+
+// Add these to the existing check task dependencies
+tasks.named('check') {
+    dependsOn tasks.spotlessCheck
+    dependsOn tasks.spotbugsMain
+    dependsOn tasks.checkstyleMain
+    dependsOn tasks.pmdMain
+}
+
+tasks.named('build') {
+    dependsOn tasks.spotlessApply
 }

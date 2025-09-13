@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.results;
 
 public record IncorrectResult<T>(String errorMessage) implements Result<T> {

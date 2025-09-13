@@ -1,10 +1,13 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokens.stream;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokens.TokenInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,8 +53,7 @@ public class TokenStream implements TokenStreamInterface {
         TokenInterface token = this.tokens().get(index);
         if (!token.equals(expectedToken)) {
             return new IncorrectResult<>(
-                    "Tried to consume " + expectedToken.name() + " but got " + token.name()
-            );
+                    "Tried to consume " + expectedToken.name() + " but got " + token.name());
         }
         index++;
         return new CorrectResult<>(token);
@@ -69,7 +71,6 @@ public class TokenStream implements TokenStreamInterface {
         return new CorrectResult<>(tempList.size());
     }
 
-
     @Override
     public Boolean isEndOfStream() {
         return index >= tokens.size();
@@ -85,7 +86,7 @@ public class TokenStream implements TokenStreamInterface {
         return false;
     }
 
-    public List<TokenInterface> tokens(){
+    public List<TokenInterface> tokens() {
         return tokens;
     }
 

@@ -1,10 +1,12 @@
-package com.ingsis.printscript.semantic;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic;
 
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
@@ -13,10 +15,11 @@ import java.util.NoSuchElementException;
 public record SemanticAnalyzer(
         RuleVisitor rulesEnforcer,
         Iterator<SemanticallyCheckable> checkableNodesIterator,
-        Deque<InterpretableNode> checkableNodesBuffer
-) implements SemanticInterface {
+        Deque<InterpretableNode> checkableNodesBuffer)
+        implements SemanticInterface {
 
-    public SemanticAnalyzer(RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator){
+    public SemanticAnalyzer(
+            RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator) {
         this(rulesEnforcer, checkableNodesIterator, new ArrayDeque<>());
     }
 
@@ -53,8 +56,8 @@ public record SemanticAnalyzer(
         return checkableNodesBuffer.peekFirst();
     }
 
-    private InterpretableNode computeNext(){
-        while (checkableNodesIterator().hasNext()){
+    private InterpretableNode computeNext() {
+        while (checkableNodesIterator().hasNext()) {
             SemanticallyCheckable checkable = checkableNodesIterator.next();
             if (this.isSemanticallyValid(checkable)) {
                 return (InterpretableNode) checkable;

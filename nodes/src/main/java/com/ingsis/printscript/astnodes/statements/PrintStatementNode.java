@@ -1,17 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.statements;
 
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.results.CorrectResult;
-import com.ingsis.printscript.results.IncorrectResult;
-import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.astnodes.visitor.InterpretVisitor;
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
-
+import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.results.IncorrectResult;
+import com.ingsis.printscript.results.Result;
 import java.util.List;
 
 public class PrintStatementNode implements Node, SemanticallyCheckable, InterpretableNode {
@@ -26,18 +29,19 @@ public class PrintStatementNode implements Node, SemanticallyCheckable, Interpre
         return visitor.visit(this);
     }
 
-    public Boolean hasExpression(){
+    public Boolean hasExpression() {
         return !this.expression.isNil();
     }
 
-    public Result<ExpressionNode> expression(){
-        if(hasExpression()){
+    public Result<ExpressionNode> expression() {
+        if (hasExpression()) {
             return new CorrectResult<>((ExpressionNode) this.expression);
-        }  else {
+        } else {
             return new IncorrectResult<>("Print statement has no expression.");
         }
     }
-    public Result<ExpressionNode> setExpression(ExpressionNode expression){
+
+    public Result<ExpressionNode> setExpression(ExpressionNode expression) {
         this.expression = expression;
         return new CorrectResult<>(expression);
     }
