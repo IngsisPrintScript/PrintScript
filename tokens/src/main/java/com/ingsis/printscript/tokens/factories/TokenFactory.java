@@ -1,5 +1,8 @@
-package com.ingsis.printscript.tokens.factories;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.tokens.factories;
 
 import com.ingsis.printscript.tokens.Token;
 import com.ingsis.printscript.tokens.TokenInterface;
@@ -22,7 +25,7 @@ public class TokenFactory implements TokenFactoryInterface {
 
     @Override
     public TokenInterface createRightParenthesisToken() {
-        return new  Token("RIGHT_PARENTHESIS_TOKEN", ")");
+        return new Token("RIGHT_PARENTHESIS_TOKEN", ")");
     }
 
     @Override
@@ -32,7 +35,7 @@ public class TokenFactory implements TokenFactoryInterface {
 
     @Override
     public TokenInterface createTypeAssignationToken() {
-            return new Token("TYPE_ASSIGNATION_TOKEN", ":");
+        return new Token("TYPE_ASSIGNATION_TOKEN", ":");
     }
 
     @Override

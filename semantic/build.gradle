@@ -1,12 +1,5 @@
 plugins {
-    id 'java'
-}
-
-group = 'com.ingsis'
-version = '1.0-SNAPSHOT'
-
-repositories {
-    mavenCentral()
+    id 'buildlogic.java-library-conventions'
 }
 
 dependencies {
@@ -14,12 +7,4 @@ dependencies {
     implementation project(':common')
     implementation project(':environment')
     implementation project(':peekable-iterator')
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-}
-
-test {
-    useJUnitPlatform()
 }

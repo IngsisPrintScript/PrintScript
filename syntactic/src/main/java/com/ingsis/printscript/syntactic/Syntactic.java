@@ -1,16 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.tokens.TokenInterface;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
+import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStream;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
-
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -18,24 +22,26 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public record Syntactic(
-        ASTreeBuilderInterface treeBuilder,
-        Iterator<TokenInterface> tokenIterator,
-        Deque<SemanticallyCheckable> nodeCache
-) implements SyntacticInterface {
+public class Syntactic implements SyntacticInterface {
+    private final ASTreeBuilderInterface TREE_BUILDER;
+    private final Iterator<TokenInterface> TOKEN_ITERATOR;
+    private final Deque<SemanticallyCheckable> NODE_CACHE;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public Syntactic(ASTreeBuilderInterface treeBuilder, Iterator<TokenInterface> tokenIterator) {
-        this(treeBuilder, tokenIterator, new ArrayDeque<>());
+        this.TREE_BUILDER = treeBuilder;
+        this.TOKEN_ITERATOR = tokenIterator;
+        this.NODE_CACHE = new ArrayDeque<>();
     }
 
     @Override
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
         tokenStream.consumeAll(new TokenFactory().createSeparatorToken("SPACE"));
-        Result<? extends Node> buildResult = treeBuilder().build(tokenStream);
+        Result<? extends Node> buildResult = TREE_BUILDER.build(tokenStream);
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
         }
-        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()){
+        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()) {
             return new IncorrectResult<>("Did not have an End Of Line character.");
         }
         Node root = buildResult.result();
@@ -47,12 +53,12 @@ public record Syntactic(
 
     @Override
     public boolean hasNext() {
-        if (!nodeCache.isEmpty()) {
+        if (!NODE_CACHE.isEmpty()) {
             return true;
         }
 
         SemanticallyCheckable nextNode = computeNext();
-        if (nextNode != null) nodeCache.add(nextNode);
+        if (nextNode != null) NODE_CACHE.add(nextNode);
 
         return nextNode != null;
     }
@@ -62,7 +68,7 @@ public record Syntactic(
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return nodeCache.poll();
+        return NODE_CACHE.poll();
     }
 
     @Override
@@ -70,13 +76,13 @@ public record Syntactic(
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return nodeCache.peek();
+        return NODE_CACHE.peek();
     }
 
-    private SemanticallyCheckable computeNext(){
+    private SemanticallyCheckable computeNext() {
         TokenStreamInterface stream = new TokenStream(List.of());
-        while (tokenIterator.hasNext()) {
-            TokenInterface token = tokenIterator.next();
+        while (TOKEN_ITERATOR.hasNext()) {
+            TokenInterface token = TOKEN_ITERATOR.next();
             List<TokenInterface> tokens = new ArrayList<>(stream.tokens());
             tokens.add(token);
             stream = new TokenStream(tokens);

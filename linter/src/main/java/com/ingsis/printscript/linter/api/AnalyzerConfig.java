@@ -1,16 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.linter.api;
 
 public record AnalyzerConfig(Naming naming, Println println) {
-  public record Naming(boolean enabled, CaseStyle style) {}
+    public record Naming(boolean enabled, CaseStyle style) {}
 
-  public enum CaseStyle {
-    CAMEL,
-    SNAKE
-  }
+    public enum CaseStyle {
+        CAMEL,
+        SNAKE
+    }
 
-  public record Println(boolean enabled, boolean onlyIdentifierOrLiteral) {}
+    public record Println(boolean enabled, boolean onlyIdentifierOrLiteral) {}
 
-  public static AnalyzerConfig defaults() {
-    return new AnalyzerConfig(new Naming(true, CaseStyle.CAMEL), new Println(true, true));
-  }
+    public static AnalyzerConfig defaults() {
+        return new AnalyzerConfig(new Naming(true, CaseStyle.CAMEL), new Println(true, true));
+    }
 }
