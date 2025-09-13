@@ -4,6 +4,7 @@
 
 package com.ingsis.printscript.formatter.yamlAnalizer;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import org.yaml.snakeyaml.Yaml;
@@ -12,13 +13,19 @@ public class ReadRules implements ReadRulesInterface {
     @Override
     public HashMap<String, Object> readRules() {
         Yaml yaml = new Yaml();
-        try (InputStream inputStream = ReadRules.class.getResourceAsStream("/Rules.yaml")) {
-            if (inputStream == null) {
-                throw new RuntimeException("Did not found Rules.yml");
-            }
+        InputStream inputStream = null;
+
+        try {
+            inputStream = ReadRules.class.getResourceAsStream("/Rules.yaml");
             return yaml.load(inputStream);
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading Rules.yml", e);
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    System.err.println("Error closing stream: " + e.getMessage());
+                }
+            }
         }
     }
 

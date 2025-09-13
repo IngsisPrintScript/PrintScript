@@ -13,7 +13,6 @@ import com.ingsis.printscript.tokens.factories.TokenFactory;
 public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
-        char[] tokenChars = input.toCharArray();
         if (input.startsWith("'") && input.endsWith("'")) {
             return input.length() >= 2;
         } else if (input.startsWith("\"") && input.endsWith("\"")) {

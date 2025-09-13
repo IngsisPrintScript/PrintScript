@@ -30,6 +30,8 @@ public class SemanticRulesChecker implements RuleVisitor {
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return new IncorrectResult<>(e.getMessage());
         }
@@ -44,6 +46,8 @@ public class SemanticRulesChecker implements RuleVisitor {
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return new IncorrectResult<>(e.getMessage());
         }
@@ -58,6 +62,8 @@ public class SemanticRulesChecker implements RuleVisitor {
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return new IncorrectResult<String>(e.getMessage());
         }
@@ -72,6 +78,8 @@ public class SemanticRulesChecker implements RuleVisitor {
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return new IncorrectResult<String>(e.getMessage());
         }
@@ -86,6 +94,8 @@ public class SemanticRulesChecker implements RuleVisitor {
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
+        } catch (RuntimeException rte) {
+            throw rte;
         } catch (Exception e) {
             return new IncorrectResult<String>(e.getMessage());
         }

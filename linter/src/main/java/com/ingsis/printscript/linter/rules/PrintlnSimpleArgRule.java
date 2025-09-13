@@ -21,7 +21,11 @@ import java.util.List;
 
 public final class PrintlnSimpleArgRule implements Rule, RuleVisitor {
     private AnalyzerConfig config;
-    private List<Violation> violations;
+    private final List<Violation> VIOLATIONS;
+
+    public PrintlnSimpleArgRule() {
+        VIOLATIONS = new ArrayList<>();
+    }
 
     @Override
     public String id() {
@@ -41,8 +45,8 @@ public final class PrintlnSimpleArgRule implements Rule, RuleVisitor {
     @Override
     public List<Violation> check(Node root, AnalyzerConfig cfg) {
         this.config = cfg;
-        this.violations = new ArrayList<>();
-        return violations;
+        this.VIOLATIONS.clear();
+        return new ArrayList<>(VIOLATIONS);
     }
 
     @Override
@@ -51,7 +55,7 @@ public final class PrintlnSimpleArgRule implements Rule, RuleVisitor {
         if (exprResult.isSuccessful()) {
             var expr = exprResult.result();
             if (!(expr instanceof IdentifierNode) && !(expr instanceof LiteralNode)) {
-                violations.add(
+                VIOLATIONS.add(
                         new Violation(
                                 id(),
                                 "println argument must be an identifier or literal (rule enabled).",
@@ -80,5 +84,9 @@ public final class PrintlnSimpleArgRule implements Rule, RuleVisitor {
     @Override
     public Result<String> check(LiteralNode node) {
         return new CorrectResult<>("");
+    }
+
+    public AnalyzerConfig getConfig() {
+        return config;
     }
 }

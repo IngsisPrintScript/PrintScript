@@ -23,6 +23,7 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -36,7 +37,8 @@ import picocli.CommandLine.Command;
         version = "cliApp 0",
         description = "Runs a CLI interpreter for printScript")
 public class CliApp implements CliAppInterface, Callable<Integer> {
-    private final BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    private final BufferedReader reader =
+            new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new CliApp()).execute(args);

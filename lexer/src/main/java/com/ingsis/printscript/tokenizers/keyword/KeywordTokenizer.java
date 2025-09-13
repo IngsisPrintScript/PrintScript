@@ -7,6 +7,7 @@ package com.ingsis.printscript.tokenizers.keyword;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class KeywordTokenizer implements TokenizerInterface {
@@ -27,8 +28,10 @@ public class KeywordTokenizer implements TokenizerInterface {
                 if (subclassTokenizer.canTokenize(input)) {
                     return true;
                 }
-            } catch (Exception e) {
-                continue;
+            } catch (NoSuchMethodException
+                    | InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException ignored) {
             }
         }
         return false;
@@ -43,8 +46,10 @@ public class KeywordTokenizer implements TokenizerInterface {
                 if (subclassTokenizer.canTokenize(input)) {
                     return subclassTokenizer.tokenize(input);
                 }
-            } catch (Exception e) {
-                continue;
+            } catch (NoSuchMethodException
+                    | InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException ignored) {
             }
         }
         return nextTokenizer.tokenize(input);

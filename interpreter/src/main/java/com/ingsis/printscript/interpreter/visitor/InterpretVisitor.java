@@ -10,12 +10,13 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
+import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
 import com.ingsis.printscript.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 
-public class InterpretVisitor implements com.ingsis.printscript.astnodes.visitor.InterpretVisitor {
+public class InterpretVisitor implements InterpretVisitorInterface {
 
     @Override
     public Result<String> interpret(LetStatementNode statement) {

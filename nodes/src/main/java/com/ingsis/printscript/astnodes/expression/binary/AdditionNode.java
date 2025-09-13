@@ -46,7 +46,7 @@ public class AdditionNode extends BinaryExpression {
             Double leftNumber = Double.parseDouble((String) leftResult);
             Double rightNumber = Double.parseDouble((String) rightResult);
             return new CorrectResult<>(leftNumber + rightNumber);
-        } catch (Exception ignore) {
+        } catch (NumberFormatException ignore) {
         }
 
         try {
@@ -55,7 +55,9 @@ public class AdditionNode extends BinaryExpression {
             return new CorrectResult<>(
                     leftString.replace("\"", "").replace("'", "")
                             + rightString.replace("\"", "").replace("'", ""));
-        } catch (Exception ignore) {
+        } catch (RuntimeException rte) {
+            throw rte;
+        } catch (Exception ignored) {
         }
 
         return new IncorrectResult<>("Cannot add different types.");

@@ -87,7 +87,7 @@ public class TokenStream implements TokenStreamInterface {
     }
 
     public List<TokenInterface> tokens() {
-        return tokens;
+        return new ArrayList<>(tokens);
     }
 
     @Override
@@ -96,5 +96,10 @@ public class TokenStream implements TokenStreamInterface {
             return false;
         }
         return stream.tokens.equals(this.tokens);
+    }
+
+    @Override
+    public int hashCode() {
+        return tokens.hashCode();
     }
 }

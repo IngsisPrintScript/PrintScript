@@ -24,6 +24,8 @@ public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
                 if (subclassBuilder.canBuild(tokenStream)) {
                     return true;
                 }
+            } catch (RuntimeException exception) {
+                throw exception;
             } catch (Exception ignored) {
             }
         }
@@ -39,6 +41,8 @@ public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
                 if (subclassBuilder.canBuild(tokenStream)) {
                     return subclassBuilder.build(tokenStream);
                 }
+            } catch (RuntimeException exception) {
+                throw exception;
             } catch (Exception ignored) {
             }
         }

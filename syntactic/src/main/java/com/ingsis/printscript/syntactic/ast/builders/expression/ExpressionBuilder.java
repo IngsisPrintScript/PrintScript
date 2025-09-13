@@ -8,7 +8,6 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
-import com.ingsis.printscript.syntactic.ast.builders.FinalBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.binary.BinaryExpressionBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.identifier.IdentifierBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.literal.LiteralBuilder;
@@ -18,15 +17,8 @@ import java.util.List;
 public class ExpressionBuilder implements ASTreeBuilderInterface {
     private final List<Class<? extends ExpressionBuilder>> EXPRESSION_BUILDERS =
             List.of(BinaryExpressionBuilder.class, LiteralBuilder.class, IdentifierBuilder.class);
-    private final ASTreeBuilderInterface NEXT_BUILDER;
 
-    public ExpressionBuilder(ASTreeBuilderInterface nextBuilder) {
-        this.NEXT_BUILDER = nextBuilder;
-    }
-
-    public ExpressionBuilder() {
-        this.NEXT_BUILDER = new FinalBuilder();
-    }
+    public ExpressionBuilder() {}
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
@@ -38,7 +30,9 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
                     return true;
                 }
             }
-        } catch (Exception exception) {
+        } catch (RuntimeException exception) {
+            throw exception;
+        } catch (Exception ignored) {
             return false;
         }
         return false;
@@ -54,6 +48,8 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
                     return builder.build(tokenStream);
                 }
             }
+        } catch (RuntimeException exception) {
+            throw exception;
         } catch (Exception exception) {
             return new IncorrectResult<>(exception.getMessage());
         }
