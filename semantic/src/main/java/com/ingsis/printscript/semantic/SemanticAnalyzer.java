@@ -8,19 +8,25 @@ import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
-import java.util.List;
 import java.util.NoSuchElementException;
 
-public record SemanticAnalyzer(
-        RuleVisitor rulesEnforcer,
-        Iterator<SemanticallyCheckable> checkableNodesIterator,
-        Deque<InterpretableNode> checkableNodesBuffer)
-        implements SemanticInterface {
+public class SemanticAnalyzer implements SemanticInterface {
+    private final RuleVisitor rulesEnforcer;
+    private final Iterator<SemanticallyCheckable> checkableNodesIterator;
+    private final Deque<InterpretableNode> checkableNodesBuffer;
+
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    public SemanticAnalyzer(
+            RuleVisitor rulesEnforcer,
+            Iterator<SemanticallyCheckable> checkableNodesIterator,
+            Deque<InterpretableNode> checkableNodesBuffer) {
+        this.rulesEnforcer = rulesEnforcer;
+        this.checkableNodesIterator = checkableNodesIterator;
+        this.checkableNodesBuffer = checkableNodesBuffer;
+    }
 
     @SuppressFBWarnings("EI_EXPOSE_REP2")
     public SemanticAnalyzer(
@@ -29,22 +35,8 @@ public record SemanticAnalyzer(
     }
 
     @Override
-    public Iterator<SemanticallyCheckable> checkableNodesIterator() {
-        List<SemanticallyCheckable> copyList = new ArrayList<>();
-        while (checkableNodesIterator.hasNext()) {
-            copyList.add(checkableNodesIterator.next());
-        }
-        return copyList.iterator();
-    }
-
-    @Override
-    public Deque<InterpretableNode> checkableNodesBuffer() {
-        return new ArrayDeque<>(checkableNodesBuffer);
-    }
-
-    @Override
     public Boolean isSemanticallyValid(SemanticallyCheckable tree) {
-        return tree.acceptCheck(rulesEnforcer()).isSuccessful();
+        return tree.acceptCheck(rulesEnforcer).isSuccessful();
     }
 
     @Override

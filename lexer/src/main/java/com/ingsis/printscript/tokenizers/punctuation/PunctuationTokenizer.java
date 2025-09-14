@@ -8,12 +8,9 @@ import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
-import com.ingsis.printscript.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;
-import com.ingsis.printscript.tokenizers.punctuation.parenthesis.RightParenthesisTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.List;
 
 public class PunctuationTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;

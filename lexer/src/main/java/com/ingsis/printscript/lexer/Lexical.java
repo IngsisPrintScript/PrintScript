@@ -10,7 +10,6 @@ import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;

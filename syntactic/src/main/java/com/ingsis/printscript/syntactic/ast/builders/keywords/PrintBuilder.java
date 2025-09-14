@@ -11,7 +11,6 @@ import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
 import com.ingsis.printscript.syntactic.factories.AstBuilderFactory;
 import com.ingsis.printscript.syntactic.factories.AstBuilderFactoryInterface;

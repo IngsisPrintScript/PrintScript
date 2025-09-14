@@ -10,7 +10,6 @@ import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
-import java.util.List;
 
 public class KeywordTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;

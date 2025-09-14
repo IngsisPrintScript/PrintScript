@@ -10,15 +10,17 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
     private final List<Class<? extends BinaryOperatorBuilder>> BINARY_OPERATOR_BUILDERS;
 
-    public BinaryOperatorBuilder(){
-        BINARY_OPERATOR_BUILDERS = List.copyOf(new ClassGraphReflectionsUtils().findImplementationsOf(BinaryOperatorBuilder.class).find());
+    public BinaryOperatorBuilder() {
+        BINARY_OPERATOR_BUILDERS =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findImplementationsOf(BinaryOperatorBuilder.class)
+                                .find());
     }
 
     @Override

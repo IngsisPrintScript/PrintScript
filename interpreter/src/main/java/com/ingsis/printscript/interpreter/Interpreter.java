@@ -9,7 +9,6 @@ import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.util.Iterator;
 
 public class Interpreter implements InterpreterInterface {

@@ -5,15 +5,10 @@
 package com.ingsis.printscript.tokenizers.separator;
 
 import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
-import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
-import com.ingsis.printscript.tokenizers.punctuation.PunctuationTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
-
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 
 public class SeparatorTokenizer implements TokenizerInterface {
@@ -39,7 +34,8 @@ public class SeparatorTokenizer implements TokenizerInterface {
                 }
             } catch (RuntimeException rte) {
                 throw rte;
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         return false;
     }
@@ -54,7 +50,8 @@ public class SeparatorTokenizer implements TokenizerInterface {
                 }
             } catch (RuntimeException rte) {
                 throw rte;
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
         return NEXT_TOKENIZER.tokenize(input);
     }
