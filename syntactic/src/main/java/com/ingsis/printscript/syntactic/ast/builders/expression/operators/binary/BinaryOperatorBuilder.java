@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators;
+package com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary;
 
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
@@ -19,7 +19,7 @@ public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
         BINARY_OPERATOR_BUILDERS =
                 List.copyOf(
                         new ClassGraphReflectionsUtils()
-                                .findImplementationsOf(BinaryOperatorBuilder.class)
+                                .findSubclassesOf(BinaryOperatorBuilder.class)
                                 .find());
     }
 

@@ -10,8 +10,8 @@ import com.ingsis.printscript.syntactic.ast.builders.ascription.AscriptionBuilde
 import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.IdentifierBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.BinaryExpressionBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.BinaryExpressionBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.keywords.LetBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.type.TypeBuilder;
 
