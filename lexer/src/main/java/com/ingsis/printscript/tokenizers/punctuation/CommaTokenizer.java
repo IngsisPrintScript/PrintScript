@@ -1,28 +1,23 @@
-/*
- * My Project
- */
-
-package com.ingsis.printscript.tokenizers.punctuation.parenthesis;
+package com.ingsis.printscript.tokenizers.punctuation;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.tokenizers.punctuation.PunctuationTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 
-public final class LeftParenthesisTokenizer extends PunctuationTokenizer {
+public final class CommaTokenizer extends PunctuationTokenizer {
     private final TokenFactoryInterface TOKEN_FACTORY;
 
-    public LeftParenthesisTokenizer() {
+    public CommaTokenizer() {
         super();
-        TOKEN_FACTORY = new TokenFactory();
+        this.TOKEN_FACTORY = new TokenFactory();
     }
 
     @Override
     public Boolean canTokenize(String input) {
-        return input.equals("(");
+        return input.equals(",");
     }
 
     @Override
@@ -30,6 +25,6 @@ public final class LeftParenthesisTokenizer extends PunctuationTokenizer {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Cannot tokenize provided input");
         }
-        return new CorrectResult<>(TOKEN_FACTORY.createLeftParenthesisToken());
+        return new CorrectResult<>(TOKEN_FACTORY.createPunctuationToken("COMMA", ","));
     }
 }
