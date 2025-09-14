@@ -30,6 +30,7 @@
             <option value="$PROJECT_DIR$/linter" />
             <option value="$PROJECT_DIR$/nodes" />
             <option value="$PROJECT_DIR$/peekable-iterator" />
+            <option value="$PROJECT_DIR$/reflections" />
             <option value="$PROJECT_DIR$/semantic" />
             <option value="$PROJECT_DIR$/syntactic" />
             <option value="$PROJECT_DIR$/tokens" />
