@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.let;
+package com.ingsis.printscript.syntactic.ast.builders.keywords;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -21,7 +21,7 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 
-public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
+public final class LetBuilder extends KeywordBuilder {
     private static final TokenInterface LET_TOKEN_TEMPLATE =
             new TokenFactory().createLetKeywordToken();
     private static final TokenInterface ASSIGNATION_TOKEN_TEMPLATE =
@@ -29,10 +29,6 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
     private static final TokenInterface EOL_TOKEN_TEMPLATE =
             new TokenFactory().createEndOfLineToken();
     private static final AstBuilderFactoryInterface BUILDER_FACTORY = new AstBuilderFactory();
-
-    public LetBuilder() {
-        this(BUILDER_FACTORY.createFinalBuilder());
-    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
@@ -45,12 +41,10 @@ public record LetBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBu
     @Override
     public Result<? extends Node> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) {
-            return nextBuilder().build(tokenStream);
+            return new IncorrectResult<>("That isn't a let keyword.");
         }
 
-        if (!tokenStream.consume(LET_TOKEN_TEMPLATE).isSuccessful()) {
-            return nextBuilder().build(tokenStream);
-        }
+        tokenStream.consume(LET_TOKEN_TEMPLATE);
 
         Result<AscriptionNode> buildAscritionResult =
                 ((AscriptionBuilder) BUILDER_FACTORY.createAscriptionBuilder()).build(tokenStream);

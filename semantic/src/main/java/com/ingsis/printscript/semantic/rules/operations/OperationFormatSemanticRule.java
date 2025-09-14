@@ -5,14 +5,18 @@
 package com.ingsis.printscript.semantic.rules.operations;
 
 import com.ingsis.printscript.astnodes.Node;
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 import java.util.List;
 
 public class OperationFormatSemanticRule implements SemanticRule {
-    private final List<Class<? extends OperationFormatSemanticRule>> specificOperationRules =
-            List.of(BinaryOperationFormatSemanticSemanticRule.class);
+    private final List<Class<? extends OperationFormatSemanticRule>> specificOperationRules;
+
+    public OperationFormatSemanticRule(){
+        specificOperationRules = List.copyOf(new ClassGraphReflectionsUtils().findSubclassesOf(OperationFormatSemanticRule.class).find());
+    }
 
     @Override
     public boolean match(Node node) {
