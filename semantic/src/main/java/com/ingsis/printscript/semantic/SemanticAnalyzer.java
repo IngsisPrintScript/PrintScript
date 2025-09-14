@@ -7,6 +7,8 @@ package com.ingsis.printscript.semantic;
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -20,16 +22,7 @@ public record SemanticAnalyzer(
         Deque<InterpretableNode> checkableNodesBuffer)
         implements SemanticInterface {
 
-    public SemanticAnalyzer {
-        List<SemanticallyCheckable> copyList = new ArrayList<>();
-        while (checkableNodesIterator.hasNext()) {
-            copyList.add(checkableNodesIterator.next());
-        }
-        checkableNodesIterator = copyList.iterator();
-
-        checkableNodesBuffer = new ArrayDeque<>(checkableNodesBuffer);
-    }
-
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public SemanticAnalyzer(
             RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator) {
         this(rulesEnforcer, checkableNodesIterator, new ArrayDeque<>());
