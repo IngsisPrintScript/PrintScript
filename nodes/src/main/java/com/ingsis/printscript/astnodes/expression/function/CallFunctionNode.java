@@ -1,0 +1,74 @@
+package com.ingsis.printscript.astnodes.expression.function;
+
+import com.ingsis.printscript.astnodes.Node;
+import com.ingsis.printscript.astnodes.expression.ExpressionNode;
+import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
+import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
+import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
+import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
+import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.results.IncorrectResult;
+import com.ingsis.printscript.results.Result;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+public final class CallFunctionNode implements ExpressionNode {
+    private final IdentifierNode identifier;
+    private final Collection<CallArgumentNode> arguments;
+
+    public CallFunctionNode(IdentifierNode identifier,  Collection<CallArgumentNode> arguments) {
+        this.identifier = identifier;
+        this.arguments = Collections.unmodifiableCollection(arguments);
+    }
+
+    public boolean hasIdentifier(){
+        return !identifier.isNil();
+    }
+
+    public Result<IdentifierNode> identifier() {
+        if (!hasIdentifier()) {
+            return new IncorrectResult<>("Function node has no identifier");
+        }
+        return new CorrectResult<>(identifier);
+    }
+
+    public Result<Collection<CallArgumentNode>> arguments() {
+        return new CorrectResult<>(arguments);
+    }
+
+    @Override
+    public Result<Object> evaluate() {
+        return null;
+    }
+
+    @Override
+    public Result<String> prettyPrint() {
+        return new CorrectResult<>("");
+    }
+
+    @Override
+    public List<Node> children() {
+        Collection<Node> children = new ArrayList<>();
+        children.add(identifier);
+        children.addAll(arguments);
+        return List.copyOf(children);
+    }
+
+    @Override
+    public Boolean isNil() {
+        return false;
+    }
+
+    @Override
+    public Result<String> acceptCheck(RuleVisitor checker) {
+        return checker.check(this);
+    }
+
+    @Override
+    public Result<String> accept(VisitorInterface visitor) {
+        return visitor.visit(this);
+    }
+}
