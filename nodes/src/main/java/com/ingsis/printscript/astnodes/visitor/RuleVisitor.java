@@ -5,6 +5,7 @@
 package com.ingsis.printscript.astnodes.visitor;
 
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
@@ -21,4 +22,6 @@ public interface RuleVisitor {
     Result<String> check(IdentifierNode node);
 
     Result<String> check(LiteralNode node);
+
+    Result<String> check(CallFunctionNode node);
 }

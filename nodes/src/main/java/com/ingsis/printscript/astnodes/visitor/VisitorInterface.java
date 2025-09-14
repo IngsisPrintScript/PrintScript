@@ -9,6 +9,8 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
 import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
+import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
@@ -31,6 +33,10 @@ public interface VisitorInterface {
     Result<String> visit(IdentifierNode node);
 
     Result<String> visit(TypeNode node);
+
+    Result<String> visit(CallArgumentNode node);
+
+    Result<String> visit(CallFunctionNode node);
 
     Result<String> visit(NilNode node);
 }
