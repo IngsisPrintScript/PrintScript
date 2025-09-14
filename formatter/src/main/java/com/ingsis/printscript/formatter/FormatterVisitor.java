@@ -9,6 +9,8 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
 import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
+import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
@@ -110,6 +112,16 @@ public class FormatterVisitor implements VisitorInterface {
     @Override
     public Result<String> visit(TypeNode node) {
         return new CorrectResult<>(node.type());
+    }
+
+    @Override
+    public Result<String> visit(CallArgumentNode node) {
+        return null;
+    }
+
+    @Override
+    public Result<String> visit(CallFunctionNode node) {
+        return null;
     }
 
     @Override

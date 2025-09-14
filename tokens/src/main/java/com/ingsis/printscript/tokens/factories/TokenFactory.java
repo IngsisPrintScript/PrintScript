@@ -14,6 +14,12 @@ public class TokenFactory implements TokenFactoryInterface {
     }
 
     @Override
+    public TokenInterface createKeywordToken(String keyword, String value) {return new Token(keyword + "_KEYWORD_TOKEN", value);}
+
+    @Override
+    public TokenInterface createPunctuationToken(String punctuation, String value) {return new Token(punctuation + "_PUNCTUATION_TOKEN", value);}
+
+    @Override
     public TokenInterface createPrintlnKeywordToken() {
         return new Token("PRINT_KEYWORD_TOKEN", "println");
     }
