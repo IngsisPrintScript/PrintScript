@@ -21,11 +21,14 @@ import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticR
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
 
 public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
-    private final SemanticRule notDeclaredVariableSemanticRuleChecker =
-            new NotDeclaredVariableSemanticRule();
-    private final SemanticRule declaredVariableSemanticRuleChecker =
-            new DeclaredVariableSemanticRule();
+    private final SemanticRule notDeclaredVariableSemanticRuleChecker;
+    private final SemanticRule declaredVariableSemanticRuleChecker;
     private SemanticRule variableSemanticRuleChecker;
+
+    public  VariablesExistenceRulesChecker() {
+        this.notDeclaredVariableSemanticRuleChecker = new NotDeclaredVariableSemanticRule();
+        this.declaredVariableSemanticRuleChecker = new DeclaredVariableSemanticRule();
+    }
 
     @Override
     public Result<String> check(LetStatementNode node) {

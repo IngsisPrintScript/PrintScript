@@ -21,10 +21,14 @@ import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
-    private final ExpressionTypeGetter expressionTypeGetter = new ExpressionTypeGetter();
-    private final OperationFormatSemanticRule operationFormatRule =
-            new OperationFormatSemanticRule();
+    private final ExpressionTypeGetter expressionTypeGetter;
+    private final OperationFormatSemanticRule operationFormatRule;
     private TypeSemanticRule typeRule;
+
+    public CorrectTypeAssignationEnforcer() {
+        this.expressionTypeGetter = new ExpressionTypeGetter();
+        this.operationFormatRule = new OperationFormatSemanticRule();
+    }
 
     @Override
     public Result<String> check(LetStatementNode node) {

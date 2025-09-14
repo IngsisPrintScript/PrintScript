@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.print;
+package com.ingsis.printscript.syntactic.ast.builders.keywords;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
@@ -19,7 +19,7 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 
-public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTreeBuilderInterface {
+public final class PrintBuilder extends KeywordBuilder {
     private static final AstBuilderFactoryInterface BUILDER_FACTORY = new AstBuilderFactory();
     private static final TokenInterface PRINT_TEMPLATE =
             new TokenFactory().createPrintlnKeywordToken();
@@ -27,11 +27,6 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
             new TokenFactory().createLeftParenthesisToken();
     private static final TokenInterface RIGHT_PARENTHESIS_TEMPLATE =
             new TokenFactory().createRightParenthesisToken();
-    private static final TokenInterface EOL_TEMPLATE = new TokenFactory().createEndOfLineToken();
-
-    public PrintBuilder() {
-        this(BUILDER_FACTORY.createFinalBuilder());
-    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
@@ -46,7 +41,7 @@ public record PrintBuilder(ASTreeBuilderInterface nextBuilder) implements ASTree
     @Override
     public Result<? extends Node> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) {
-            return nextBuilder().build(tokenStream);
+            return new IncorrectResult<>("That isn't a println keyword.");
         }
 
         Result<TokenInterface> consumeResult = tokenStream.consume(PRINT_TEMPLATE);
