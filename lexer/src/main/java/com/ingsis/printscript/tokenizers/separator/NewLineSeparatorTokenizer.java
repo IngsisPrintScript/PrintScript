@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.separator;
 
 import com.ingsis.printscript.results.CorrectResult;

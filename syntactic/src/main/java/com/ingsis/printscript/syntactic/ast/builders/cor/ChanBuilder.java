@@ -7,8 +7,6 @@ package com.ingsis.printscript.syntactic.ast.builders.cor;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.keywords.KeywordBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.keywords.LetBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.keywords.PrintBuilder;
 
 public record ChanBuilder() implements ChainBuilderInterface {
     @Override

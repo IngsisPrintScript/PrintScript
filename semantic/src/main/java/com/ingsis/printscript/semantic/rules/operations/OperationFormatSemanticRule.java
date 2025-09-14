@@ -14,8 +14,12 @@ import java.util.List;
 public class OperationFormatSemanticRule implements SemanticRule {
     private final List<Class<? extends OperationFormatSemanticRule>> specificOperationRules;
 
-    public OperationFormatSemanticRule(){
-        specificOperationRules = List.copyOf(new ClassGraphReflectionsUtils().findSubclassesOf(OperationFormatSemanticRule.class).find());
+    public OperationFormatSemanticRule() {
+        specificOperationRules =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findSubclassesOf(OperationFormatSemanticRule.class)
+                                .find());
     }
 
     @Override

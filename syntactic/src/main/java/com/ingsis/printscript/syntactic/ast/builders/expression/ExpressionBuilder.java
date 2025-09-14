@@ -10,14 +10,17 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
-
 import java.util.List;
 
 public class ExpressionBuilder implements ASTreeBuilderInterface {
     private final List<Class<? extends ExpressionBuilder>> EXPRESSION_BUILDERS;
 
     public ExpressionBuilder() {
-        EXPRESSION_BUILDERS = List.copyOf(new ClassGraphReflectionsUtils().findSubclassesOf(ExpressionBuilder.class).find());
+        EXPRESSION_BUILDERS =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findSubclassesOf(ExpressionBuilder.class)
+                                .find());
     }
 
     @Override

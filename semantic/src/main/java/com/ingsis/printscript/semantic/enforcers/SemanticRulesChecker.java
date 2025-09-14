@@ -14,7 +14,6 @@ import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -22,7 +21,11 @@ public class SemanticRulesChecker implements RuleVisitor {
     private final Collection<Class<? extends SemanticRulesChecker>> ENFORCERS;
 
     public SemanticRulesChecker() {
-        ENFORCERS = List.copyOf(new ClassGraphReflectionsUtils().findSubclassesOf(SemanticRulesChecker.class).find());
+        ENFORCERS =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findSubclassesOf(SemanticRulesChecker.class)
+                                .find());
     }
 
     @Override

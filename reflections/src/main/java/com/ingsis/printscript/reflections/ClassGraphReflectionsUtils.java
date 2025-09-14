@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.reflections;
 
 import io.github.classgraph.ClassGraph;
@@ -34,9 +38,11 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
 
         @Override
         public SubclassQuery<T> inPackages(Collection<String> packages) {
-            this.packages = packages != null ?
-                    new ArrayList<>(packages) : // Defensive copy
-                    Collections.emptyList();
+            this.packages =
+                    packages != null
+                            ? new ArrayList<>(packages)
+                            : // Defensive copy
+                            Collections.emptyList();
             return this;
         }
 
@@ -54,9 +60,7 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
 
         @Override
         public Collection<Class<? extends T>> find() {
-            ClassGraph classGraph = new ClassGraph()
-                    .enableClassInfo()
-                    .ignoreClassVisibility();
+            ClassGraph classGraph = new ClassGraph().enableClassInfo().ignoreClassVisibility();
 
             if (annotationClass != null) {
                 classGraph.enableAnnotationInfo();
@@ -67,17 +71,20 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
             }
 
             try (ScanResult scanResult = classGraph.scan()) {
-                var classInfoList = isInterfaceQuery ?
-                        scanResult.getClassesImplementing(targetClass.getName()) :
-                        scanResult.getSubclasses(targetClass.getName());
+                var classInfoList =
+                        isInterfaceQuery
+                                ? scanResult.getClassesImplementing(targetClass.getName())
+                                : scanResult.getSubclasses(targetClass.getName());
 
                 if (!includeAbstract) {
                     classInfoList = classInfoList.filter(classInfo -> !classInfo.isAbstract());
                 }
 
                 if (annotationClass != null) {
-                    classInfoList = classInfoList.filter(classInfo ->
-                            classInfo.hasAnnotation(annotationClass.getName()));
+                    classInfoList =
+                            classInfoList.filter(
+                                    classInfo ->
+                                            classInfo.hasAnnotation(annotationClass.getName()));
                 }
 
                 Collection<Class<?>> loadedClasses = classInfoList.loadClasses();
@@ -88,8 +95,11 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
                         result.add(clazz.asSubclass(targetClass));
                     } catch (ClassCastException e) {
                         throw new IllegalStateException(
-                                "Class " + clazz.getName() + " is not a subclass of " +
-                                        targetClass.getName(), e);
+                                "Class "
+                                        + clazz.getName()
+                                        + " is not a subclass of "
+                                        + targetClass.getName(),
+                                e);
                     }
                 }
 

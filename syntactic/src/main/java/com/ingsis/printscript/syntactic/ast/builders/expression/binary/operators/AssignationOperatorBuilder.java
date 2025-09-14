@@ -16,10 +16,6 @@ import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 
 public class AssignationOperatorBuilder extends BinaryOperatorBuilder {
     private final TokenInterface ASSIGNATION_TEMPLATE = new TokenFactory().createAssignationToken();
-    private final TokenInterface IDENTIFIER_TEMPLATE =
-            new TokenFactory().createIdentifierToken("placeholder");
-    private final TokenInterface LITERAL_TEMPLATE =
-            new TokenFactory().createLiteralToken("placeholder");
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
