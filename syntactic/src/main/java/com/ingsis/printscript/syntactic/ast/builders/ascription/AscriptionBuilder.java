@@ -39,7 +39,7 @@ public record AscriptionBuilder() implements ASTreeBuilderInterface {
             return new IncorrectResult<>("Cannot build identifier node.");
         }
 
-        Result<ExpressionNode> buildIdentifierResult =
+        Result<? extends ExpressionNode> buildIdentifierResult =
                 ((IdentifierBuilder) BUILDER_FACTORY.createIdentifierBuilder()).build(tokenStream);
         if (!buildIdentifierResult.isSuccessful()) {
             return new IncorrectResult<>(buildIdentifierResult.errorMessage());

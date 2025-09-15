@@ -17,7 +17,7 @@ import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.SemanticAnalyzer;
 import com.ingsis.printscript.semantic.enforcers.SemanticRulesChecker;
 import com.ingsis.printscript.syntactic.Syntactic;
-import com.ingsis.printscript.syntactic.ast.builders.cor.ChanBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.cor.NodeBuilderChain;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.io.BufferedReader;
@@ -73,7 +73,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
         Iterator<TokenInterface> tokenIterator =
                 new Lexical(new TokenizerFactory().createDefaultTokenizer(), characterIterator);
         Iterator<SemanticallyCheckable> checkableNodesIterator =
-                new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
+                new Syntactic(new NodeBuilderChain().createDefaultChain(), tokenIterator);
         Iterator<InterpretableNode> interpretableNodesIterator =
                 new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
         return new Interpreter(new InterpretVisitor(), interpretableNodesIterator);

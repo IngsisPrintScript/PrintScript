@@ -13,12 +13,18 @@ import com.ingsis.printscript.syntactic.ast.builders.expression.IdentifierBuilde
 import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.keywords.LetBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.keywords.fun.arguments.DeclarationArgumentBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.type.TypeBuilder;
 
 public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
     public ASTreeBuilderInterface createLetBuilder() {
         return new LetBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createDeclarationArgumentBuilder() {
+        return new DeclarationArgumentBuilder();
     }
 
     @Override

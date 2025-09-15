@@ -9,6 +9,8 @@ import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 public interface AstBuilderFactoryInterface {
     ASTreeBuilderInterface createLetBuilder();
 
+    ASTreeBuilderInterface createDeclarationArgumentBuilder();
+
     ASTreeBuilderInterface createAscriptionBuilder();
 
     ASTreeBuilderInterface createIdentifierBuilder();

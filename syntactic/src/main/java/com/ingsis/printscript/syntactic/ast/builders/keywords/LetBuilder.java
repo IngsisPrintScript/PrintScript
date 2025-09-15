@@ -55,7 +55,7 @@ public final class LetBuilder extends KeywordBuilder {
         letNode.setAscription(buildAscritionResult.result());
 
         if (tokenStream.consume(ASSIGNATION_TOKEN_TEMPLATE).isSuccessful()) {
-            Result<ExpressionNode> buildLiteralResult =
+            Result<? extends ExpressionNode> buildLiteralResult =
                     ((ExpressionBuilder) BUILDER_FACTORY.createExpressionBuilder())
                             .build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) return buildLiteralResult;
