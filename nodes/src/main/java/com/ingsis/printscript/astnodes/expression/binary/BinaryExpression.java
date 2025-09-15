@@ -50,7 +50,6 @@ public abstract class BinaryExpression implements Node, ExpressionNode {
         return new CorrectResult<>(rightChild);
     }
 
-
     @Override
     public List<Node> children() {
         return List.of(leftChild, rightChild);
