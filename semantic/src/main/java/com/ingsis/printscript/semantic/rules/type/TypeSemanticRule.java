@@ -8,7 +8,8 @@ import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.factories.NodeFactory;
-import com.ingsis.printscript.environment.Environment;
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -31,7 +32,7 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
     public Result<String> checkRules(Node nodeToCheck) {
         if (!(nodeToCheck instanceof LiteralNode)) {
             if (nodeToCheck instanceof IdentifierNode(String name)) {
-                Result<String> getTypeResult = Environment.getInstance().getIdType(name);
+                Result<String> getTypeResult = Runtime.getInstance().currentEnv().getIdType(name);
                 if (!getTypeResult.isSuccessful()) return getTypeResult;
                 String type = getTypeResult.result();
                 if (type.equals(expectedType)) {

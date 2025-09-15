@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.environment;
+package com.ingsis.printscript.runtime.environment;
 
 import com.ingsis.printscript.results.Result;
 

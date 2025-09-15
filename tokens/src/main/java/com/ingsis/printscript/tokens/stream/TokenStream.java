@@ -91,6 +91,13 @@ public class TokenStream implements TokenStreamInterface {
     }
 
     @Override
+    public Result<Integer> resetIndex() {
+        Integer previousIndex = index;
+        index = 0;
+        return new CorrectResult<>(previousIndex);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (!(o instanceof TokenStream stream)) {
             return false;

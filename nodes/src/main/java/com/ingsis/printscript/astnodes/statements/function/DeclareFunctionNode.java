@@ -79,16 +79,16 @@ public final class DeclareFunctionNode implements Node, SemanticallyCheckable, I
 
     @Override
     public Result<String> accept(VisitorInterface visitor) {
-        return null;
+        return visitor.visit(this);
     }
 
     @Override
     public Result<String> acceptCheck(RuleVisitor checker) {
-        return null;
+        return checker.check(this);
     }
 
     @Override
     public Result<String> acceptInterpreter(InterpretVisitorInterface interpreter) {
-        return null;
+        return interpreter.interpret(this);
     }
 }
