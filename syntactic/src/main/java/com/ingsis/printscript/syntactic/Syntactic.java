@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -14,6 +13,7 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStream;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayDeque;
 import java.util.ArrayList;

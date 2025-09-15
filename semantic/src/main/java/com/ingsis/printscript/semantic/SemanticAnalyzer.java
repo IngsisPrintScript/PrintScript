@@ -4,9 +4,9 @@
 
 package com.ingsis.printscript.semantic;
 
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.RuleVisitor;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayDeque;
 import java.util.Deque;

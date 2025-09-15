@@ -11,11 +11,12 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.visitor.InterpretVisitorInterface;
 
 public class InterpretVisitor implements InterpretVisitorInterface {
 
@@ -36,7 +37,9 @@ public class InterpretVisitor implements InterpretVisitorInterface {
         }
         IdentifierNode identifier = getIdentifier.result();
         TypeNode type = getType.result();
-        Runtime.getInstance().currentEnv().putIdType(identifier.name(), type.type());
+        Runtime.getInstance()
+                .currentEnv()
+                .putVariable(identifier.name(), new VariableEntry(type.type()));
         Result<ExpressionNode> getExpression = statement.expression();
         if (!getExpression.isSuccessful()) {
             return new CorrectResult<>(
@@ -52,7 +55,7 @@ public class InterpretVisitor implements InterpretVisitorInterface {
             return new IncorrectResult<>(evaluateExpression.errorMessage());
         }
         Object result = evaluateExpression.result();
-        Runtime.getInstance().currentEnv().putIdValue(identifier.name(), result);
+        Runtime.getInstance().currentEnv().modifyVariableValue(identifier.name(), result);
         return new CorrectResult<>(
                 "Variable "
                         + identifier.name()

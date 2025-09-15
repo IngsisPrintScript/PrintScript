@@ -9,7 +9,6 @@ import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -26,6 +25,7 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
 import java.util.ArrayList;
 import java.util.Collection;
 

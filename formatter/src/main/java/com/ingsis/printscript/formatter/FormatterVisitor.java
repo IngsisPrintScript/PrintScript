@@ -16,11 +16,11 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.formatter.FormatterRules.SeparationFormatter;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.VisitorInterface;
 
 public class FormatterVisitor implements VisitorInterface {
 
