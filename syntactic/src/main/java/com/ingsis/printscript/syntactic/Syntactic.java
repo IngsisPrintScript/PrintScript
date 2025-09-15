@@ -41,9 +41,6 @@ public class Syntactic implements SyntacticInterface {
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
         }
-        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()) {
-            return new IncorrectResult<>("Did not have an End Of Line character.");
-        }
         Node root = buildResult.result();
         if (!(root instanceof SemanticallyCheckable semanticallyCheckableNode)) {
             return new IncorrectResult<>("Has built a tree which is not semantically checkable");
