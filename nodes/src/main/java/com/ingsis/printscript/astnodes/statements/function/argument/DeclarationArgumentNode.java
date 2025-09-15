@@ -1,21 +1,23 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.statements.function.argument;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.util.List;
 
-public final class DeclareArgumentNode implements Node {
+public final class DeclarationArgumentNode implements Node {
     private final IdentifierNode identifier;
     private final TypeNode type;
 
-    public DeclareArgumentNode(IdentifierNode identifier, TypeNode type) {
+    public DeclarationArgumentNode(IdentifierNode identifier, TypeNode type) {
         this.identifier = identifier;
         this.type = type;
     }
@@ -49,7 +51,7 @@ public final class DeclareArgumentNode implements Node {
 
     @Override
     public Boolean isNil() {
-        return null;
+        return false;
     }
 
     @Override

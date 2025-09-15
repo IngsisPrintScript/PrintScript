@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.function.argument;
 
 import com.ingsis.printscript.astnodes.Node;
@@ -7,7 +11,6 @@ import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.util.List;
 
 public final class CallArgumentNode implements Node {
@@ -22,6 +25,7 @@ public final class CallArgumentNode implements Node {
     public boolean hasIdentifier() {
         return !identifier.isNil();
     }
+
     public Result<IdentifierNode> identifier() {
         if (!hasIdentifier()) {
             return new IncorrectResult<>("Call Argument node has no identifier");

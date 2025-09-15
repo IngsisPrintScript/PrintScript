@@ -20,7 +20,11 @@ public class KeywordTokenizer implements TokenizerInterface {
     public KeywordTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
     }
-    public KeywordTokenizer() {this(new FinalTokenizer());}
+
+    public KeywordTokenizer() {
+        this(new FinalTokenizer());
+    }
+
     @Override
     public Boolean canTokenize(String input) {
         for (Class<? extends KeywordTokenizer> subclass : subclasses) {

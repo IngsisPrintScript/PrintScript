@@ -8,13 +8,11 @@ import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
-import com.ingsis.printscript.runtime.Runtime;
-import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.runtime.environment.EnvironmentInterface;
-
 import java.util.List;
 
 public record IdentifierNode(String name) implements Node, ExpressionNode {

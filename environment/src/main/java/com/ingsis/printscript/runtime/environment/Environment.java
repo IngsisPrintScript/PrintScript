@@ -1,9 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.runtime.environment;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

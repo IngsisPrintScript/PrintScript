@@ -66,7 +66,7 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
     }
 
     private boolean peekIsEOL(TokenStreamInterface tokenStream) {
-        Result<TokenInterface>  tokenResult = tokenStream.peek();
+        Result<TokenInterface> tokenResult = tokenStream.peek();
         if (!tokenResult.isSuccessful()) {
             return false;
         }

@@ -5,6 +5,7 @@
 package com.ingsis.printscript.reflections;
 
 import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfoList;
 import io.github.classgraph.ScanResult;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,12 +77,7 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
                                 ? scanResult.getClassesImplementing(targetClass.getName())
                                 : scanResult.getSubclasses(targetClass.getName());
 
-                // ✅ Keep only *immediate* subclasses (direct children)
-                classInfoList = classInfoList.filter(
-                        classInfo ->
-                                classInfo.getSuperclass() != null &&
-                                        classInfo.getSuperclass().getName().equals(targetClass.getName())
-                );
+                classInfoList = filter(classInfoList);
 
                 if (!includeAbstract) {
                     classInfoList = classInfoList.filter(classInfo -> !classInfo.isAbstract());
@@ -93,10 +89,8 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
                                     classInfo ->
                                             classInfo.hasAnnotation(annotationClass.getName()));
                 }
-
                 Collection<Class<?>> loadedClasses = classInfoList.loadClasses();
                 List<Class<? extends T>> result = new ArrayList<>();
-
                 for (Class<?> clazz : loadedClasses) {
                     try {
                         result.add(clazz.asSubclass(targetClass));
@@ -109,11 +103,20 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
                                 e);
                     }
                 }
-
                 return result;
             } catch (Exception e) {
                 throw new ReflectionException("Failed to scan classes", e);
             }
+        }
+
+        private ClassInfoList filter(ClassInfoList classInfoList) {
+            return classInfoList.filter(
+                    classInfo ->
+                            classInfo.getSuperclass() != null
+                                    && classInfo
+                                            .getSuperclass()
+                                            .getName()
+                                            .equals(targetClass.getName()));
         }
     }
 
