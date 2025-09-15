@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.keyword;
 
 import com.ingsis.printscript.results.CorrectResult;
@@ -19,6 +23,7 @@ public class FunKeywordTokenizer extends KeywordTokenizer {
     public Boolean canTokenize(String input) {
         return input.equals("fun");
     }
+
     @Override
     public Result<TokenInterface> tokenize(String input) {
         if (!canTokenize(input)) {
@@ -26,5 +31,4 @@ public class FunKeywordTokenizer extends KeywordTokenizer {
         }
         return new CorrectResult<>(TOKEN_FACTORY.createKeywordToken("FUN", "fun"));
     }
-
 }

@@ -1,8 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.ast.builders.keywords.fun.arguments;
 
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
-import com.ingsis.printscript.astnodes.statements.function.argument.DeclareArgumentNode;
+import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -22,7 +26,6 @@ public class DeclarationArgumentBuilder implements ASTreeBuilderInterface {
     private final IdentifierBuilder IDENTIFIER_BUILDER;
     private final TypeBuilder TYPE_BUILDER;
 
-
     public DeclarationArgumentBuilder() {
         AstBuilderFactoryInterface BUILDER_FACTORY = new AstBuilderFactory();
         TokenFactoryInterface TOKEN_FACTORY = new TokenFactory();
@@ -35,7 +38,7 @@ public class DeclarationArgumentBuilder implements ASTreeBuilderInterface {
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result<TokenInterface> peekResult = tokenStream.peek();
-        if (!peekResult.isSuccessful()){
+        if (!peekResult.isSuccessful()) {
             return false;
         }
         TokenInterface token = peekResult.result();
@@ -43,28 +46,28 @@ public class DeclarationArgumentBuilder implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result<DeclareArgumentNode> build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)){
+    public Result<DeclarationArgumentNode> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)) {
             return new IncorrectResult<>("This stream is not a declaration argument.");
         }
 
         Result<IdentifierNode> buildIdentifierResult = IDENTIFIER_BUILDER.build(tokenStream);
-        if (!buildIdentifierResult.isSuccessful()){
+        if (!buildIdentifierResult.isSuccessful()) {
             return new IncorrectResult<>("This stream is not a declaration argument.");
         }
         IdentifierNode identifier = buildIdentifierResult.result();
 
-        if (!tokenStream.consume(ASCRIPTION_TOKEN_TEMPLATE).isSuccessful()){
+        if (!tokenStream.consume(ASCRIPTION_TOKEN_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This stream is not a declaration argument.");
         }
 
         Result<TypeNode> buildTypeResult = TYPE_BUILDER.build(tokenStream);
-        if (!buildTypeResult.isSuccessful()){
+        if (!buildTypeResult.isSuccessful()) {
             return new IncorrectResult<>("This stream is not a declaration argument.");
         }
         TypeNode type = buildTypeResult.result();
 
-        DeclareArgumentNode argumentNode = new DeclareArgumentNode(identifier, type);
+        DeclarationArgumentNode argumentNode = new DeclarationArgumentNode(identifier, type);
 
         return new CorrectResult<>(argumentNode);
     }

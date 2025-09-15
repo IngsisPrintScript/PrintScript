@@ -65,8 +65,8 @@ public class SemanticRulesChecker implements RuleVisitor {
         return checkNode(node, RuleVisitor::check);
     }
 
-
-    private <T> Result<String> checkNode(T node, ThrowingBiFunction<RuleVisitor, T, Result<String>> checkerFn) {
+    private <T> Result<String> checkNode(
+            T node, ThrowingBiFunction<RuleVisitor, T, Result<String>> checkerFn) {
         try {
             for (Class<? extends SemanticRulesChecker> rule : ENFORCERS) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
@@ -80,6 +80,7 @@ public class SemanticRulesChecker implements RuleVisitor {
         }
         return new CorrectResult<>("AST passed all semantic rules.");
     }
+
     @FunctionalInterface
     public interface ThrowingBiFunction<T, U, R> {
         R apply(T t, U u) throws Exception;

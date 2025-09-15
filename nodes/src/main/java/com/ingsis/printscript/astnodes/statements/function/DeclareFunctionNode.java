@@ -1,9 +1,13 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.statements.function;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
-import com.ingsis.printscript.astnodes.statements.function.argument.DeclareArgumentNode;
+import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
 import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
@@ -12,7 +16,6 @@ import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,11 +23,15 @@ import java.util.List;
 
 public final class DeclareFunctionNode implements Node, SemanticallyCheckable, InterpretableNode {
     private final IdentifierNode identifier;
-    private final Collection<DeclareArgumentNode> arguments;
+    private final Collection<DeclarationArgumentNode> arguments;
     private final Collection<InterpretableNode> body;
     private final TypeNode returnType;
 
-    public DeclareFunctionNode(IdentifierNode identifier, Collection<DeclareArgumentNode> arguments, Collection<InterpretableNode> body, TypeNode returnType) {
+    public DeclareFunctionNode(
+            IdentifierNode identifier,
+            Collection<DeclarationArgumentNode> arguments,
+            Collection<InterpretableNode> body,
+            TypeNode returnType) {
         this.identifier = identifier;
         this.arguments = Collections.unmodifiableCollection(arguments);
         this.body = Collections.unmodifiableCollection(body);
@@ -46,7 +53,7 @@ public final class DeclareFunctionNode implements Node, SemanticallyCheckable, I
         return new CorrectResult<>(identifier);
     }
 
-    public Result<Collection<DeclareArgumentNode>> arguments() {
+    public Result<Collection<DeclarationArgumentNode>> arguments() {
         return new CorrectResult<>(arguments);
     }
 
@@ -60,7 +67,6 @@ public final class DeclareFunctionNode implements Node, SemanticallyCheckable, I
         }
         return new CorrectResult<>(returnType);
     }
-
 
     @Override
     public List<Node> children() {

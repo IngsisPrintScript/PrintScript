@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic.ast.builders.expression;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.factories.NodeFactory;
 import com.ingsis.printscript.results.CorrectResult;

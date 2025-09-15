@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.function;
 
 import com.ingsis.printscript.astnodes.Node;
@@ -9,7 +13,6 @@ import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,12 +22,12 @@ public final class CallFunctionNode implements ExpressionNode {
     private final IdentifierNode identifier;
     private final Collection<CallArgumentNode> arguments;
 
-    public CallFunctionNode(IdentifierNode identifier,  Collection<CallArgumentNode> arguments) {
+    public CallFunctionNode(IdentifierNode identifier, Collection<CallArgumentNode> arguments) {
         this.identifier = identifier;
         this.arguments = Collections.unmodifiableCollection(arguments);
     }
 
-    public boolean hasIdentifier(){
+    public boolean hasIdentifier() {
         return !identifier.isNil();
     }
 

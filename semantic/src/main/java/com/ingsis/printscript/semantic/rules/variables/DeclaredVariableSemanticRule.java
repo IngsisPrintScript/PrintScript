@@ -7,12 +7,11 @@ package com.ingsis.printscript.semantic.rules.variables;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.factories.NodeFactory;
-import com.ingsis.printscript.runtime.Runtime;
-import com.ingsis.printscript.runtime.environment.Environment;
-import com.ingsis.printscript.runtime.environment.EnvironmentInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.environment.EnvironmentInterface;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 
 public record DeclaredVariableSemanticRule() implements SemanticRule {

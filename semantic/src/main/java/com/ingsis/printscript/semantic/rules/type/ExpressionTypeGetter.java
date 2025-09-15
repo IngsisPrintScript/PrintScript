@@ -9,9 +9,8 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
-import com.ingsis.printscript.runtime.Runtime;
-import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
 
 public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
     @Override

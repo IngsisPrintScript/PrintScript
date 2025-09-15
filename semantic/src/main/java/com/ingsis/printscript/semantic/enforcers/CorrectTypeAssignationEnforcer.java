@@ -13,11 +13,10 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.runtime.Runtime;
-import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.semantic.rules.operations.OperationFormatSemanticRule;
 import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
@@ -71,7 +70,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
         return new IncorrectResult<>("Not implemented yet");
     }
 
-        @Override
+    @Override
     public Result<String> check(BinaryExpression node) {
         if (typeRule == null) {
             typeRule = new TypeSemanticRule(expressionTypeGetter.getType(node));
@@ -93,7 +92,9 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
 
     @Override
     public Result<String> check(IdentifierNode node) {
-        typeRule = new TypeSemanticRule(Runtime.getInstance().currentEnv().getIdType(node.name()).result());
+        typeRule =
+                new TypeSemanticRule(
+                        Runtime.getInstance().currentEnv().getIdType(node.name()).result());
         return typeRule.checkRules(node);
     }
 

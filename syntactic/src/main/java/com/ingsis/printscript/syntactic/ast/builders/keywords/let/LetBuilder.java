@@ -13,7 +13,6 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
-
 import java.util.Collection;
 import java.util.Collections;
 
@@ -21,10 +20,11 @@ public class LetBuilder extends KeywordBuilder {
     private final TokenInterface LET_TOKEN_TEMPLATE;
     private final Collection<Class<? extends LetBuilder>> SUBCLASSES;
 
-    public LetBuilder(){
+    public LetBuilder() {
         TokenFactoryInterface tokenFactory = new TokenFactory();
         LET_TOKEN_TEMPLATE = tokenFactory.createLetKeywordToken();
-        Collection<Class<? extends LetBuilder>> sub = new ClassGraphReflectionsUtils().findSubclassesOf(LetBuilder.class).find();
+        Collection<Class<? extends LetBuilder>> sub =
+                new ClassGraphReflectionsUtils().findSubclassesOf(LetBuilder.class).find();
         SUBCLASSES = Collections.unmodifiableCollection(sub);
     }
 
@@ -38,20 +38,21 @@ public class LetBuilder extends KeywordBuilder {
 
     @Override
     public Result<LetStatementNode> build(TokenStreamInterface tokenStream) {
-        if (!tokenStream.consume(LET_TOKEN_TEMPLATE).isSuccessful()){
+        if (!tokenStream.consume(LET_TOKEN_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("Stream is not a let statement");
         }
         for (Class<? extends LetBuilder> clazz : SUBCLASSES) {
-            try{
+            try {
                 LetBuilder instance = clazz.getDeclaredConstructor().newInstance();
                 Result<LetStatementNode> result = instance.build(tokenStream);
                 if (result.isSuccessful()) {
                     return result;
                 }
                 tokenStream.resetIndex();
-            } catch (RuntimeException rte){
+            } catch (RuntimeException rte) {
                 throw rte;
-            } catch(Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         return new IncorrectResult<>("That let expression is not correctly build.");
     }

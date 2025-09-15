@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.ast.builders.keywords.let;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -21,7 +25,7 @@ public final class DeclarationAssignationBuilder extends LetBuilder {
     private final AscriptionBuilder ASCRIPTION_BUILDER;
     private final ExpressionBuilder EXPRESSION_BUILDER;
 
-    public DeclarationAssignationBuilder(){
+    public DeclarationAssignationBuilder() {
         TokenFactoryInterface tokenFactory = new TokenFactory();
         ASSIGNATION_TOKEN_TEMPLATE = tokenFactory.createAssignationToken();
         AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
@@ -44,7 +48,7 @@ public final class DeclarationAssignationBuilder extends LetBuilder {
         }
 
         Result<? extends ExpressionNode> buildLiteralResult = EXPRESSION_BUILDER.build(tokenStream);
-        if (!buildLiteralResult.isSuccessful()){
+        if (!buildLiteralResult.isSuccessful()) {
             return new IncorrectResult<>(buildLiteralResult.errorMessage());
         }
         ExpressionNode expressionNode = buildLiteralResult.result();

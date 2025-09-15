@@ -13,11 +13,10 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.runtime.Runtime;
-import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
@@ -101,7 +100,7 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
         return new IncorrectResult<>("Not implemented yet");
     }
 
-        @Override
+    @Override
     public Result<String> check(IdentifierNode node) {
         if (variableSemanticRuleChecker == null) {
             variableSemanticRuleChecker = new DeclaredVariableSemanticRule();
