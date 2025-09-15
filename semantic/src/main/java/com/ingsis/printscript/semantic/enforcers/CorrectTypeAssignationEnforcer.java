@@ -13,13 +13,17 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
+import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.semantic.rules.operations.OperationFormatSemanticRule;
 import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
+
+import java.util.Collection;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     private final ExpressionTypeGetter expressionTypeGetter;
@@ -67,7 +71,20 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
 
     @Override
     public Result<String> check(DeclareFunctionNode node) {
-        return new IncorrectResult<>("Not implemented yet");
+        Result<Collection<InterpretableNode>> getBodyResult = node.body();
+        if (!getBodyResult.isSuccessful()) {
+            return new IncorrectResult<>(getBodyResult.errorMessage());
+        }
+        Collection<InterpretableNode> body = getBodyResult.result();
+        Runtime.getInstance().pushEnv(new Environment(Runtime.getInstance().currentEnv()));
+        for (InterpretableNode interpretableNode : body) {
+            Result<String> subProgramCheckResult = interpretableNode.acceptCheck(this);
+            if (!subProgramCheckResult.isSuccessful()) {
+                return new IncorrectResult<>(subProgramCheckResult.errorMessage());
+            }
+        }
+        Runtime.getInstance().popEnv();
+        return new CorrectResult<>("Function passed type check");
     }
 
     @Override
