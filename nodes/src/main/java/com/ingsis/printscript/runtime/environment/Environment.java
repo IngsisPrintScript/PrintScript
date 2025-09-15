@@ -10,6 +10,7 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.entries.FunctionEntry;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.runtime.functions.BuiltInFunction;
 import com.ingsis.printscript.visitor.InterpretableNode;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Collection;
@@ -20,11 +21,14 @@ public class Environment implements EnvironmentInterface {
     private final EnvironmentInterface fatherEnvironment;
     private final Map<String, VariableEntry> variablesMap;
     private final Map<String, FunctionEntry> functionsMap;
+    private final Map<String, BuiltInFunction> systemFunctionsMap;
+
 
     public Environment() {
         fatherEnvironment = new NilEnvironment();
         variablesMap = new ConcurrentHashMap<>();
         functionsMap = new ConcurrentHashMap<>();
+        systemFunctionsMap = new ConcurrentHashMap<>();
     }
 
     @SuppressFBWarnings("EI_EXPOSE_REP2")
@@ -32,6 +36,7 @@ public class Environment implements EnvironmentInterface {
         this.fatherEnvironment = fatherEnvironment;
         variablesMap = new ConcurrentHashMap<>();
         functionsMap = new ConcurrentHashMap<>();
+        systemFunctionsMap = new ConcurrentHashMap<>();
     }
 
     @Override

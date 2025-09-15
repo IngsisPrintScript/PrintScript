@@ -11,12 +11,18 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
+import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.entries.FunctionEntry;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.runtime.environment.EnvironmentInterface;
 import com.ingsis.printscript.visitor.InterpretVisitorInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+
+import java.util.Collection;
 
 public class InterpretVisitor implements InterpretVisitorInterface {
 
@@ -93,6 +99,35 @@ public class InterpretVisitor implements InterpretVisitorInterface {
 
     @Override
     public Result<String> interpret(DeclareFunctionNode statement) {
-        return new IncorrectResult<>("Not implemented yet.");
+        EnvironmentInterface env = Runtime.getInstance().currentEnv();
+
+        Result<Collection<DeclarationArgumentNode>> getArgumentsResult = statement.arguments();
+        if (!getArgumentsResult.isSuccessful()) {
+            return new IncorrectResult<>(getArgumentsResult.errorMessage());
+        }
+        Collection<DeclarationArgumentNode> arguments = getArgumentsResult.result();
+
+        Result<Collection<InterpretableNode>> getBodyResult = statement.body();
+        if (!getBodyResult.isSuccessful()) {
+            return new IncorrectResult<>(getBodyResult.errorMessage());
+        }
+        Collection<InterpretableNode> body = getBodyResult.result();
+
+        Result<TypeNode> getReturnTypeResult = statement.returnType();
+        if (!getReturnTypeResult.isSuccessful()) {
+            return new IncorrectResult<>(getReturnTypeResult.errorMessage());
+        }
+        TypeNode returnType = getReturnTypeResult.result();
+        FunctionEntry functionEntry = new FunctionEntry(returnType.type(), arguments, body);
+
+        Result<IdentifierNode> getIdentifierResult = statement.identifier();
+        if (!getIdentifierResult.isSuccessful()) {
+            return new IncorrectResult<>(getIdentifierResult.errorMessage());
+        }
+        IdentifierNode identifierNode = getIdentifierResult.result();
+        String identifier = identifierNode.name();
+        env.putFunction(identifier, functionEntry);
+
+        return new CorrectResult<>(identifier);
     }
 }
