@@ -36,7 +36,7 @@ public record IdentifierNode(String name) implements Node, ExpressionNode {
     public Result<Object> evaluate() {
         try {
             EnvironmentInterface currentEnv = Runtime.getInstance().currentEnv();
-            Result<Object> getIdValue = currentEnv.getIdValue(this.name());
+            Result<Object> getIdValue = currentEnv.getVariableValue(this.name());
             if (!getIdValue.isSuccessful()) {
                 return new IncorrectResult<>(getIdValue.errorMessage());
             }

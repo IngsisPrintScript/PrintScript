@@ -111,7 +111,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     public Result<String> check(IdentifierNode node) {
         typeRule =
                 new TypeSemanticRule(
-                        Runtime.getInstance().currentEnv().getIdType(node.name()).result());
+                        Runtime.getInstance().currentEnv().getVariableType(node.name()).result());
         return typeRule.checkRules(node);
     }
 

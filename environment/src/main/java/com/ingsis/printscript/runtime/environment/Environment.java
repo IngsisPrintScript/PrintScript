@@ -4,76 +4,102 @@
 
 package com.ingsis.printscript.runtime.environment;
 
+import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
+import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.entries.FunctionEntry;
+import com.ingsis.printscript.runtime.entries.VariableEntry;
+
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Environment implements EnvironmentInterface {
     private final EnvironmentInterface fatherEnvironment;
-    private final Map<String, String> idTypeMap;
-    private final Map<String, Object> idValueMap;
+    private final Map<String, VariableEntry> variablesMap;
+    private final Map<String, FunctionEntry> functionsMap;
 
     public Environment() {
         fatherEnvironment = new NilEnvironment();
-        idTypeMap = new ConcurrentHashMap<>();
-        idValueMap = new ConcurrentHashMap<>();
+        variablesMap = new ConcurrentHashMap<>();
+        functionsMap = new ConcurrentHashMap<>();
     }
 
     public Environment(EnvironmentInterface fatherEnvironment) {
         this.fatherEnvironment = fatherEnvironment;
-        idTypeMap = new ConcurrentHashMap<>();
-        idValueMap = new ConcurrentHashMap<>();
+        variablesMap = new ConcurrentHashMap<>();
+        functionsMap = new ConcurrentHashMap<>();
     }
 
     @Override
-    public Result<String> putIdType(String id, String type) {
-        if (variableIsDeclared(id)) {
-            return new IncorrectResult<>("Id has already been declared.");
+    public Result<VariableEntry> putVariable(String identifier, VariableEntry entry) {
+        if (variableIsDeclared(identifier)) {
+            return new IncorrectResult<>("Variable " + identifier + " is already declared.");
         }
-        idTypeMap.put(id, type);
-        return new CorrectResult<>("Id has been declared.");
+        variablesMap.put(identifier, entry);
+        return new CorrectResult<>(entry);
     }
 
     @Override
-    public Result<Object> putIdValue(String id, Object value) {
-        if (!variableIsDeclared(id)) {
-            return new IncorrectResult<>("Id has not been declared.");
+    public Result<FunctionEntry> putFunction(String identifier, FunctionEntry entry) {
+        if (functionIsDeclaredHere(identifier)) {
+            return new IncorrectResult<>("Function " + identifier + " is already declared.");
         }
-        idValueMap.put(id, value);
-        return new CorrectResult<>(value);
+        functionsMap.put(identifier, entry);
+        return new CorrectResult<>(entry);
     }
 
     @Override
-    public Result<String> getIdType(String id) {
+    public Result<VariableEntry> modifyVariableValue(String identifier, Object value) {
+        if (!variableIsDeclared(identifier)) {
+            return new IncorrectResult<>("Variable " + identifier + " is not declared.");
+        }
+        VariableEntry entry = variablesMap.get(identifier);
+        VariableEntry newEntry = new VariableEntry(entry.type(), new Object());
+        variablesMap.put(identifier, newEntry);
+        return new CorrectResult<>(newEntry);
+    }
+
+    @Override
+    public Result<String> getVariableType(String id) {
         if (!variableIsDeclaredHere(id)) {
-            return fatherEnvironment.getIdType(id);
+            return fatherEnvironment.getVariableType(id);
         }
-        return new CorrectResult<>(idTypeMap.get(id));
+        return new CorrectResult<>(variablesMap.get(id).type());
     }
 
     @Override
-    public Result<Object> getIdValue(String id) {
+    public Result<Object> getVariableValue(String id) {
         if (!variableIsDeclaredHere(id)) {
-            return fatherEnvironment.getIdValue(id);
+            return fatherEnvironment.getVariableValue(id);
         }
-        if (!idValueMap.containsKey(id)) {
-            return new IncorrectResult<>("Id has not been initialized.");
-        }
-        return new CorrectResult<>(idValueMap.get(id));
+        return new CorrectResult<>(variablesMap.get(id).value());
     }
 
     @Override
-    public Result<String> clearTypeMap() {
-        idTypeMap.clear();
-        return new CorrectResult<>("Type map was cleared correctly.");
+    public Result<String> getFunctionReturnType(String id) {
+        if (!functionIsDeclared(id)) {
+            return new IncorrectResult<>("Function " + id + " is not declared.");
+        }
+        return new CorrectResult<>(functionsMap.get(id).returnType());
     }
 
     @Override
-    public Result<String> clearValueMap() {
-        idValueMap.clear();
-        return new CorrectResult<>("Value map was cleared correctly.");
+    public Result<Collection<DeclarationArgumentNode>> getFunctionArguments(String id) {
+        if (!functionIsDeclared(id)) {
+            return new IncorrectResult<>("Function " + id + " is not declared.");
+        }
+        return new CorrectResult<>(functionsMap.get(id).arguments());
+    }
+
+    @Override
+    public Result<Collection<InterpretableNode>> getFunctionBody(String id) {
+        if (!functionIsDeclared(id)) {
+            return new IncorrectResult<>("Function " + id + " is not declared.");
+        }
+        return new CorrectResult<>(functionsMap.get(id).body());
     }
 
     @Override
@@ -81,7 +107,16 @@ public class Environment implements EnvironmentInterface {
         return variableIsDeclaredHere(id) || fatherEnvironment.variableIsDeclared(id);
     }
 
+    @Override
+    public Boolean functionIsDeclared(String id) {
+        return functionIsDeclaredHere(id) || fatherEnvironment.functionIsDeclared(id);
+    }
+
     private Boolean variableIsDeclaredHere(String id) {
-        return idTypeMap.containsKey(id);
+        return variablesMap.containsKey(id);
+    }
+
+    private Boolean functionIsDeclaredHere(String id) {
+        return variablesMap.containsKey(id);
     }
 }

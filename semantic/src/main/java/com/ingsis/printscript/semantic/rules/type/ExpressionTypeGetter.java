@@ -16,7 +16,7 @@ public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
     @Override
     public String getType(Node node) {
         if (node instanceof IdentifierNode(String name)) {
-            Result<String> getIdType = Runtime.getInstance().currentEnv().getIdType(name);
+            Result<String> getIdType = Runtime.getInstance().currentEnv().getVariableType(name);
             if (!getIdType.isSuccessful()) return "UnknownType";
             return getIdType.result();
         }
