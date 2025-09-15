@@ -4,20 +4,32 @@
 
 package com.ingsis.printscript.runtime.environment;
 
+import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
+import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.entries.FunctionEntry;
+import com.ingsis.printscript.runtime.entries.VariableEntry;
+
+import java.util.Collection;
 
 public interface EnvironmentInterface {
-    Result<String> putIdType(String id, String type);
+    Result<VariableEntry> putVariable(String identifier, VariableEntry entry);
 
-    Result<Object> putIdValue(String id, Object value);
+    Result<FunctionEntry> putFunction(String identifier, FunctionEntry entry);
 
-    Result<String> getIdType(String id);
+    Result<VariableEntry> modifyVariableValue(String identifier, Object value);
 
-    Result<Object> getIdValue(String id);
+    Result<String> getVariableType(String id);
 
-    Result<String> clearTypeMap();
+    Result<Object> getVariableValue(String id);
 
-    Result<String> clearValueMap();
+    Result<String> getFunctionReturnType(String id);
+
+    Result<Collection<DeclarationArgumentNode>> getFunctionArguments(String id);
+
+    Result<Collection<InterpretableNode>> getFunctionBody(String id);
 
     Boolean variableIsDeclared(String id);
+
+    Boolean functionIsDeclared(String id);
 }
