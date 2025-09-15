@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.formatter;
 
 import com.ingsis.printscript.astnodes.Node;

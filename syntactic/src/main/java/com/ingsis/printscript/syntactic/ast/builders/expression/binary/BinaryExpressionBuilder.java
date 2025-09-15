@@ -1,35 +1,40 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.ast.builders.expression.binary;
 
-
-import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
+import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
-import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
+import com.ingsis.printscript.astnodes.factories.NodeFactory;
+import com.ingsis.printscript.astnodes.factories.NodeFactoryInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
-import com.ingsis.printscript.astnodes.factories.NodeFactory;
-import com.ingsis.printscript.astnodes.factories.NodeFactoryInterface;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
+import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
 import com.ingsis.printscript.syntactic.factories.AstBuilderFactory;
 import com.ingsis.printscript.syntactic.factories.AstBuilderFactoryInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 
 public class BinaryExpressionBuilder extends ExpressionBuilder {
-    private final AstBuilderFactoryInterface builderFactory = new AstBuilderFactory();
-    private final NodeFactoryInterface nodeFactory = new NodeFactory();
-    private final TokenInterface literalTemplate = new TokenFactory().createLiteralToken("placeholder");
-    private final TokenInterface identifierTemplate = new TokenFactory().createIdentifierToken("placeholder");
+    private final AstBuilderFactoryInterface BUILDER_FACTORY = new AstBuilderFactory();
+    private final NodeFactoryInterface NODE_FACTORY = new NodeFactory();
+    private final TokenInterface LITERAL_TEMPLATE =
+            new TokenFactory().createLiteralToken("placeholder");
+    private final TokenInterface IDENTIFIER_TEMPLATE =
+            new TokenFactory().createIdentifierToken("placeholder");
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result<TokenInterface> peekResult = tokenStream.peek();
         if (!peekResult.isSuccessful()) return false;
         TokenInterface token = peekResult.result();
-        return token.equals(literalTemplate) || token.equals(identifierTemplate);
+        return token.equals(LITERAL_TEMPLATE) || token.equals(IDENTIFIER_TEMPLATE);
     }
 
     @Override
@@ -45,21 +50,25 @@ public class BinaryExpressionBuilder extends ExpressionBuilder {
         TokenInterface consumedToken = consumeResult.result();
 
         ExpressionNode expressionLeftChild;
-        if (consumedToken.equals(literalTemplate)) {
-            expressionLeftChild = (LiteralNode) nodeFactory.createLiteralNode(consumedToken.value());
+        if (consumedToken.equals(LITERAL_TEMPLATE)) {
+            expressionLeftChild =
+                    (LiteralNode) NODE_FACTORY.createLiteralNode(consumedToken.value());
         } else {
-            expressionLeftChild = (IdentifierNode) nodeFactory.createIdentifierNode(consumedToken.value());
+            expressionLeftChild =
+                    (IdentifierNode) NODE_FACTORY.createIdentifierNode(consumedToken.value());
         }
 
         Result<BinaryExpression> buildOperatorResult =
-                ((BinaryOperatorBuilder) builderFactory.createOperatorBuilder()).build(tokenStream);
+                ((BinaryOperatorBuilder) BUILDER_FACTORY.createOperatorBuilder())
+                        .build(tokenStream);
 
         if (buildOperatorResult.isSuccessful()) {
             BinaryExpression root = buildOperatorResult.result();
             root.setLeftChild(expressionLeftChild);
 
             Result<ExpressionNode> buildRightChildResult =
-                    ((ExpressionBuilder) builderFactory.createExpressionBuilder()).build(tokenStream);
+                    ((ExpressionBuilder) BUILDER_FACTORY.createExpressionBuilder())
+                            .build(tokenStream);
 
             if (!buildRightChildResult.isSuccessful()) {
                 return new IncorrectResult<>(buildOperatorResult.errorMessage());

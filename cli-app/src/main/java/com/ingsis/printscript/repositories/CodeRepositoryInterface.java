@@ -1,7 +1,9 @@
-package com.ingsis.printscript.repositories;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.repositories;
 
 import com.ingsis.printscript.peekableiterator.PeekableIterator;
 
-public interface CodeRepositoryInterface extends PeekableIterator<Character> {
-}
+public interface CodeRepositoryInterface extends PeekableIterator<Character> {}

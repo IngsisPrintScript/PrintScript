@@ -1,10 +1,14 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.separator;
 
-import com.ingsis.printscript.tokens.TokenInterface;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.tokens.factories.TokenFactory;
 
 public record SeparatorTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override
