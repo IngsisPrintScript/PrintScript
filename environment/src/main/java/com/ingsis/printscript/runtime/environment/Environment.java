@@ -11,10 +11,18 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Environment implements EnvironmentInterface {
+    private final EnvironmentInterface fatherEnvironment;
     private final Map<String, String> idTypeMap;
     private final Map<String, Object> idValueMap;
 
     public Environment() {
+        fatherEnvironment = new NilEnvironment();
+        idTypeMap = new ConcurrentHashMap<>();
+        idValueMap = new ConcurrentHashMap<>();
+    }
+
+    public Environment(EnvironmentInterface fatherEnvironment) {
+        this.fatherEnvironment = fatherEnvironment;
         idTypeMap = new ConcurrentHashMap<>();
         idValueMap = new ConcurrentHashMap<>();
     }
@@ -39,16 +47,16 @@ public class Environment implements EnvironmentInterface {
 
     @Override
     public Result<String> getIdType(String id) {
-        if (!variableIsDeclared(id)) {
-            return new IncorrectResult<>("Id has not been declared.");
+        if (!variableIsDeclaredHere(id)) {
+            return fatherEnvironment.getIdType(id);
         }
         return new CorrectResult<>(idTypeMap.get(id));
     }
 
     @Override
     public Result<Object> getIdValue(String id) {
-        if (!variableIsDeclared(id)) {
-            return new IncorrectResult<>("Id has not been declared.");
+        if (!variableIsDeclaredHere(id)) {
+            return fatherEnvironment.getIdValue(id);
         }
         if (!idValueMap.containsKey(id)) {
             return new IncorrectResult<>("Id has not been initialized.");
@@ -70,10 +78,10 @@ public class Environment implements EnvironmentInterface {
 
     @Override
     public Boolean variableIsDeclared(String id) {
-        return idTypeMap.containsKey(id);
+        return variableIsDeclaredHere(id) || fatherEnvironment.variableIsDeclared(id);
     }
 
-    public Boolean variableIsInitialized(String id) {
-        return idValueMap.containsKey(id);
+    private Boolean variableIsDeclaredHere(String id) {
+        return idTypeMap.containsKey(id);
     }
 }
