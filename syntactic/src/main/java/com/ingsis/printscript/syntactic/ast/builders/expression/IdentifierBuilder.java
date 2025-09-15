@@ -28,7 +28,7 @@ public class IdentifierBuilder extends ExpressionBuilder {
     }
 
     @Override
-    public Result<ExpressionNode> build(TokenStreamInterface tokenStream) {
+    public Result<IdentifierNode> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) {
             return new IncorrectResult<>("Cannot build identifier node.");
         }

@@ -27,7 +27,7 @@ public final class DeclareFunctionNode implements Node, SemanticallyCheckable, I
     public DeclareFunctionNode(IdentifierNode identifier, Collection<DeclareArgumentNode> arguments, Collection<InterpretableNode> body, TypeNode returnType) {
         this.identifier = identifier;
         this.arguments = Collections.unmodifiableCollection(arguments);
-        this.body = body;
+        this.body = Collections.unmodifiableCollection(body);
         this.returnType = returnType;
     }
 

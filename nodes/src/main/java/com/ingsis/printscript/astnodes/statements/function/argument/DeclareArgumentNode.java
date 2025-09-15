@@ -15,7 +15,7 @@ public final class DeclareArgumentNode implements Node {
     private final IdentifierNode identifier;
     private final TypeNode type;
 
-    public DeclareArgumentNode(IdentifierNode identifier, InterpretableNode body, TypeNode type) {
+    public DeclareArgumentNode(IdentifierNode identifier, TypeNode type) {
         this.identifier = identifier;
         this.type = type;
     }

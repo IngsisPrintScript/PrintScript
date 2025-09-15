@@ -42,7 +42,7 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result<ExpressionNode> build(TokenStreamInterface tokenStream) {
+    public Result<? extends ExpressionNode> build(TokenStreamInterface tokenStream) {
         try {
             for (Class<? extends ExpressionBuilder> expressionBuilderClass : EXPRESSION_BUILDERS) {
                 ExpressionBuilder builder =

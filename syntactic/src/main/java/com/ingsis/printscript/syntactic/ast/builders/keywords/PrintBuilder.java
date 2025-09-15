@@ -55,7 +55,7 @@ public final class PrintBuilder extends KeywordBuilder {
             return new IncorrectResult<>(consumeResult.errorMessage());
         }
 
-        Result<ExpressionNode> buildExpressionResult =
+        Result<? extends ExpressionNode> buildExpressionResult =
                 ((ExpressionBuilder) BUILDER_FACTORY.createExpressionBuilder()).build(tokenStream);
         if (!buildExpressionResult.isSuccessful()) {
             return buildExpressionResult;
