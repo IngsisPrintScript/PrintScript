@@ -53,6 +53,7 @@ public class GreaterThanNode extends BinaryExpression {
 
     @Override
     public Result<String> accept(VisitorInterface visitor) {
-        return visitor.visit(this);
+        return null;
+        //return visitor.visit(this);
     }
 }

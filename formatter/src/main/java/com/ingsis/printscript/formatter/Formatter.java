@@ -25,8 +25,8 @@ import java.util.Iterator;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(name = "com/ingsis/printscript/formatter", mixinStandardHelpOptions = true, version = "1.0")
-public class Formatter implements FormatterInterface, Callable<Result<String>>{
-    private final ReadRules readRules = new ReadRules();
+public class Formatter implements FormatterInterface, Callable<Result<Path>>{
+    private ReadRules readRules;
 
     public static void main(String[] args) throws Exception {
         int exitCode = new CommandLine(new Formatter()).execute(args);
@@ -39,25 +39,33 @@ public class Formatter implements FormatterInterface, Callable<Result<String>>{
 
     @Override
     public Result<String> format(Node root) {
+        if (readRules == null) {
+            readRules = (inputFile != null) ? new ReadRules(inputFile) : new ReadRules();
+        }
         HashMap<String, Object> rulesToFormat = readRules.readRules();
         return root.accept(new FormatterVisitor(new SeparationFormatter(rulesToFormat)));
     }
 
 
     @Override
-    public Result<String> call() throws Exception {
+    public Result<Path> call() throws Exception {
         File txt = inputFile.toFile();
         CodeRepository repo = new CodeRepository(inputFile);
         Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
         Iterator<SemanticallyCheckable> checkableNodesIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
         Iterator<InterpretableNode> interpretableNodesIterator = new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
         StringBuilder sb = new StringBuilder();
-        if(txt.length() == 0) return new CorrectResult<>("The file is empty.");
+        if(txt.length() == 0) {
+            return new CorrectResult<>(inputFile);
+        }
         while(interpretableNodesIterator.hasNext()) {
             Result<String> formatted = format((Node) interpretableNodesIterator.next());
             sb.append(formatted.result());
         }
         Files.writeString(inputFile, sb.toString());
-        return new CorrectResult<>(sb.toString());
+        return new CorrectResult<>(inputFile);
+    }
+    public void setInputFile(Path configFile) {
+        this.inputFile = configFile;
     }
 }

@@ -34,17 +34,20 @@ public class IfStatementNode implements Node, SemanticallyCheckable, Interpretab
 
     @Override
     public Result<String> acceptCheck(RuleVisitor checker) {
-        return checker.check(this);
+        return null;
+        //return checker.check(this);
     }
 
     @Override
     public Result<String> accept(VisitorInterface visitor) {
-        return visitor.visit(this);
+        return null;
+        //return visitor.visit(this);
     }
 
     @Override
     public Result<String> acceptInterpreter(InterpretVisitor interpreter) {
-        return interpreter.interpret(this);
+        return null;
+       // return interpreter.interpret(this);
     }
     public Boolean hasCondition() {
         return !condition.isNil();
