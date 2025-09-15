@@ -13,7 +13,6 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -22,7 +21,7 @@ import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.semantic.rules.operations.OperationFormatSemanticRule;
 import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
-
+import com.ingsis.printscript.visitor.InterpretableNode;
 import java.util.Collection;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {

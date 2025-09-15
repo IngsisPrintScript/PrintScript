@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.astnodes.visitor;
+package com.ingsis.printscript.visitor;
 
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;

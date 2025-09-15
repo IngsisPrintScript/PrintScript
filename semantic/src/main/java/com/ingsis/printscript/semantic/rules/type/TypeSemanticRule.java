@@ -31,7 +31,8 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
     public Result<String> checkRules(Node nodeToCheck) {
         if (!(nodeToCheck instanceof LiteralNode)) {
             if (nodeToCheck instanceof IdentifierNode(String name)) {
-                Result<String> getTypeResult = Runtime.getInstance().currentEnv().getVariableType(name);
+                Result<String> getTypeResult =
+                        Runtime.getInstance().currentEnv().getVariableType(name);
                 if (!getTypeResult.isSuccessful()) return getTypeResult;
                 String type = getTypeResult.result();
                 if (type.equals(expectedType)) {

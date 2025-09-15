@@ -5,11 +5,10 @@
 package com.ingsis.printscript.runtime.environment;
 
 import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.entries.FunctionEntry;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
-
+import com.ingsis.printscript.visitor.InterpretableNode;
 import java.util.Collection;
 
 public interface EnvironmentInterface {

@@ -5,8 +5,6 @@
 package com.ingsis.printscript.formatter;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.formatter.FormatterRules.SeparationFormatter;
 import com.ingsis.printscript.formatter.yamlAnalizer.ReadRules;
 import com.ingsis.printscript.lexer.Lexical;
@@ -19,6 +17,8 @@ import com.ingsis.printscript.syntactic.Syntactic;
 import com.ingsis.printscript.syntactic.ast.builders.cor.NodeBuilderChain;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;

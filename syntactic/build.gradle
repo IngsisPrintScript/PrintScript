@@ -4,7 +4,6 @@ plugins {
 
 dependencies {
     implementation project(':common')
-    implementation project(':environment')
     implementation project(':lexer')
     implementation project(':tokens')
     implementation project(':nodes')

@@ -5,13 +5,13 @@
 package com.ingsis.printscript.runtime.environment;
 
 import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.entries.FunctionEntry;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
-
+import com.ingsis.printscript.visitor.InterpretableNode;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +27,7 @@ public class Environment implements EnvironmentInterface {
         functionsMap = new ConcurrentHashMap<>();
     }
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public Environment(EnvironmentInterface fatherEnvironment) {
         this.fatherEnvironment = fatherEnvironment;
         variablesMap = new ConcurrentHashMap<>();
@@ -57,7 +58,7 @@ public class Environment implements EnvironmentInterface {
             return new IncorrectResult<>("Variable " + identifier + " is not declared.");
         }
         VariableEntry entry = variablesMap.get(identifier);
-        VariableEntry newEntry = new VariableEntry(entry.type(), new Object());
+        VariableEntry newEntry = new VariableEntry(entry.type(), value);
         variablesMap.put(identifier, newEntry);
         return new CorrectResult<>(newEntry);
     }

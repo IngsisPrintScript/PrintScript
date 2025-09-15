@@ -4,8 +4,6 @@
 
 package com.ingsis.printscript.cliapp;
 
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.interpreter.Interpreter;
 import com.ingsis.printscript.interpreter.InterpreterInterface;
 import com.ingsis.printscript.interpreter.visitor.InterpretVisitor;
@@ -20,6 +18,8 @@ import com.ingsis.printscript.syntactic.Syntactic;
 import com.ingsis.printscript.syntactic.ast.builders.cor.NodeBuilderChain;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

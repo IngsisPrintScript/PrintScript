@@ -11,11 +11,11 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.RuleVisitor;
 import java.util.Collection;
 import java.util.List;
 
