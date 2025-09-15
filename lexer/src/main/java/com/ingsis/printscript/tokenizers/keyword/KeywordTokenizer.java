@@ -1,14 +1,19 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.keyword;
 
-import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
-
+import com.ingsis.printscript.tokens.TokenInterface;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 public class KeywordTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final List<Class<? extends KeywordTokenizer>> subclasses = List.of(LetKeywordTokenizer.class, PrintlnKeywordTokenizer.class);
+    private final List<Class<? extends KeywordTokenizer>> subclasses =
+            List.of(LetKeywordTokenizer.class, PrintlnKeywordTokenizer.class);
 
     public KeywordTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
@@ -17,13 +22,16 @@ public class KeywordTokenizer implements TokenizerInterface {
     @Override
     public Boolean canTokenize(String input) {
         for (Class<? extends KeywordTokenizer> subclass : subclasses) {
-            try{
-                TokenizerInterface subclassTokenizer = subclass.getDeclaredConstructor().newInstance();
+            try {
+                TokenizerInterface subclassTokenizer =
+                        subclass.getDeclaredConstructor().newInstance();
                 if (subclassTokenizer.canTokenize(input)) {
                     return true;
                 }
-            } catch (Exception e){
-                continue;
+            } catch (NoSuchMethodException
+                    | InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException ignored) {
             }
         }
         return false;
@@ -32,14 +40,18 @@ public class KeywordTokenizer implements TokenizerInterface {
     @Override
     public Result<TokenInterface> tokenize(String input) {
         for (Class<? extends KeywordTokenizer> subclass : subclasses) {
-            try{
-                TokenizerInterface subclassTokenizer = subclass.getDeclaredConstructor().newInstance();
+            try {
+                TokenizerInterface subclassTokenizer =
+                        subclass.getDeclaredConstructor().newInstance();
                 if (subclassTokenizer.canTokenize(input)) {
                     return subclassTokenizer.tokenize(input);
                 }
-            } catch (Exception e){
-                continue;
+            } catch (NoSuchMethodException
+                    | InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException ignored) {
             }
         }
         return nextTokenizer.tokenize(input);
-    }}
+    }
+}

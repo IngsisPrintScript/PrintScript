@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic.rules.variables;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.rules.variables;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
@@ -12,10 +15,11 @@ import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 
 public record DeclaredVariableSemanticRule() implements SemanticRule {
-    private static final Node template = new NodeFactory().createIdentifierNode("placeholder");
+    private static final Node TEMPLATE = new NodeFactory().createIdentifierNode("placeholder");
+
     @Override
     public boolean match(Node node) {
-        return node.equals(template);
+        return node.equals(TEMPLATE);
     }
 
     @Override
@@ -24,7 +28,7 @@ public record DeclaredVariableSemanticRule() implements SemanticRule {
             return new IncorrectResult<>("This rule does not apply to the received node");
         }
         EnvironmentInterface environment = Environment.getInstance();
-        if (environment.variableIsDeclared(name)){
+        if (environment.variableIsDeclared(name)) {
             return new CorrectResult<String>("Variable has already been declared.");
         } else {
             return new IncorrectResult<>("Variable has not been declared.");

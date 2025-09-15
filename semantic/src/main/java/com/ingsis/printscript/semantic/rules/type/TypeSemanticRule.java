@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic.rules.type;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.rules.type;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
@@ -11,8 +14,9 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 
-public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterface typeGetter) implements SemanticRule {
-    private static final Node template = new NodeFactory().createTypeNode("placeholder");
+public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterface typeGetter)
+        implements SemanticRule {
+    private static final Node TEMPLATE = new NodeFactory().createTypeNode("placeholder");
 
     public TypeSemanticRule(String expectedType) {
         this(expectedType, new ExpressionTypeGetter());
@@ -20,7 +24,7 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
 
     @Override
     public boolean match(Node node) {
-        return node.equals(template);
+        return node.equals(TEMPLATE);
     }
 
     @Override
@@ -38,7 +42,7 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
             }
             return new IncorrectResult<>("This rule does not apply to the received type of node");
         }
-        if (expectedType.equals(typeGetter.getType(nodeToCheck))){
+        if (expectedType.equals(typeGetter.getType(nodeToCheck))) {
             return new CorrectResult<String>("Type is equal to the expected type");
         } else {
             return new IncorrectResult<>("Type is not equal to the expected type");
