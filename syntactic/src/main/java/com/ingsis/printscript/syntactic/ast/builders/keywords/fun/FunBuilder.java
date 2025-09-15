@@ -81,11 +81,12 @@ public final class FunBuilder extends KeywordBuilder {
         }
         IdentifierNode functionIdentifierNode = buildfunctionIdentifierResult.result();
 
-        Result<Collection<DeclarationArgumentNode>> getArguments = getArgumentsSection(tokenStream);
-        if (!getArguments.isSuccessful()) {
-            return new IncorrectResult<>(getArguments.errorMessage());
+        Result<Collection<DeclarationArgumentNode>> consumeArgumentsSection =
+                consumeArgumentsSection(tokenStream);
+        if (!consumeArgumentsSection.isSuccessful()) {
+            return new IncorrectResult<>(consumeArgumentsSection.errorMessage());
         }
-        Collection<DeclarationArgumentNode> arguments = getArguments.result();
+        Collection<DeclarationArgumentNode> arguments = consumeArgumentsSection.result();
 
         if (!tokenStream.consume(ASCRIPTION_TOKEN_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This stream is not a function declaration.");
@@ -97,6 +98,19 @@ public final class FunBuilder extends KeywordBuilder {
         }
         TypeNode returnTypeNode = buildTypeResult.result();
 
+        Result<Collection<InterpretableNode>> consumeBodyResult = consumeBodySection(tokenStream);
+        if (!consumeBodyResult.isSuccessful()) {
+            return new IncorrectResult<>(consumeBodyResult.errorMessage());
+        }
+        Collection<InterpretableNode> body = consumeBodyResult.result();
+
+        DeclareFunctionNode node =
+                new DeclareFunctionNode(functionIdentifierNode, arguments, body, returnTypeNode);
+        return new CorrectResult<>(node);
+    }
+
+    private Result<Collection<InterpretableNode>> consumeBodySection(
+            TokenStreamInterface tokenStream) {
         if (!tokenStream.consume(LEFT_BRACE_TOKEN_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This stream is not a function declaration.");
         }
@@ -110,13 +124,10 @@ public final class FunBuilder extends KeywordBuilder {
         if (!tokenStream.consume(RIGHT_BRACE_TOKEN_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This stream is not a function declaration.");
         }
-
-        DeclareFunctionNode node =
-                new DeclareFunctionNode(functionIdentifierNode, arguments, body, returnTypeNode);
-        return new CorrectResult<>(node);
+        return new CorrectResult<Collection<InterpretableNode>>(body);
     }
 
-    private Result<Collection<DeclarationArgumentNode>> getArgumentsSection(
+    private Result<Collection<DeclarationArgumentNode>> consumeArgumentsSection(
             TokenStreamInterface tokenStream) {
         if (!tokenStream.consume(LEFT_PARENTHESIS_TOKEN_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This stream is not a function declaration.");
