@@ -63,6 +63,10 @@ public final class LetBuilder extends KeywordBuilder {
             letNode.setExpression(expressionNode);
         }
 
+        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()) {
+            return new IncorrectResult<>("Did not have an End Of Line character.");
+        }
+
         return new CorrectResult<>(letNode);
     }
 }

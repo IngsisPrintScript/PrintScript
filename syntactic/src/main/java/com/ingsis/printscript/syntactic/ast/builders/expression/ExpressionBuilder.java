@@ -9,6 +9,8 @@ import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 import java.util.List;
 
@@ -48,7 +50,11 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
                 ExpressionBuilder builder =
                         expressionBuilderClass.getDeclaredConstructor().newInstance();
                 if (builder.canBuild(tokenStream)) {
-                    return builder.build(tokenStream);
+                    Result<? extends ExpressionNode> builderResult = builder.build(tokenStream);
+                    if (peekIsEOL(tokenStream)) {
+                        tokenStream.consume();
+                    }
+                    return builderResult;
                 }
             }
         } catch (RuntimeException exception) {
@@ -57,5 +63,13 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
             return new IncorrectResult<>(exception.getMessage());
         }
         return new IncorrectResult<>("That was not a valid expression.");
+    }
+
+    private boolean peekIsEOL(TokenStreamInterface tokenStream) {
+        Result<TokenInterface>  tokenResult = tokenStream.consume();
+        if (tokenResult.isSuccessful()) {
+            return false;
+        }
+        return tokenResult.result().equals(new TokenFactory().createEndOfLineToken());
     }
 }
