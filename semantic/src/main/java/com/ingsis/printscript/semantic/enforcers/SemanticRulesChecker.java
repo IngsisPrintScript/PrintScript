@@ -10,6 +10,7 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
+import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.CorrectResult;
@@ -56,6 +57,11 @@ public class SemanticRulesChecker implements RuleVisitor {
 
     @Override
     public Result<String> check(CallFunctionNode node) {
+        return checkNode(node, RuleVisitor::check);
+    }
+
+    @Override
+    public Result<String> check(DeclareFunctionNode node) {
         return checkNode(node, RuleVisitor::check);
     }
 

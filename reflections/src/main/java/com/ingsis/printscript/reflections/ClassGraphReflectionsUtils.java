@@ -76,6 +76,13 @@ public class ClassGraphReflectionsUtils implements ReflectionsUtilsInterface {
                                 ? scanResult.getClassesImplementing(targetClass.getName())
                                 : scanResult.getSubclasses(targetClass.getName());
 
+                // ✅ Keep only *immediate* subclasses (direct children)
+                classInfoList = classInfoList.filter(
+                        classInfo ->
+                                classInfo.getSuperclass() != null &&
+                                        classInfo.getSuperclass().getName().equals(targetClass.getName())
+                );
+
                 if (!includeAbstract) {
                     classInfoList = classInfoList.filter(classInfo -> !classInfo.isAbstract());
                 }

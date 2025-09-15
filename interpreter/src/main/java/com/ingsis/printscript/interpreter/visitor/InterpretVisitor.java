@@ -10,8 +10,9 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
+import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
-import com.ingsis.printscript.environment.Environment;
+import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -35,7 +36,7 @@ public class InterpretVisitor implements InterpretVisitorInterface {
         }
         IdentifierNode identifier = getIdentifier.result();
         TypeNode type = getType.result();
-        Environment.getInstance().putIdType(identifier.name(), type.type());
+        Runtime.getInstance().currentEnv().putIdType(identifier.name(), type.type());
         Result<ExpressionNode> getExpression = statement.expression();
         if (!getExpression.isSuccessful()) {
             return new CorrectResult<>(
@@ -51,7 +52,7 @@ public class InterpretVisitor implements InterpretVisitorInterface {
             return new IncorrectResult<>(evaluateExpression.errorMessage());
         }
         Object result = evaluateExpression.result();
-        Environment.getInstance().putIdValue(identifier.name(), result);
+        Runtime.getInstance().currentEnv().putIdValue(identifier.name(), result);
         return new CorrectResult<>(
                 "Variable "
                         + identifier.name()
@@ -85,5 +86,10 @@ public class InterpretVisitor implements InterpretVisitorInterface {
             return new IncorrectResult<>(evaluateExpression.errorMessage());
         }
         return new CorrectResult<>("Expression evaluated successfully.");
+    }
+
+    @Override
+    public Result<String> interpret(DeclareFunctionNode statement) {
+        return new IncorrectResult<>("Not implemented yet.");
     }
 }

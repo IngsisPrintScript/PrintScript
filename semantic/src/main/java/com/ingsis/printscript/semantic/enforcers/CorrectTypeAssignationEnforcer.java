@@ -12,7 +12,9 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.environment.Environment;
+import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -46,12 +48,9 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
 
         Result<ExpressionNode> getExpressionNodeResult = node.expression();
         if (!getExpressionNodeResult.isSuccessful()) {
-            return new IncorrectResult<>(getExpressionNodeResult.errorMessage());
+            return new CorrectResult<>("Declaration does not have to check type.");
         }
         ExpressionNode expressionNode = getExpressionNodeResult.result();
-        if (expressionNode instanceof BinaryExpression binaryExpression) {
-            return check(binaryExpression);
-        }
 
         return expressionNode.acceptCheck(this);
     }
@@ -68,6 +67,11 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     }
 
     @Override
+    public Result<String> check(DeclareFunctionNode node) {
+        return new IncorrectResult<>("Not implemented yet");
+    }
+
+        @Override
     public Result<String> check(BinaryExpression node) {
         if (typeRule == null) {
             typeRule = new TypeSemanticRule(expressionTypeGetter.getType(node));
@@ -89,7 +93,7 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
 
     @Override
     public Result<String> check(IdentifierNode node) {
-        typeRule = new TypeSemanticRule(Environment.getInstance().getIdType(node.name()).result());
+        typeRule = new TypeSemanticRule(Runtime.getInstance().currentEnv().getIdType(node.name()).result());
         return typeRule.checkRules(node);
     }
 

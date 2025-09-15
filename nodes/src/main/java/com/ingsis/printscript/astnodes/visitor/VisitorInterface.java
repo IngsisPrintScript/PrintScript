@@ -15,6 +15,7 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
+import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.results.Result;
 
 public interface VisitorInterface {
@@ -35,6 +36,8 @@ public interface VisitorInterface {
     Result<String> visit(TypeNode node);
 
     Result<String> visit(CallArgumentNode node);
+
+    Result<String> visit(DeclareFunctionNode node);
 
     Result<String> visit(CallFunctionNode node);
 

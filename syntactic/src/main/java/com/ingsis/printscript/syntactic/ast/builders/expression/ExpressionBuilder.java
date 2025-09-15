@@ -66,8 +66,8 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
     }
 
     private boolean peekIsEOL(TokenStreamInterface tokenStream) {
-        Result<TokenInterface>  tokenResult = tokenStream.consume();
-        if (tokenResult.isSuccessful()) {
+        Result<TokenInterface>  tokenResult = tokenStream.peek();
+        if (!tokenResult.isSuccessful()) {
             return false;
         }
         return tokenResult.result().equals(new TokenFactory().createEndOfLineToken());
