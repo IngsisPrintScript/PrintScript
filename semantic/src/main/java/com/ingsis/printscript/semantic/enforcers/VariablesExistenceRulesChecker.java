@@ -8,24 +8,24 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.entries.VariableEntry;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
 
 public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
-    private final SemanticRule notDeclaredVariableSemanticRuleChecker =
-            new NotDeclaredVariableSemanticRule();
-    private final SemanticRule declaredVariableSemanticRuleChecker =
-            new DeclaredVariableSemanticRule();
     private SemanticRule variableSemanticRuleChecker;
+
+    public VariablesExistenceRulesChecker() {}
 
     @Override
     public Result<String> check(LetStatementNode node) {
@@ -51,7 +51,9 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
         }
         TypeNode type = getTypeNodeResult.result();
 
-        Environment.getInstance().putIdType(identifier.name(), type.type());
+        Runtime.getInstance()
+                .currentEnv()
+                .putVariable(identifier.name(), new VariableEntry(type.type()));
 
         Result<ExpressionNode> getExpressionResult = node.expression();
         if (!getExpressionResult.isSuccessful()) {
@@ -93,6 +95,11 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
             return checkRulesForRightChild;
         }
 
+        return new CorrectResult<>("The node passes this check.");
+    }
+
+    @Override
+    public Result<String> check(CallFunctionNode node) {
         return new CorrectResult<>("The node passes this check.");
     }
 
