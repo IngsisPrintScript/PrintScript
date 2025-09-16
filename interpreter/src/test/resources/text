@@ -1,0 +1,6 @@
+let name :String = "a";
+let file :String = "b";
+
+println( "a" );
+println( name );
+println(name+file);

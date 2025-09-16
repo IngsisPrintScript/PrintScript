@@ -90,5 +90,4 @@ public class SemanticRulesChecker implements RuleVisitor {
         }
         return new CorrectResult<String>("AST passed all semantic rules.");
     }
-
 }

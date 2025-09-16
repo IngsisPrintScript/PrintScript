@@ -1,6 +1,7 @@
 package com.ingsis.printscript.formatter;
 
 import com.ingsis.printscript.astnodes.Node;
+import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.semantic.SemanticAnalyzer;
 import com.ingsis.printscript.semantic.enforcers.SemanticRulesChecker;
 import com.ingsis.printscript.tokens.TokenInterface;
@@ -39,6 +40,7 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>>{
     @CommandLine.Option(names = {"-r", "--rules"}, description = "Optional YAML file with formatting rules")
     private Path rulesFile;
 
+    //deberia escribirse asi en cosnola: java -jar formatter.jar input.ps --rules rules.yml
     @Override
     public Result<String> format(Node root) {
         if (readRules == null) {
@@ -58,7 +60,7 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>>{
         Iterator<InterpretableNode> interpretableNodesIterator = new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
         StringBuilder sb = new StringBuilder();
         if(txt.length() == 0) {
-            return new CorrectResult<>(inputFile);
+            return new IncorrectResult<>("No text to format");
         }
         while(interpretableNodesIterator.hasNext()) {
             Result<String> formatted = format(interpretableNodesIterator.next());

@@ -22,4 +22,7 @@ public final class AnalyzerRunner {
     }
     return out;
   }
+  public List<Rule> getRules() {
+    return rules;
+  }
 }

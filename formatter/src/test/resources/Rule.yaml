@@ -2,4 +2,4 @@ ColonSpacingAfter: true
 ColonSpacingBefore: true
 SpaceAfterAssignation: true
 SpaceBeforeAssignation: true
-JumpsBeforePrint: 2
+JumpsBeforePrint: 1

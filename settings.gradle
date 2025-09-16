@@ -21,3 +21,5 @@ include 'cli-app'
 include 'peekable-iterator'
 include 'semantic'
 include 'syntactic'
+
+include 'repositories'

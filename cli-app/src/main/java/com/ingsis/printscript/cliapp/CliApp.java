@@ -77,7 +77,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
         System.out.println("Welcome to the PrintScript CLI.\n"
                 + "Write your code below. Each line will be added to the buffer.\n"
                 + "Type 'exit' to close this CLI.");
-        Result<String> result = this.execute();
+        Result<String> result = new CliApp().execute();
         if (!result.isSuccessful()) {
             System.out.println("Error: " + result.errorMessage());
             return 1;

@@ -39,7 +39,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         } else if (leftChild instanceof IdentifierNode identifierLeftNode) {
             expectedType = typeGetter.getType(identifierLeftNode);
         } else {
-            Result<String> checkResult = new OperationFormatSemanticRule().checkRules(nodeToCheck);
+            Result<String> checkResult = new OperationFormatSemanticRule().checkRules(leftChild);
             if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
@@ -60,7 +60,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
                 return new IncorrectResult<>("This node does not pass the check.");
             }
         } else {
-            Result<String> checkResult = new OperationFormatSemanticRule().checkRules(nodeToCheck);
+            Result<String> checkResult = new OperationFormatSemanticRule().checkRules(rightChild);
             if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }

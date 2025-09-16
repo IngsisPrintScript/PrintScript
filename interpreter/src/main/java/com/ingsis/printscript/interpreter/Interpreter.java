@@ -12,7 +12,7 @@ public record Interpreter(
         Iterator<InterpretableNode> interpretableNodeIterator
 ) implements InterpreterInterface {
     @Override
-    public Result<String> interpreter() {
+    public Result<String> interpreter()  {
         Result<String> interpretResult = null;
         while (interpretableNodeIterator.hasNext()) {
             InterpretableNode tree = interpretableNodeIterator.next();
@@ -22,7 +22,7 @@ public record Interpreter(
             }
         }
         if (interpretResult == null) {
-            return new  IncorrectResult<>("That's not a valid PrintScript line.");
+            return new IncorrectResult<>("That's not a valid PrintScript line.");
         }
         return interpretResult;
     }

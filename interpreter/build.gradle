@@ -17,6 +17,13 @@ dependencies {
     implementation project(":nodes")
     implementation project(':environment')
     implementation project(':syntactic')
+    implementation project(":tokens")
+    implementation project(":nodes")
+    implementation project(":lexer")
+    implementation project(":semantic")
+    implementation project(':peekable-iterator')
+
+
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
@@ -26,4 +33,3 @@ dependencies {
 test {
     useJUnitPlatform()
 }
-
