@@ -1,23 +1,52 @@
-package com.ingsis.printscript.semantic;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic;
 
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
-
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public record SemanticAnalyzer(
         RuleVisitor rulesEnforcer,
         Iterator<SemanticallyCheckable> checkableNodesIterator,
-        Deque<InterpretableNode> checkableNodesBuffer
-) implements SemanticInterface {
+        Deque<InterpretableNode> checkableNodesBuffer)
+        implements SemanticInterface {
 
-    public SemanticAnalyzer(RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator){
+    public SemanticAnalyzer {
+        List<SemanticallyCheckable> copyList = new ArrayList<>();
+        while (checkableNodesIterator.hasNext()) {
+            copyList.add(checkableNodesIterator.next());
+        }
+        checkableNodesIterator = copyList.iterator();
+
+        checkableNodesBuffer = new ArrayDeque<>(checkableNodesBuffer);
+    }
+
+    public SemanticAnalyzer(
+            RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator) {
         this(rulesEnforcer, checkableNodesIterator, new ArrayDeque<>());
+    }
+
+    @Override
+    public Iterator<SemanticallyCheckable> checkableNodesIterator() {
+        List<SemanticallyCheckable> copyList = new ArrayList<>();
+        while (checkableNodesIterator.hasNext()) {
+            copyList.add(checkableNodesIterator.next());
+        }
+        return copyList.iterator();
+    }
+
+    @Override
+    public Deque<InterpretableNode> checkableNodesBuffer() {
+        return new ArrayDeque<>(checkableNodesBuffer);
     }
 
     @Override
@@ -53,8 +82,8 @@ public record SemanticAnalyzer(
         return checkableNodesBuffer.peekFirst();
     }
 
-    private InterpretableNode computeNext(){
-        while (checkableNodesIterator().hasNext()){
+    private InterpretableNode computeNext() {
+        while (checkableNodesIterator.hasNext()) {
             SemanticallyCheckable checkable = checkableNodesIterator.next();
             if (this.isSemanticallyValid(checkable)) {
                 return (InterpretableNode) checkable;

@@ -1,12 +1,14 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.lexer;
 
-
 import com.ingsis.printscript.peekableiterator.PeekableIterator;
-import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
-
+import com.ingsis.printscript.tokens.TokenInterface;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
@@ -55,7 +57,7 @@ public class Lexical implements LexicalInterface {
         return tokenBuffer.peek();
     }
 
-    private TokenInterface computeNext(){
+    private TokenInterface computeNext() {
         StringBuilder builder = new StringBuilder();
         TokenInterface candidateToken = null;
         while (characterIterator.hasNext()) {
