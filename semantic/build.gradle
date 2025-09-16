@@ -10,7 +10,6 @@ dependencies {
     implementation project(":nodes")
     implementation project(":lexer")
     implementation project(':peekable-iterator')
-    implementation project(':reflections')
     compileOnly "com.github.spotbugs:spotbugs-annotations:4.8.6"
 
 
