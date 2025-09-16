@@ -32,10 +32,11 @@ import picocli.CommandLine;
 import picocli.CommandLine.Command;
 
 @Command(
-        name = "cliApp",
+        name = "printscript",
         mixinStandardHelpOptions = true,
-        version = "cliApp 0",
-        description = "Runs a CLI interpreter for printScript")
+        version = "printscript 0",
+        description = "Runs a CLI for PrintScript",
+        subcommands = {LintCommand.class})
 public class CliApp implements CliAppInterface, Callable<Integer> {
     private final BufferedReader reader =
             new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8));
@@ -82,8 +83,8 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         System.out.println(
-                "Welcome to the PrintScript CLI.\n"
-                        + "Write your code below. Each line will be added to the buffer.\n"
+                "Welcome to the PrintScript CLI. Use subcommands like 'lint'.\n"
+                        + "For REPL, write your code below. Each line will be added to the buffer.\n"
                         + "Type 'exit' to close this CLI.");
         Result<String> result = new CliApp().execute();
         if (!result.isSuccessful()) {
