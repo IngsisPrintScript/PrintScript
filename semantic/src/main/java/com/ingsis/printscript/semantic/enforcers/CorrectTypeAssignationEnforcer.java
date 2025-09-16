@@ -90,16 +90,17 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
     public Result<String> check(CallFunctionNode node) {
         IdentifierNode identifierNode = node.identifier();
         String identifier = identifierNode.name();
-        Result<PSFunction> getFunctionResult = Runtime.getInstance().currentEnv().getFunction(identifier);
+        Result<PSFunction> getFunctionResult =
+                Runtime.getInstance().currentEnv().getFunction(identifier);
         if (!getFunctionResult.isSuccessful()) {
             return new IncorrectResult<>(getFunctionResult.errorMessage());
         }
         if (typeRule == null) {
-            return new CorrectResult<>("Declaration does not have to check type if typeRule is null.");
+            return new CorrectResult<>(
+                    "Declaration does not have to check type if typeRule is null.");
         }
         return typeRule.checkRules(node);
     }
-
 
     @Override
     public Result<String> check(IdentifierNode node) {

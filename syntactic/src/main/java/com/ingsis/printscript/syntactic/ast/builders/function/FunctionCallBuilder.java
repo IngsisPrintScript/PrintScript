@@ -1,5 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.ast.builders.function;
 
+import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
@@ -15,7 +20,6 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
-
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -58,7 +62,7 @@ public final class FunctionCallBuilder implements ASTreeBuilderInterface {
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
         Result<TokenInterface> peekResult = tokenStream.peek();
-        if (!peekResult.isSuccessful()){
+        if (!peekResult.isSuccessful()) {
             return false;
         }
         TokenInterface token = peekResult.result();
@@ -66,37 +70,37 @@ public final class FunctionCallBuilder implements ASTreeBuilderInterface {
     }
 
     @Override
-    public Result<CallFunctionNode> build(TokenStreamInterface tokenStream) {
-        if (!canBuild(tokenStream)){
-            return new IncorrectResult<>("This is not a function call stream.");
+    public Result<? extends Node> build(TokenStreamInterface tokenStream) {
+        if (!canBuild(tokenStream)) {
+            return NEXT_BUILDER.build(tokenStream);
         }
         Result<IdentifierNode> identifierBuildResult = IDENTIFIER_BUILDER.build(tokenStream);
-        if (!identifierBuildResult.isSuccessful()){
+        if (!identifierBuildResult.isSuccessful()) {
             return new IncorrectResult<>(identifierBuildResult.errorMessage());
         }
         IdentifierNode identifierNode = identifierBuildResult.result();
 
-        if (!tokenStream.consume(LEFT_PARENTHESIS_TEMPLATE).isSuccessful()){
+        if (!tokenStream.consume(LEFT_PARENTHESIS_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This is not a function call stream.");
         }
         Collection<CallArgumentNode> argumentNodes = new ArrayList<>();
-        while (peekIsNotRightParenthesis(tokenStream)){
-            Result<CallArgumentNode> argumentBuildResult  = ARGUMENT_CALL_BUILDER.build(tokenStream);
-            if (!argumentBuildResult.isSuccessful()){
+        while (peekIsNotRightParenthesis(tokenStream)) {
+            Result<CallArgumentNode> argumentBuildResult = ARGUMENT_CALL_BUILDER.build(tokenStream);
+            if (!argumentBuildResult.isSuccessful()) {
                 return new IncorrectResult<>(argumentBuildResult.errorMessage());
             }
             CallArgumentNode callArgumentNode = argumentBuildResult.result();
             argumentNodes.add(callArgumentNode);
-            if (peekIsComma(tokenStream)){
+            if (peekIsComma(tokenStream)) {
                 tokenStream.consume();
             }
         }
 
-        if (!tokenStream.consume(RIGHT_PARENTHESIS_TEMPLATE).isSuccessful()){
+        if (!tokenStream.consume(RIGHT_PARENTHESIS_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This is not a function call stream.");
         }
 
-        if (!tokenStream.consume(EOL_TEMPLATE).isSuccessful()){
+        if (!tokenStream.consume(EOL_TEMPLATE).isSuccessful()) {
             return new IncorrectResult<>("This is not a function call stream.");
         }
 
@@ -105,7 +109,7 @@ public final class FunctionCallBuilder implements ASTreeBuilderInterface {
 
     private Boolean peekIsNotRightParenthesis(TokenStreamInterface tokenStream) {
         Result<TokenInterface> peekResult = tokenStream.peek();
-        if (!peekResult.isSuccessful()){
+        if (!peekResult.isSuccessful()) {
             return false;
         }
         TokenInterface token = peekResult.result();
@@ -114,7 +118,7 @@ public final class FunctionCallBuilder implements ASTreeBuilderInterface {
 
     private Boolean peekIsComma(TokenStreamInterface tokenStream) {
         Result<TokenInterface> peekResult = tokenStream.peek();
-        if (!peekResult.isSuccessful()){
+        if (!peekResult.isSuccessful()) {
             return false;
         }
         TokenInterface token = peekResult.result();
