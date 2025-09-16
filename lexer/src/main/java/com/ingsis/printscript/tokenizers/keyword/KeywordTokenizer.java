@@ -4,19 +4,25 @@
 
 package com.ingsis.printscript.tokenizers.keyword;
 
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Collection;
 
 public class KeywordTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final List<Class<? extends KeywordTokenizer>> subclasses =
-            List.of(LetKeywordTokenizer.class, PrintlnKeywordTokenizer.class);
+    private final Collection<Class<? extends KeywordTokenizer>> subclasses =
+            new ClassGraphReflectionsUtils().findSubclassesOf(KeywordTokenizer.class).find();
 
     public KeywordTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
+    }
+
+    public KeywordTokenizer() {
+        this(new FinalTokenizer());
     }
 
     @Override

@@ -9,14 +9,14 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
-import com.ingsis.printscript.environment.Environment;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
 
 public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
     @Override
     public String getType(Node node) {
         if (node instanceof IdentifierNode(String name)) {
-            Result<String> getIdType = Environment.getInstance().getIdType(name);
+            Result<String> getIdType = Runtime.getInstance().currentEnv().getVariableType(name);
             if (!getIdType.isSuccessful()) return "UnknownType";
             return getIdType.result();
         }

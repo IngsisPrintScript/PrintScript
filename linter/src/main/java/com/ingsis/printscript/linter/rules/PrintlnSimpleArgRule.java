@@ -6,16 +6,18 @@ package com.ingsis.printscript.linter.rules;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
 import com.ingsis.printscript.linter.api.Rule;
 import com.ingsis.printscript.linter.api.Violation;
 import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.RuleVisitor;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +86,11 @@ public final class PrintlnSimpleArgRule implements Rule, RuleVisitor {
     @Override
     public Result<String> check(LiteralNode node) {
         return new CorrectResult<>("");
+    }
+
+    @Override
+    public Result<String> check(CallFunctionNode node) {
+        return new IncorrectResult<>("Not implemented yet.");
     }
 
     public AnalyzerConfig getConfig() {

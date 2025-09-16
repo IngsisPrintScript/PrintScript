@@ -5,6 +5,5 @@ plugins {
 dependencies {
     implementation project(":common")
     implementation project(":nodes")
-    implementation project(':environment')
     implementation project(':syntactic')
 }
