@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -14,6 +13,7 @@ import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStream;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -38,11 +38,11 @@ public class Syntactic implements SyntacticInterface {
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
         tokenStream.consumeAll(new TokenFactory().createSeparatorToken(""));
         Result<? extends Node> buildResult = TREE_BUILDER.build(tokenStream);
+        if (!tokenStream.isEndOfStream()){
+            return new IncorrectResult<>("Missing tokens");
+        }
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
-        }
-        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()) {
-            return new IncorrectResult<>("Did not have an End Of Line character.");
         }
         Node root = buildResult.result();
         if (!(root instanceof SemanticallyCheckable semanticallyCheckableNode)) {
@@ -81,16 +81,20 @@ public class Syntactic implements SyntacticInterface {
 
     private SemanticallyCheckable computeNext() {
         TokenStreamInterface stream = new TokenStream(List.of());
+        SemanticallyCheckable biggestBuild = null;
+
         while (TOKEN_ITERATOR.hasNext()) {
             TokenInterface token = TOKEN_ITERATOR.next();
             List<TokenInterface> tokens = new ArrayList<>(stream.tokens());
             tokens.add(token);
             stream = new TokenStream(tokens);
+
             Result<SemanticallyCheckable> buildResult = this.buildAbstractSyntaxTree(stream);
             if (buildResult.isSuccessful()) {
-                return buildResult.result();
+                biggestBuild = buildResult.result();
             }
         }
-        return null;
+
+        return biggestBuild;
     }
 }

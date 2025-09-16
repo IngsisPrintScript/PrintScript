@@ -55,7 +55,7 @@ public final class PrintBuilder extends KeywordBuilder {
             return new IncorrectResult<>(consumeResult.errorMessage());
         }
 
-        Result<ExpressionNode> buildExpressionResult =
+        Result<? extends ExpressionNode> buildExpressionResult =
                 ((ExpressionBuilder) BUILDER_FACTORY.createExpressionBuilder()).build(tokenStream);
         if (!buildExpressionResult.isSuccessful()) {
             return buildExpressionResult;
@@ -67,6 +67,11 @@ public final class PrintBuilder extends KeywordBuilder {
         if (!consumeResult.isSuccessful()) {
             return new IncorrectResult<>(consumeResult.errorMessage());
         }
+
+        if (!tokenStream.consume(new TokenFactory().createEndOfLineToken()).isSuccessful()) {
+            return new IncorrectResult<>("Did not have an End Of Line character.");
+        }
+
         return new CorrectResult<>(root);
     }
 }

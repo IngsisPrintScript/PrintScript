@@ -65,7 +65,7 @@ public class BinaryExpressionBuilder extends ExpressionBuilder {
             BinaryExpression root = buildOperatorResult.result();
             root.setLeftChild(expressionLeftChild);
 
-            Result<ExpressionNode> buildRightChildResult =
+            Result<? extends ExpressionNode> buildRightChildResult =
                     ((ExpressionBuilder) BUILDER_FACTORY.createExpressionBuilder())
                             .build(tokenStream);
 

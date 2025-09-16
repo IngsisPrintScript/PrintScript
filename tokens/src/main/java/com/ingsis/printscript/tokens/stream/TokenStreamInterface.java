@@ -21,6 +21,8 @@ public interface TokenStreamInterface {
 
     List<TokenInterface> tokens();
 
+    Result<Integer> resetIndex();
+
     Boolean isEndOfStream();
 
     Boolean contains(TokenInterface token);

@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic.ast.builders.expression;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.factories.NodeFactory;
 import com.ingsis.printscript.results.CorrectResult;
@@ -28,7 +27,7 @@ public class IdentifierBuilder extends ExpressionBuilder {
     }
 
     @Override
-    public Result<ExpressionNode> build(TokenStreamInterface tokenStream) {
+    public Result<IdentifierNode> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) {
             return new IncorrectResult<>("Cannot build identifier node.");
         }
