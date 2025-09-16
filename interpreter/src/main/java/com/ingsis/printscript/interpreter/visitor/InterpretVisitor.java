@@ -10,11 +10,13 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
-import com.ingsis.printscript.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
+import com.ingsis.printscript.visitor.InterpretVisitorInterface;
 
 public class InterpretVisitor implements InterpretVisitorInterface {
 
@@ -35,8 +37,11 @@ public class InterpretVisitor implements InterpretVisitorInterface {
         }
         IdentifierNode identifier = getIdentifier.result();
         TypeNode type = getType.result();
-        Environment.getInstance().putIdType(identifier.name(), type.type());
+        Runtime.getInstance()
+                .currentEnv()
+                .putVariable(identifier.name(), new VariableEntry(type.type()));
         Result<ExpressionNode> getExpression = statement.expression();
+
         if (!getExpression.isSuccessful()) {
             return new CorrectResult<>(
                     "Variable "
@@ -51,7 +56,12 @@ public class InterpretVisitor implements InterpretVisitorInterface {
             return new IncorrectResult<>(evaluateExpression.errorMessage());
         }
         Object result = evaluateExpression.result();
-        Environment.getInstance().putIdValue(identifier.name(), result);
+        Result<Object> convertResult = converter(result, type.type());
+        if (!convertResult.isSuccessful()) {
+            return new IncorrectResult<>(convertResult.errorMessage());
+        }
+        Object convertedResult = convertResult.result();
+        Runtime.getInstance().currentEnv().modifyVariableValue(identifier.name(), convertedResult);
         return new CorrectResult<>(
                 "Variable "
                         + identifier.name()
@@ -86,4 +96,47 @@ public class InterpretVisitor implements InterpretVisitorInterface {
         }
         return new CorrectResult<>("Expression evaluated successfully.");
     }
+
+    private Result<Object> converter(Object value, String type) {
+        if (value == null) {
+            return new IncorrectResult<>("Could not convert value to type " + type);
+        }
+
+        try {
+            switch (type.toLowerCase()) {
+                case "string":
+                    if (value.toString().startsWith("\"") && value.toString().endsWith("\"")) {
+                        return new CorrectResult<>(String.valueOf(value));
+                    } else if (value.toString().startsWith("'") && value.toString().endsWith("'")) {
+                        return new CorrectResult<>(String.valueOf(value));
+                    }
+                    return new IncorrectResult<>("Could not convert value to type " + type);
+
+                case "boolean":
+                    if (value instanceof Boolean) {
+                        return new CorrectResult<>((Boolean) value);
+                    }
+                    String strVal = value.toString().toLowerCase();
+                    if (strVal.equals("true") || strVal.equals("1")) {
+                        return new CorrectResult<>(true);
+                    } else if (strVal.equals("false") || strVal.equals("0")) {
+                        return new  CorrectResult<>(false);
+                    } else {
+                        throw new IllegalArgumentException("Cannot convert " + value + " to Boolean");
+                    }
+
+                case "number":
+                    if (value instanceof Number) {
+                        return new  CorrectResult<>((Number) value);
+                    }
+                    return new CorrectResult<>(Double.valueOf(value.toString()));
+
+                default:
+                    throw new IllegalArgumentException("Unsupported type: " + type);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error converting value: " + value + " to type: " + type, e);
+        }
+    }
+
 }

@@ -1,0 +1,12 @@
+/*
+ * My Project
+ */
+
+package com.ingsis.printscript.visitor;
+
+import com.ingsis.printscript.astnodes.Node;
+import com.ingsis.printscript.results.Result;
+
+public interface InterpretableNode extends SemanticallyCheckable, Node {
+    Result<String> acceptInterpreter(InterpretVisitorInterface interpreter);
+}

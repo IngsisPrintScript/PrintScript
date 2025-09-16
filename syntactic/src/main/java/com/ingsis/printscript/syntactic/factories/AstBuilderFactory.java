@@ -11,8 +11,10 @@ import com.ingsis.printscript.syntactic.ast.builders.expression.BinaryExpression
 import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.IdentifierBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.function.FunctionCallBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.function.argument.ArgumentCallBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.keywords.LetBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.keywords.let.LetBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.type.TypeBuilder;
 
 public record AstBuilderFactory() implements AstBuilderFactoryInterface {
@@ -24,6 +26,11 @@ public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
     public ASTreeBuilderInterface createAscriptionBuilder() {
         return new AscriptionBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createCallFunctionBuilder() {
+        return new FunctionCallBuilder();
     }
 
     @Override
@@ -44,6 +51,11 @@ public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
     public ASTreeBuilderInterface createBinaryExpressionBuilder() {
         return new BinaryExpressionBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createCallArgumentBuilder() {
+        return new ArgumentCallBuilder();
     }
 
     @Override

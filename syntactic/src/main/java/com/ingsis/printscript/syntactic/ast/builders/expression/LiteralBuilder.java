@@ -28,7 +28,7 @@ public class LiteralBuilder extends ExpressionBuilder {
     }
 
     @Override
-    public Result<ExpressionNode> build(TokenStreamInterface tokenStream) {
+    public Result<LiteralNode> build(TokenStreamInterface tokenStream) {
         if (!canBuild(tokenStream)) {
             return new IncorrectResult<>("Cannot build literal node.");
         }

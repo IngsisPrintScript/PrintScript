@@ -4,10 +4,10 @@
 
 package com.ingsis.printscript.interpreter;
 
-import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.InterpretVisitorInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Iterator;
 

@@ -5,6 +5,5 @@ plugins {
 dependencies {
     implementation project(':nodes')
     implementation project(':common')
-    implementation project(':environment')
     implementation project(':peekable-iterator')
 }
