@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.tokenizers.operator;
+package com.ingsis.printscript.tokenizers.expressions.operator;
 
 import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;

@@ -38,6 +38,9 @@ public class Syntactic implements SyntacticInterface {
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
         tokenStream.consumeAll(new TokenFactory().createSeparatorToken(""));
         Result<? extends Node> buildResult = TREE_BUILDER.build(tokenStream);
+        if (!tokenStream.isEndOfStream()){
+            return new IncorrectResult<>("Missing tokens");
+        }
         if (!buildResult.isSuccessful()) {
             return new IncorrectResult<>(buildResult.errorMessage());
         }
@@ -78,16 +81,20 @@ public class Syntactic implements SyntacticInterface {
 
     private SemanticallyCheckable computeNext() {
         TokenStreamInterface stream = new TokenStream(List.of());
+        SemanticallyCheckable biggestBuild = null;
+
         while (TOKEN_ITERATOR.hasNext()) {
             TokenInterface token = TOKEN_ITERATOR.next();
             List<TokenInterface> tokens = new ArrayList<>(stream.tokens());
             tokens.add(token);
             stream = new TokenStream(tokens);
+
             Result<SemanticallyCheckable> buildResult = this.buildAbstractSyntaxTree(stream);
             if (buildResult.isSuccessful()) {
-                return buildResult.result();
+                biggestBuild = buildResult.result();
             }
         }
-        return null;
+
+        return biggestBuild;
     }
 }
