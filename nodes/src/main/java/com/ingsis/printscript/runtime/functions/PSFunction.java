@@ -4,7 +4,6 @@
 
 package com.ingsis.printscript.runtime.functions;
 
-import com.ingsis.printscript.visitor.InterpretVisitorInterface;
 import java.util.List;
 
 public interface PSFunction {

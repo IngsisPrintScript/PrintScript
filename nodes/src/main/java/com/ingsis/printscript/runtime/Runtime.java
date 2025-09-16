@@ -8,7 +8,6 @@ import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.environment.EnvironmentInterface;
 import com.ingsis.printscript.runtime.environment.GlobalEnvironment;
-
 import java.util.ArrayDeque;
 import java.util.Deque;
 

@@ -21,7 +21,6 @@ import com.ingsis.printscript.runtime.entries.VariableEntry;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
-import com.ingsis.printscript.visitor.RuleVisitor;
 
 public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
     private SemanticRule variableSemanticRuleChecker;
@@ -103,7 +102,6 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
     public Result<String> check(CallFunctionNode node) {
         return new CorrectResult<>("The node passes this check.");
     }
-
 
     @Override
     public Result<String> check(IdentifierNode node) {

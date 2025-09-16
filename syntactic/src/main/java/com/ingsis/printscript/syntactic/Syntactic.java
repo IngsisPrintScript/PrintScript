@@ -38,7 +38,7 @@ public class Syntactic implements SyntacticInterface {
     public Result<SemanticallyCheckable> buildAbstractSyntaxTree(TokenStreamInterface tokenStream) {
         tokenStream.consumeAll(new TokenFactory().createSeparatorToken(""));
         Result<? extends Node> buildResult = TREE_BUILDER.build(tokenStream);
-        if (!tokenStream.isEndOfStream()){
+        if (!tokenStream.isEndOfStream()) {
             return new IncorrectResult<>("Missing tokens");
         }
         if (!buildResult.isSuccessful()) {

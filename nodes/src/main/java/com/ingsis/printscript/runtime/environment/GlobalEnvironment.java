@@ -11,7 +11,6 @@ import com.ingsis.printscript.runtime.entries.VariableEntry;
 import com.ingsis.printscript.runtime.functions.BuiltInFunction;
 import com.ingsis.printscript.runtime.functions.PSFunction;
 import com.ingsis.printscript.runtime.functions.register.BuiltInFunctionsRegister;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -69,13 +68,11 @@ public class GlobalEnvironment implements EnvironmentInterface {
         if (!hasFunction(identifier)) {
             return new IncorrectResult<>("Function " + identifier + " is not declared.");
         }
-        return  new CorrectResult<>(builtInFunctions.get(identifier));
+        return new CorrectResult<>(builtInFunctions.get(identifier));
     }
 
     @Override
     public Boolean hasFunction(String identifier) {
         return builtInFunctions.containsKey(identifier);
     }
-
-
 }

@@ -39,15 +39,16 @@ public final class CallFunctionNode implements ExpressionNode {
 
     @Override
     public Result<Object> evaluate() {
-        Result<PSFunction> getFunctionResult = Runtime.getInstance().currentEnv().getFunction(identifier().name());
+        Result<PSFunction> getFunctionResult =
+                Runtime.getInstance().currentEnv().getFunction(identifier().name());
         if (!getFunctionResult.isSuccessful()) {
             return new IncorrectResult<>(getFunctionResult.errorMessage());
         }
         PSFunction function = getFunctionResult.result();
         try {
             return new CorrectResult<>(
-                    function.call(arguments.stream().map(it -> (Object) it.value().value()).toList())
-            );
+                    function.call(
+                            arguments.stream().map(it -> (Object) it.value().value()).toList()));
         } catch (RuntimeException rte) {
             throw rte;
         } catch (Exception e) {

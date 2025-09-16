@@ -11,9 +11,9 @@ import com.ingsis.printscript.syntactic.ast.builders.expression.BinaryExpression
 import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.IdentifierBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.function.FunctionCallBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.function.argument.ArgumentCallBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.keywords.let.LetBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.type.TypeBuilder;
 

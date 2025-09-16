@@ -4,6 +4,7 @@
 
 package com.ingsis.printscript.syntactic.ast.builders.keywords.let;
 
+import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
@@ -51,9 +52,10 @@ public final class DeclarationAssignationBuilder extends LetBuilder {
             return new IncorrectResult<>("Stream is not a Declaration and Assignation.");
         }
 
-        Result<CallFunctionNode> buildCallFunctionResult = CALL_FUNCTION_BUILDER.build(tokenStream);
+        Result<? extends Node> buildCallFunctionResult = CALL_FUNCTION_BUILDER.build(tokenStream);
         if (!buildCallFunctionResult.isSuccessful()) {
-            Result<? extends ExpressionNode> buildLiteralResult = EXPRESSION_BUILDER.build(tokenStream);
+            Result<? extends ExpressionNode> buildLiteralResult =
+                    EXPRESSION_BUILDER.build(tokenStream);
             if (!buildLiteralResult.isSuccessful()) {
                 return new IncorrectResult<>(buildLiteralResult.errorMessage());
             }
@@ -62,7 +64,7 @@ public final class DeclarationAssignationBuilder extends LetBuilder {
             return new CorrectResult<>(letNode);
         }
 
-        CallFunctionNode callFunctionNode = buildCallFunctionResult.result();
+        CallFunctionNode callFunctionNode = (CallFunctionNode) buildCallFunctionResult.result();
 
         letNode.setExpression(callFunctionNode);
         return new CorrectResult<>(letNode);

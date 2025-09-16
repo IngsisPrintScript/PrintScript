@@ -15,8 +15,8 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
-import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
 import com.ingsis.printscript.visitor.InterpretVisitorInterface;
+import java.util.Locale;
 
 public class InterpretVisitor implements InterpretVisitorInterface {
 
@@ -103,7 +103,7 @@ public class InterpretVisitor implements InterpretVisitorInterface {
         }
 
         try {
-            switch (type.toLowerCase()) {
+            switch (type.toLowerCase(Locale.US)) {
                 case "string":
                     if (value.toString().startsWith("\"") && value.toString().endsWith("\"")) {
                         return new CorrectResult<>(String.valueOf(value));
@@ -116,18 +116,19 @@ public class InterpretVisitor implements InterpretVisitorInterface {
                     if (value instanceof Boolean) {
                         return new CorrectResult<>((Boolean) value);
                     }
-                    String strVal = value.toString().toLowerCase();
+                    String strVal = value.toString().toLowerCase(Locale.US);
                     if (strVal.equals("true") || strVal.equals("1")) {
                         return new CorrectResult<>(true);
                     } else if (strVal.equals("false") || strVal.equals("0")) {
-                        return new  CorrectResult<>(false);
+                        return new CorrectResult<>(false);
                     } else {
-                        throw new IllegalArgumentException("Cannot convert " + value + " to Boolean");
+                        throw new IllegalArgumentException(
+                                "Cannot convert " + value + " to Boolean");
                     }
 
                 case "number":
                     if (value instanceof Number) {
-                        return new  CorrectResult<>((Number) value);
+                        return new CorrectResult<>((Number) value);
                     }
                     return new CorrectResult<>(Double.valueOf(value.toString()));
 
@@ -138,5 +139,4 @@ public class InterpretVisitor implements InterpretVisitorInterface {
             throw new RuntimeException("Error converting value: " + value + " to type: " + type, e);
         }
     }
-
 }
