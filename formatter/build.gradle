@@ -1,16 +1,5 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm'
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-repositories {
-    mavenCentral()
+    id 'buildlogic.java-application-conventions'
 }
 
 dependencies {
@@ -23,12 +12,7 @@ dependencies {
     implementation project(":cli-app")
     implementation project(":peekable-iterator")
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
     implementation("org.yaml:snakeyaml:2.0")
-    implementation 'info.picocli:picocli:4.7.6'
-
 }
 
 test {
