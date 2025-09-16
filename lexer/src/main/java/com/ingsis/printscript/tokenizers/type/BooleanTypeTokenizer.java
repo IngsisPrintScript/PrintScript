@@ -2,12 +2,11 @@
  * My Project
  */
 
-package com.ingsis.printscript.tokenizers.type.v1;
+package com.ingsis.printscript.tokenizers.type;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
-import com.ingsis.printscript.tokenizers.type.TypeTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 
