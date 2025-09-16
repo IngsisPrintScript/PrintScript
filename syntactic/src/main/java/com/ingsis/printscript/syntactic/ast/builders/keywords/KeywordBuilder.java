@@ -5,11 +5,11 @@
 package com.ingsis.printscript.syntactic.ast.builders.keywords;
 
 import com.ingsis.printscript.astnodes.Node;
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 import com.ingsis.printscript.syntactic.ast.builders.FinalBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.keywords.let.LetBuilder;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 import java.util.List;
 
@@ -19,20 +19,14 @@ public class KeywordBuilder implements ASTreeBuilderInterface {
 
     public KeywordBuilder(ASTreeBuilderInterface nextBuilder) {
         NEXT_BUILDER = nextBuilder;
-        KEYWORD_BUILDERS =
-                List.copyOf(
-                        new ClassGraphReflectionsUtils()
-                                .findSubclassesOf(KeywordBuilder.class)
-                                .find());
+        KEYWORD_BUILDERS = List.of(
+                PrintBuilder.class,
+                LetBuilder.class
+        );
     }
 
     public KeywordBuilder() {
-        NEXT_BUILDER = new FinalBuilder();
-        KEYWORD_BUILDERS =
-                List.copyOf(
-                        new ClassGraphReflectionsUtils()
-                                .findSubclassesOf(KeywordBuilder.class)
-                                .find());
+        this(new FinalBuilder());
     }
 
     @Override

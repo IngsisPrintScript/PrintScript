@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary;
 
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
@@ -17,10 +16,10 @@ public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
 
     public BinaryOperatorBuilder() {
         BINARY_OPERATOR_BUILDERS =
-                List.copyOf(
-                        new ClassGraphReflectionsUtils()
-                                .findSubclassesOf(BinaryOperatorBuilder.class)
-                                .find());
+                List.of(
+                        AdditionOperatorBuilder.class,
+                        AssignationOperatorBuilder.class
+                );
     }
 
     @Override

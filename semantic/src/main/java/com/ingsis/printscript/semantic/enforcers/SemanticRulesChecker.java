@@ -7,7 +7,6 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.IfStatementNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -20,10 +19,10 @@ public class SemanticRulesChecker implements RuleVisitor {
 
     public SemanticRulesChecker() {
         ENFORCERS =
-                List.copyOf(
-                        new ClassGraphReflectionsUtils()
-                                .findSubclassesOf(SemanticRulesChecker.class)
-                                .find());
+                List.of(
+                        CorrectTypeAssignationEnforcer.class,
+                        VariablesExistenceRulesChecker.class
+                );
     }
 
     @Override

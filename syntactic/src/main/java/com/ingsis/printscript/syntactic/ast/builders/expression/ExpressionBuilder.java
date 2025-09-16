@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic.ast.builders.expression;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
@@ -19,10 +18,9 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
 
     public ExpressionBuilder() {
         EXPRESSION_BUILDERS =
-                List.copyOf(
-                        new ClassGraphReflectionsUtils()
-                                .findSubclassesOf(ExpressionBuilder.class)
-                                .find());
+                List.of(
+                        BinaryExpressionBuilder.class
+                );
     }
 
     @Override

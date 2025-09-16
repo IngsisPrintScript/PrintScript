@@ -5,7 +5,6 @@
 package com.ingsis.printscript.syntactic.ast.builders.keywords.let;
 
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.keywords.KeywordBuilder;
@@ -15,6 +14,7 @@ import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class LetBuilder extends KeywordBuilder {
     private final TokenInterface LET_TOKEN_TEMPLATE;
@@ -23,9 +23,10 @@ public class LetBuilder extends KeywordBuilder {
     public LetBuilder() {
         TokenFactoryInterface tokenFactory = new TokenFactory();
         LET_TOKEN_TEMPLATE = tokenFactory.createLetKeywordToken();
-        Collection<Class<? extends LetBuilder>> sub =
-                new ClassGraphReflectionsUtils().findSubclassesOf(LetBuilder.class).find();
-        SUBCLASSES = Collections.unmodifiableCollection(sub);
+        SUBCLASSES = List.of(
+                DeclarationBuilder.class,
+                DeclarationAssignationBuilder.class
+        );
     }
 
     @Override

@@ -4,21 +4,27 @@
 
 package com.ingsis.printscript.tokenizers.keyword;
 
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 
 public class KeywordTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final Collection<Class<? extends KeywordTokenizer>> subclasses =
-            new ClassGraphReflectionsUtils().findSubclassesOf(KeywordTokenizer.class).find();
+    private final Collection<Class<? extends KeywordTokenizer>> subclasses;
 
     public KeywordTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
+        subclasses = List.of(
+                LetKeywordTokenizer.class,
+                PrintlnKeywordTokenizer.class,
+                IfKeywordTokenizer.class,
+                ElseKeywordTokenizer.class,
+                ConstKeywordTokenizer.class
+        );
     }
 
     public KeywordTokenizer() {

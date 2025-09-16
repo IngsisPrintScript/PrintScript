@@ -4,10 +4,9 @@
 
 package com.ingsis.printscript.runtime.functions.register;
 
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.runtime.functions.BuiltInFunction;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -15,11 +14,11 @@ public class BuiltInFunctionsRegister {
     private final Collection<Class<? extends BuiltInFunctionsRegister>> subRegisters;
 
     public BuiltInFunctionsRegister() {
-        subRegisters =
-                Collections.unmodifiableCollection(
-                        new ClassGraphReflectionsUtils()
-                                .findSubclassesOf(BuiltInFunctionsRegister.class)
-                                .find());
+        subRegisters = List.of(
+                PrintRegister.class,
+                ReadEnvRegister.class,
+                ReadInputRegister.class
+        );
     }
 
     public Map<String, BuiltInFunction> getBuiltInFunctions() {

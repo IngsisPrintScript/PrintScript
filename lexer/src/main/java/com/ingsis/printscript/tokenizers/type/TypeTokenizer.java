@@ -4,20 +4,24 @@
 
 package com.ingsis.printscript.tokenizers.type;
 
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 
 public class TypeTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final Collection<Class<? extends TypeTokenizer>> subclasses =
-            new ClassGraphReflectionsUtils().findSubclassesOf(TypeTokenizer.class).find();
+    private final Collection<Class<? extends TypeTokenizer>> subclasses;
 
     public TypeTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
+        subclasses = List.of(
+                NumberTypeTokenizer.class,
+                StringTypeTokenizer.class,
+                BooleanTypeTokenizer.class
+        );
     }
 
     @Override

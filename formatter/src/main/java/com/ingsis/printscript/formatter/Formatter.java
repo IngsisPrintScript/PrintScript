@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.formatter;
 
 import com.ingsis.printscript.astnodes.Node;
@@ -41,10 +45,12 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>> {
     @CommandLine.Parameters(index = "0", description = "File to format")
     private Path inputFile;
 
-    @CommandLine.Option(names = {"-r", "--rules"}, description = "Optional YAML file with formatting rules")
+    @CommandLine.Option(
+            names = {"-r", "--rules"},
+            description = "Optional YAML file with formatting rules")
     private Path rulesFile;
 
-    //deberia escribirse asi en cosnola: java -jar formatter.jar input.ps --rules rules.yml
+    // deberia escribirse asi en cosnola: java -jar formatter.jar input.ps --rules rules.yml
     @Override
     public Result<String> format(Node root) {
         if (readRules == null) {
@@ -53,7 +59,6 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>> {
         HashMap<String, Object> rulesToFormat = readRules.readRules();
         return root.accept(new FormatterVisitor(new SeparationFormatter(rulesToFormat)));
     }
-
 
     @Override
     public Result<Path> call() throws Exception {
@@ -66,19 +71,21 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>> {
         Iterator<InterpretableNode> interpretableNodesIterator =
                 new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
         StringBuilder sb = new StringBuilder();
-        if(txt.length() == 0) {
+        if (txt.length() == 0) {
             return new IncorrectResult<>("No text to format");
         }
-        while(interpretableNodesIterator.hasNext()) {
+        while (interpretableNodesIterator.hasNext()) {
             Result<String> formatted = format(interpretableNodesIterator.next());
             sb.append(formatted.result());
         }
         Files.writeString(inputFile, sb.toString());
         return new CorrectResult<>(inputFile);
     }
+
     public void setInputFile(Path contentToFormat) {
         this.inputFile = contentToFormat;
     }
+
     public void setRulesFile(Path rulesFile) {
         this.rulesFile = rulesFile;
     }

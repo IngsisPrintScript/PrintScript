@@ -4,18 +4,20 @@
 
 package com.ingsis.printscript.tokenizers.punctuation;
 
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
+import com.ingsis.printscript.tokenizers.punctuation.braces.LeftBraceTokenizer;
+import com.ingsis.printscript.tokenizers.punctuation.braces.RightBraceTokenizer;
+import com.ingsis.printscript.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.List;
 
 public class PunctuationTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final Collection<Class<? extends PunctuationTokenizer>> subclasses =
-            new ClassGraphReflectionsUtils().findSubclassesOf(PunctuationTokenizer.class).find();
+    private final Collection<Class<? extends PunctuationTokenizer>> subclasses;
 
     public PunctuationTokenizer() {
         this(new FinalTokenizer());
@@ -23,6 +25,13 @@ public class PunctuationTokenizer implements TokenizerInterface {
 
     public PunctuationTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
+        subclasses = List.of(
+                CommaTokenizer.class,
+                LeftBraceTokenizer.class,
+                RightBraceTokenizer.class,
+                LeftParenthesisTokenizer.class,
+                RightBraceTokenizer.class
+        );
     }
 
     @Override

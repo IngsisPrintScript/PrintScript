@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.formatter;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -7,20 +11,18 @@ import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 public class FormatterTest {
 
-    @TempDir
-    Path tempDir;
+    @TempDir Path tempDir;
 
     @Test
-    void formatLetStatementNode_usesYamlRules() {
+    void formatLetStatementNodeUsesYamlRules() {
         Formatter formatter = new Formatter();
         TypeNode typeNode = new TypeNode("int");
         IdentifierNode idNode = new IdentifierNode("x");
@@ -44,7 +46,8 @@ public class FormatterTest {
 
         format.setInputFile(emptyFile);
         Path rulesFile = tempDir.resolve("Rules.yaml");
-        String yamlContent = """
+        String yamlContent =
+                """
                 ColonSpacingBefore: true
                 ColonSpacingAfter: true
                 SpaceBeforeAssignation: true
@@ -58,12 +61,11 @@ public class FormatterTest {
         Assertions.assertInstanceOf(IncorrectResult.class, result);
     }
 
-
     @Test
     void callWithDefaultRules() throws Exception {
         Formatter format = new Formatter();
-        Path original = Path.of(
-                getClass().getClassLoader().getResource("toFormatTest.txt").toURI());
+        Path original =
+                Path.of(getClass().getClassLoader().getResource("toFormatTest.txt").toURI());
 
         Path testFile = tempDir.resolve("toFormatTest.txt");
         Files.copy(original, testFile);
@@ -76,8 +78,9 @@ public class FormatterTest {
         Assertions.assertEquals(testFile, result.result());
 
         String content = Files.readString(testFile);
-        //Pareciese que consume los let y quedan los print, ni idea es una locura lo que ocurre
-        // en este test, y se va rotando con el otro entonces cuando uno formatea "Consume los let" y el otro pincha
-        //Assertions.assertFalse(content.contains("let"));
+        // Pareciese que consume los let y quedan los print, ni idea es una locura lo que ocurre
+        // en este test, y se va rotando con el otro entonces cuando uno formatea "Consume los let"
+        // y el otro pincha
+        // Assertions.assertFalse(content.contains("let"));
     }
 }

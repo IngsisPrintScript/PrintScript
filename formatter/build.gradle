@@ -18,3 +18,7 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+application {
+    mainClassName = 'Formatter'
+}

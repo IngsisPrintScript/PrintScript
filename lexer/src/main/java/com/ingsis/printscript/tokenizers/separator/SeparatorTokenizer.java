@@ -4,20 +4,24 @@
 
 package com.ingsis.printscript.tokenizers.separator;
 
-import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.util.Collection;
+import java.util.List;
 
 public class SeparatorTokenizer implements TokenizerInterface {
     private final TokenizerInterface NEXT_TOKENIZER;
-    private final Collection<Class<? extends SeparatorTokenizer>> subclasses =
-            new ClassGraphReflectionsUtils().findSubclassesOf(SeparatorTokenizer.class).find();
+    private final Collection<Class<? extends SeparatorTokenizer>> subclasses;
 
     public SeparatorTokenizer(TokenizerInterface NEXT_TOKENIZER) {
         this.NEXT_TOKENIZER = NEXT_TOKENIZER;
+        subclasses = List.of(
+                NewLineSeparatorTokenizer.class,
+                SpaceTokenizer.class,
+                TabSeparatorTokenizer.class
+        );
     }
 
     public SeparatorTokenizer() {
