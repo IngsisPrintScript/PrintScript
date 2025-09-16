@@ -17,11 +17,11 @@ public class SeparatorTokenizer implements TokenizerInterface {
 
     public SeparatorTokenizer(TokenizerInterface NEXT_TOKENIZER) {
         this.NEXT_TOKENIZER = NEXT_TOKENIZER;
-        subclasses = List.of(
-                NewLineSeparatorTokenizer.class,
-                SpaceTokenizer.class,
-                TabSeparatorTokenizer.class
-        );
+        subclasses =
+                List.of(
+                        NewLineSeparatorTokenizer.class,
+                        SpaceTokenizer.class,
+                        TabSeparatorTokenizer.class);
     }
 
     public SeparatorTokenizer() {

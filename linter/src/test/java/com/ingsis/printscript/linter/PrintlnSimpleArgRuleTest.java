@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.linter;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -10,11 +14,10 @@ import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
 import com.ingsis.printscript.linter.api.Violation;
 import com.ingsis.printscript.linter.rules.PrintlnSimpleArgRule;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class PrintlnSimpleArgRuleTest {
 
@@ -26,15 +29,15 @@ public class PrintlnSimpleArgRuleTest {
     void setUp() {
         rule = new PrintlnSimpleArgRule();
 
-       enabledConfig = new AnalyzerConfig(
-                new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.CAMEL),
-                new AnalyzerConfig.Println(true, true)
-        );
+        enabledConfig =
+                new AnalyzerConfig(
+                        new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.CAMEL),
+                        new AnalyzerConfig.Println(true, true));
 
-        disabledConfig = new AnalyzerConfig(
-                new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.CAMEL),
-                new AnalyzerConfig.Println(false, false)
-        );
+        disabledConfig =
+                new AnalyzerConfig(
+                        new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.CAMEL),
+                        new AnalyzerConfig.Println(false, false));
     }
 
     @Test
@@ -65,20 +68,21 @@ public class PrintlnSimpleArgRuleTest {
         Assertions.assertTrue(violations.isEmpty());
     }
 
-//    @Test
-//    void testInvalidPrintlnWithBinaryExpression() {
-//        PrintStatementNode node = new PrintStatementNode();
-//        AdditionNode add = new AdditionNode();
-//        add.setLeftChild(new IdentifierNode("a"));
-//        add.setRightChild(new IdentifierNode("b"));
-//        node.setExpression(add);
-//        rule.check(node, enabledConfig);
-//        rule.check(node);
-//        List<Violation> violations = rule.check(node, enabledConfig);
-//
-//        Assertions.assertFalse(violations.isEmpty());
-//        Assertions.assertTrue(violations.get(0).message().contains("println argument must be"));
-//    }
+    //    @Test
+    //    void testInvalidPrintlnWithBinaryExpression() {
+    //        PrintStatementNode node = new PrintStatementNode();
+    //        AdditionNode add = new AdditionNode();
+    //        add.setLeftChild(new IdentifierNode("a"));
+    //        add.setRightChild(new IdentifierNode("b"));
+    //        node.setExpression(add);
+    //        rule.check(node, enabledConfig);
+    //        rule.check(node);
+    //        List<Violation> violations = rule.check(node, enabledConfig);
+    //
+    //        Assertions.assertFalse(violations.isEmpty());
+    //        Assertions.assertTrue(violations.get(0).message().contains("println argument must
+    // be"));
+    //    }
 
     @Test
     void testDisabledRuleDoesNotAddViolations() {
@@ -145,5 +149,4 @@ public class PrintlnSimpleArgRuleTest {
 
         Assertions.assertTrue(violations.isEmpty());
     }
-
 }

@@ -17,10 +17,7 @@ public class ExpressionBuilder implements ASTreeBuilderInterface {
     private final List<Class<? extends ExpressionBuilder>> EXPRESSION_BUILDERS;
 
     public ExpressionBuilder() {
-        EXPRESSION_BUILDERS =
-                List.of(
-                        BinaryExpressionBuilder.class
-                );
+        EXPRESSION_BUILDERS = List.of(BinaryExpressionBuilder.class);
     }
 
     @Override

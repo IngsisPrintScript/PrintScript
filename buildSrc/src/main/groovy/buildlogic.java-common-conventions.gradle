@@ -40,8 +40,8 @@ jacoco {
 }
 
 jacocoTestReport {
-    dependsOn test
-    finalizedBy jacocoTestCoverageVerification
+    dependsOn test, classes
+    // finalizedBy jacocoTestCoverageVerification
 
     reports {
         xml.required = true

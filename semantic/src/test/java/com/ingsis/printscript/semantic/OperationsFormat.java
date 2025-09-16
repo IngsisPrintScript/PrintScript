@@ -1,23 +1,25 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.semantic;
 
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
-import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.semantic.enforcers.SemanticRulesChecker;
 import com.ingsis.printscript.semantic.rules.operations.BinaryOperationFormatSemanticSemanticRule;
 import com.ingsis.printscript.semantic.rules.operations.OperationFormatSemanticRule;
-import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
-import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetterInterface;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class OperationsFormat {
 
-    private final BinaryOperationFormatSemanticSemanticRule binaryOperationFormatSemanticRule = new BinaryOperationFormatSemanticSemanticRule();
+    private final BinaryOperationFormatSemanticSemanticRule binaryOperationFormatSemanticRule =
+            new BinaryOperationFormatSemanticSemanticRule();
     private final OperationFormatSemanticRule operationsFormat = new OperationFormatSemanticRule();
+
     @Test
     void testNonBinaryExpression() {
         LiteralNode node = new LiteralNode("10");
@@ -25,7 +27,8 @@ public class OperationsFormat {
         Result<String> result = binaryOperationFormatSemanticRule.checkRules(node);
 
         Assertions.assertFalse(result.isSuccessful());
-        Assertions.assertEquals("This rule does not apply to the received node.", result.errorMessage());
+        Assertions.assertEquals(
+                "This rule does not apply to the received node.", result.errorMessage());
     }
 
     @Test
@@ -158,6 +161,4 @@ public class OperationsFormat {
         boolean result = operationsFormat.match(add);
         Assertions.assertTrue(result);
     }
-
-
 }

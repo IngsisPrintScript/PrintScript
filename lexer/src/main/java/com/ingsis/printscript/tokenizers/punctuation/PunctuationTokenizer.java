@@ -10,6 +10,7 @@ import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokenizers.punctuation.braces.LeftBraceTokenizer;
 import com.ingsis.printscript.tokenizers.punctuation.braces.RightBraceTokenizer;
 import com.ingsis.printscript.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;
+import com.ingsis.printscript.tokenizers.punctuation.parenthesis.RightParenthesisTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
@@ -25,13 +26,14 @@ public class PunctuationTokenizer implements TokenizerInterface {
 
     public PunctuationTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
-        subclasses = List.of(
-                CommaTokenizer.class,
-                LeftBraceTokenizer.class,
-                RightBraceTokenizer.class,
-                LeftParenthesisTokenizer.class,
-                RightBraceTokenizer.class
-        );
+        subclasses =
+                List.of(
+                        CommaTokenizer.class,
+                        LeftBraceTokenizer.class,
+                        RightBraceTokenizer.class,
+                        LeftParenthesisTokenizer.class,
+                        RightParenthesisTokenizer.class
+                );
     }
 
     @Override

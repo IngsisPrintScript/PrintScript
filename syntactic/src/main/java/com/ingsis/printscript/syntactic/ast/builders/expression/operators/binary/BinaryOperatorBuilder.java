@@ -16,10 +16,7 @@ public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
 
     public BinaryOperatorBuilder() {
         BINARY_OPERATOR_BUILDERS =
-                List.of(
-                        AdditionOperatorBuilder.class,
-                        AssignationOperatorBuilder.class
-                );
+                List.of(AdditionOperatorBuilder.class, AssignationOperatorBuilder.class);
     }
 
     @Override

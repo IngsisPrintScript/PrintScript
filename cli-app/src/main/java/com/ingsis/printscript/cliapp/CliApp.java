@@ -21,6 +21,8 @@ import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.visitor.InterpretableNode;
 import com.ingsis.printscript.visitor.SemanticallyCheckable;
+import picocli.CommandLine;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,10 +31,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.concurrent.Callable;
-import picocli.CommandLine;
-import picocli.CommandLine.Command;
 
-@Command(
+@CommandLine.Command(
         name = "cliApp",
         mixinStandardHelpOptions = true,
         version = "cliApp 0",

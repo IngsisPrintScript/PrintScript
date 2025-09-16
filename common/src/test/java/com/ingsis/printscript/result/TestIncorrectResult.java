@@ -1,6 +1,9 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.result;
 
-import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,6 +18,5 @@ public class TestIncorrectResult {
                 Assertions.assertThrows(UnsupportedOperationException.class, result::result);
         Assertions.assertEquals("Incorrect result does not have a result.", exception.getMessage());
         Assertions.assertFalse(result.isSuccessful());
-
     }
 }

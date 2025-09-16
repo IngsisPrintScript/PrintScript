@@ -14,11 +14,7 @@ public class BuiltInFunctionsRegister {
     private final Collection<Class<? extends BuiltInFunctionsRegister>> subRegisters;
 
     public BuiltInFunctionsRegister() {
-        subRegisters = List.of(
-                PrintRegister.class,
-                ReadEnvRegister.class,
-                ReadInputRegister.class
-        );
+        subRegisters = List.of(PrintRegister.class, ReadEnvRegister.class, ReadInputRegister.class);
     }
 
     public Map<String, BuiltInFunction> getBuiltInFunctions() {

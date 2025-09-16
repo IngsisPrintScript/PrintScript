@@ -17,10 +17,7 @@ public class OperatorTokenizer implements TokenizerInterface {
 
     public OperatorTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
-        subclasses = List.of(
-                AdditionOperatorTokenizer.class,
-                AssignationOperatorTokenizer.class
-        );
+        subclasses = List.of(AdditionOperatorTokenizer.class, AssignationOperatorTokenizer.class);
     }
 
     @Override

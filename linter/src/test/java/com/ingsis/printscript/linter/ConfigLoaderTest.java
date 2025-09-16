@@ -1,10 +1,11 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.linter;
 
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
 import com.ingsis.printscript.linter.config.ConfigLoader;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,11 +14,12 @@ class ConfigLoaderTest {
 
     @Test
     void testLoadYamlConfig() throws IOException {
-        String yamlContent = """
-            naming:
-              enabled: true
-              style: CAMEL
-            """;
+        String yamlContent =
+                """
+                naming:
+                  enabled: true
+                  style: CAMEL
+                """;
 
         Path tempFile = Files.createTempFile("config", ".yml");
         Files.writeString(tempFile, yamlContent);
@@ -31,14 +33,15 @@ class ConfigLoaderTest {
 
     @Test
     void testLoadJsonConfig() throws IOException {
-        String jsonContent = """
-            {
-              "naming": {
-                "enabled": true,
-                "style": "SNAKE"
-              }
-            }
-            """;
+        String jsonContent =
+                """
+                {
+                  "naming": {
+                    "enabled": true,
+                    "style": "SNAKE"
+                  }
+                }
+                """;
 
         Path tempFile = Files.createTempFile("config", ".json");
         Files.writeString(tempFile, jsonContent);
@@ -58,8 +61,10 @@ class ConfigLoaderTest {
         AnalyzerConfig config = ConfigLoader.load(tempFile);
 
         Assertions.assertNotNull(config);
-        Assertions.assertEquals(AnalyzerConfig.defaults().naming().style(), config.naming().style());
-        Assertions.assertEquals(AnalyzerConfig.defaults().naming().enabled(), config.naming().enabled());
+        Assertions.assertEquals(
+                AnalyzerConfig.defaults().naming().style(), config.naming().style());
+        Assertions.assertEquals(
+                AnalyzerConfig.defaults().naming().enabled(), config.naming().enabled());
     }
 
     @Test
@@ -69,7 +74,9 @@ class ConfigLoaderTest {
         AnalyzerConfig config = ConfigLoader.load(fakePath);
 
         Assertions.assertNotNull(config);
-        Assertions.assertEquals(AnalyzerConfig.defaults().naming().style(), config.naming().style());
-        Assertions.assertEquals(AnalyzerConfig.defaults().naming().enabled(), config.naming().enabled());
+        Assertions.assertEquals(
+                AnalyzerConfig.defaults().naming().style(), config.naming().style());
+        Assertions.assertEquals(
+                AnalyzerConfig.defaults().naming().enabled(), config.naming().enabled());
     }
 }

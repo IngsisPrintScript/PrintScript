@@ -14,9 +14,7 @@ public class OperationFormatSemanticRule implements SemanticRule {
     private final List<Class<? extends OperationFormatSemanticRule>> specificOperationRules;
 
     public OperationFormatSemanticRule() {
-        specificOperationRules = List.of(
-                BinaryOperationFormatSemanticSemanticRule.class
-        );
+        specificOperationRules = List.of(BinaryOperationFormatSemanticSemanticRule.class);
     }
 
     @Override

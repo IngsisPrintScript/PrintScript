@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'buildlogic.java-application-conventions'
 }
 dependencies {
     implementation project(':common')
@@ -10,16 +10,4 @@ dependencies {
     implementation project(':semantic')
     implementation project(':interpreter')
     implementation project(':peekable-iterator')
-    compileOnly "com.github.spotbugs:spotbugs-annotations:4.8.6"
-
-
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    //PicoCLI
-    implementation('info.picocli:picocli:4.7.6')
-}
-
-test {
-    useJUnitPlatform()
 }

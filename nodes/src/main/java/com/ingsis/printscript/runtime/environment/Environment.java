@@ -10,7 +10,6 @@ import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
 import com.ingsis.printscript.runtime.functions.PSFunction;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

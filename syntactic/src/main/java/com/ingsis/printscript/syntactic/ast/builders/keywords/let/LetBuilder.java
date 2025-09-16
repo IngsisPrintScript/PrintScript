@@ -13,7 +13,6 @@ import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class LetBuilder extends KeywordBuilder {
@@ -23,10 +22,7 @@ public class LetBuilder extends KeywordBuilder {
     public LetBuilder() {
         TokenFactoryInterface tokenFactory = new TokenFactory();
         LET_TOKEN_TEMPLATE = tokenFactory.createLetKeywordToken();
-        SUBCLASSES = List.of(
-                DeclarationBuilder.class,
-                DeclarationAssignationBuilder.class
-        );
+        SUBCLASSES = List.of(DeclarationBuilder.class, DeclarationAssignationBuilder.class);
     }
 
     @Override
@@ -39,10 +35,10 @@ public class LetBuilder extends KeywordBuilder {
 
     @Override
     public Result<LetStatementNode> build(TokenStreamInterface tokenStream) {
-        if (!tokenStream.consume(LET_TOKEN_TEMPLATE).isSuccessful()) {
-            return new IncorrectResult<>("Stream is not a let statement");
-        }
         for (Class<? extends LetBuilder> clazz : SUBCLASSES) {
+            if (!tokenStream.consume(LET_TOKEN_TEMPLATE).isSuccessful()) {
+                return new IncorrectResult<>("Stream is not a let statement");
+            }
             try {
                 LetBuilder instance = clazz.getDeclaredConstructor().newInstance();
                 Result<LetStatementNode> result = instance.build(tokenStream);

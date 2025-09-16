@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.semantic;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -8,7 +12,6 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.lexer.Lexical;
 import com.ingsis.printscript.peekableiterator.PeekableIterator;
@@ -19,10 +22,6 @@ import com.ingsis.printscript.syntactic.Syntactic;
 import com.ingsis.printscript.syntactic.ast.builders.cor.ChanBuilder;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -30,6 +29,9 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SemanticAnalyzerTest {
 
@@ -44,8 +46,9 @@ public class SemanticAnalyzerTest {
                 throw new RuntimeException("Error reading the file: " + path, e);
             }
         }
+
         public Character peek() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             return content.charAt(index);
@@ -56,7 +59,7 @@ public class SemanticAnalyzerTest {
         }
 
         public Character next() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             return content.charAt(index++);
@@ -67,10 +70,15 @@ public class SemanticAnalyzerTest {
 
     @BeforeEach
     void setUp() throws URISyntaxException {
-        Path path = Path.of(Objects.requireNonNull(getClass().getClassLoader().getResource("text")).toURI());
+        Path path =
+                Path.of(
+                        Objects.requireNonNull(getClass().getClassLoader().getResource("text"))
+                                .toURI());
         CodeRepository repo = new CodeRepository(path);
-        Iterator<TokenInterface> tokenIterator = new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
-        Iterator<SemanticallyCheckable> checkableNodesIterator = new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
+        Iterator<TokenInterface> tokenIterator =
+                new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
+        Iterator<SemanticallyCheckable> checkableNodesIterator =
+                new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
         analyzer = new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
     }
 
@@ -112,7 +120,6 @@ public class SemanticAnalyzerTest {
         Assertions.assertTrue(result);
     }
 
-
     @Test
     void testAnalyzeInvalidPrint() {
         PrintStatementNode printStatementNode = new PrintStatementNode();
@@ -142,7 +149,7 @@ public class SemanticAnalyzerTest {
         printStatementNode.setRightChild(literalNode2);
         SemanticRulesChecker semanticRulesChecker = new SemanticRulesChecker();
         Result<String> result = semanticRulesChecker.check(printStatementNode);
-        Assertions.assertEquals("AST passed all semantic rules.",result.result());
+        Assertions.assertEquals("AST passed all semantic rules.", result.result());
     }
 
     @Test
@@ -158,16 +165,16 @@ public class SemanticAnalyzerTest {
         ascriptionNode.setType(type);
         SemanticRulesChecker semanticRulesChecker = new SemanticRulesChecker();
         Result<String> result = semanticRulesChecker.check(letStatementNode);
-        Assertions.assertEquals("AST passed all semantic rules.",result.result());
+        Assertions.assertEquals("AST passed all semantic rules.", result.result());
     }
 
-    //Si se ejecutan todos los test funciona, si es individual falla
+    // Si se ejecutan todos los test funciona, si es individual falla
     @Test
     void testAnalyzeValidIdentifierCheck() {
         IdentifierNode id = new IdentifierNode("\"x\"");
         SemanticRulesChecker semanticRulesChecker = new SemanticRulesChecker();
         Result<String> result = semanticRulesChecker.check(id);
-        Assertions.assertEquals("AST passed all semantic rules.",result.result());
+        Assertions.assertEquals("AST passed all semantic rules.", result.result());
         Assertions.assertInstanceOf(CorrectResult.class, result);
     }
 
@@ -176,16 +183,15 @@ public class SemanticAnalyzerTest {
         LiteralNode literalNode = new LiteralNode("10");
         SemanticRulesChecker semanticRulesChecker = new SemanticRulesChecker();
         Result<String> result = semanticRulesChecker.check(literalNode);
-        Assertions.assertEquals("AST passed all semantic rules.",result.result());
+        Assertions.assertEquals("AST passed all semantic rules.", result.result());
         Assertions.assertInstanceOf(CorrectResult.class, result);
     }
 
     @Test
     void testOperationsSemanticAnalyzer() {
         Assertions.assertTrue(analyzer.hasNext());
-        Assertions.assertInstanceOf(LetStatementNode.class,analyzer.next());
-        Assertions.assertInstanceOf(PrintStatementNode.class,analyzer.peek());
-        Assertions.assertInstanceOf(PrintStatementNode.class,analyzer.next());
-     }
-
+        Assertions.assertInstanceOf(LetStatementNode.class, analyzer.next());
+        Assertions.assertInstanceOf(PrintStatementNode.class, analyzer.peek());
+        Assertions.assertInstanceOf(PrintStatementNode.class, analyzer.next());
+    }
 }

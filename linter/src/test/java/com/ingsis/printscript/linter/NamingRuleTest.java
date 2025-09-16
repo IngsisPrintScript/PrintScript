@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.linter;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -10,11 +14,10 @@ import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
 import com.ingsis.printscript.linter.api.Violation;
 import com.ingsis.printscript.linter.rules.NamingRule;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 public class NamingRuleTest {
 
@@ -26,9 +29,15 @@ public class NamingRuleTest {
     void setUp() {
         rule = new NamingRule();
 
-        configCamel = new AnalyzerConfig(new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.CAMEL), new AnalyzerConfig.Println(true, true) );
+        configCamel =
+                new AnalyzerConfig(
+                        new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.CAMEL),
+                        new AnalyzerConfig.Println(true, true));
 
-        configSnake = new AnalyzerConfig(new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.SNAKE), new AnalyzerConfig.Println(true, true));
+        configSnake =
+                new AnalyzerConfig(
+                        new AnalyzerConfig.Naming(true, AnalyzerConfig.CaseStyle.SNAKE),
+                        new AnalyzerConfig.Println(true, true));
     }
 
     @Test
@@ -44,7 +53,9 @@ public class NamingRuleTest {
         List<Violation> violations = rule.check(node, configCamel);
         rule.check(node);
         Assertions.assertFalse(violations.isEmpty());
-        Assertions.assertEquals("identifier 'invalid_name' must be camel", violations.get(0).message().toLowerCase());
+        Assertions.assertEquals(
+                "identifier 'invalid_name' must be camel",
+                violations.get(0).message().toLowerCase());
     }
 
     @Test
@@ -60,7 +71,9 @@ public class NamingRuleTest {
         List<Violation> violations = rule.check(node, configSnake);
         rule.check(node);
         Assertions.assertFalse(violations.isEmpty());
-        Assertions.assertEquals("identifier 'invalidname' must be snake", violations.get(0).message().toLowerCase());
+        Assertions.assertEquals(
+                "identifier 'invalidname' must be snake",
+                violations.get(0).message().toLowerCase());
     }
 
     @Test
@@ -68,6 +81,7 @@ public class NamingRuleTest {
         Assertions.assertEquals("PS-NAMING", rule.id());
         Assertions.assertTrue(rule.description().contains("Identifiers"));
     }
+
     @Test
     void testLetStatementWithAscriptionAndIdentifier() {
         LetStatementNode node = new LetStatementNode();

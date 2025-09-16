@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript;
 
 import com.ingsis.printscript.lexer.Lexical;
@@ -5,15 +9,14 @@ import com.ingsis.printscript.peekableiterator.PeekableIterator;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class LexerTest {
 
@@ -28,8 +31,9 @@ public class LexerTest {
                 throw new RuntimeException("Error reading the file: " + path, e);
             }
         }
+
         public Character peek() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             return content.charAt(index);
@@ -40,18 +44,19 @@ public class LexerTest {
         }
 
         public Character next() {
-            if(!hasNext()){
+            if (!hasNext()) {
                 throw new NoSuchElementException();
             }
             return content.charAt(index++);
         }
     }
 
-
-
     @Test
     void shouldReturnCorrectResultWhenHaveValidNodes() throws URISyntaxException {
-        Path path = Path.of(Objects.requireNonNull(getClass().getClassLoader().getResource("test")).toURI());
+        Path path =
+                Path.of(
+                        Objects.requireNonNull(getClass().getClassLoader().getResource("test"))
+                                .toURI());
         CodeRepository repo = new CodeRepository(path);
         Lexical lexical = new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
 

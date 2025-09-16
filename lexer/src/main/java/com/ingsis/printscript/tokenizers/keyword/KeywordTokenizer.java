@@ -18,13 +18,13 @@ public class KeywordTokenizer implements TokenizerInterface {
 
     public KeywordTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
-        subclasses = List.of(
-                LetKeywordTokenizer.class,
-                PrintlnKeywordTokenizer.class,
-                IfKeywordTokenizer.class,
-                ElseKeywordTokenizer.class,
-                ConstKeywordTokenizer.class
-        );
+        subclasses =
+                List.of(
+                        LetKeywordTokenizer.class,
+                        PrintlnKeywordTokenizer.class,
+                        IfKeywordTokenizer.class,
+                        ElseKeywordTokenizer.class,
+                        ConstKeywordTokenizer.class);
     }
 
     public KeywordTokenizer() {

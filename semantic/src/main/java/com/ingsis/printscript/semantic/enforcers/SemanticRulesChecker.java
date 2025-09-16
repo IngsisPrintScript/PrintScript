@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.semantic.enforcers;
 
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
@@ -19,10 +23,7 @@ public class SemanticRulesChecker implements RuleVisitor {
 
     public SemanticRulesChecker() {
         ENFORCERS =
-                List.of(
-                        CorrectTypeAssignationEnforcer.class,
-                        VariablesExistenceRulesChecker.class
-                );
+                List.of(CorrectTypeAssignationEnforcer.class, VariablesExistenceRulesChecker.class);
     }
 
     @Override

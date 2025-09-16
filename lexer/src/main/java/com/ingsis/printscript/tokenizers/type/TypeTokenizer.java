@@ -17,11 +17,11 @@ public class TypeTokenizer implements TokenizerInterface {
 
     public TypeTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
-        subclasses = List.of(
-                NumberTypeTokenizer.class,
-                StringTypeTokenizer.class,
-                BooleanTypeTokenizer.class
-        );
+        subclasses =
+                List.of(
+                        NumberTypeTokenizer.class,
+                        StringTypeTokenizer.class,
+                        BooleanTypeTokenizer.class);
     }
 
     @Override

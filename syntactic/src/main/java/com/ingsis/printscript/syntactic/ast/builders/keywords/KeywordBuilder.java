@@ -19,10 +19,7 @@ public class KeywordBuilder implements ASTreeBuilderInterface {
 
     public KeywordBuilder(ASTreeBuilderInterface nextBuilder) {
         NEXT_BUILDER = nextBuilder;
-        KEYWORD_BUILDERS = List.of(
-                PrintBuilder.class,
-                LetBuilder.class
-        );
+        KEYWORD_BUILDERS = List.of(PrintBuilder.class, LetBuilder.class);
     }
 
     public KeywordBuilder() {

@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.binary;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
@@ -53,6 +57,6 @@ public class GreaterThanNode extends BinaryExpression {
     @Override
     public Result<String> accept(VisitorInterface visitor) {
         return null;
-        //return visitor.visit(this);
+        // return visitor.visit(this);
     }
 }

@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.linter;
 
 import com.ingsis.printscript.astnodes.Node;
@@ -14,14 +18,15 @@ public final class AnalyzerRunner {
         this.rules = List.copyOf(rules);
     }
 
-  public List<Violation> analyze(Node root, AnalyzerConfig cfg) {
-    List<Violation> out = new ArrayList<>();
-    for (Rule r : rules) {
-      if (r.enabled(cfg)) out.addAll(r.check(root, cfg));
+    public List<Violation> analyze(Node root, AnalyzerConfig cfg) {
+        List<Violation> out = new ArrayList<>();
+        for (Rule r : rules) {
+            if (r.enabled(cfg)) out.addAll(r.check(root, cfg));
+        }
+        return out;
     }
-    return out;
-  }
-  public List<Rule> getRules() {
-    return rules;
-  }
+
+    public List<Rule> getRules() {
+        return rules;
+    }
 }

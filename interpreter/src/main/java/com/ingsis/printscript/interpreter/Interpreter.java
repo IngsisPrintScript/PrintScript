@@ -24,7 +24,7 @@ public class Interpreter implements InterpreterInterface {
     }
 
     @Override
-    public Result<String> interpreter()  {
+    public Result<String> interpreter() {
         Result<String> interpretResult = null;
         while (interpretableNodeIterator.hasNext()) {
             InterpretableNode tree = interpretableNodeIterator.next();

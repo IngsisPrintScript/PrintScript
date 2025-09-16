@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.semantic;
 
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
@@ -51,7 +55,6 @@ class CorrectTypeAssignationEnforcerTest {
         Result<String> result = enforcer.check(letNode);
         Assertions.assertFalse(result.isSuccessful());
     }
-
 
     @Test
     void checkRules_withIdentifierNodeAndMatchingType_returnsCorrectResult() {
