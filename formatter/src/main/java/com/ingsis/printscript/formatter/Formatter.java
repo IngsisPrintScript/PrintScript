@@ -36,11 +36,13 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>>{
     @CommandLine.Parameters(index = "0", description = "File to format")
     private Path inputFile;
 
+    @CommandLine.Option(names = {"-r", "--rules"}, description = "Optional YAML file with formatting rules")
+    private Path rulesFile;
 
     @Override
     public Result<String> format(Node root) {
         if (readRules == null) {
-            readRules = (inputFile != null) ? new ReadRules(inputFile) : new ReadRules();
+            readRules = (rulesFile != null) ? new ReadRules(rulesFile) : new ReadRules();
         }
         HashMap<String, Object> rulesToFormat = readRules.readRules();
         return root.accept(new FormatterVisitor(new SeparationFormatter(rulesToFormat)));
@@ -59,13 +61,16 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>>{
             return new CorrectResult<>(inputFile);
         }
         while(interpretableNodesIterator.hasNext()) {
-            Result<String> formatted = format((Node) interpretableNodesIterator.next());
+            Result<String> formatted = format(interpretableNodesIterator.next());
             sb.append(formatted.result());
         }
         Files.writeString(inputFile, sb.toString());
         return new CorrectResult<>(inputFile);
     }
-    public void setInputFile(Path configFile) {
-        this.inputFile = configFile;
+    public void setInputFile(Path contentToFormat) {
+        this.inputFile = contentToFormat;
+    }
+    public void setRulesFile(Path rulesFile) {
+        this.rulesFile = rulesFile;
     }
 }

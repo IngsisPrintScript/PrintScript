@@ -2,6 +2,7 @@ package com.ingsis.printscript.formatter.yamlAnalizer;
 
 import org.yaml.snakeyaml.Yaml;
 
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,15 +22,19 @@ public class ReadRules implements ReadRulesInterface {
     @Override
     public HashMap<String, Object> readRules() {
         Yaml yaml = new Yaml();
-
-        Path defaultRulesPath = Path.of("formatter", "src", "main", "resources", "Rules.yaml");
-        try (InputStream inputStream = (configFile != null)
-                ? Files.newInputStream(configFile)
-                : Files.newInputStream(defaultRulesPath)) {
-
+        InputStream inputStream = null;
+        try {
+            if(configFile == null) {
+                inputStream = ReadRules.class.getResourceAsStream("/Rules.yaml");
+            }else {
+                inputStream = new FileInputStream(configFile.toFile());
+            }
+            if (inputStream == null) {
+                throw new RuntimeException("Did not found Rules.yml");
+            }
             return yaml.load(inputStream);
         } catch (Exception e) {
-            throw new RuntimeException("Error reading Rules.yaml", e);
+            throw new RuntimeException("Error reading Rules.yml", e);
         }
     }
 
