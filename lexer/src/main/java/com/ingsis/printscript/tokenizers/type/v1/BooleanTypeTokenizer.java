@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.type.v1;
 
 import com.ingsis.printscript.results.CorrectResult;
@@ -13,6 +17,7 @@ public class BooleanTypeTokenizer extends TypeTokenizer {
     public BooleanTypeTokenizer() {
         super(new FinalTokenizer());
     }
+
     public BooleanTypeTokenizer(TokenizerInterface nextTokenizer) {
         super(nextTokenizer);
     }
@@ -26,5 +31,4 @@ public class BooleanTypeTokenizer extends TypeTokenizer {
     public Result<TokenInterface> tokenize(String input) {
         return new CorrectResult<>(new TokenFactory().createTypeToken(input));
     }
-
 }

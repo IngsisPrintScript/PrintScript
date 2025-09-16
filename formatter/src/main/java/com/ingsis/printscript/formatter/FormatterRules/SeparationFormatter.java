@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.formatter.FormatterRules;
 
 import java.util.HashMap;
@@ -5,35 +9,43 @@ import java.util.Objects;
 
 public record SeparationFormatter(HashMap<String, Object> rules) {
 
-    public String SpaceBeforeColon(){
-        if( Objects.equals(rules.get("ColonSpacingBefore"), false)){
+    public SeparationFormatter {
+        rules = new HashMap<>(rules);
+    }
+
+    public HashMap<String, Object> rules() {
+        return new HashMap<>(rules);
+    }
+
+    public String spaceBeforeColon() {
+        if (Objects.equals(rules().get("ColonSpacingBefore"), false)) {
             return "";
         }
         return " ";
     }
 
-    public String SpaceAfterColon() {
-        if(Objects.equals(rules.get("ColonSpacingAfter"), false)){
+    public String spaceAfterColon() {
+        if (Objects.equals(rules().get("ColonSpacingAfter"), false)) {
             return "";
         }
         return " ";
     }
 
-    public String SpaceAfterAssignation() {
-        if( Objects.equals(rules.get("SpaceAfterAssignation"), false)){
+    public String spaceAfterAssignation() {
+        if (Objects.equals(rules().get("SpaceAfterAssignation"), false)) {
             return "";
         }
         return " ";
     }
 
-    public String SpaceBeforeAssignation() {
-        if( Objects.equals(rules.get("SpaceBeforeAssignation"), false)){
+    public String spaceBeforeAssignation() {
+        if (Objects.equals(rules().get("SpaceBeforeAssignation"), false)) {
             return "";
         }
         return " ";
     }
 
-    public String JumpsBeforePrint(){
-        return ("\n").repeat((Integer) rules.get("JumpsBeforePrint"));
+    public String jumpsBeforePrint() {
+        return ("\n").repeat((Integer) rules().get("JumpsBeforePrint"));
     }
 }

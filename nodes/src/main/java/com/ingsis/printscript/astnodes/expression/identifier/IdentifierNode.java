@@ -1,15 +1,18 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.identifier;
 
-
-import com.ingsis.printscript.environment.Environment;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
-
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.environment.EnvironmentInterface;
+import com.ingsis.printscript.visitor.RuleVisitor;
+import com.ingsis.printscript.visitor.VisitorInterface;
 import java.util.List;
 
 public record IdentifierNode(String name) implements Node, ExpressionNode {
@@ -32,8 +35,9 @@ public record IdentifierNode(String name) implements Node, ExpressionNode {
     @Override
     public Result<Object> evaluate() {
         try {
-            Result<Object> getIdValue = Environment.getInstance().getIdValue(this.name());
-            if (!getIdValue.isSuccessful()){
+            EnvironmentInterface currentEnv = Runtime.getInstance().currentEnv();
+            Result<Object> getIdValue = currentEnv.getVariableValue(this.name());
+            if (!getIdValue.isSuccessful()) {
                 return new IncorrectResult<>(getIdValue.errorMessage());
             }
             Object identifierValue = getIdValue.result();

@@ -1,28 +1,42 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.semantic;
 
-
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
-
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.RuleVisitor;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public record SemanticAnalyzer(
-        RuleVisitor rulesEnforcer,
-        Iterator<SemanticallyCheckable> checkableNodesIterator,
-        Deque<InterpretableNode> checkableNodesBuffer
-) implements SemanticInterface {
+public class SemanticAnalyzer implements SemanticInterface {
+    private final RuleVisitor rulesEnforcer;
+    private final Iterator<SemanticallyCheckable> checkableNodesIterator;
+    private final Deque<InterpretableNode> checkableNodesBuffer;
 
-    public SemanticAnalyzer(RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator){
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    public SemanticAnalyzer(
+            RuleVisitor rulesEnforcer,
+            Iterator<SemanticallyCheckable> checkableNodesIterator,
+            Deque<InterpretableNode> checkableNodesBuffer) {
+        this.rulesEnforcer = rulesEnforcer;
+        this.checkableNodesIterator = checkableNodesIterator;
+        this.checkableNodesBuffer = checkableNodesBuffer;
+    }
+
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    public SemanticAnalyzer(
+            RuleVisitor rulesEnforcer, Iterator<SemanticallyCheckable> checkableNodesIterator) {
         this(rulesEnforcer, checkableNodesIterator, new ArrayDeque<>());
     }
 
     @Override
     public Boolean isSemanticallyValid(SemanticallyCheckable tree) {
-        return tree.acceptCheck(rulesEnforcer()).isSuccessful();
+        return tree.acceptCheck(rulesEnforcer).isSuccessful();
     }
 
     @Override
@@ -53,13 +67,18 @@ public record SemanticAnalyzer(
         return checkableNodesBuffer.peekFirst();
     }
 
-    private InterpretableNode computeNext(){
-        while (checkableNodesIterator().hasNext()){
+    private InterpretableNode computeNext() {
+        InterpretableNode interpretableCandidate = null;
+        while (checkableNodesIterator.hasNext()) {
             SemanticallyCheckable checkable = checkableNodesIterator.next();
-            if (this.isSemanticallyValid(checkable)) {
-                return (InterpretableNode) checkable;
+            if (!this.isSemanticallyValid(checkable)) {
+                if (interpretableCandidate != null) {
+                    return interpretableCandidate;
+                }
+            } else {
+                interpretableCandidate = (InterpretableNode) checkable;
             }
         }
-        return null;
+        return interpretableCandidate;
     }
 }

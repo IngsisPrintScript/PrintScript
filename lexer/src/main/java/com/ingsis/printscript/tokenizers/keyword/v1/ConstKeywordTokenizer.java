@@ -1,4 +1,4 @@
-package com.ingsis.printscript.tokenizers.keyword.v1;
+package com.ingsis.printscript.tokenizers.keyword;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
@@ -8,7 +8,7 @@ import com.ingsis.printscript.tokenizers.keyword.KeywordTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
 
-public final class ConstKeywordTokenizer extends KeywordTokenizer {
+public class ConstKeywordTokenizer extends KeywordTokenizer {
 
     public ConstKeywordTokenizer() {
         super(new FinalTokenizer());

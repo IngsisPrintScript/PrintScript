@@ -1,21 +1,26 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.punctuation;
 
-import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
-import com.ingsis.printscript.tokenizers.punctuation.parenthesis.LeftParenthesisTokenizer;
-import com.ingsis.printscript.tokenizers.punctuation.parenthesis.RightParenthesisTokenizer;
-
-import java.util.List;
+import com.ingsis.printscript.tokens.TokenInterface;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 
 public class PunctuationTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final List<Class<? extends PunctuationTokenizer>> subclasses = List.of(LeftParenthesisTokenizer.class, RightParenthesisTokenizer.class);
+    private final Collection<Class<? extends PunctuationTokenizer>> subclasses =
+            new ClassGraphReflectionsUtils().findSubclassesOf(PunctuationTokenizer.class).find();
 
     public PunctuationTokenizer() {
         this(new FinalTokenizer());
     }
+
     public PunctuationTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;
     }
@@ -28,7 +33,11 @@ public class PunctuationTokenizer implements TokenizerInterface {
                 if (tokenizer.canTokenize(input)) {
                     return true;
                 }
-            } catch (Exception ignored){}
+            } catch (NoSuchMethodException
+                    | InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException ignored) {
+            }
         }
         return false;
     }
@@ -41,7 +50,11 @@ public class PunctuationTokenizer implements TokenizerInterface {
                 if (tokenizer.canTokenize(input)) {
                     return tokenizer.tokenize(input);
                 }
-            } catch (Exception ignored){}
+            } catch (NoSuchMethodException
+                    | InstantiationException
+                    | IllegalAccessException
+                    | InvocationTargetException ignored) {
+            }
         }
         return nextTokenizer.tokenize(input);
     }

@@ -1,5 +1,8 @@
-package com.ingsis.printscript.astnodes.statements;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.astnodes.statements;
 
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
@@ -8,12 +11,11 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.astnodes.visitor.InterpretVisitor;
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
-
+import com.ingsis.printscript.visitor.InterpretVisitorInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.RuleVisitor;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
+import com.ingsis.printscript.visitor.VisitorInterface;
 import java.util.List;
 
 public class LetStatementNode implements Node, SemanticallyCheckable, InterpretableNode {
@@ -30,40 +32,43 @@ public class LetStatementNode implements Node, SemanticallyCheckable, Interpreta
         return visitor.visit(this);
     }
 
-    public Boolean hasAscription(){
+    public Boolean hasAscription() {
         return !this.ascription.isNil();
     }
-    public Boolean hasExpression(){
+
+    public Boolean hasExpression() {
         return !this.expression.isNil();
     }
 
-    public Result<ExpressionNode> expression(){
-        if(hasExpression()){
+    public Result<ExpressionNode> expression() {
+        if (hasExpression()) {
             return new CorrectResult<>((ExpressionNode) expression);
-        }  else {
+        } else {
             return new IncorrectResult<>("Let statement has no expression.");
         }
     }
-    public Result<AscriptionNode> ascription(){
-        if(hasAscription()){
+
+    public Result<AscriptionNode> ascription() {
+        if (hasAscription()) {
             return new CorrectResult<>((AscriptionNode) ascription);
         } else {
             return new IncorrectResult<>("Let statement has no declaration.");
         }
     }
 
-    public Result<AscriptionNode> setAscription(AscriptionNode declaration){
+    public Result<AscriptionNode> setAscription(AscriptionNode declaration) {
         this.ascription = declaration;
         return new CorrectResult<>(declaration);
     }
-    public Result<ExpressionNode> setExpression(ExpressionNode expression){
+
+    public Result<ExpressionNode> setExpression(ExpressionNode expression) {
         this.expression = expression;
         return new CorrectResult<>(expression);
     }
 
     @Override
     public Result<String> acceptCheck(RuleVisitor checker) {
-        return  checker.check(this);
+        return checker.check(this);
     }
 
     @Override
@@ -73,11 +78,11 @@ public class LetStatementNode implements Node, SemanticallyCheckable, Interpreta
 
     @Override
     public Boolean isNil() {
-        return null;
+        return false;
     }
 
     @Override
-    public Result<String> acceptInterpreter(InterpretVisitor interpreter) {
+    public Result<String> acceptInterpreter(InterpretVisitorInterface interpreter) {
         return interpreter.interpret(this);
     }
 }

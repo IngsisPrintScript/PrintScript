@@ -1,14 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.factories;
 
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
 import com.ingsis.printscript.syntactic.ast.builders.FinalBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.ascription.AscriptionBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.BinaryExpressionBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.BinaryExpressionBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.identifier.IdentifierBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.let.LetBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.literal.LiteralBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.IdentifierBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.LiteralBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.function.FunctionCallBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.function.argument.ArgumentCallBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.keywords.let.LetBuilder;
 import com.ingsis.printscript.syntactic.ast.builders.type.TypeBuilder;
 
 public record AstBuilderFactory() implements AstBuilderFactoryInterface {
@@ -20,6 +26,11 @@ public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
     public ASTreeBuilderInterface createAscriptionBuilder() {
         return new AscriptionBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createCallFunctionBuilder() {
+        return new FunctionCallBuilder();
     }
 
     @Override
@@ -40,6 +51,11 @@ public record AstBuilderFactory() implements AstBuilderFactoryInterface {
     @Override
     public ASTreeBuilderInterface createBinaryExpressionBuilder() {
         return new BinaryExpressionBuilder();
+    }
+
+    @Override
+    public ASTreeBuilderInterface createCallArgumentBuilder() {
+        return new ArgumentCallBuilder();
     }
 
     @Override

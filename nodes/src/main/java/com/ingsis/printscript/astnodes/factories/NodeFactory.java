@@ -1,15 +1,11 @@
 package com.ingsis.printscript.astnodes.factories;
 
-
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
-import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
-import com.ingsis.printscript.astnodes.expression.binary.v1.DoubleEqualNode;
-import com.ingsis.printscript.astnodes.expression.binary.v1.GreaterThanNode;
-import com.ingsis.printscript.astnodes.expression.binary.v1.LesserThanNode;
-import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
+import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
+import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
@@ -32,11 +28,11 @@ public class NodeFactory implements NodeFactoryInterface {
 
     @Override
     public Node createAscriptionNode() {
-            return new AscriptionNode();
+        return new AscriptionNode();
     }
 
     public Node createAssignationNode() {
-            return new AssignationNode();
+        return new AssignationNode();
     }
 
     @Override

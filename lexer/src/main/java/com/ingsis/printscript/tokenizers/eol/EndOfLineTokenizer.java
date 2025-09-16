@@ -1,10 +1,14 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.eol;
 
-import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
+import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.tokens.factories.TokenFactory;
 
 public record EndOfLineTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
     @Override

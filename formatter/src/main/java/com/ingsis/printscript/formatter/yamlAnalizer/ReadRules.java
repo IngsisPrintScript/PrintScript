@@ -1,5 +1,6 @@
 package com.ingsis.printscript.formatter.yamlAnalizer;
 
+import java.io.IOException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -7,6 +8,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import org.yaml.snakeyaml.Yaml;
 
 public class ReadRules implements ReadRulesInterface {
 

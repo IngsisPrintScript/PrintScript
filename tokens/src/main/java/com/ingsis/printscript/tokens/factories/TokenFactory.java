@@ -1,5 +1,8 @@
-package com.ingsis.printscript.tokens.factories;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.tokens.factories;
 
 import com.ingsis.printscript.tokens.Token;
 import com.ingsis.printscript.tokens.TokenInterface;
@@ -8,6 +11,16 @@ public class TokenFactory implements TokenFactoryInterface {
     @Override
     public TokenInterface createLetKeywordToken() {
         return new Token("LET_KEYWORD_TOKEN", "let");
+    }
+
+    @Override
+    public TokenInterface createKeywordToken(String keyword, String value) {
+        return new Token(keyword + "_KEYWORD_TOKEN", value);
+    }
+
+    @Override
+    public TokenInterface createPunctuationToken(String punctuation, String value) {
+        return new Token(punctuation + "_PUNCTUATION_TOKEN", value);
     }
 
     @Override
@@ -22,7 +35,7 @@ public class TokenFactory implements TokenFactoryInterface {
 
     @Override
     public TokenInterface createRightParenthesisToken() {
-        return new  Token("RIGHT_PARENTHESIS_TOKEN", ")");
+        return new Token("RIGHT_PARENTHESIS_TOKEN", ")");
     }
 
     @Override
@@ -32,7 +45,7 @@ public class TokenFactory implements TokenFactoryInterface {
 
     @Override
     public TokenInterface createTypeAssignationToken() {
-            return new Token("TYPE_ASSIGNATION_TOKEN", ":");
+        return new Token("TYPE_ASSIGNATION_TOKEN", ":");
     }
 
     @Override
