@@ -4,8 +4,6 @@
 
 package com.ingsis.printscript.cliapp;
 
-import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
-import com.ingsis.printscript.astnodes.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.interpreter.Interpreter;
 import com.ingsis.printscript.interpreter.InterpreterInterface;
 import com.ingsis.printscript.interpreter.visitor.InterpretVisitor;
@@ -17,9 +15,11 @@ import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.SemanticAnalyzer;
 import com.ingsis.printscript.semantic.enforcers.SemanticRulesChecker;
 import com.ingsis.printscript.syntactic.Syntactic;
-import com.ingsis.printscript.syntactic.ast.builders.cor.ChanBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.cor.NodeBuilderChain;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,6 +51,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
         InterpreterInterface interpreter = getInterpreter(buffer);
         while (true) {
             try {
+                System.out.print(">>> ");
                 String line = reader.readLine();
                 if (line == null || "exit".equals(line.trim())) {
                     return new CorrectResult<>("Interpreter finished successfully.");
@@ -73,7 +74,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
         Iterator<TokenInterface> tokenIterator =
                 new Lexical(new TokenizerFactory().createDefaultTokenizer(), characterIterator);
         Iterator<SemanticallyCheckable> checkableNodesIterator =
-                new Syntactic(new ChanBuilder().createDefaultChain(), tokenIterator);
+                new Syntactic(new NodeBuilderChain().createDefaultChain(), tokenIterator);
         Iterator<InterpretableNode> interpretableNodesIterator =
                 new SemanticAnalyzer(new SemanticRulesChecker(), checkableNodesIterator);
         return new Interpreter(new InterpretVisitor(), interpretableNodesIterator);

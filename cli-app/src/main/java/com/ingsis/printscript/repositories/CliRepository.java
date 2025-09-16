@@ -5,14 +5,17 @@
 package com.ingsis.printscript.repositories;
 
 import com.ingsis.printscript.peekableiterator.PeekableIterator;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public record CliRepository(Queue<Character> buffer) implements PeekableIterator<Character> {
+public final class CliRepository implements PeekableIterator<Character> {
+    private final Queue<Character> buffer;
 
-    public CliRepository {
-        buffer = new LinkedList<>(buffer);
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
+    public CliRepository(Queue<Character> buffer) {
+        this.buffer = buffer;
     }
 
     public Queue<Character> buffer() {

@@ -5,10 +5,10 @@
 package com.ingsis.printscript.astnodes.expression.binary;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.VisitorInterface;
 
 public class AdditionNode extends BinaryExpression {
     @Override

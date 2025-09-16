@@ -10,8 +10,15 @@ import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.punctuation.PunctuationTokenizer;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.tokens.factories.TokenFactory;
+import com.ingsis.printscript.tokens.factories.TokenFactoryInterface;
 
-public class RightParenthesisTokenizer extends PunctuationTokenizer {
+public final class RightParenthesisTokenizer extends PunctuationTokenizer {
+    private final TokenFactoryInterface TOKEN_FACTORY;
+
+    public RightParenthesisTokenizer() {
+        super();
+        this.TOKEN_FACTORY = new TokenFactory();
+    }
 
     @Override
     public Boolean canTokenize(String input) {
@@ -23,6 +30,6 @@ public class RightParenthesisTokenizer extends PunctuationTokenizer {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Cannot tokenize provided input");
         }
-        return new CorrectResult<>(new TokenFactory().createRightParenthesisToken());
+        return new CorrectResult<>(TOKEN_FACTORY.createRightParenthesisToken());
     }
 }
