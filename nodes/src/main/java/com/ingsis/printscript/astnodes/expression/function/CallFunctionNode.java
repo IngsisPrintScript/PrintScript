@@ -9,7 +9,6 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.results.CorrectResult;
-import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.visitor.RuleVisitor;
 import com.ingsis.printscript.visitor.VisitorInterface;
@@ -26,7 +25,6 @@ public final class CallFunctionNode implements ExpressionNode {
         this.identifier = identifier;
         this.arguments = Collections.unmodifiableCollection(arguments);
     }
-
 
     public IdentifierNode identifier() {
         return identifier;

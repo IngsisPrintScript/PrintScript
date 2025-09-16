@@ -11,7 +11,6 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
 import com.ingsis.printscript.linter.api.Rule;
 import com.ingsis.printscript.linter.api.Violation;
@@ -91,11 +90,6 @@ public final class PrintlnSimpleArgRule implements Rule, RuleVisitor {
 
     @Override
     public Result<String> check(CallFunctionNode node) {
-        return new IncorrectResult<>("Not implemented yet.");
-    }
-
-    @Override
-    public Result<String> check(DeclareFunctionNode node) {
         return new IncorrectResult<>("Not implemented yet.");
     }
 

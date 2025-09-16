@@ -12,20 +12,14 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
-import com.ingsis.printscript.astnodes.statements.function.argument.DeclarationArgumentNode;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
-import com.ingsis.printscript.runtime.entries.FunctionEntry;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
-import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
-import com.ingsis.printscript.visitor.InterpretableNode;
-import java.util.Collection;
 
 public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
     private SemanticRule variableSemanticRuleChecker;
@@ -100,55 +94,6 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
             return checkRulesForRightChild;
         }
 
-        return new CorrectResult<>("The node passes this check.");
-    }
-
-    @Override
-    public Result<String> check(DeclareFunctionNode node) {
-        Result<IdentifierNode> getIdentifierResult = node.identifier();
-        if (!getIdentifierResult.isSuccessful()) {
-            return new IncorrectResult<>(getIdentifierResult.errorMessage());
-        }
-        IdentifierNode identifier = getIdentifierResult.result();
-
-        variableSemanticRuleChecker = new NotDeclaredVariableSemanticRule();
-        Result<String> checkFunctionIdentifier = this.check(identifier);
-        if (!checkFunctionIdentifier.isSuccessful()) {
-            return new IncorrectResult<>(checkFunctionIdentifier.errorMessage());
-        }
-
-        Result<TypeNode> getReturnTypeResult = node.returnType();
-        if (!getReturnTypeResult.isSuccessful()) {
-            return new IncorrectResult<>(getReturnTypeResult.errorMessage());
-        }
-        TypeNode returnType = getReturnTypeResult.result();
-
-        Runtime.getInstance().pushEnv(new Environment(Runtime.getInstance().currentEnv()));
-        variableSemanticRuleChecker = null;
-        Result<Collection<InterpretableNode>> getBodyResult = node.body();
-        if (!getBodyResult.isSuccessful()) {
-            return new IncorrectResult<>(getBodyResult.errorMessage());
-        }
-        Collection<InterpretableNode> body = getBodyResult.result();
-
-        for (InterpretableNode interpretableNode : body) {
-            Result<String> checkRulesForBody = interpretableNode.acceptCheck(this);
-            if (!checkRulesForBody.isSuccessful()) {
-                return new IncorrectResult<>(checkRulesForBody.errorMessage());
-            }
-        }
-        Runtime.getInstance().popEnv();
-
-        Result<Collection<DeclarationArgumentNode>> getArgumentsResult = node.arguments();
-        if (!getBodyResult.isSuccessful()) {
-            return new IncorrectResult<>(getBodyResult.errorMessage());
-        }
-        Collection<DeclarationArgumentNode> arguments = getArgumentsResult.result();
-
-        Runtime.getInstance()
-                .currentEnv()
-                .putFunction(
-                        identifier.name(), new FunctionEntry(returnType.type(), arguments, body));
         return new CorrectResult<>("The node passes this check.");
     }
 

@@ -10,7 +10,6 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.results.Result;
 
 public interface RuleVisitor {
@@ -25,6 +24,4 @@ public interface RuleVisitor {
     Result<String> check(LiteralNode node);
 
     Result<String> check(CallFunctionNode node);
-
-    Result<String> check(DeclareFunctionNode node);
 }
