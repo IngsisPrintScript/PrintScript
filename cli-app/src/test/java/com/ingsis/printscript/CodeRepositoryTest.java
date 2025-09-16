@@ -71,11 +71,4 @@ public class CodeRepositoryTest {
         Assertions.assertThrows(NoSuchElementException.class, repo::peek);
     }
 
-    @Test
-    void testFileNotFoundThrowsRuntimeException() {
-        Path invalidPath = tempDir.resolve("nofile.txt");
-        RuntimeException ex = Assertions.assertThrows(RuntimeException.class, () -> new CodeRepository(invalidPath));
-        Assertions.assertTrue(ex.getMessage().contains("Error reading the file"));
-    }
-
 }

@@ -3,10 +3,10 @@ package com.ingsis.printscript.astnodes.statements;
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.visitor.*;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.*;
 
 import java.util.List;
 
@@ -45,7 +45,7 @@ public class IfStatementNode implements Node, SemanticallyCheckable, Interpretab
     }
 
     @Override
-    public Result<String> acceptInterpreter(InterpretVisitor interpreter) {
+    public Result<String> acceptInterpreter(InterpretVisitorInterface interpreter) {
         return null;
        // return interpreter.interpret(this);
     }

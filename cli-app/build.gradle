@@ -1,11 +1,6 @@
 plugins {
-    id 'buildlogic.java-application-conventions'
+    id 'java'
 }
-
-application {
-    mainClass = 'common.CliApp'
-}
-
 dependencies {
     implementation project(':common')
     implementation project(':tokens')
@@ -15,6 +10,9 @@ dependencies {
     implementation project(':semantic')
     implementation project(':interpreter')
     implementation project(':peekable-iterator')
+    implementation project(':reflections')
+    compileOnly "com.github.spotbugs:spotbugs-annotations:4.8.6"
+
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

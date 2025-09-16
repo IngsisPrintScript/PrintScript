@@ -1,16 +1,18 @@
 plugins {
-    id 'buildlogic.java-library-conventions'
+    id 'java'
 }
 
 dependencies {
     implementation project(":common")
     implementation project(":nodes")
-    implementation project(':environment')
     implementation project(':syntactic')
     implementation project(":tokens")
     implementation project(":nodes")
     implementation project(":lexer")
     implementation project(':peekable-iterator')
+    implementation project(':reflections')
+    compileOnly "com.github.spotbugs:spotbugs-annotations:4.8.6"
+
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

@@ -8,6 +8,7 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
 public class CallWithAnotherFormatContent {
 
@@ -17,8 +18,8 @@ public class CallWithAnotherFormatContent {
     @Test
     void callWithFileFormatsContent() throws Exception {
         Formatter formatter = new Formatter();
-        Path original = Path.of(getClass().getClassLoader()
-                .getResource("toFormatTest.txt").toURI());
+        Path original = Path.of(Objects.requireNonNull(getClass().getClassLoader()
+                .getResource("toFormatTest.txt")).toURI());
         Path testFile = tempDir.resolve("toFormatTest.txt");
         Files.copy(original, testFile);
         Path rulesFile = tempDir.resolve("Rules.yaml");

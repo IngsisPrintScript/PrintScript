@@ -18,6 +18,8 @@ include('peekable-iterator')
 include('semantic')
 include('syntactic')
 include('tokens')
+include("reflections")
+
 
 // Global formatting and linting tasks
 gradle.rootProject {

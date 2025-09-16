@@ -1,9 +1,24 @@
 plugins {
-    id 'buildlogic.java-library-conventions'
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {
     implementation project(":common")
     implementation project(":tokens")
     implementation project(":peekable-iterator")
+    implementation project(":reflections")
+    compileOnly "com.github.spotbugs:spotbugs-annotations:4.8.6"
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+}
+
+test {
+    useJUnitPlatform()
 }

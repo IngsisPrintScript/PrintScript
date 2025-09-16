@@ -1,13 +1,13 @@
-package com.ingsis.printscript.astnodes.expression.binary.v1;
+package com.ingsis.printscript.astnodes.expression.binary;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.VisitorInterface;
 
-public class LesserThanNode extends BinaryExpression {
+public class GreaterThanNode extends BinaryExpression {
+
     @Override
     public Result<Object> evaluate() {
         Result<ExpressionNode> getLeftChild = getLeftChild();
@@ -36,18 +36,18 @@ public class LesserThanNode extends BinaryExpression {
         try {
             double leftNumber = Double.parseDouble(leftResult.toString());
             double rightNumber = Double.parseDouble(rightResult.toString());
-            return new CorrectResult<>(leftNumber < rightNumber);
+            return new CorrectResult<>(leftNumber > rightNumber);
         } catch (Exception ignore) {
 
         }
-        return new IncorrectResult<>("Cannot compare non-numeric types with '<' operator.");
+        return new IncorrectResult<>("Cannot compare non-numeric types with '>' operator.");
     }
 
     @Override
     public Result<String> prettyPrint() {
         String leftChildResult = this.getLeftChild().result().prettyPrint().result();
         String rightChildResult = this.getRightChild().result().prettyPrint().result();
-        return new CorrectResult<>(leftChildResult + " < " + rightChildResult);
+        return new CorrectResult<>(leftChildResult + " > " + rightChildResult);
     }
 
     @Override

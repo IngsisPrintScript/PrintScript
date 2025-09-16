@@ -1,5 +1,9 @@
 plugins {
-    id 'buildlogic.java-common-conventions'
+    id 'java'
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {

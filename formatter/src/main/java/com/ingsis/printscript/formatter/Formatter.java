@@ -7,6 +7,7 @@ import com.ingsis.printscript.formatter.yamlAnalizer.ReadRulesInterface;
 import com.ingsis.printscript.lexer.Lexical;
 import com.ingsis.printscript.repositories.CodeRepository;
 import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.semantic.SemanticAnalyzer;
 import com.ingsis.printscript.semantic.enforcers.SemanticRulesChecker;
@@ -29,7 +30,7 @@ import picocli.CommandLine;
         mixinStandardHelpOptions = true,
         version = "1.0")
 public class Formatter implements FormatterInterface, Callable<Result<Path>> {
-    private final ReadRulesInterface readRules = new ReadRules();
+    private ReadRulesInterface readRules = new ReadRules();
 
     public static void main(String[] args) throws Exception {
         int exitCode = new CommandLine(new Formatter()).execute(args);
@@ -46,7 +47,7 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>> {
     @Override
     public Result<String> format(Node root) {
         if (readRules == null) {
-            readRules = (rulesFile != null) ? new Read(rulesFile) : new ReadRules();
+            readRules = (rulesFile != null) ? new ReadRules(rulesFile) : new ReadRules();
         }
         HashMap<String, Object> rulesToFormat = readRules.readRules();
         return root.accept(new FormatterVisitor(new SeparationFormatter(rulesToFormat)));
