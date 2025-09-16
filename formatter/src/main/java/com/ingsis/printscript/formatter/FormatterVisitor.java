@@ -15,7 +15,6 @@ import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.statements.function.DeclareFunctionNode;
 import com.ingsis.printscript.formatter.FormatterRules.SeparationFormatter;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
@@ -117,11 +116,6 @@ public class FormatterVisitor implements VisitorInterface {
 
     @Override
     public Result<String> visit(CallArgumentNode node) {
-        return new IncorrectResult<>("Not implemented yet.");
-    }
-
-    @Override
-    public Result<String> visit(DeclareFunctionNode node) {
         return new IncorrectResult<>("Not implemented yet.");
     }
 
