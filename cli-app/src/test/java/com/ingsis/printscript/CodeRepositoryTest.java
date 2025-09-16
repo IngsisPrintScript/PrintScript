@@ -19,11 +19,11 @@ public class CodeRepositoryTest {
     @TempDir Path tempDir;
 
     private Path testFile;
-    private final String content = "abc";
 
     @BeforeEach
     void setUp() throws IOException {
         testFile = tempDir.resolve("test.txt");
+        String content = "abc";
         Files.writeString(testFile, content);
     }
 
