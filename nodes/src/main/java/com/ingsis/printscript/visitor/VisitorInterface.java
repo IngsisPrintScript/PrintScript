@@ -26,7 +26,7 @@ public interface VisitorInterface {
 
     Result<String> visit(PrintStatementNode node);
 
-    Result<String> visit(IfStatementNode  node);
+    Result<String> visit(IfStatementNode node);
 
     Result<String> visit(AscriptionNode node);
 

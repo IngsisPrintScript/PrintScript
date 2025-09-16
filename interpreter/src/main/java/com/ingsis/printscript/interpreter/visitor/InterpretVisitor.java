@@ -19,7 +19,6 @@ import com.ingsis.printscript.runtime.entries.VariableEntry;
 import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.visitor.InterpretVisitorInterface;
 import com.ingsis.printscript.visitor.InterpretableNode;
-
 import java.util.Collection;
 import java.util.Locale;
 

@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.binary.v1;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
@@ -38,8 +42,9 @@ public class GreaterThanNode extends BinaryExpression {
             double leftNumber = Double.parseDouble(leftResult.toString());
             double rightNumber = Double.parseDouble(rightResult.toString());
             return new CorrectResult<>(leftNumber > rightNumber);
-        } catch (Exception ignore) {
-
+        } catch (RuntimeException rte) {
+            throw rte;
+        } catch (Exception ignored) {
         }
         return new IncorrectResult<>("Cannot compare non-numeric types with '>' operator.");
     }

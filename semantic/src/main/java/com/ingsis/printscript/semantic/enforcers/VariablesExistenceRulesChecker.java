@@ -23,7 +23,6 @@ import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
 import com.ingsis.printscript.visitor.InterpretableNode;
-
 import java.util.Collection;
 
 public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
@@ -31,20 +30,19 @@ public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
 
     public VariablesExistenceRulesChecker() {}
 
-
     @Override
     public Result<String> check(IfStatementNode node) {
         Collection<InterpretableNode> thenBode = node.thenBody();
         for (InterpretableNode bodyNode : thenBode) {
             Result<String> checkResult = bodyNode.acceptCheck(this);
-            if (!checkResult.isSuccessful()){
+            if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
         }
         Collection<InterpretableNode> elseBody = node.thenBody();
         for (InterpretableNode bodyNode : elseBody) {
             Result<String> checkResult = bodyNode.acceptCheck(this);
-            if (!checkResult.isSuccessful()){
+            if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
         }

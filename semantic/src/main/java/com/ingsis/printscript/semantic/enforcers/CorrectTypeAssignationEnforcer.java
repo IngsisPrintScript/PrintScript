@@ -23,7 +23,6 @@ import com.ingsis.printscript.semantic.rules.operations.OperationFormatSemanticR
 import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
 import com.ingsis.printscript.visitor.InterpretableNode;
-
 import java.util.Collection;
 
 public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
@@ -41,14 +40,14 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
         Collection<InterpretableNode> thenBode = node.thenBody();
         for (InterpretableNode bodyNode : thenBode) {
             Result<String> checkResult = bodyNode.acceptCheck(this);
-            if (!checkResult.isSuccessful()){
+            if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
         }
         Collection<InterpretableNode> elseBody = node.thenBody();
         for (InterpretableNode bodyNode : elseBody) {
             Result<String> checkResult = bodyNode.acceptCheck(this);
-            if (!checkResult.isSuccessful()){
+            if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
         }

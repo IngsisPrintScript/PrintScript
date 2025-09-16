@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.binary.v1;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
@@ -38,7 +42,9 @@ public class DoubleEqualNode extends BinaryExpression {
             Double leftNumber = Double.parseDouble(leftResult.toString());
             Double rightNumber = Double.parseDouble(rightResult.toString());
             return new CorrectResult<>(leftNumber.equals(rightNumber));
-        } catch (Exception ignore) {
+        } catch (RuntimeException rte) {
+            throw rte;
+        } catch (Exception ignored) {
         }
 
         if (leftResult instanceof Boolean && rightResult instanceof Boolean) {
@@ -46,8 +52,12 @@ public class DoubleEqualNode extends BinaryExpression {
         }
 
         if (leftResult != null && rightResult != null) {
-            return new CorrectResult<>(leftResult.toString().replace("\"", "").replace("'", "")
-                    .equals(rightResult.toString().replace("\"", "").replace("'", "")));
+            return new CorrectResult<>(
+                    leftResult
+                            .toString()
+                            .replace("\"", "")
+                            .replace("'", "")
+                            .equals(rightResult.toString().replace("\"", "").replace("'", "")));
         }
 
         return new IncorrectResult<>("Cannot compare different types.");

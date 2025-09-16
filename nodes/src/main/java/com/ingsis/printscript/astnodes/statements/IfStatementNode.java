@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.statements;
 
 import com.ingsis.printscript.astnodes.Node;
@@ -8,7 +12,6 @@ import com.ingsis.printscript.visitor.InterpretableNode;
 import com.ingsis.printscript.visitor.RuleVisitor;
 import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import com.ingsis.printscript.visitor.VisitorInterface;
-
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +22,10 @@ public class IfStatementNode implements Node, SemanticallyCheckable, Interpretab
     private final Collection<InterpretableNode> thenBody;
     private final Collection<InterpretableNode> elseBody;
 
-    public IfStatementNode(ExpressionNode condition, Collection<InterpretableNode> thenBody, Collection<InterpretableNode> elseBody) {
+    public IfStatementNode(
+            ExpressionNode condition,
+            Collection<InterpretableNode> thenBody,
+            Collection<InterpretableNode> elseBody) {
         this.condition = condition;
         this.thenBody = Collections.unmodifiableCollection(thenBody);
         this.elseBody = Collections.unmodifiableCollection(elseBody);
@@ -52,6 +58,7 @@ public class IfStatementNode implements Node, SemanticallyCheckable, Interpretab
     public Collection<InterpretableNode> thenBody() {
         return Collections.unmodifiableCollection(thenBody);
     }
+
     public Collection<InterpretableNode> elseBody() {
         return Collections.unmodifiableCollection(elseBody);
     }
