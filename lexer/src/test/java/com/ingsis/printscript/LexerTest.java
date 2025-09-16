@@ -9,6 +9,7 @@ import com.ingsis.printscript.peekableiterator.PeekableIterator;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -24,6 +25,9 @@ public class LexerTest {
         private int index = 0;
         private final String content;
 
+        @SuppressFBWarnings(
+                value = "CT_CONSTRUCTOR_THROW",
+                justification = "Test helper class, okay to throw exception in constructor")
         public CodeRepository(Path path) {
             try {
                 this.content = Files.readString(path);

@@ -20,14 +20,12 @@ public class CliAppTest {
 
     @Test
     void testExecuteReturnsCorrectResultOnExit() {
-
         String simulatedInput = "exit\n";
         InputStream inputStream =
                 new ByteArrayInputStream(simulatedInput.getBytes(StandardCharsets.UTF_8));
         System.setIn(inputStream);
 
         CliApp app = new CliApp();
-
         Result<String> result = app.execute();
 
         Assertions.assertTrue(result.isSuccessful(), "El resultado debe ser exitoso");
@@ -36,9 +34,8 @@ public class CliAppTest {
 
     @Test
     void testCallReturnsZeroWhenExit() throws Exception {
-
         String simulatedInput = "exit\n";
-        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes()));
+        System.setIn(new ByteArrayInputStream(simulatedInput.getBytes(StandardCharsets.UTF_8)));
 
         CliApp app = new CliApp();
         int exitCode = app.call();
@@ -61,23 +58,17 @@ public class CliAppTest {
         Assertions.assertEquals("IO Error", result.errorMessage());
     }
 
-    static class FakeInterpreter
-            implements com.ingsis.printscript.interpreter.InterpreterInterface {
+    static class FakeInterpreter implements InterpreterInterface {
         @Override
         public Result<String> interpreter() {
-            return new com.ingsis.printscript.results.IncorrectResult<>("Fake error");
+            return new IncorrectResult<>("Fake error");
         }
     }
 
     static class CliAppFake extends CliApp {
         @Override
         public Result<String> execute() {
-            java.util.Queue<Character> buffer = new java.util.LinkedList<>();
             InterpreterInterface interpreter = new FakeInterpreter();
-            String line = "some code";
-            for (char c : line.toCharArray()) {
-                buffer.add(c);
-            }
             Result<String> interpretResult = interpreter.interpreter();
             if (!interpretResult.isSuccessful()) {
                 System.out.println(interpretResult.errorMessage());
@@ -117,12 +108,13 @@ public class CliAppTest {
     @Test
     void testCallReturnsOneWhenResultNotSuccessful() throws Exception {
         CliAppBad app = new CliAppBad();
-        java.io.ByteArrayOutputStream out = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(out));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out, true, StandardCharsets.UTF_8));
 
         int exitCode = app.call();
 
         Assertions.assertEquals(0, exitCode);
-        Assertions.assertFalse(out.toString().contains("Error: Forced error"));
+        Assertions.assertFalse(
+                out.toString(StandardCharsets.UTF_8).contains("Error: Forced error"));
     }
 }
