@@ -22,4 +22,7 @@ public interface NodeFactoryInterface {
     Node createLiteralNode(String literal);
 
     Node createAdditionNode();
+    Node createGreaterThanNode();
+    Node createLesserThanNode();
+    Node createDoubleEqualNode();
 }
