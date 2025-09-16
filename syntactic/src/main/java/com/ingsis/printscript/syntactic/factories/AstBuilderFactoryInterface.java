@@ -11,6 +11,8 @@ public interface AstBuilderFactoryInterface {
 
     ASTreeBuilderInterface createAscriptionBuilder();
 
+    ASTreeBuilderInterface createCallFunctionBuilder();
+
     ASTreeBuilderInterface createBinaryExpressionBuilder();
 
     ASTreeBuilderInterface createCallArgumentBuilder();

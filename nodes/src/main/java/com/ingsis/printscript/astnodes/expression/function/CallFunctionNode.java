@@ -9,7 +9,10 @@ import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.functions.PSFunction;
 import com.ingsis.printscript.visitor.RuleVisitor;
 import com.ingsis.printscript.visitor.VisitorInterface;
 import java.util.ArrayList;
@@ -36,7 +39,20 @@ public final class CallFunctionNode implements ExpressionNode {
 
     @Override
     public Result<Object> evaluate() {
-        return null;
+        Result<PSFunction> getFunctionResult = Runtime.getInstance().currentEnv().getFunction(identifier().name());
+        if (!getFunctionResult.isSuccessful()) {
+            return new IncorrectResult<>(getFunctionResult.errorMessage());
+        }
+        PSFunction function = getFunctionResult.result();
+        try {
+            return new CorrectResult<>(
+                    function.call(arguments.stream().map(it -> (Object) it.value().value()).toList())
+            );
+        } catch (RuntimeException rte) {
+            throw rte;
+        } catch (Exception e) {
+            return new IncorrectResult<>(e.getMessage());
+        }
     }
 
     @Override

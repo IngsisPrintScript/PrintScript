@@ -8,6 +8,7 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
@@ -16,6 +17,7 @@ import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
+import com.ingsis.printscript.runtime.functions.PSFunction;
 import com.ingsis.printscript.semantic.rules.operations.OperationFormatSemanticRule;
 import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.TypeSemanticRule;
@@ -83,6 +85,21 @@ public class CorrectTypeAssignationEnforcer extends SemanticRulesChecker {
             return new IncorrectResult<>(checkResult.errorMessage());
         }
     }
+
+    @Override
+    public Result<String> check(CallFunctionNode node) {
+        IdentifierNode identifierNode = node.identifier();
+        String identifier = identifierNode.name();
+        Result<PSFunction> getFunctionResult = Runtime.getInstance().currentEnv().getFunction(identifier);
+        if (!getFunctionResult.isSuccessful()) {
+            return new IncorrectResult<>(getFunctionResult.errorMessage());
+        }
+        if (typeRule == null) {
+            return new CorrectResult<>("Declaration does not have to check type if typeRule is null.");
+        }
+        return typeRule.checkRules(node);
+    }
+
 
     @Override
     public Result<String> check(IdentifierNode node) {

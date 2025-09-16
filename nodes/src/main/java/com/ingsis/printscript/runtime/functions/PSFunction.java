@@ -8,7 +8,7 @@ import com.ingsis.printscript.visitor.InterpretVisitorInterface;
 import java.util.List;
 
 public interface PSFunction {
-    Object call(List<Object> args, InterpretVisitorInterface interpreter);
+    Object call(List<Object> args);
 
     Class<?> returnType();
 

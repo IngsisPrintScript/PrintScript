@@ -23,7 +23,7 @@ public final class BuiltInFunction implements PSFunction {
     }
 
     @Override
-    public Object call(List<Object> args, InterpretVisitorInterface interpreter) {
+    public Object call(List<Object> args) {
         return implementation.apply(args);
     }
 
