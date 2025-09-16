@@ -9,6 +9,10 @@ import com.ingsis.printscript.tokens.TokenInterface;
 public interface TokenFactoryInterface {
     TokenInterface createLetKeywordToken();
 
+    TokenInterface createKeywordToken(String keyword, String value);
+
+    TokenInterface createPunctuationToken(String punctuation, String value);
+
     TokenInterface createPrintlnKeywordToken();
 
     TokenInterface createLeftParenthesisToken();

@@ -7,10 +7,10 @@ package com.ingsis.printscript.astnodes.expression.binary;
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.RuleVisitor;
 import java.util.List;
 
 public abstract class BinaryExpression implements Node, ExpressionNode {

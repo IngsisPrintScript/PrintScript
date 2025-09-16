@@ -54,3 +54,4 @@ gradle.rootProject {
         dependsOn subprojects.collect { it.tasks.matching { it.name == 'spotlessCheck' } }
     }
 }
+include 'reflections'

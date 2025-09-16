@@ -9,15 +9,17 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
 import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
+import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.formatter.FormatterRules.SeparationFormatter;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.VisitorInterface;
 
 public class FormatterVisitor implements VisitorInterface {
 
@@ -110,6 +112,16 @@ public class FormatterVisitor implements VisitorInterface {
     @Override
     public Result<String> visit(TypeNode node) {
         return new CorrectResult<>(node.type());
+    }
+
+    @Override
+    public Result<String> visit(CallArgumentNode node) {
+        return new IncorrectResult<>("Not implemented yet.");
+    }
+
+    @Override
+    public Result<String> visit(CallFunctionNode node) {
+        return new IncorrectResult<>("Not implemented yet.");
     }
 
     @Override

@@ -5,14 +5,17 @@
 package com.ingsis.printscript.semantic.rules.type;
 
 import com.ingsis.printscript.astnodes.Node;
+import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.factories.NodeFactory;
-import com.ingsis.printscript.environment.Environment;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
+import java.util.HashMap;
+import java.util.Map;
 
 public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterface typeGetter)
         implements SemanticRule {
@@ -31,7 +34,8 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
     public Result<String> checkRules(Node nodeToCheck) {
         if (!(nodeToCheck instanceof LiteralNode)) {
             if (nodeToCheck instanceof IdentifierNode(String name)) {
-                Result<String> getTypeResult = Environment.getInstance().getIdType(name);
+                Result<String> getTypeResult =
+                        Runtime.getInstance().currentEnv().getVariableType(name);
                 if (!getTypeResult.isSuccessful()) return getTypeResult;
                 String type = getTypeResult.result();
                 if (type.equals(expectedType)) {
@@ -40,6 +44,18 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
                     return new IncorrectResult<>("Type is not equal to the expected type");
                 }
             }
+            if (nodeToCheck instanceof CallFunctionNode callFunctionNode) {
+                Class<?> type =
+                        Runtime.getInstance()
+                                .currentEnv()
+                                .getFunction(callFunctionNode.identifier().name())
+                                .result()
+                                .returnType();
+                if (getType(type).equals(expectedType) || getType(type).equals("Any")) {
+                    return new CorrectResult<>("Type is equal to the expected type");
+                }
+                ;
+            }
             return new IncorrectResult<>("This rule does not apply to the received type of node");
         }
         if (expectedType.equals(typeGetter.getType(nodeToCheck))) {
@@ -47,5 +63,17 @@ public record TypeSemanticRule(String expectedType, ExpressionTypeGetterInterfac
         } else {
             return new IncorrectResult<>("Type is not equal to the expected type");
         }
+    }
+
+    private String getType(Class<?> clazz) {
+        Map<Class<?>, String> dict = new HashMap<Class<?>, String>();
+        dict.put(String.class, "String");
+        dict.put(Number.class, "Number");
+        dict.put(Boolean.class, "Boolean");
+        dict.put(Object.class, "Any");
+        if (dict.containsKey(clazz)) {
+            return dict.get(clazz);
+        }
+        return "Unknown";
     }
 }

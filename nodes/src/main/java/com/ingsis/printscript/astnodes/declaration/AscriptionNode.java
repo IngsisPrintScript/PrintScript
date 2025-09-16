@@ -7,10 +7,10 @@ package com.ingsis.printscript.astnodes.declaration;
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.VisitorInterface;
 import java.util.List;
 
 public class AscriptionNode implements Node {

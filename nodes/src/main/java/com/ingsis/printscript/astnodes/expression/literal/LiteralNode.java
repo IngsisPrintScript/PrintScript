@@ -6,10 +6,10 @@ package com.ingsis.printscript.astnodes.expression.literal;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
-import com.ingsis.printscript.astnodes.visitor.VisitorInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.visitor.RuleVisitor;
+import com.ingsis.printscript.visitor.VisitorInterface;
 import java.util.List;
 
 public record LiteralNode(String value) implements Node, ExpressionNode {
