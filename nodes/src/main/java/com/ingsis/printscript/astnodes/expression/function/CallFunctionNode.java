@@ -27,15 +27,9 @@ public final class CallFunctionNode implements ExpressionNode {
         this.arguments = Collections.unmodifiableCollection(arguments);
     }
 
-    public boolean hasIdentifier() {
-        return !identifier.isNil();
-    }
 
-    public Result<IdentifierNode> identifier() {
-        if (!hasIdentifier()) {
-            return new IncorrectResult<>("Function node has no identifier");
-        }
-        return new CorrectResult<>(identifier);
+    public IdentifierNode identifier() {
+        return identifier;
     }
 
     public Result<Collection<CallArgumentNode>> arguments() {
