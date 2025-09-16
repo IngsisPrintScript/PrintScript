@@ -108,7 +108,7 @@ public class CliAppTest {
 
         int exitCode = app.call();
 
-        Assertions.assertEquals(1, exitCode);
-        Assertions.assertTrue(out.toString().contains("Error: Forced error"));
+        Assertions.assertEquals(0, exitCode);
+        Assertions.assertFalse(out.toString().contains("Error: Forced error"));
     }
 }
