@@ -105,7 +105,12 @@ public class CliAppTest {
     static class CliAppBad extends CliApp {
         @Override
         public Result<String> execute() {
-            return new IncorrectResult<>("Forced error");
+            InterpreterInterface interpreter = new FakeInterpreter();
+            Result<String> interpretResult = interpreter.interpreter();
+            if (!interpretResult.isSuccessful()) {
+                System.out.println(interpretResult.errorMessage());
+            }
+            return interpretResult;
         }
     }
 

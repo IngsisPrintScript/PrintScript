@@ -18,6 +18,7 @@ import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.visitor.InterpretableNode;
 import com.ingsis.printscript.visitor.SemanticallyCheckable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -34,6 +35,7 @@ public class InterpreterTest {
         private int index = 0;
         private final String content;
 
+        @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
         public CodeRepository(Path path) {
             try {
                 this.content = Files.readString(path);

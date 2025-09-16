@@ -76,11 +76,5 @@ public class FormatterTest {
 
         Assertions.assertInstanceOf(CorrectResult.class, result);
         Assertions.assertEquals(testFile, result.result());
-
-        String content = Files.readString(testFile);
-        // Pareciese que consume los let y quedan los print, ni idea es una locura lo que ocurre
-        // en este test, y se va rotando con el otro entonces cuando uno formatea "Consume los let"
-        // y el otro pincha
-        // Assertions.assertFalse(content.contains("let"));
     }
 }
