@@ -22,26 +22,12 @@ public final class CallArgumentNode implements Node {
         this.value = value;
     }
 
-    public boolean hasIdentifier() {
-        return !identifier.isNil();
+    public IdentifierNode identifier() {
+        return identifier;
     }
 
-    public Result<IdentifierNode> identifier() {
-        if (!hasIdentifier()) {
-            return new IncorrectResult<>("Call Argument node has no identifier");
-        }
-        return new CorrectResult<>(identifier);
-    }
-
-    public boolean hasValue() {
-        return !value.isNil();
-    }
-
-    public Result<LiteralNode> value() {
-        if (!hasValue()) {
-            return new IncorrectResult<>("Call Argument node has no value");
-        }
-        return new CorrectResult<>(value);
+    public LiteralNode value() {
+        return value;
     }
 
     @Override

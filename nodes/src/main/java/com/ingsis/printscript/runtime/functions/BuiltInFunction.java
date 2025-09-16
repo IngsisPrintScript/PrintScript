@@ -1,9 +1,11 @@
 package com.ingsis.printscript.runtime.functions;
 
+import com.ingsis.printscript.visitor.InterpretVisitorInterface;
+
 import java.util.List;
 import java.util.function.Function;
 
-public class BuiltInFunction {
+public final class BuiltInFunction implements PSFunction {
     private final List<Class<?>> parameterTypes;
     private final Class<?> returnType;
     private final Function<List<Object>, Object> implementation;
@@ -14,7 +16,17 @@ public class BuiltInFunction {
         this.implementation = implementation;
     }
 
-    public Object call(List<Object> args) {
+    @Override
+    public Object call(List<Object> args, InterpretVisitorInterface interpreter) {
         return implementation.apply(args);
+    }
+
+    public Class<?> returnType() {
+        return returnType;
+    }
+
+    @Override
+    public List<Class<?>> parameterTypes() {
+        return parameterTypes;
     }
 }

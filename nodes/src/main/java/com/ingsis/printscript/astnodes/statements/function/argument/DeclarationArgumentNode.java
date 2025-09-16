@@ -21,27 +21,12 @@ public final class DeclarationArgumentNode implements Node {
         this.identifier = identifier;
         this.type = type;
     }
-
-    public boolean hasIdentifier() {
-        return !identifier.isNil();
+    public IdentifierNode identifier() {
+        return identifier;
     }
 
-    public boolean hasType() {
-        return !type.isNil();
-    }
-
-    public Result<IdentifierNode> identifier() {
-        if (!hasIdentifier()) {
-            return new IncorrectResult<>("Declare argument node has no identifier.");
-        }
-        return new CorrectResult<>(identifier);
-    }
-
-    public Result<TypeNode> type() {
-        if (!hasType()) {
-            return new IncorrectResult<>("Declare argument node has no type.");
-        }
-        return new CorrectResult<>(type);
+    public TypeNode type() {
+        return type;
     }
 
     @Override
