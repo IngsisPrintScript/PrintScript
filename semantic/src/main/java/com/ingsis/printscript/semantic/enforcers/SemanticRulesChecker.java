@@ -4,6 +4,7 @@ import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
+import com.ingsis.printscript.astnodes.statements.IfStatementNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
@@ -32,6 +33,11 @@ public class SemanticRulesChecker implements RuleVisitor {
 
     @Override
     public Result<String> check(PrintStatementNode node) {
+        return checkNode(node, RuleVisitor::check);
+    }
+
+    @Override
+    public Result<String> check(IfStatementNode node) {
         return checkNode(node, RuleVisitor::check);
     }
 

@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.tokenizers.punctuation.v1brackets;
 
 import com.ingsis.printscript.results.CorrectResult;
@@ -16,8 +20,9 @@ public class LeftBracketTokenizer extends PunctuationTokenizer {
 
     @Override
     public Result<TokenInterface> tokenize(String input) {
-        if (!canTokenize(input)) {return new IncorrectResult<>("Cannot tokenize provided input");}
+        if (!canTokenize(input)) {
+            return new IncorrectResult<>("Cannot tokenize provided input");
+        }
         return new CorrectResult<>(new TokenFactory().createRightParenthesisToken());
     }
-
 }

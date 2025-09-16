@@ -1,0 +1,15 @@
+plugins {
+    id 'buildlogic.java-application-conventions'
+}
+
+dependencies {
+    implementation project(':common')
+    implementation project(':peekable-iterator')
+    implementation project(':cli-app')
+    implementation project(':tokens')
+    implementation project(':nodes')
+    implementation project(':lexer')
+    implementation project(':syntactic')
+    implementation project(':semantic')
+    implementation project(':interpreter')
+}

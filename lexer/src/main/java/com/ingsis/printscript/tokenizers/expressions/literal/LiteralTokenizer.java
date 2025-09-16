@@ -19,6 +19,10 @@ public record LiteralTokenizer(TokenizerInterface nextTokenizer) implements Toke
             return input.length() >= 2;
         }
 
+        if (input.equals("True") || input.equals("False")) {
+            return true;
+        }
+
         try {
             if (input.contains("+") || input.contains("-")) {
                 return false;

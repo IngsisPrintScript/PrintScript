@@ -9,10 +9,14 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.binary.AdditionNode;
 import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
+import com.ingsis.printscript.astnodes.expression.binary.v1.DoubleEqualNode;
+import com.ingsis.printscript.astnodes.expression.binary.v1.GreaterThanNode;
+import com.ingsis.printscript.astnodes.expression.binary.v1.LesserThanNode;
 import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.function.argument.CallArgumentNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
+import com.ingsis.printscript.astnodes.statements.IfStatementNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.formatter.FormatterRules.SeparationFormatter;
@@ -65,6 +69,11 @@ public class FormatterVisitor implements VisitorInterface {
     }
 
     @Override
+    public Result<String> visit(IfStatementNode node) {
+        return null;
+    }
+
+    @Override
     public Result<String> visit(AscriptionNode node) {
         StringBuilder sentence = new StringBuilder();
         Result<String> type = this.visit(node.type().result());
@@ -83,6 +92,21 @@ public class FormatterVisitor implements VisitorInterface {
         Result<String> left = node.getLeftChild().result().accept(this);
         Result<String> right = node.getRightChild().result().accept(this);
         return new CorrectResult<>(left.result() + " + " + right.result());
+    }
+
+    @Override
+    public Result<String> visit(DoubleEqualNode node) {
+        return null;
+    }
+
+    @Override
+    public Result<String> visit(LesserThanNode node) {
+        return null;
+    }
+
+    @Override
+    public Result<String> visit(GreaterThanNode node) {
+        return null;
     }
 
     @Override

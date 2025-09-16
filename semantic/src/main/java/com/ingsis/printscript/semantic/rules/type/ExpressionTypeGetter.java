@@ -36,9 +36,19 @@ public record ExpressionTypeGetter() implements ExpressionTypeGetterInterface {
 
             if (isNumber) {
                 return "Number";
-            } else {
-                return "UnknownType";
             }
+            boolean isBoolean = true;
+
+            try {
+                Boolean.parseBoolean(value);
+            } catch (Exception ignore) {
+                isBoolean = false;
+            }
+            if (isBoolean) {
+                return "Boolean";
+            }
+
+            return "UnknownType";
         } else {
             if (!(node instanceof BinaryExpression binaryExpression)) return "UnknownType";
             Result<ExpressionNode> getLeftChildResult = binaryExpression.getLeftChild();

@@ -5,6 +5,7 @@ import com.ingsis.printscript.formatter.FormatterRules.SeparationFormatter;
 import com.ingsis.printscript.formatter.yamlAnalizer.ReadRules;
 import com.ingsis.printscript.formatter.yamlAnalizer.ReadRulesInterface;
 import com.ingsis.printscript.lexer.Lexical;
+import com.ingsis.printscript.peekableiterator.PeekableIterator;
 import com.ingsis.printscript.repositories.CodeRepository;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
@@ -58,7 +59,7 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>> {
     public Result<Path> call() throws Exception {
         File txt = inputFile.toFile();
         CodeRepository repo = new CodeRepository(inputFile);
-        Iterator<TokenInterface> tokenIterator =
+        PeekableIterator<TokenInterface> tokenIterator =
                 new Lexical(new TokenizerFactory().createDefaultTokenizer(), repo);
         Iterator<SemanticallyCheckable> checkableNodesIterator =
                 new Syntactic(new NodeBuilderChain().createDefaultChain(), tokenIterator);

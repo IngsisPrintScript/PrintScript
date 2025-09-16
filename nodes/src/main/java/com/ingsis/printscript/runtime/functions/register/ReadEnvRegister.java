@@ -4,7 +4,6 @@
 
 package com.ingsis.printscript.runtime.functions.register;
 
-import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.runtime.functions.BuiltInFunction;
 import java.util.List;
 import java.util.Map;
@@ -19,10 +18,10 @@ public final class ReadEnvRegister extends BuiltInFunctionsRegister {
                 new BuiltInFunction(
                         List.of(String.class),
                         Object.class,
-                        args ->
-                                Runtime.getInstance()
-                                        .currentEnv()
-                                        .getVariableValue((String) args.get(0))));
+                        args -> {
+                            String path = args.get(0).toString();
+                            return System.getenv(path);
+                        }));
         return functionMap;
     }
 }

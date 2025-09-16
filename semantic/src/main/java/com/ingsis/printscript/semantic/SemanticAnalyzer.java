@@ -71,12 +71,8 @@ public class SemanticAnalyzer implements SemanticInterface {
         InterpretableNode interpretableCandidate = null;
          while (checkableNodesIterator.hasNext()) {
             SemanticallyCheckable checkable = checkableNodesIterator.next();
-            if (!this.isSemanticallyValid(checkable)) {
-                if (interpretableCandidate != null) {
-                    return interpretableCandidate;
-                }
-            } else {
-                interpretableCandidate = (InterpretableNode) checkable;
+            if (this.isSemanticallyValid(checkable)) {
+                return (InterpretableNode) checkable;
             }
         }
         return interpretableCandidate;

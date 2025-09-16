@@ -11,6 +11,7 @@ import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
+import com.ingsis.printscript.astnodes.statements.IfStatementNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.results.CorrectResult;
@@ -21,11 +22,32 @@ import com.ingsis.printscript.runtime.entries.VariableEntry;
 import com.ingsis.printscript.semantic.rules.SemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.DeclaredVariableSemanticRule;
 import com.ingsis.printscript.semantic.rules.variables.NotDeclaredVariableSemanticRule;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import java.util.Collection;
 
 public class VariablesExistenceRulesChecker extends SemanticRulesChecker {
     private SemanticRule variableSemanticRuleChecker;
 
     public VariablesExistenceRulesChecker() {}
+
+    @Override
+    public Result<String> check(IfStatementNode node) {
+        Collection<InterpretableNode> thenBode = node.thenBody();
+        for (InterpretableNode bodyNode : thenBode) {
+            Result<String> checkResult = bodyNode.acceptCheck(this);
+            if (!checkResult.isSuccessful()) {
+                return new IncorrectResult<>(checkResult.errorMessage());
+            }
+        }
+        Collection<InterpretableNode> elseBody = node.thenBody();
+        for (InterpretableNode bodyNode : elseBody) {
+            Result<String> checkResult = bodyNode.acceptCheck(this);
+            if (!checkResult.isSuccessful()) {
+                return new IncorrectResult<>(checkResult.errorMessage());
+            }
+        }
+        return new CorrectResult<>("If passes this check.");
+    }
 
     @Override
     public Result<String> check(LetStatementNode node) {

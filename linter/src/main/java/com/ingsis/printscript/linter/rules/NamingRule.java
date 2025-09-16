@@ -9,6 +9,7 @@ import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.expression.function.CallFunctionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
 import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
+import com.ingsis.printscript.astnodes.statements.IfStatementNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.linter.api.AnalyzerConfig;
@@ -106,6 +107,11 @@ public final class NamingRule implements Rule, RuleVisitor {
     @Override
     public Result<String> check(PrintStatementNode node) {
         return new CorrectResult<>("");
+    }
+
+    @Override
+    public Result<String> check(IfStatementNode node) {
+        return null;
     }
 
     private boolean matches(String name, AnalyzerConfig.CaseStyle style) {
