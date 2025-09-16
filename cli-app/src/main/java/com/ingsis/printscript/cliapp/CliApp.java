@@ -8,6 +8,7 @@ import com.ingsis.printscript.interpreter.Interpreter;
 import com.ingsis.printscript.interpreter.InterpreterInterface;
 import com.ingsis.printscript.interpreter.visitor.InterpretVisitor;
 import com.ingsis.printscript.lexer.Lexical;
+import com.ingsis.printscript.peekableiterator.PeekableIterator;
 import com.ingsis.printscript.repositories.CliRepository;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
@@ -71,7 +72,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
 
     private static InterpreterInterface getInterpreter(Queue<Character> buffer) {
         CliRepository characterIterator = new CliRepository(buffer);
-        Iterator<TokenInterface> tokenIterator =
+        PeekableIterator<TokenInterface> tokenIterator =
                 new Lexical(new TokenizerFactory().createDefaultTokenizer(), characterIterator);
         Iterator<SemanticallyCheckable> checkableNodesIterator =
                 new Syntactic(new NodeBuilderChain().createDefaultChain(), tokenIterator);

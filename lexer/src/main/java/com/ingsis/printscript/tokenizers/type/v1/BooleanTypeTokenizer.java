@@ -18,10 +18,6 @@ public class BooleanTypeTokenizer extends TypeTokenizer {
         super(new FinalTokenizer());
     }
 
-    public BooleanTypeTokenizer(TokenizerInterface nextTokenizer) {
-        super(nextTokenizer);
-    }
-
     @Override
     public Boolean canTokenize(String input) {
         return input.equals("Boolean");

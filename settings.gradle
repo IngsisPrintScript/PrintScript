@@ -55,3 +55,4 @@ gradle.rootProject {
     }
 }
 include 'reflections'
+include 'interpreter-app'
