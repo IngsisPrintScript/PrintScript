@@ -19,7 +19,6 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -29,7 +28,8 @@ public class Syntactic implements SyntacticInterface {
     private final Deque<SemanticallyCheckable> NODE_CACHE;
 
     @SuppressFBWarnings("EI_EXPOSE_REP2")
-    public Syntactic(ASTreeBuilderInterface treeBuilder, PeekableIterator<TokenInterface> tokenIterator) {
+    public Syntactic(
+            ASTreeBuilderInterface treeBuilder, PeekableIterator<TokenInterface> tokenIterator) {
         this.TREE_BUILDER = treeBuilder;
         this.TOKEN_ITERATOR = tokenIterator;
         this.NODE_CACHE = new ArrayDeque<>();
@@ -93,13 +93,12 @@ public class Syntactic implements SyntacticInterface {
             Result<SemanticallyCheckable> buildResult = this.buildAbstractSyntaxTree(stream);
             if (buildResult.isSuccessful()) {
                 biggestBuild = buildResult.result();
-                TOKEN_ITERATOR.next();
             } else {
                 if (biggestBuild != null) {
                     return biggestBuild;
                 }
-                TOKEN_ITERATOR.next();
             }
+            TOKEN_ITERATOR.next();
         }
 
         return biggestBuild;

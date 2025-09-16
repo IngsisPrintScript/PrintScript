@@ -1,2 +1,4 @@
 let t:Boolean = True;
-println(t);
+if (t) {
+    println(True);
+}
