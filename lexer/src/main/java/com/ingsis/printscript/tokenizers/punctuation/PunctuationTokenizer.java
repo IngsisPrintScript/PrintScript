@@ -32,8 +32,7 @@ public class PunctuationTokenizer implements TokenizerInterface {
                         LeftBraceTokenizer.class,
                         RightBraceTokenizer.class,
                         LeftParenthesisTokenizer.class,
-                        RightParenthesisTokenizer.class
-                );
+                        RightParenthesisTokenizer.class);
     }
 
     @Override

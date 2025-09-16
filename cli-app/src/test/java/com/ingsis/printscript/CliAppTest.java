@@ -1,16 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript;
 
 import com.ingsis.printscript.cliapp.CliApp;
 import com.ingsis.printscript.interpreter.InterpreterInterface;
-import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.*;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
 
 public class CliAppTest {
 
@@ -56,7 +60,8 @@ public class CliAppTest {
         Assertions.assertEquals("IO Error", result.errorMessage());
     }
 
-    static class FakeInterpreter implements com.ingsis.printscript.interpreter.InterpreterInterface {
+    static class FakeInterpreter
+            implements com.ingsis.printscript.interpreter.InterpreterInterface {
         @Override
         public Result<String> interpreter() {
             return new com.ingsis.printscript.results.IncorrectResult<>("Fake error");
@@ -90,7 +95,8 @@ public class CliAppTest {
 
         Assertions.assertFalse(result.isSuccessful());
         Assertions.assertEquals("Fake error", result.errorMessage());
-        Assertions.assertTrue(out.toString().contains("Fake error"), "Debe imprimir el mensaje de error");
+        Assertions.assertTrue(
+                out.toString().contains("Fake error"), "Debe imprimir el mensaje de error");
     }
 
     static class CliAppBad extends CliApp {

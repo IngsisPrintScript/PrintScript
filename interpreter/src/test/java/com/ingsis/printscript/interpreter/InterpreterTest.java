@@ -16,6 +16,8 @@ import com.ingsis.printscript.syntactic.Syntactic;
 import com.ingsis.printscript.syntactic.ast.builders.cor.NodeBuilderChain;
 import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
@@ -23,9 +25,6 @@ import java.nio.file.Path;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
-
-import com.ingsis.printscript.visitor.InterpretableNode;
-import com.ingsis.printscript.visitor.SemanticallyCheckable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

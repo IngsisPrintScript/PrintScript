@@ -11,3 +11,7 @@ dependencies {
     implementation project(':interpreter')
     implementation project(':peekable-iterator')
 }
+
+application {
+    mainClassName = "CliApp"
+}

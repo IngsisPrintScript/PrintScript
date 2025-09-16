@@ -1,20 +1,22 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript;
 
 import com.ingsis.printscript.repositories.CodeRepository;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.NoSuchElementException;
-
 public class CodeRepositoryTest {
 
-    @TempDir
-    Path tempDir;
+    @TempDir Path tempDir;
 
     private Path testFile;
     private final String content = "abc";
@@ -28,7 +30,7 @@ public class CodeRepositoryTest {
     @Test
     void testHasNext() {
         CodeRepository repo = new CodeRepository(testFile);
-       Assertions.assertTrue(repo.hasNext());
+        Assertions.assertTrue(repo.hasNext());
         repo.next();
         repo.next();
         repo.next();
@@ -70,5 +72,4 @@ public class CodeRepositoryTest {
         repo.next();
         Assertions.assertThrows(NoSuchElementException.class, repo::peek);
     }
-
 }
