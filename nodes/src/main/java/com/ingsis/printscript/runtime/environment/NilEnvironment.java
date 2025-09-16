@@ -7,6 +7,7 @@ package com.ingsis.printscript.runtime.environment;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.runtime.functions.PSFunction;
 
 public class NilEnvironment implements EnvironmentInterface {
 
@@ -32,6 +33,16 @@ public class NilEnvironment implements EnvironmentInterface {
 
     @Override
     public Boolean variableIsDeclared(String id) {
+        return false;
+    }
+
+    @Override
+    public Result<PSFunction> getFunction(String identifier) {
+        return new IncorrectResult<>("Nil env cannot do this operation.");
+    }
+
+    @Override
+    public Boolean hasFunction(String identifier) {
         return false;
     }
 }

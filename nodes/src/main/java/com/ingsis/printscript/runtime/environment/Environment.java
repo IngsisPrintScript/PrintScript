@@ -8,6 +8,7 @@ import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.runtime.functions.PSFunction;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -66,6 +67,16 @@ public class Environment implements EnvironmentInterface {
     @Override
     public Boolean variableIsDeclared(String id) {
         return variableIsDeclaredHere(id) || fatherEnvironment.variableIsDeclared(id);
+    }
+
+    @Override
+    public Result<PSFunction> getFunction(String identifier) {
+        return fatherEnvironment.getFunction(identifier);
+    }
+
+    @Override
+    public Boolean hasFunction(String identifier) {
+        return fatherEnvironment.hasFunction(identifier);
     }
 
     private Boolean variableIsDeclaredHere(String id) {
