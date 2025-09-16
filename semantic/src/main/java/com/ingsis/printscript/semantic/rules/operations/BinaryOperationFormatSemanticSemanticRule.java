@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic.rules.operations;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.rules.operations;
 
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
@@ -14,8 +17,9 @@ import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetter;
 import com.ingsis.printscript.semantic.rules.type.ExpressionTypeGetterInterface;
 
 public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSemanticRule {
-    private static final Node template = new NodeFactory().createAdditionNode();
-    private static final ExpressionTypeGetterInterface typeGetter = new ExpressionTypeGetter();
+    private static final Node TEMPLATE = new NodeFactory().createAdditionNode();
+    private static final ExpressionTypeGetterInterface TYPE_GETTER = new ExpressionTypeGetter();
+
     public BinaryOperationFormatSemanticSemanticRule() {}
 
     @Override
@@ -25,7 +29,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
 
     @Override
     public Result<String> checkRules(Node nodeToCheck) {
-        if (!(nodeToCheck instanceof BinaryExpression binaryExpression)){
+        if (!(nodeToCheck instanceof BinaryExpression binaryExpression)) {
             return new IncorrectResult<>("This rule does not apply to the received node.");
         }
         Result<ExpressionNode> getLeftNodeResult = binaryExpression.getLeftChild();
@@ -35,15 +39,15 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         ExpressionNode leftChild = getLeftNodeResult.result();
         String expectedType;
         if (leftChild instanceof LiteralNode literalLeftNode) {
-            expectedType =  typeGetter.getType(literalLeftNode);
+            expectedType = TYPE_GETTER.getType(literalLeftNode);
         } else if (leftChild instanceof IdentifierNode identifierLeftNode) {
-            expectedType = typeGetter.getType(identifierLeftNode);
+            expectedType = TYPE_GETTER.getType(identifierLeftNode);
         } else {
             Result<String> checkResult = new OperationFormatSemanticRule().checkRules(nodeToCheck);
             if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
-            expectedType = typeGetter.getType(leftChild);
+            expectedType = TYPE_GETTER.getType(leftChild);
         }
 
         Result<ExpressionNode> getRightNodeResult = binaryExpression.getRightChild();
@@ -52,11 +56,11 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
         }
         Node rightChild = getRightNodeResult.result();
         if (rightChild instanceof LiteralNode literalRightNode) {
-            if (!expectedType.equals(typeGetter.getType(literalRightNode))) {
+            if (!expectedType.equals(TYPE_GETTER.getType(literalRightNode))) {
                 return new IncorrectResult<>("This node does not pass the check.");
             }
-        } else if (rightChild instanceof IdentifierNode identifierRightNode ) {
-            if (!expectedType.equals(typeGetter.getType(identifierRightNode))) {
+        } else if (rightChild instanceof IdentifierNode identifierRightNode) {
+            if (!expectedType.equals(TYPE_GETTER.getType(identifierRightNode))) {
                 return new IncorrectResult<>("This node does not pass the check.");
             }
         } else {
@@ -64,7 +68,7 @@ public class BinaryOperationFormatSemanticSemanticRule extends OperationFormatSe
             if (!checkResult.isSuccessful()) {
                 return new IncorrectResult<>(checkResult.errorMessage());
             }
-            if (!expectedType.equals(typeGetter.getType(rightChild))) {
+            if (!expectedType.equals(TYPE_GETTER.getType(rightChild))) {
                 return new IncorrectResult<>("This node does not pass the check.");
             }
         }

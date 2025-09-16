@@ -1,5 +1,8 @@
-package com.ingsis.printscript.semantic.rules.type;
+/*
+ * My Project
+ */
 
+package com.ingsis.printscript.semantic.rules.type;
 
 import com.ingsis.printscript.astnodes.Node;
 

@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.syntactic.factories;
 
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;

@@ -1,13 +1,16 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.printscript.astnodes.expression.binary;
 
 import com.ingsis.printscript.astnodes.NilNode;
 import com.ingsis.printscript.astnodes.Node;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
+import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
-
 import java.util.List;
 
 public abstract class BinaryExpression implements Node, ExpressionNode {
@@ -22,6 +25,7 @@ public abstract class BinaryExpression implements Node, ExpressionNode {
     public Boolean hasLeftChild() {
         return !leftChild.isNil();
     }
+
     public Boolean hasRightChild() {
         return !rightChild.isNil();
     }
@@ -33,10 +37,11 @@ public abstract class BinaryExpression implements Node, ExpressionNode {
             return new IncorrectResult<>("It has no left child.");
         }
     }
+
     public Result<ExpressionNode> getRightChild() {
         if (hasRightChild()) {
             return new CorrectResult<>(rightChild);
-        }  else {
+        } else {
             return new IncorrectResult<>("It has no right child.");
         }
     }
@@ -45,6 +50,7 @@ public abstract class BinaryExpression implements Node, ExpressionNode {
         this.leftChild = leftChild;
         return new CorrectResult<>(leftChild);
     }
+
     public Result<ExpressionNode> setRightChild(ExpressionNode rightChild) {
         this.rightChild = rightChild;
         return new CorrectResult<>(rightChild);
