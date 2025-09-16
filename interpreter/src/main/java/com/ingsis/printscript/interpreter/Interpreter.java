@@ -8,27 +8,19 @@ import com.ingsis.printscript.astnodes.visitor.InterpretVisitorInterface;
 import com.ingsis.printscript.astnodes.visitor.InterpretableNode;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import java.util.ArrayList;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Iterator;
-import java.util.List;
 
 public class Interpreter implements InterpreterInterface {
     private final InterpretVisitorInterface interpretVisitor;
     private final Iterator<InterpretableNode> interpretableNodeIterator;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public Interpreter(
             InterpretVisitorInterface interpretVisitor,
             Iterator<InterpretableNode> interpretableNodeIterator) {
         this.interpretVisitor = interpretVisitor;
-        this.interpretableNodeIterator = createDefensiveCopy(interpretableNodeIterator);
-    }
-
-    private Iterator<InterpretableNode> createDefensiveCopy(Iterator<InterpretableNode> original) {
-        List<InterpretableNode> copyList = new ArrayList<>();
-        while (original.hasNext()) {
-            copyList.add(original.next());
-        }
-        return copyList.iterator();
+        this.interpretableNodeIterator = interpretableNodeIterator;
     }
 
     @Override

@@ -4,23 +4,55 @@
 
 package com.ingsis.printscript.tokenizers.separator;
 
-import com.ingsis.printscript.results.CorrectResult;
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
+import com.ingsis.printscript.tokenizers.FinalTokenizer;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
-import com.ingsis.printscript.tokens.factories.TokenFactory;
+import java.util.Collection;
 
-public record SeparatorTokenizer(TokenizerInterface nextTokenizer) implements TokenizerInterface {
+public class SeparatorTokenizer implements TokenizerInterface {
+    private final TokenizerInterface NEXT_TOKENIZER;
+    private final Collection<Class<? extends SeparatorTokenizer>> subclasses =
+            new ClassGraphReflectionsUtils().findSubclassesOf(SeparatorTokenizer.class).find();
+
+    public SeparatorTokenizer(TokenizerInterface NEXT_TOKENIZER) {
+        this.NEXT_TOKENIZER = NEXT_TOKENIZER;
+    }
+
+    public SeparatorTokenizer() {
+        this(new FinalTokenizer());
+    }
+
     @Override
     public Boolean canTokenize(String input) {
-        return input.matches("\\s+");
+        for (Class<? extends SeparatorTokenizer> subclass : subclasses) {
+            try {
+                TokenizerInterface tokenizer = subclass.getDeclaredConstructor().newInstance();
+                if (tokenizer.canTokenize(input)) {
+                    return true;
+                }
+            } catch (RuntimeException rte) {
+                throw rte;
+            } catch (Exception ignored) {
+            }
+        }
+        return false;
     }
 
     @Override
     public Result<TokenInterface> tokenize(String input) {
-        if (this.canTokenize(input)) {
-            return new CorrectResult<>(new TokenFactory().createSeparatorToken("SEPARATOR"));
+        for (Class<? extends SeparatorTokenizer> subclass : subclasses) {
+            try {
+                TokenizerInterface tokenizer = subclass.getDeclaredConstructor().newInstance();
+                if (tokenizer.canTokenize(input)) {
+                    return tokenizer.tokenize(input);
+                }
+            } catch (RuntimeException rte) {
+                throw rte;
+            } catch (Exception ignored) {
+            }
         }
-        return nextTokenizer.tokenize(input);
+        return NEXT_TOKENIZER.tokenize(input);
     }
 }

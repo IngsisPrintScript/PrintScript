@@ -4,16 +4,17 @@
 
 package com.ingsis.printscript.tokenizers.operator;
 
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.tokenizers.TokenizerInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Collection;
 
 public class OperatorTokenizer implements TokenizerInterface {
     private final TokenizerInterface nextTokenizer;
-    private final List<Class<? extends OperatorTokenizer>> subclasses =
-            List.of(AssignationOperatorTokenizer.class, AdditionOperatorTokenizer.class);
+    private final Collection<Class<? extends OperatorTokenizer>> subclasses =
+            new ClassGraphReflectionsUtils().findSubclassesOf(OperatorTokenizer.class).find();
 
     public OperatorTokenizer(TokenizerInterface nextTokenizer) {
         this.nextTokenizer = nextTokenizer;

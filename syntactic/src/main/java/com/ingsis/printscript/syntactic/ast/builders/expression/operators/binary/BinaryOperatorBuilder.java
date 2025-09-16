@@ -2,9 +2,10 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators;
+package com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary;
 
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
@@ -12,12 +13,19 @@ import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 import java.util.List;
 
 public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
-    private final List<Class<? extends BinaryOperatorBuilder>> SUBCLASSES =
-            List.of(AdditionOperatorBuilder.class, AssignationOperatorBuilder.class);
+    private final List<Class<? extends BinaryOperatorBuilder>> BINARY_OPERATOR_BUILDERS;
+
+    public BinaryOperatorBuilder() {
+        BINARY_OPERATOR_BUILDERS =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findSubclassesOf(BinaryOperatorBuilder.class)
+                                .find());
+    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
-        for (Class<? extends BinaryOperatorBuilder> subclass : SUBCLASSES) {
+        for (Class<? extends BinaryOperatorBuilder> subclass : BINARY_OPERATOR_BUILDERS) {
             try {
                 BinaryOperatorBuilder subclassBuilder =
                         subclass.getDeclaredConstructor().newInstance();
@@ -34,7 +42,7 @@ public class BinaryOperatorBuilder implements ASTreeBuilderInterface {
 
     @Override
     public Result<BinaryExpression> build(TokenStreamInterface tokenStream) {
-        for (Class<? extends BinaryOperatorBuilder> subclass : SUBCLASSES) {
+        for (Class<? extends BinaryOperatorBuilder> subclass : BINARY_OPERATOR_BUILDERS) {
             try {
                 BinaryOperatorBuilder subclassBuilder =
                         subclass.getDeclaredConstructor().newInstance();

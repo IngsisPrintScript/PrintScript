@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators;
+package com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary;
 
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
 import com.ingsis.printscript.astnodes.factories.NodeFactory;

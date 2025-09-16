@@ -10,23 +10,29 @@ import com.ingsis.printscript.astnodes.expression.literal.LiteralNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.astnodes.visitor.RuleVisitor;
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
+import java.util.Collection;
 import java.util.List;
 
 public class SemanticRulesChecker implements RuleVisitor {
-    private final List<Class<? extends SemanticRulesChecker>> rules;
+    private final Collection<Class<? extends SemanticRulesChecker>> ENFORCERS;
 
     public SemanticRulesChecker() {
-        rules = List.of(CorrectTypeAssignationEnforcer.class, VariablesExistenceRulesChecker.class);
+        ENFORCERS =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findSubclassesOf(SemanticRulesChecker.class)
+                                .find());
     }
 
     @Override
     public Result<String> check(LetStatementNode node) {
         try {
-            for (Class<? extends SemanticRulesChecker> rule : rules) {
-                RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
+            for (Class<? extends SemanticRulesChecker> enforcer : ENFORCERS) {
+                RuleVisitor checker = enforcer.getDeclaredConstructor().newInstance();
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
             }
@@ -41,7 +47,7 @@ public class SemanticRulesChecker implements RuleVisitor {
     @Override
     public Result<String> check(PrintStatementNode node) {
         try {
-            for (Class<? extends SemanticRulesChecker> rule : rules) {
+            for (Class<? extends SemanticRulesChecker> rule : ENFORCERS) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
@@ -57,7 +63,7 @@ public class SemanticRulesChecker implements RuleVisitor {
     @Override
     public Result<String> check(BinaryExpression node) {
         try {
-            for (Class<? extends SemanticRulesChecker> rule : rules) {
+            for (Class<? extends SemanticRulesChecker> rule : ENFORCERS) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
@@ -73,7 +79,7 @@ public class SemanticRulesChecker implements RuleVisitor {
     @Override
     public Result<String> check(IdentifierNode node) {
         try {
-            for (Class<? extends SemanticRulesChecker> rule : rules) {
+            for (Class<? extends SemanticRulesChecker> rule : ENFORCERS) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
@@ -89,7 +95,7 @@ public class SemanticRulesChecker implements RuleVisitor {
     @Override
     public Result<String> check(LiteralNode node) {
         try {
-            for (Class<? extends SemanticRulesChecker> rule : rules) {
+            for (Class<? extends SemanticRulesChecker> rule : ENFORCERS) {
                 RuleVisitor checker = rule.getDeclaredConstructor().newInstance();
                 Result<String> checkResult = checker.check(node);
                 if (!checkResult.isSuccessful()) return checkResult;
