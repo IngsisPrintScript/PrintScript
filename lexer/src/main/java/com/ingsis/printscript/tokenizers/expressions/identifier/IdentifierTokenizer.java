@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.tokenizers.identifier;
+package com.ingsis.printscript.tokenizers.expressions.identifier;
 
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.Result;
