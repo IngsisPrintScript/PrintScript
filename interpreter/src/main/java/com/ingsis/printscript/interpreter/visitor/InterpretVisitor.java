@@ -8,6 +8,7 @@ import com.ingsis.printscript.astnodes.declaration.AscriptionNode;
 import com.ingsis.printscript.astnodes.declaration.TypeNode;
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.identifier.IdentifierNode;
+import com.ingsis.printscript.astnodes.statements.IfStatementNode;
 import com.ingsis.printscript.astnodes.statements.LetStatementNode;
 import com.ingsis.printscript.astnodes.statements.PrintStatementNode;
 import com.ingsis.printscript.results.CorrectResult;
@@ -15,7 +16,11 @@ import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.runtime.Runtime;
 import com.ingsis.printscript.runtime.entries.VariableEntry;
+import com.ingsis.printscript.runtime.environment.Environment;
 import com.ingsis.printscript.visitor.InterpretVisitorInterface;
+import com.ingsis.printscript.visitor.InterpretableNode;
+
+import java.util.Collection;
 import java.util.Locale;
 
 public class InterpretVisitor implements InterpretVisitorInterface {
@@ -86,6 +91,38 @@ public class InterpretVisitor implements InterpretVisitorInterface {
         Object result = evaluateExpression.result();
         System.out.println(result);
         return new CorrectResult<>(result + " was printed successfully.");
+    }
+
+    @Override
+    public Result<String> interpret(IfStatementNode statement) {
+        ExpressionNode condition = statement.condition();
+        Result<Object> evaluateConditionResult = condition.evaluate();
+        if (!evaluateConditionResult.isSuccessful()) {
+            return new IncorrectResult<>(evaluateConditionResult.errorMessage());
+        }
+        Boolean conditionResult = (Boolean) evaluateConditionResult.result();
+        if (conditionResult) {
+            Runtime.getInstance().pushEnv(new Environment(Runtime.getInstance().currentEnv()));
+            Collection<InterpretableNode> thenBody = statement.thenBody();
+            for (InterpretableNode thenBodyNode : thenBody) {
+                Result<String> thenBodyResult = thenBodyNode.acceptInterpreter(this);
+                if (!thenBodyResult.isSuccessful()) {
+                    return new IncorrectResult<>(thenBodyResult.errorMessage());
+                }
+            }
+            Runtime.getInstance().popEnv();
+        } else {
+            Runtime.getInstance().pushEnv(new Environment(Runtime.getInstance().currentEnv()));
+            Collection<InterpretableNode> elseBody = statement.elseBody();
+            for (InterpretableNode elseBodyNode : elseBody) {
+                Result<String> elseBodyResult = elseBodyNode.acceptInterpreter(this);
+                if (!elseBodyResult.isSuccessful()) {
+                    return new IncorrectResult<>(elseBodyResult.errorMessage());
+                }
+            }
+            Runtime.getInstance().popEnv();
+        }
+        return new CorrectResult<>("If interpreted correctly.");
     }
 
     @Override
