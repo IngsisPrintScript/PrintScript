@@ -51,6 +51,7 @@ public class CliApp implements CliAppInterface, Callable<Integer> {
         InterpreterInterface interpreter = getInterpreter(buffer);
         while (true) {
             try {
+                System.out.print(">>> ");
                 String line = reader.readLine();
                 if (line == null || "exit".equals(line.trim())) {
                     return new CorrectResult<>("Interpreter finished successfully.");
