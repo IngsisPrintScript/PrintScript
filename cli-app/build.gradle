@@ -10,6 +10,7 @@ dependencies {
     implementation project(':semantic')
     implementation project(':interpreter')
     implementation project(':peekable-iterator')
+    implementation project(':linter')
 }
 
 application {
