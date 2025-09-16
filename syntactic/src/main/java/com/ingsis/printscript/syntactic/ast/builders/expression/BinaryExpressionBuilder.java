@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.expression.binary;
+package com.ingsis.printscript.syntactic.ast.builders.expression;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
@@ -13,8 +13,7 @@ import com.ingsis.printscript.astnodes.factories.NodeFactoryInterface;
 import com.ingsis.printscript.results.CorrectResult;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import com.ingsis.printscript.syntactic.ast.builders.expression.ExpressionBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators.BinaryOperatorBuilder;
+import com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary.BinaryOperatorBuilder;
 import com.ingsis.printscript.syntactic.factories.AstBuilderFactory;
 import com.ingsis.printscript.syntactic.factories.AstBuilderFactoryInterface;
 import com.ingsis.printscript.tokens.TokenInterface;
@@ -71,7 +70,7 @@ public class BinaryExpressionBuilder extends ExpressionBuilder {
                             .build(tokenStream);
 
             if (!buildRightChildResult.isSuccessful()) {
-                return new IncorrectResult<>(buildOperatorResult.errorMessage());
+                return new IncorrectResult<>(buildRightChildResult.errorMessage());
             }
 
             ExpressionNode rightChild = buildRightChildResult.result();

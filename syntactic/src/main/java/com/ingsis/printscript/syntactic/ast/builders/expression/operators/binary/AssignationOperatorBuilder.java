@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.printscript.syntactic.ast.builders.expression.binary.operators;
+package com.ingsis.printscript.syntactic.ast.builders.expression.operators.binary;
 
 import com.ingsis.printscript.astnodes.expression.binary.AssignationNode;
 import com.ingsis.printscript.astnodes.expression.binary.BinaryExpression;
@@ -15,11 +15,11 @@ import com.ingsis.printscript.tokens.factories.TokenFactory;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 
 public class AssignationOperatorBuilder extends BinaryOperatorBuilder {
-    private final TokenInterface ASSIGNATION_TEMPLATE = new TokenFactory().createAssignationToken();
-    private final TokenInterface IDENTIFIER_TEMPLATE =
-            new TokenFactory().createIdentifierToken("placeholder");
-    private final TokenInterface LITERAL_TEMPLATE =
-            new TokenFactory().createLiteralToken("placeholder");
+    private final TokenInterface ASSIGNATION_TEMPLATE;
+
+    public AssignationOperatorBuilder() {
+        this.ASSIGNATION_TEMPLATE = new TokenFactory().createAssignationToken();
+    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {

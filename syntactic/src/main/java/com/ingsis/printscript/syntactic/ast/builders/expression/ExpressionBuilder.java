@@ -5,20 +5,23 @@
 package com.ingsis.printscript.syntactic.ast.builders.expression;
 
 import com.ingsis.printscript.astnodes.expression.ExpressionNode;
+import com.ingsis.printscript.reflections.ClassGraphReflectionsUtils;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
 import com.ingsis.printscript.syntactic.ast.builders.ASTreeBuilderInterface;
-import com.ingsis.printscript.syntactic.ast.builders.expression.binary.BinaryExpressionBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.identifier.IdentifierBuilder;
-import com.ingsis.printscript.syntactic.ast.builders.literal.LiteralBuilder;
 import com.ingsis.printscript.tokens.stream.TokenStreamInterface;
 import java.util.List;
 
 public class ExpressionBuilder implements ASTreeBuilderInterface {
-    private final List<Class<? extends ExpressionBuilder>> EXPRESSION_BUILDERS =
-            List.of(BinaryExpressionBuilder.class, LiteralBuilder.class, IdentifierBuilder.class);
+    private final List<Class<? extends ExpressionBuilder>> EXPRESSION_BUILDERS;
 
-    public ExpressionBuilder() {}
+    public ExpressionBuilder() {
+        EXPRESSION_BUILDERS =
+                List.copyOf(
+                        new ClassGraphReflectionsUtils()
+                                .findSubclassesOf(ExpressionBuilder.class)
+                                .find());
+    }
 
     @Override
     public Boolean canBuild(TokenStreamInterface tokenStream) {
