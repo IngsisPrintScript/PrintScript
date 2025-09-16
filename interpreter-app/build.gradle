@@ -13,3 +13,7 @@ dependencies {
     implementation project(':semantic')
     implementation project(':interpreter')
 }
+
+application {
+    mainClassName = 'InterpreterApp'
+}

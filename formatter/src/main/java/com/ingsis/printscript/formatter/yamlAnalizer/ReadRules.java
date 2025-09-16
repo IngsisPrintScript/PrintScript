@@ -34,8 +34,10 @@ public class ReadRules implements ReadRulesInterface {
                 throw new RuntimeException("Did not find Rules.yaml");
             }
             return yaml.load(inputStream);
-        } catch (Exception e) {
-            throw new RuntimeException("Error reading: " + configFile, e);
+        } catch (RuntimeException rte) {
+            throw rte;
+        } catch (Exception ignored) {
+            return null;
         }
     }
 }

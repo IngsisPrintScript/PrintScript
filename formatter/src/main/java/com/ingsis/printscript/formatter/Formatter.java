@@ -22,6 +22,7 @@ import com.ingsis.printscript.tokenizers.factories.TokenizerFactory;
 import com.ingsis.printscript.tokens.TokenInterface;
 import com.ingsis.printscript.visitor.InterpretableNode;
 import com.ingsis.printscript.visitor.SemanticallyCheckable;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -42,6 +43,9 @@ public class Formatter implements FormatterInterface, Callable<Result<Path>> {
         System.exit(exitCode);
     }
 
+    @SuppressFBWarnings(
+            value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR",
+            justification = "inputFile is injected by Picocli at runtime")
     @CommandLine.Parameters(index = "0", description = "File to format")
     private Path inputFile;
 

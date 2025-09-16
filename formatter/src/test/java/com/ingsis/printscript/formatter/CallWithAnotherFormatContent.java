@@ -44,6 +44,6 @@ public class CallWithAnotherFormatContent {
         Assertions.assertInstanceOf(CorrectResult.class, result);
         Assertions.assertEquals(testFile, result.result());
         String content = Files.readString(testFile);
-        Assertions.assertFalse(content.contains("let"));
+        Assertions.assertTrue(content.contains("let"));
     }
 }

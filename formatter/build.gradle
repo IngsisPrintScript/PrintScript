@@ -15,10 +15,6 @@ dependencies {
     implementation("org.yaml:snakeyaml:2.0")
 }
 
-test {
-    useJUnitPlatform()
-}
-
 application {
     mainClassName = 'Formatter'
 }

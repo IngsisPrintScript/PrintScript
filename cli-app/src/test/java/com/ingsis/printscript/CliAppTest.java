@@ -8,13 +8,13 @@ import com.ingsis.printscript.cliapp.CliApp;
 import com.ingsis.printscript.interpreter.InterpreterInterface;
 import com.ingsis.printscript.results.IncorrectResult;
 import com.ingsis.printscript.results.Result;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.nio.charset.StandardCharsets;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class CliAppTest {
 
@@ -22,7 +22,8 @@ public class CliAppTest {
     void testExecuteReturnsCorrectResultOnExit() {
 
         String simulatedInput = "exit\n";
-        InputStream inputStream = new ByteArrayInputStream(simulatedInput.getBytes());
+        InputStream inputStream =
+                new ByteArrayInputStream(simulatedInput.getBytes(StandardCharsets.UTF_8));
         System.setIn(inputStream);
 
         CliApp app = new CliApp();
@@ -45,7 +46,7 @@ public class CliAppTest {
         Assertions.assertEquals(0, exitCode, "El exitCode debe ser 0 si termina bien");
     }
 
-    static class CliAppIOException extends CliApp {
+    static class WrongCliApp extends CliApp {
         @Override
         public Result<String> execute() {
             return new IncorrectResult<>("IO Error");
@@ -54,7 +55,7 @@ public class CliAppTest {
 
     @Test
     void testExecuteReturnsIncorrectResultOnIOException() {
-        CliAppIOException app = new CliAppIOException();
+        WrongCliApp app = new WrongCliApp();
         Result<String> result = app.execute();
         Assertions.assertFalse(result.isSuccessful());
         Assertions.assertEquals("IO Error", result.errorMessage());
@@ -88,15 +89,17 @@ public class CliAppTest {
     @Test
     void testInterpreterErrorPrintsErrorMessage() {
         CliAppFake app = new CliAppFake();
-        java.io.ByteArrayOutputStream out = new java.io.ByteArrayOutputStream();
-        System.setOut(new java.io.PrintStream(out));
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(out, true, StandardCharsets.UTF_8));
 
         Result<String> result = app.execute();
+
+        String consoleOutput = out.toString(StandardCharsets.UTF_8);
 
         Assertions.assertFalse(result.isSuccessful());
         Assertions.assertEquals("Fake error", result.errorMessage());
         Assertions.assertTrue(
-                out.toString().contains("Fake error"), "Debe imprimir el mensaje de error");
+                consoleOutput.contains("Fake error"), "Debe imprimir el mensaje de error");
     }
 
     static class CliAppBad extends CliApp {
