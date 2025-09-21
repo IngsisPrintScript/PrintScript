@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.tokens;
 
 public record Token(String name, String value) implements TokenInterface {
