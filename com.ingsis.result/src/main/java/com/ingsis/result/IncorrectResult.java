@@ -9,4 +9,9 @@ public record IncorrectResult<T>(String error) implements Result<T> {
     public T result() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Boolean isCorrect() {
+        return false;
+    }
 }

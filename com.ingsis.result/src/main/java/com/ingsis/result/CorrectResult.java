@@ -5,4 +5,9 @@ public record CorrectResult<T>(T result) implements Result<T> {
     public String error() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Boolean isCorrect() {
+        return true;
+    }
 }
