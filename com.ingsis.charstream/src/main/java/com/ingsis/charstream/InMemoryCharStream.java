@@ -1,15 +1,18 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.charstream;
 
 import com.ingsis.peekableiterator.PeekableIterator;
-
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public final class CliCharStream implements PeekableIterator<Character> {
+public final class InMemoryCharStream implements PeekableIterator<Character> {
     private final Queue<Character> buffer;
 
-    public CliCharStream(Queue<Character> buffer) {
+    public InMemoryCharStream(Queue<Character> buffer) {
         this.buffer = new LinkedList<>(buffer);
     }
 
