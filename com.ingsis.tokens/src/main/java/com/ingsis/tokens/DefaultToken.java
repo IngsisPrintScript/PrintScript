@@ -5,6 +5,11 @@
 package com.ingsis.tokens;
 
 public record DefaultToken(String name, String value) implements Token {
+
+    public DefaultToken(Token token) {
+        this(token.name(), token.value());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Token token)) {
