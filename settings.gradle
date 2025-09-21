@@ -14,3 +14,5 @@ rootProject.name = 'PrintScript'
 
 include 'com.ingsis.tokens'
 include 'com.ingsis.peekable-iterator'
+include 'com.ingsis.peekableiterator'
+include 'com.ingsis.charstream'

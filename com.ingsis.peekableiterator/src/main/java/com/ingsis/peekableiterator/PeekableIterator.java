@@ -1,4 +1,4 @@
-package com.ingsis.peekable_iterator;
+package com.ingsis.peekableiterator;
 
 import java.util.Iterator;
 
