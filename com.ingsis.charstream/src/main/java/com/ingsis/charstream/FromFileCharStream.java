@@ -10,29 +10,27 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.Queue;
 
-public final class FromFileCharStream implements PeekableIterator<Character> {
+public final class FromFileCharStream implements PeekableIterator<Character>, AutoCloseable {
     private final BufferedReader reader;
-    private final Queue<Character> buffer;
+    private final InMemoryCharStream buffer;
     private boolean endOfFile;
 
     public FromFileCharStream(Path path) throws IOException {
         reader = Files.newBufferedReader(path);
-        buffer = new LinkedList<>();
+        buffer = new InMemoryCharStream(new LinkedList<>());
         endOfFile = false;
     }
 
     private void fillBuffer() {
-        if (!endOfFile && buffer.isEmpty()) {
+        if (!endOfFile && buffer.hasNext()) {
             try {
                 int ch = reader.read();
                 if (ch == -1) {
                     endOfFile = true;
                     reader.close();
                 } else {
-                    buffer.add((char) ch);
+                    buffer.addChar((char) ch);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -43,24 +41,23 @@ public final class FromFileCharStream implements PeekableIterator<Character> {
     @Override
     public Character peek() {
         fillBuffer();
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
         return buffer.peek();
     }
 
     @Override
     public boolean hasNext() {
         fillBuffer();
-        return !buffer.isEmpty();
+        return buffer.hasNext();
     }
 
     @Override
     public Character next() {
         fillBuffer();
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return buffer.poll();
+        return buffer.next();
+    }
+
+    @Override
+    public void close() throws Exception {
+        reader.close();
     }
 }
