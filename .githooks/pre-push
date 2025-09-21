@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# Go to the root of the repo
+ROOT_DIR=$(git rev-parse --show-toplevel)
+cd "$ROOT_DIR"
+
 echo "[pre-push] Running full validation..."
 
-# Ejecuta todos los checks, incluyendo tests y jacoco
+# Run all checks, including tests and Jacoco
 ./gradlew check --no-daemon --console=plain
 
 echo "[pre-push] Validation passed! Ready to push."

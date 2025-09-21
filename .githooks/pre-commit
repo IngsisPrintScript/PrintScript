@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+# Go to the root of the repo
+ROOT_DIR=$(git rev-parse --show-toplevel)
+cd "$ROOT_DIR"
+
 echo "[pre-commit] Formateando código con Spotless..."
 ./gradlew spotlessApply
-git add -A
-echo "[pre-commit] formatted with Spotless and staged."
+
+# Stage only changed files
+git add $(git diff --name-only)
+
+echo "[pre-commit] Formatted with Spotless and staged."
