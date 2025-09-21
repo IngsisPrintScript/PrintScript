@@ -13,3 +13,4 @@ plugins {
 rootProject.name = 'PrintScript'
 
 include 'com.ingsis.tokens'
+include 'com.ingsis.peekable-iterator'
