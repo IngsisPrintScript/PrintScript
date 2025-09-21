@@ -1,7 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.charstream;
 
 import com.ingsis.peekableiterator.PeekableIterator;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -36,7 +39,6 @@ public final class FromFileCharStream implements PeekableIterator<Character> {
             }
         }
     }
-
 
     @Override
     public Character peek() {
