@@ -1,14 +1,14 @@
 package com.ingsis.tokens.factories;
 
-import com.ingsis.tokens.TokenInterface;
+import com.ingsis.tokens.Token;
 
 public interface TokenFactory {
-    TokenInterface createKeywordToken(String keyword);
-    TokenInterface createLiteralToken(String literal);
-    TokenInterface createTypeToken(String type);
-    TokenInterface createIdentifierToken(String identifier);
-    TokenInterface createSeparatorToken(String separator);
-    TokenInterface createPunctuationToken(String punctuationSign);
-    TokenInterface createOperatorToken(String operator);
-    TokenInterface createEndOfLineToken(String endOfLine);
+    Token createKeywordToken(String keyword);
+    Token createLiteralToken(String literal);
+    Token createTypeToken(String type);
+    Token createIdentifierToken(String identifier);
+    Token createSeparatorToken(String separator);
+    Token createPunctuationToken(String punctuationSign);
+    Token createOperatorToken(String operator);
+    Token createEndOfLineToken(String endOfLine);
 }
