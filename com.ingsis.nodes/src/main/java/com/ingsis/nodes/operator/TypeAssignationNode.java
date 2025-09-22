@@ -11,8 +11,9 @@ import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
+import java.util.List;
 
-public record TypeAssignationOperatorNode(
+public record TypeAssignationNode(
         IdentifierNode identifierNode, TypeNode typeNode, OperatorStrategy strategy)
         implements OperatorNode {
     @Override
@@ -32,6 +33,6 @@ public record TypeAssignationOperatorNode(
 
     @Override
     public Result<Object> execute() {
-        return strategy().execute(identifierNode(), typeNode());
+        return strategy().execute(List.of(identifierNode(), typeNode()));
     }
 }

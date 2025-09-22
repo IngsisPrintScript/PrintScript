@@ -7,7 +7,8 @@ package com.ingsis.types;
 public enum Types {
     STRING("String"),
     NUMBER("Number"),
-    BOOLEAN("Boolean");
+    BOOLEAN("Boolean"),
+    NIL("");
 
     private final String keyword;
 

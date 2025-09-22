@@ -5,16 +5,15 @@
 package com.ingsis.nodes.keyword;
 
 import com.ingsis.nodes.Node;
-import com.ingsis.nodes.operator.TypeAssignationOperatorNode;
-import com.ingsis.nodes.operator.ValueAssignationOperatorNode;
+import com.ingsis.nodes.operator.TypeAssignationNode;
+import com.ingsis.nodes.operator.ValueAssignationNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
 
 public record LetKeywordNode(
-        TypeAssignationOperatorNode typeAssignationOperatorNode,
-        ValueAssignationOperatorNode valueAssignationOperatorNode)
+        TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode)
         implements Node {
 
     @Override

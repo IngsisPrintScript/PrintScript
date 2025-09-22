@@ -8,8 +8,8 @@ import com.ingsis.nodes.identifier.IdentifierNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.nodes.literal.LiteralNode;
-import com.ingsis.nodes.operator.TypeAssignationOperatorNode;
-import com.ingsis.nodes.operator.ValueAssignationOperatorNode;
+import com.ingsis.nodes.operator.TypeAssignationNode;
+import com.ingsis.nodes.operator.ValueAssignationNode;
 import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.result.Result;
 
@@ -18,9 +18,9 @@ public interface Interpreter {
 
     Result<String> interpret(LetKeywordNode letKeywordNode);
 
-    Result<String> interpret(TypeAssignationOperatorNode typeAssignationOperatorNode);
+    Result<String> interpret(TypeAssignationNode typeAssignationNode);
 
-    Result<String> interpret(ValueAssignationOperatorNode valueAssignationOperatorNode);
+    Result<String> interpret(ValueAssignationNode valueAssignationNode);
 
     Result<String> interpret(IdentifierNode identifierNode);
 

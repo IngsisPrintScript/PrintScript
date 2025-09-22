@@ -5,15 +5,15 @@
 package com.ingsis.nodes.operator;
 
 import com.ingsis.nodes.identifier.IdentifierNode;
-import com.ingsis.nodes.literal.LiteralNode;
 import com.ingsis.nodes.operator.strategies.OperatorStrategy;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
+import java.util.List;
 
-public record ValueAssignationOperatorNode(
-        IdentifierNode identifierNode, LiteralNode literalNode, OperatorStrategy strategy)
+public record ValueAssignationNode(
+        IdentifierNode identifierNode, OperatorNode operatorNode, OperatorStrategy strategy)
         implements OperatorNode {
     @Override
     public Result<String> acceptChecker(Checker checker) {
@@ -32,6 +32,6 @@ public record ValueAssignationOperatorNode(
 
     @Override
     public Result<Object> execute() {
-        return strategy().execute(identifierNode(), literalNode());
+        return strategy().execute(List.of(identifierNode(), operatorNode()));
     }
 }
