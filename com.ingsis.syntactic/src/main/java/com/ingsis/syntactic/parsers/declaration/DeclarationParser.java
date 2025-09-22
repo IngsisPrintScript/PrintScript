@@ -33,14 +33,6 @@ public final class DeclarationParser implements Parser {
         this.NODE_FACTORY = NODE_FACTORY;
     }
 
-    private boolean canParse(TokenStream stream) {
-        if (!stream.hasNext()) {
-            return false;
-        }
-        Token token = stream.peek();
-        return token.equals(LET_TOKEN_TEMPLATE);
-    }
-
     @Override
     public Result<Checkable> parse(TokenStream stream) {
         Result<Token> consumeLetResult = stream.consume(LET_TOKEN_TEMPLATE);

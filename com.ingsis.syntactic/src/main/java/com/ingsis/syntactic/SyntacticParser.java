@@ -9,5 +9,5 @@ import com.ingsis.result.Result;
 import com.ingsis.visitors.Checkable;
 
 public interface SyntacticParser extends PeekableIterator<Checkable> {
-    Result<Checkable> parse();
+    Result<? extends Checkable> parse();
 }

@@ -29,9 +29,9 @@ public final class DefaultParserRegistry implements ParserRegistry {
     }
 
     @Override
-    public Result<Checkable> parse(TokenStream stream) {
+    public Result<? extends Checkable> parse(TokenStream stream) {
         for (Parser parser : parsers) {
-            Result<Checkable> result = parser.parse(stream);
+            Result<? extends Checkable> result = parser.parse(stream);
             if (result.isCorrect()) {
                 return result;
             }
