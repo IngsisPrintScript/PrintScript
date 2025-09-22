@@ -4,10 +4,9 @@
 
 package com.ingsis.lexer.tokenizers;
 
+import com.ingsis.result.Result;
 import com.ingsis.tokens.Token;
 
 public interface Tokenizer {
-    Boolean canTokenize(String input);
-
-    Token tokenize(String input);
+    Result<Token> tokenize(String input);
 }

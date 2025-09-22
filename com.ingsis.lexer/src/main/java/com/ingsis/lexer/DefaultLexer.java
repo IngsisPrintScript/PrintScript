@@ -6,8 +6,6 @@ package com.ingsis.lexer;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.tokens.Token;
 import java.util.LinkedList;
@@ -34,10 +32,7 @@ public final class DefaultLexer implements Lexer {
 
     @Override
     public Result<Token> analyze(String input) {
-        if (!tokenizer.canTokenize(input)) {
-            return new IncorrectResult<>("There is no tokenizer for that input.");
-        }
-        return new CorrectResult<>(tokenizer.tokenize(input));
+        return tokenizer.tokenize(input);
     }
 
     @Override
