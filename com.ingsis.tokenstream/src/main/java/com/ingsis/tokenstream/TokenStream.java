@@ -2,12 +2,13 @@
  * My Project
  */
 
-package tokenstream;
+package com.ingsis.tokenstream;
 
+import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.Result;
 import com.ingsis.tokens.Token;
 
-public interface TokenStream {
+public interface TokenStream extends PeekableIterator<Token> {
 
     Result<Token> consume();
 

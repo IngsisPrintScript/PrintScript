@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation project(':com.ingsis.peekableiterator')
+    implementation project(':com.ingsis.tokenstream')
     implementation project(':com.ingsis.tokens')
     implementation project(':com.ingsis.nodes')
     implementation project(':com.ingsis.result')

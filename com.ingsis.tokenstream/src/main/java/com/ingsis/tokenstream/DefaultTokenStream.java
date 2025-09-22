@@ -2,7 +2,7 @@
  * My Project
  */
 
-package tokenstream;
+package com.ingsis.tokenstream;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
@@ -44,5 +44,20 @@ public final class DefaultTokenStream implements TokenStream {
 
     private boolean match(Token tokenTemplate) {
         return tokens.hasNext() && tokens.peek().equals(tokenTemplate);
+    }
+
+    @Override
+    public Token peek() {
+        return tokens.peek();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return tokens.hasNext();
+    }
+
+    @Override
+    public Token next() {
+        return tokens.next();
     }
 }
