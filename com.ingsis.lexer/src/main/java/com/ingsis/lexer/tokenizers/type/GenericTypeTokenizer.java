@@ -10,25 +10,26 @@ import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.types.Types;
 
 public final class GenericTypeTokenizer implements Tokenizer {
-    String template;
+    Types type;
     TokenFactory tokenFactory;
 
-    public GenericTypeTokenizer(TokenFactory tokenFactory, String template) {
-        this.template = template;
+    public GenericTypeTokenizer(TokenFactory tokenFactory, Types type) {
+        this.type = type;
         this.tokenFactory = tokenFactory;
     }
 
-    private Boolean canTokenize(String input) {
-        return input.equals(template);
+    private boolean canTokenize(String input) {
+        return type.keyword().equals(input);
     }
 
     @Override
     public Result<Token> tokenize(String input) {
         if (!canTokenize(input)) {
-            return new IncorrectResult<>("Input is not type: " + template);
+            return new IncorrectResult<>("Input is not type: " + type.keyword());
         }
-        return new CorrectResult<>(tokenFactory.createTypeToken(input));
+        return new CorrectResult<>(tokenFactory.createTypeToken(type.keyword()));
     }
 }

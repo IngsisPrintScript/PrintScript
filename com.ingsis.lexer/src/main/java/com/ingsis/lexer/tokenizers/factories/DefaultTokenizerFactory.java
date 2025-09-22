@@ -14,10 +14,12 @@ import com.ingsis.lexer.tokenizers.literal.BooleanLiteralTokenizer;
 import com.ingsis.lexer.tokenizers.literal.NumberLiteralTokenizer;
 import com.ingsis.lexer.tokenizers.literal.StringLiteralTokenizer;
 import com.ingsis.lexer.tokenizers.operator.GenericOperatorTokenizer;
+import com.ingsis.lexer.tokenizers.separator.EndOfLineSeparatorTokenizer;
 import com.ingsis.lexer.tokenizers.separator.GenericSeparatorTokenizer;
 import com.ingsis.lexer.tokenizers.separator.SpaceSeparatorTokenizer;
 import com.ingsis.lexer.tokenizers.type.GenericTypeTokenizer;
 import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.types.Types;
 import java.util.List;
 
 public final class DefaultTokenizerFactory implements TokenizerFactory {
@@ -73,13 +75,13 @@ public final class DefaultTokenizerFactory implements TokenizerFactory {
         for (String separator : separators) {
             registry.registerTokenizer(new GenericSeparatorTokenizer(tokenFactory, separator));
         }
+        registry.registerTokenizer(new EndOfLineSeparatorTokenizer(tokenFactory));
         return registry;
     }
 
     private Tokenizer typeTokenizer(Tokenizer nextTokenizer) {
         TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
-        List<String> types = List.of("String", "Boolean", "Number");
-        for (String type : types) {
+        for (Types type : Types.values()) {
             registry.registerTokenizer(new GenericTypeTokenizer(tokenFactory, type));
         }
         return registry;

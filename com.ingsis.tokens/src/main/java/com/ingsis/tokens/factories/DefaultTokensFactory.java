@@ -34,11 +34,6 @@ public record DefaultTokensFactory() implements TokenFactory {
     }
 
     @Override
-    public Token createPunctuationToken(String punctuationSign) {
-        return new DefaultToken("PUNCTUATION_TOKEN", punctuationSign);
-    }
-
-    @Override
     public Token createOperatorToken(String operator) {
         return new DefaultToken("OPERATOR_TOKEN", operator);
     }

@@ -17,8 +17,6 @@ public interface TokenFactory {
 
     Token createSeparatorToken(String separator);
 
-    Token createPunctuationToken(String punctuationSign);
-
     Token createOperatorToken(String operator);
 
     Token createEndOfLineToken(String endOfLine);
