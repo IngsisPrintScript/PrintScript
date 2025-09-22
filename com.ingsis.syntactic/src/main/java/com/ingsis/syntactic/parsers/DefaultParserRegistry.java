@@ -11,16 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class DefaultParserRegistry implements ParserRegistry {
-    private final ParserRegistry nextRegistry;
+    private final Parser nextRegistry;
     private final List<Parser> parsers;
 
-    public DefaultParserRegistry(List<Parser> parsers, ParserRegistry nextRegistry) {
+    public DefaultParserRegistry(Parser nextRegistry) {
         this.nextRegistry = nextRegistry;
-        this.parsers = new ArrayList<>(parsers);
+        this.parsers = new ArrayList<>();
     }
 
-    public DefaultParserRegistry(ParserRegistry nextRegistry) {
-        this(new ArrayList<>(), nextRegistry);
+    public DefaultParserRegistry() {
+        this(new FinalParser());
     }
 
     @Override
