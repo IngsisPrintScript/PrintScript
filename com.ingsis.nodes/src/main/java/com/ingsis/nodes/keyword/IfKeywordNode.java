@@ -26,6 +26,16 @@ public record IfKeywordNode(
     }
 
     @Override
+    public Collection<Interpretable> thenBody() {
+        return Collections.unmodifiableCollection(thenBody);
+    }
+
+    @Override
+    public Collection<Interpretable> elseBody() {
+        return Collections.unmodifiableCollection(elseBody);
+    }
+
+    @Override
     public Result<String> acceptChecker(Checker checker) {
         return checker.check(this);
     }
