@@ -15,7 +15,7 @@ public record DefaultToken(String name, String value) implements Token {
         if (!(o instanceof Token token)) {
             return false;
         }
-        if (token.value().isEmpty()) {
+        if (token.value().isEmpty() || this.value().isEmpty()) {
             return name.equals(token.name());
         } else {
             return name.equals(token.name()) && value.equals(token.value());
