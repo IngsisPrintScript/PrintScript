@@ -16,7 +16,7 @@ public final class StringLiteralTokenizer implements Tokenizer {
     private final TokenFactory tokenFactory;
 
     public StringLiteralTokenizer(TokenFactory tokenFactory) {
-        this.regExPattern = "^([\"'])(?:[^\\\\\\1]|\\\\.)*\\1$\n";
+        this.regExPattern = "\"^(?:\\\"[^\\\"]*\\\"|'[^']*')$\"\n";
         this.tokenFactory = tokenFactory;
     }
 
