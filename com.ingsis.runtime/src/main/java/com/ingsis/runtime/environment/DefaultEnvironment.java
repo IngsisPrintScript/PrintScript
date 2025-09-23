@@ -8,10 +8,11 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.VariableEntry;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings(value = "EI_EXPOSE_REP2")
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultEnvironment implements Environment {
     private final Map<String, VariableEntry> variables;
     private final Environment father;
