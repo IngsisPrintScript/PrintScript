@@ -8,9 +8,18 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.VariableEntry;
+import java.util.HashMap;
 import java.util.Map;
 
 public record GlobalEnvironment(Map<String, VariableEntry> variables) implements Environment {
+
+    public GlobalEnvironment {
+        variables = new HashMap<>(variables);
+    }
+
+    public GlobalEnvironment() {
+        this(new HashMap<>());
+    }
 
     @Override
     public Result<VariableEntry> putVariable(String identifier, VariableEntry variableEntry) {

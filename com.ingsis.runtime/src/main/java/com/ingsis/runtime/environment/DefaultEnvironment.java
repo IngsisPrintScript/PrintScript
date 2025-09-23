@@ -8,10 +8,23 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.VariableEntry;
+import java.util.HashMap;
 import java.util.Map;
 
 public record DefaultEnvironment(Map<String, VariableEntry> variables, Environment father)
         implements Environment {
+
+    public DefaultEnvironment {
+        variables = new HashMap<>(variables);
+    }
+
+    public DefaultEnvironment(Environment father) {
+        this(new HashMap<>(), father);
+    }
+
+    public DefaultEnvironment() {
+        this(new HashMap<>(), new GlobalEnvironment());
+    }
 
     @Override
     public Result<VariableEntry> putVariable(String identifier, VariableEntry variableEntry) {
