@@ -9,6 +9,7 @@ import com.ingsis.syntactic.parsers.DefaultParserRegistry;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.ParserRegistry;
 import com.ingsis.syntactic.parsers.TypeParser;
+import com.ingsis.syntactic.parsers.declaration.DeclarationParser;
 import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
 import com.ingsis.syntactic.parsers.literal.LiteralParser;
 import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
@@ -26,14 +27,19 @@ public final class DefaultParserFactory implements ParserFactory {
     }
 
     @Override
+    public DeclarationParser createDeclarationParser() {
+        return new DeclarationParser(TOKEN_FACTORY, this, NODE_FACTORY);
+    }
+
+    @Override
     public BinaryOperatorParser createBinaryOperatorParser() {
         return new BinaryOperatorParser(NODE_FACTORY, TOKEN_FACTORY, binaryLeafOperators());
     }
 
     private Parser binaryLeafOperators() {
         ParserRegistry registry = new DefaultParserRegistry();
-        registry.registerTokenizer(createIdentifierParser());
-        registry.registerTokenizer(createLiteralParser());
+        registry.registerParser(createIdentifierParser());
+        registry.registerParser(createLiteralParser());
         return registry;
     }
 

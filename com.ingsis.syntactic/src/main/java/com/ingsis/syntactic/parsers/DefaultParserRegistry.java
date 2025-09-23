@@ -24,7 +24,7 @@ public final class DefaultParserRegistry implements ParserRegistry {
     }
 
     @Override
-    public void registerTokenizer(Parser parser) {
+    public void registerParser(Parser parser) {
         parsers.add(parser);
     }
 
