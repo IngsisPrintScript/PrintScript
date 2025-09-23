@@ -14,7 +14,7 @@ import com.ingsis.result.Result;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.factories.ParserFactory;
 import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
-import com.ingsis.syntactic.parsers.operator.OperatorParser;
+import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
@@ -23,14 +23,14 @@ public final class ValueAssignationParser implements Parser {
     private final Token VALUE_ASSIGNATION_TEMPLATE;
     private final NodeFactory NODE_FACTORY;
     private final IdentifierParser IDENTIFIER_PARSER;
-    private final OperatorParser OPERATOR_PARSER;
+    private final BinaryOperatorParser OPERATOR_PARSER;
 
     public ValueAssignationParser(
             ParserFactory PARSER_FACTORY, TokenFactory TOKEN_FACTORY, NodeFactory NODE_FACTORY) {
         this.VALUE_ASSIGNATION_TEMPLATE = TOKEN_FACTORY.createOperatorToken("=");
         this.NODE_FACTORY = NODE_FACTORY;
         this.IDENTIFIER_PARSER = PARSER_FACTORY.createIdentifierParser();
-        this.OPERATOR_PARSER = PARSER_FACTORY.createOperatorParser();
+        this.OPERATOR_PARSER = PARSER_FACTORY.createBinaryOperatorParser();
     }
 
     @Override

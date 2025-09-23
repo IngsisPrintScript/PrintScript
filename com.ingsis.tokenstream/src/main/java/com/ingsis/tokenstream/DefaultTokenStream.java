@@ -42,7 +42,8 @@ public final class DefaultTokenStream implements TokenStream {
         return new CorrectResult<>(count);
     }
 
-    private boolean match(Token tokenTemplate) {
+    @Override
+    public boolean match(Token tokenTemplate) {
         return tokens.hasNext() && tokens.peek().equals(tokenTemplate);
     }
 

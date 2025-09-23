@@ -8,6 +8,7 @@ import com.ingsis.nodes.identifier.IdentifierNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.nodes.literal.LiteralNode;
+import com.ingsis.nodes.operator.BinaryOperatorNode;
 import com.ingsis.nodes.operator.OperatorNode;
 import com.ingsis.nodes.operator.TypeAssignationNode;
 import com.ingsis.nodes.operator.ValueAssignationNode;
@@ -37,6 +38,12 @@ public final class DefaultNodeFactory implements NodeFactory {
     public LetKeywordNode createLetNode(
             TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode) {
         return new LetKeywordNode(typeAssignationNode, valueAssignationNode);
+    }
+
+    @Override
+    public BinaryOperatorNode createBinaryOperatorNode(
+            String symbol, OperatorNode leftChild, OperatorNode rightChild) {
+        return new BinaryOperatorNode(symbol, leftChild, rightChild);
     }
 
     @Override

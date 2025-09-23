@@ -4,16 +4,12 @@
 
 package com.ingsis.nodes.operator;
 
-import com.ingsis.nodes.identifier.IdentifierNode;
-import com.ingsis.nodes.operator.strategies.OperatorStrategy;
-import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
 
-public record TypeAssignationNode(
-        IdentifierNode identifierNode, TypeNode typeNode, OperatorStrategy strategy)
+public record BinaryOperatorNode(String symbol, OperatorNode left, OperatorNode right)
         implements OperatorNode {
     @Override
     public Result<String> acceptChecker(Checker checker) {
@@ -28,10 +24,5 @@ public record TypeAssignationNode(
     @Override
     public Result<String> acceptVisitor(Visitor visitor) {
         return visitor.visit(this);
-    }
-
-    @Override
-    public String symbol() {
-        return ":";
     }
 }

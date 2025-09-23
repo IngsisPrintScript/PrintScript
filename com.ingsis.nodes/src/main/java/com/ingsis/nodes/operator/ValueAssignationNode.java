@@ -10,7 +10,6 @@ import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
-import java.util.List;
 
 public record ValueAssignationNode(
         IdentifierNode identifierNode, OperatorNode operatorNode, OperatorStrategy strategy)
@@ -31,7 +30,7 @@ public record ValueAssignationNode(
     }
 
     @Override
-    public Result<Object> execute() {
-        return strategy().execute(List.of(identifierNode(), operatorNode()));
+    public String symbol() {
+        return "=";
     }
 }
