@@ -22,6 +22,11 @@ public record GlobalEnvironment(Map<String, VariableEntry> variables) implements
     }
 
     @Override
+    public Map<String, VariableEntry> variables() {
+        return new HashMap<>(variables);
+    }
+
+    @Override
     public Result<VariableEntry> putVariable(String identifier, VariableEntry variableEntry) {
         if (isVariableDeclared(identifier)) {
             return new IncorrectResult<>("Can't create an already created variable.");
