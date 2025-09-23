@@ -11,18 +11,16 @@ import com.ingsis.runtime.environment.entries.VariableEntry;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("EI_EXPOSE_REP2")
+@SuppressWarnings(value = "EI_EXPOSE_REP2")
 public final class DefaultEnvironment implements Environment {
     private final Map<String, VariableEntry> variables;
     private final Environment father;
 
-    @SuppressWarnings("EI_EXPOSE_REP2")
     public DefaultEnvironment(Map<String, VariableEntry> variables, Environment father) {
         this.variables = new HashMap<>(variables);
         this.father = father;
     }
 
-    @SuppressWarnings("EI_EXPOSE_REP2")
     public DefaultEnvironment(Environment father) {
         this(new HashMap<>(), father);
     }
