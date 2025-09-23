@@ -13,17 +13,17 @@ import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public final class DefaultSemanticParser implements SemanticParser {
+public final class DefaultSemanticChecker implements SemanticChecker {
     private final PeekableIterator<Checkable> checkableStream;
     private final Queue<Interpretable> interpretableBuffer;
 
-    public DefaultSemanticParser(
+    public DefaultSemanticChecker(
             PeekableIterator<Checkable> checkableStream, Queue<Interpretable> interpretableBuffer) {
         this.checkableStream = checkableStream;
         this.interpretableBuffer = new LinkedList<>(interpretableBuffer);
     }
 
-    public DefaultSemanticParser(PeekableIterator<Checkable> checkableStream) {
+    public DefaultSemanticChecker(PeekableIterator<Checkable> checkableStream) {
         this(checkableStream, new LinkedList<>());
     }
 
