@@ -13,15 +13,15 @@ import java.util.Map;
 
 public final class DefaultEnvironment implements Environment {
     private final Map<String, VariableEntry> variables;
-
-    @SuppressWarnings("EI_EXPOSE_REP2")
     private final Environment father;
 
+    @SuppressWarnings("EI_EXPOSE_REP2")
     public DefaultEnvironment(Map<String, VariableEntry> variables, Environment father) {
         this.variables = new HashMap<>(variables);
         this.father = father;
     }
 
+    @SuppressWarnings("EI_EXPOSE_REP2")
     public DefaultEnvironment(Environment father) {
         this(new HashMap<>(), father);
     }
