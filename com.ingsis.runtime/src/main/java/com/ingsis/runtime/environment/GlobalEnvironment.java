@@ -11,18 +11,18 @@ import com.ingsis.runtime.environment.entries.VariableEntry;
 import java.util.HashMap;
 import java.util.Map;
 
-public record GlobalEnvironment(Map<String, VariableEntry> variables) implements Environment {
+public final class GlobalEnvironment implements Environment {
+    Map<String, VariableEntry> variables;
 
-    public GlobalEnvironment {
-        variables = new HashMap<>(variables);
+    public GlobalEnvironment(Map<String, VariableEntry> variables) {
+        this.variables = new HashMap<>(variables);
     }
 
     public GlobalEnvironment() {
         this(new HashMap<>());
     }
 
-    @Override
-    public Map<String, VariableEntry> variables() {
+    private Map<String, VariableEntry> variables() {
         return new HashMap<>(variables);
     }
 

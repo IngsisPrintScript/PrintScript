@@ -11,24 +11,25 @@ import com.ingsis.runtime.environment.entries.VariableEntry;
 import java.util.HashMap;
 import java.util.Map;
 
-public record DefaultEnvironment(Map<String, VariableEntry> variables, Environment father)
-        implements Environment {
+public final class DefaultEnvironment implements Environment {
+    private final Map<String, VariableEntry> variables;
+    private final Environment father;
 
-    public DefaultEnvironment {
-        variables = new HashMap<>(variables);
+    public DefaultEnvironment(Map<String, VariableEntry> variables, Environment father) {
+        this.variables = new HashMap<>(variables);
+        this.father = father;
     }
 
     public DefaultEnvironment(Environment father) {
         this(new HashMap<>(), father);
     }
 
-    public DefaultEnvironment() {
-        this(new HashMap<>(), new GlobalEnvironment());
+    private Map<String, VariableEntry> variables() {
+        return variables;
     }
 
-    @Override
-    public Map<String, VariableEntry> variables() {
-        return new HashMap<>(variables);
+    private Environment father() {
+        return father;
     }
 
     @Override
