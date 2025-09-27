@@ -4,6 +4,7 @@
 
 package com.ingsis.syntactic;
 
+import com.ingsis.nodes.Node;
 import com.ingsis.result.Result;
 import com.ingsis.syntactic.parsers.ParserRegistry;
 import com.ingsis.tokenstream.TokenStream;
@@ -31,7 +32,7 @@ public final class DefaultSyntacticParser implements SyntacticParser {
     }
 
     @Override
-    public Result<? extends Checkable> parse() {
+    public Result<? extends Node> parse() {
         return parserRegistry.parse(tokenStream);
     }
 
@@ -49,7 +50,7 @@ public final class DefaultSyntacticParser implements SyntacticParser {
             return true;
         }
 
-        Checkable next = computeNext();
+        Checkable next = (Checkable) computeNext();
 
         if (next != null) {
             checkableBuffer.add(next);
@@ -66,9 +67,9 @@ public final class DefaultSyntacticParser implements SyntacticParser {
         return checkableBuffer.poll();
     }
 
-    private Checkable computeNext() {
-        Checkable candidate = null;
-        Result<? extends Checkable> parseResult = parse();
+    private Node computeNext() {
+        Node candidate = null;
+        Result<? extends Node> parseResult = parse();
         if (parseResult.isCorrect()) {
             candidate = parseResult.result();
         }

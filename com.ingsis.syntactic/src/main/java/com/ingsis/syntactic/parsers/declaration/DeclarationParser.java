@@ -4,6 +4,7 @@
 
 package com.ingsis.syntactic.parsers.declaration;
 
+import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.factories.NodeFactory;
@@ -17,7 +18,6 @@ import com.ingsis.syntactic.parsers.operators.ValueAssignationParser;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
-import com.ingsis.visitors.Checkable;
 
 public final class DeclarationParser implements Parser {
     private final Token LET_TOKEN_TEMPLATE;
@@ -34,7 +34,7 @@ public final class DeclarationParser implements Parser {
     }
 
     @Override
-    public Result<Checkable> parse(TokenStream stream) {
+    public Result<Node> parse(TokenStream stream) {
         Result<Token> consumeLetResult = stream.consume(LET_TOKEN_TEMPLATE);
         if (!consumeLetResult.isCorrect()) {
             return new IncorrectResult<>(consumeLetResult);

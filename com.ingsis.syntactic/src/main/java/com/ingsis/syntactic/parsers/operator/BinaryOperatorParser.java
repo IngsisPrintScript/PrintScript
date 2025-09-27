@@ -4,6 +4,7 @@
 
 package com.ingsis.syntactic.parsers.operator;
 
+import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.nodes.factories.NodeFactory;
 import com.ingsis.result.CorrectResult;
@@ -29,7 +30,7 @@ public final class BinaryOperatorParser implements Parser {
 
     @Override
     public Result<OperatorNode> parse(TokenStream stream) {
-        Result<? extends Checkable> consumeLeftChildResult = LEAF_NODES_PARSER.parse(stream);
+        Result<? extends Node> consumeLeftChildResult = LEAF_NODES_PARSER.parse(stream);
         if (!consumeLeftChildResult.isCorrect()) {
             return new IncorrectResult<>(consumeLeftChildResult);
         }
