@@ -47,7 +47,7 @@ public final class OperatorNodeValidityHandler implements NodeEventHandler<Expre
     private Result<String> recursiveCheck(Types expectedType, ExpressionNode node) {
         if (node instanceof LiteralNode literalNode) {
             boolean checkResult =
-                    new DefaultLiteralTypeGetter(runtime).getType(literalNode).equals(expectedType);
+                    new DefaultLiteralTypeGetter().getType(literalNode).equals(expectedType);
             if (checkResult) {
                 return new CorrectResult<>("Literal matches expected type.");
             } else {
