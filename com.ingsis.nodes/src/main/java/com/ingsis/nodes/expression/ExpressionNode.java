@@ -5,8 +5,8 @@
 package com.ingsis.nodes.expression;
 
 import com.ingsis.nodes.Node;
-import java.util.Collection;
+import java.util.List;
 
 public interface ExpressionNode extends Node {
-    Collection<ExpressionNode> children();
+    List<ExpressionNode> children();
 }
