@@ -39,6 +39,7 @@ public final class DefaultPublisherFactory implements PublishersFactory {
     private Collection<NodeEventHandler<ExpressionNode>> createExpressionNodeEventHandlers() {
         Collection<NodeEventHandler<ExpressionNode>> handlers = new ArrayList<>();
         handlers.add(handlersFactory.createExpressionVariableExistenceHandler());
+        handlers.add(handlersFactory.createOperatorValidityHandler());
         return handlers;
     }
 }

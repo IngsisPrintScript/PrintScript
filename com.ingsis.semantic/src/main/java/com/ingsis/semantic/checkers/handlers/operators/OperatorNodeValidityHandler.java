@@ -19,7 +19,7 @@ import com.ingsis.typer.literal.DefaultLiteralTypeGetter;
 import com.ingsis.types.Types;
 import java.util.List;
 
-public final class OperatorNodeValidityHandler implements NodeEventHandler<OperatorNode> {
+public final class OperatorNodeValidityHandler implements NodeEventHandler<ExpressionNode> {
     private final Runtime runtime;
 
     public OperatorNodeValidityHandler(Runtime runtime) {
@@ -27,14 +27,19 @@ public final class OperatorNodeValidityHandler implements NodeEventHandler<Opera
     }
 
     @Override
-    public Result<String> handle(OperatorNode node) {
-        if (node.symbol().equals("+")) {
-            return new CorrectResult<>(
-                    "Since it's an addition it will al be casted to string and then operated.");
+    public Result<String> handle(ExpressionNode node) {
+        if (node instanceof OperatorNode operatorNode) {
+            if (operatorNode.symbol().equals("+")) {
+                return new CorrectResult<>(
+                        "Since it's an addition it will al be casted to string and then operated.");
+            }
+            Types expectedType =
+                    new DefaultExpressionTypeGetter(runtime)
+                            .getType(operatorNode.children().get(0));
+            return recursiveCheck(expectedType, node);
         }
-        Types expectedType =
-                new DefaultExpressionTypeGetter(runtime).getType(node.children().get(0));
-        return recursiveCheck(expectedType, node);
+
+        return new CorrectResult<>("All not operators expression pass this check.");
     }
 
     private Result<String> recursiveCheck(Types expectedType, ExpressionNode node) {

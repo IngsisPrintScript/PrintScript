@@ -10,6 +10,7 @@ import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
+import com.ingsis.semantic.checkers.handlers.operators.OperatorNodeValidityHandler;
 import com.ingsis.semantic.checkers.handlers.variables.existance.ExpressionNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.variables.existance.LetNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.variables.existance.TypeAssignationNodeEventVariableExistenceHandler;
@@ -41,6 +42,11 @@ public final class DefaultHandlersFactory implements HandlersFactory {
     @Override
     public NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler() {
         return new ExpressionNodeEventVariableExistenceHandler(runtime);
+    }
+
+    @Override
+    public NodeEventHandler<ExpressionNode> createOperatorValidityHandler() {
+        return new OperatorNodeValidityHandler(runtime);
     }
 
     @Override

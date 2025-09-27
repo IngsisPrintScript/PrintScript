@@ -13,11 +13,13 @@ import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 public interface HandlersFactory {
     NodeEventHandler<LetKeywordNode> createLetVariableExistenceHandler();
 
+    NodeEventHandler<LetKeywordNode> createLetCorrectTypeHandler();
+
     NodeEventHandler<TypeAssignationNode> createTypeAssignationVariableExistenceHandler();
 
     NodeEventHandler<ValueAssignationNode> createValueAssignationVariableExistenceHandler();
 
     NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler();
 
-    NodeEventHandler<LetKeywordNode> createLetCorrectTypeHandler();
+    NodeEventHandler<ExpressionNode> createOperatorValidityHandler();
 }
