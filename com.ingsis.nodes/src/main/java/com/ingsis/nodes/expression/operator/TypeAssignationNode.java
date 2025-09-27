@@ -12,7 +12,6 @@ import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
-import java.util.Collection;
 import java.util.List;
 
 public record TypeAssignationNode(
@@ -39,7 +38,7 @@ public record TypeAssignationNode(
     }
 
     @Override
-    public Collection<ExpressionNode> children() {
+    public List<ExpressionNode> children() {
         return List.of();
     }
 }

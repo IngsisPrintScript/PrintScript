@@ -9,7 +9,6 @@ import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
-import java.util.Collection;
 import java.util.List;
 
 public record BinaryOperatorNode(String symbol, ExpressionNode left, ExpressionNode right)
@@ -30,7 +29,7 @@ public record BinaryOperatorNode(String symbol, ExpressionNode left, ExpressionN
     }
 
     @Override
-    public Collection<ExpressionNode> children() {
+    public List<ExpressionNode> children() {
         return List.of(left(), right());
     }
 }

@@ -7,6 +7,7 @@ package com.ingsis.nodes.keyword;
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.result.Result;
+import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpretable;
 import com.ingsis.visitors.Interpreter;
@@ -18,7 +19,7 @@ public record IfKeywordNode(
         OperatorNode condition,
         Collection<Interpretable> thenBody,
         Collection<Interpretable> elseBody)
-        implements Node {
+        implements Node, Checkable {
 
     public IfKeywordNode {
         thenBody = Collections.unmodifiableCollection(thenBody);
