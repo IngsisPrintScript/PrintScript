@@ -13,7 +13,7 @@ import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import com.ingsis.typer.expression.DefaultExpressionTypeGetter;
 import com.ingsis.types.Types;
 
-public class LetNodeCorrectTypeEventHandler implements NodeEventHandler<LetKeywordNode> {
+public final class LetNodeCorrectTypeEventHandler implements NodeEventHandler<LetKeywordNode> {
     private final Runtime runtime;
 
     public LetNodeCorrectTypeEventHandler(Runtime runtime) {
