@@ -14,6 +14,10 @@ public sealed interface Environment permits GlobalEnvironment, DefaultEnvironmen
 
     Result<VariableEntry> getVariable(String identifier);
 
+    void setExecutionResult(Result<String> result);
+
+    Result<String> getExecutionResult();
+
     Boolean isVariableDeclared(String identifier);
 
     Boolean isVariableInitialized(String identifier);

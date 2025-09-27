@@ -68,6 +68,16 @@ public final class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public void setExecutionResult(Result<String> result) {
+        father().setExecutionResult(result);
+    }
+
+    @Override
+    public Result<String> getExecutionResult() {
+        return father().getExecutionResult();
+    }
+
+    @Override
     public Boolean isVariableDeclared(String identifier) {
         return isVariableDeclaredHere(identifier) || father.isVariableDeclared(identifier);
     }

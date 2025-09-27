@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class GlobalEnvironment implements Environment {
-    Map<String, VariableEntry> variables;
+    private final Map<String, VariableEntry> variables;
+    private Result<String> executionResult;
 
     public GlobalEnvironment(Map<String, VariableEntry> variables) {
         this.variables = new HashMap<>(variables);
@@ -51,6 +52,16 @@ public final class GlobalEnvironment implements Environment {
                     "There is no variable declared with identifier: " + identifier);
         }
         return new CorrectResult<>(variables().get(identifier));
+    }
+
+    @Override
+    public void setExecutionResult(Result<String> result) {
+        this.executionResult = result;
+    }
+
+    @Override
+    public Result<String> getExecutionResult() {
+        return this.executionResult;
     }
 
     @Override
