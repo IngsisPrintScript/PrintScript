@@ -12,7 +12,9 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import com.ingsis.typer.expression.DefaultExpressionTypeGetter;
 import com.ingsis.types.Types;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class IfNodeCorrectTypeEventHandler implements NodeEventHandler<IfKeywordNode> {
     private final Runtime runtime;
 

@@ -16,7 +16,9 @@ import com.ingsis.semantic.checkers.handlers.variables.existance.LetNodeEventVar
 import com.ingsis.semantic.checkers.handlers.variables.existance.TypeAssignationNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.variables.existance.ValueAssignationNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.variables.type.LetNodeCorrectTypeEventHandler;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultHandlersFactory implements HandlersFactory {
     private final Runtime runtime;
 

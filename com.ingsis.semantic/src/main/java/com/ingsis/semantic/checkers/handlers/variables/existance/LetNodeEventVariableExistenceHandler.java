@@ -12,7 +12,9 @@ import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class LetNodeEventVariableExistenceHandler
         implements NodeEventHandler<LetKeywordNode> {
     private final Runtime runtime;

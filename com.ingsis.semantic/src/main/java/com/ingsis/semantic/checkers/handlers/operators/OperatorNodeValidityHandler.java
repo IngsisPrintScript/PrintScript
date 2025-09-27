@@ -17,8 +17,10 @@ import com.ingsis.typer.expression.DefaultExpressionTypeGetter;
 import com.ingsis.typer.identifier.DefaultIdentifierTypeGetter;
 import com.ingsis.typer.literal.DefaultLiteralTypeGetter;
 import com.ingsis.types.Types;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
 
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class OperatorNodeValidityHandler implements NodeEventHandler<ExpressionNode> {
     private final Runtime runtime;
 
