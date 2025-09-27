@@ -6,10 +6,12 @@ package com.ingsis.semantic.checkers.handlers.variables.existance;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
+import com.ingsis.runtime.environment.entries.DefaultVariableEntry;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -25,6 +27,7 @@ public final class TypeAssignationNodeEventVariableExistenceHandler
     @Override
     public Result<String> handle(TypeAssignationNode node) {
         IdentifierNode identifierNode = node.identifierNode();
+        TypeNode typeNode = node.typeNode();
 
         if (!runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
             runtime.getCurrentEnvironment()
@@ -32,6 +35,9 @@ public final class TypeAssignationNodeEventVariableExistenceHandler
                             new IncorrectResult<>(
                                     "Variable " + identifierNode.name() + " is not declared."));
         }
+
+        runtime.getCurrentEnvironment()
+                .putVariable(identifierNode.name(), new DefaultVariableEntry(typeNode.type()));
 
         return new CorrectResult<>("Variable " + identifierNode.name() + " is already declared.");
     }
