@@ -2,16 +2,18 @@
  * My Project
  */
 
-package com.ingsis.nodes.identifier;
+package com.ingsis.nodes.expression.operator;
 
-import com.ingsis.nodes.Node;
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
+import java.util.Collection;
+import java.util.List;
 
-public record IdentifierNode(String name) implements Node {
-
+public record BinaryOperatorNode(String symbol, ExpressionNode left, ExpressionNode right)
+        implements OperatorNode {
     @Override
     public Result<String> acceptChecker(Checker checker) {
         return checker.check(this);
@@ -25,5 +27,10 @@ public record IdentifierNode(String name) implements Node {
     @Override
     public Result<String> acceptVisitor(Visitor visitor) {
         return visitor.visit(this);
+    }
+
+    @Override
+    public Collection<ExpressionNode> children() {
+        return List.of(left(), right());
     }
 }

@@ -4,9 +4,9 @@
 
 package com.ingsis.syntactic.parsers.declaration;
 
+import com.ingsis.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.operator.TypeAssignationNode;
-import com.ingsis.nodes.operator.ValueAssignationNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;

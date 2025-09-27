@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.nodes.operator.strategies;
+package com.ingsis.nodes.expression.operator.strategies;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.result.Result;

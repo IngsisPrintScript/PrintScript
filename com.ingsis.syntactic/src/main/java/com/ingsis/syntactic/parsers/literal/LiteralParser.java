@@ -4,8 +4,8 @@
 
 package com.ingsis.syntactic.parsers.literal;
 
+import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.literal.LiteralNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;

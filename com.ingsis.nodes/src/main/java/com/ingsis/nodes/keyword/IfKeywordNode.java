@@ -5,7 +5,7 @@
 package com.ingsis.nodes.keyword;
 
 import com.ingsis.nodes.Node;
-import com.ingsis.nodes.operator.OperatorNode;
+import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpretable;

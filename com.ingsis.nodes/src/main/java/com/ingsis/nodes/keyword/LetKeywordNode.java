@@ -5,8 +5,8 @@
 package com.ingsis.nodes.keyword;
 
 import com.ingsis.nodes.Node;
-import com.ingsis.nodes.operator.TypeAssignationNode;
-import com.ingsis.nodes.operator.ValueAssignationNode;
+import com.ingsis.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;

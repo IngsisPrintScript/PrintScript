@@ -2,17 +2,20 @@
  * My Project
  */
 
-package com.ingsis.nodes.operator;
+package com.ingsis.nodes.expression.operator;
 
-import com.ingsis.nodes.identifier.IdentifierNode;
-import com.ingsis.nodes.operator.strategies.OperatorStrategy;
+import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.nodes.expression.operator.strategies.OperatorStrategy;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
+import java.util.Collection;
+import java.util.List;
 
 public record ValueAssignationNode(
-        IdentifierNode identifierNode, OperatorNode operatorNode, OperatorStrategy strategy)
+        IdentifierNode identifierNode, ExpressionNode expressionNode, OperatorStrategy strategy)
         implements OperatorNode {
     @Override
     public Result<String> acceptChecker(Checker checker) {
@@ -32,5 +35,10 @@ public record ValueAssignationNode(
     @Override
     public String symbol() {
         return "=";
+    }
+
+    @Override
+    public Collection<ExpressionNode> children() {
+        return List.of();
     }
 }

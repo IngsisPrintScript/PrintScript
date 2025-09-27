@@ -4,8 +4,8 @@
 
 package com.ingsis.syntactic.parsers.identifier;
 
+import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.identifier.IdentifierNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;

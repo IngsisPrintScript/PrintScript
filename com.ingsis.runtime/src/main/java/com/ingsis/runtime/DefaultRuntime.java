@@ -8,6 +8,7 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.Environment;
+import com.ingsis.runtime.environment.factories.DefaultEnvironmentFactory;
 import com.ingsis.runtime.environment.factories.EnvironmentFactory;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -20,6 +21,15 @@ public final class DefaultRuntime implements Runtime {
         this.ENVIRONMENT_FACTORY = environmentFactory;
         environments = new ArrayDeque<>();
         environments.push(ENVIRONMENT_FACTORY.createGlobalEnvironment());
+    }
+
+    private static class Holder {
+        private static final DefaultRuntime INSTANCE =
+                new DefaultRuntime(new DefaultEnvironmentFactory());
+    }
+
+    public static DefaultRuntime getInstance() {
+        return Holder.INSTANCE;
     }
 
     @Override

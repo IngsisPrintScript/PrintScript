@@ -2,19 +2,18 @@
  * My Project
  */
 
-package com.ingsis.nodes.operator;
+package com.ingsis.nodes.expression.identifier;
 
-import com.ingsis.nodes.identifier.IdentifierNode;
-import com.ingsis.nodes.operator.strategies.OperatorStrategy;
-import com.ingsis.nodes.type.TypeNode;
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
+import java.util.Collection;
+import java.util.List;
 
-public record TypeAssignationNode(
-        IdentifierNode identifierNode, TypeNode typeNode, OperatorStrategy strategy)
-        implements OperatorNode {
+public record IdentifierNode(String name) implements ExpressionNode {
+
     @Override
     public Result<String> acceptChecker(Checker checker) {
         return checker.check(this);
@@ -31,7 +30,7 @@ public record TypeAssignationNode(
     }
 
     @Override
-    public String symbol() {
-        return ":";
+    public Collection<ExpressionNode> children() {
+        return List.of();
     }
 }

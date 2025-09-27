@@ -4,10 +4,10 @@
 
 package com.ingsis.syntactic.parsers.operators;
 
+import com.ingsis.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.nodes.expression.operator.OperatorNode;
+import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.identifier.IdentifierNode;
-import com.ingsis.nodes.operator.OperatorNode;
-import com.ingsis.nodes.operator.ValueAssignationNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;

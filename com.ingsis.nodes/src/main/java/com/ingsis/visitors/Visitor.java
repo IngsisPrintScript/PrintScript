@@ -4,13 +4,13 @@
 
 package com.ingsis.visitors;
 
-import com.ingsis.nodes.identifier.IdentifierNode;
+import com.ingsis.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.nodes.expression.literal.LiteralNode;
+import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
+import com.ingsis.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
-import com.ingsis.nodes.literal.LiteralNode;
-import com.ingsis.nodes.operator.BinaryOperatorNode;
-import com.ingsis.nodes.operator.TypeAssignationNode;
-import com.ingsis.nodes.operator.ValueAssignationNode;
 import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.result.Result;
 
