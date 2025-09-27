@@ -9,12 +9,13 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import java.util.Collection;
+import java.util.List;
 
 public final class GenericNodeEventPublisher<T extends Node> implements NodeEventPublisher<T> {
     private final Collection<NodeEventHandler<T>> listeners;
 
     public GenericNodeEventPublisher(Collection<NodeEventHandler<T>> listeners) {
-        this.listeners = listeners;
+        this.listeners = List.copyOf(listeners);
     }
 
     @Override
