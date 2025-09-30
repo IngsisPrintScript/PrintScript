@@ -38,4 +38,9 @@ public record BinaryOperatorNode(String symbol, ExpressionNode left, ExpressionN
     public List<ExpressionNode> children() {
         return List.of(left(), right());
     }
+
+    @Override
+    public Boolean isTerminalNode() {
+        return false;
+    }
 }

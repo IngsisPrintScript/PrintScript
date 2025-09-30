@@ -31,6 +31,16 @@ public record LiteralNode(String value) implements ExpressionNode {
     }
 
     @Override
+    public Boolean isTerminalNode() {
+        return true;
+    }
+
+    @Override
+    public String symbol() {
+        throw new UnsupportedOperationException("LiteralNode.symbol() is not supported.");
+    }
+
+    @Override
     public Result<String> acceptInterpreter(Interpreter interpreter) {
         Result<Object> interpretResult = interpreter.interpret(this);
         if (!interpretResult.isCorrect()) {

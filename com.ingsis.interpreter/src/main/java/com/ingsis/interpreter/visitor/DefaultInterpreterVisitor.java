@@ -4,6 +4,7 @@
 
 package com.ingsis.interpreter.visitor;
 
+import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
@@ -21,9 +22,12 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultInterpreterVisitor implements Interpreter {
     private final Runtime runtime;
+    private final ExpressionSolutionStrategy expressionSolutionStrategy;
 
-    public DefaultInterpreterVisitor(Runtime runtime) {
+    public DefaultInterpreterVisitor(
+            Runtime runtime, ExpressionSolutionStrategy expressionSolutionStrategy) {
         this.runtime = runtime;
+        this.expressionSolutionStrategy = expressionSolutionStrategy;
     }
 
     @Override
@@ -73,6 +77,6 @@ public final class DefaultInterpreterVisitor implements Interpreter {
 
     @Override
     public Result<Object> interpret(ExpressionNode expressionNode) {
-        return new IncorrectResult<>("not implemented yet.");
+        return expressionSolutionStrategy.solve(this, expressionNode);
     }
 }
