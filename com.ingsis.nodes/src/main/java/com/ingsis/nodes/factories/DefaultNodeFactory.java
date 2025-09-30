@@ -10,8 +10,6 @@ import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
 import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.expression.operator.strategies.OperatorStrategy;
-import com.ingsis.nodes.expression.operator.strategies.factories.StrategyFactory;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.nodes.type.TypeNode;
@@ -20,12 +18,6 @@ import com.ingsis.visitors.Interpretable;
 import java.util.Collection;
 
 public final class DefaultNodeFactory implements NodeFactory {
-    private final StrategyFactory STRATEGY_FACTORY;
-
-    public DefaultNodeFactory(StrategyFactory STRATEGY_FACTORY) {
-        this.STRATEGY_FACTORY = STRATEGY_FACTORY;
-    }
-
     @Override
     public IfKeywordNode createConditionalNode(
             OperatorNode booleanExpression,
@@ -49,15 +41,13 @@ public final class DefaultNodeFactory implements NodeFactory {
     @Override
     public ValueAssignationNode createValueAssignationNode(
             IdentifierNode identifierNode, OperatorNode operatorNode) {
-        OperatorStrategy strategy = STRATEGY_FACTORY.typeAssignationStrategy();
-        return new ValueAssignationNode(identifierNode, operatorNode, strategy);
+        return new ValueAssignationNode(identifierNode, operatorNode);
     }
 
     @Override
     public TypeAssignationNode createTypeAssignationNode(
             IdentifierNode identifierNode, TypeNode typeNode) {
-        OperatorStrategy strategy = STRATEGY_FACTORY.valueAssignationStrategy();
-        return new TypeAssignationNode(identifierNode, typeNode, strategy);
+        return new TypeAssignationNode(identifierNode, typeNode);
     }
 
     @Override

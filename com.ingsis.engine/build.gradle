@@ -1,5 +1,5 @@
 plugins {
-    id 'buildlogic.java-library-conventions'
+    id 'buildlogic.java-application-conventions'
 }
 
 dependencies {
@@ -11,5 +11,7 @@ dependencies {
     implementation project(':com.ingsis.charstream')
     implementation project(':com.ingsis.runtime')
     implementation project(':com.ingsis.nodes')
+    implementation project(':com.ingsis.tokens')
     implementation project(':com.ingsis.peekableiterator')
+    implementation project(':com.ingsis.result')
 }
