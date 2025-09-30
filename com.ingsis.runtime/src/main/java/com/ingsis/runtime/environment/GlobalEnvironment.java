@@ -8,41 +8,43 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.VariableEntry;
+import com.ingsis.runtime.environment.entries.factories.EntryFactory;
+import com.ingsis.types.Types;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class GlobalEnvironment implements Environment {
+    private final EntryFactory entryFactory;
     private final Map<String, VariableEntry> variables;
     private Result<String> executionResult;
 
-    public GlobalEnvironment(Map<String, VariableEntry> variables) {
+    public GlobalEnvironment(EntryFactory entryFactory, Map<String, VariableEntry> variables) {
+        this.entryFactory = entryFactory;
         this.variables = new HashMap<>(variables);
     }
 
-    public GlobalEnvironment() {
-        this(new HashMap<>());
-    }
-
-    private Map<String, VariableEntry> variables() {
-        return new HashMap<>(variables);
+    public GlobalEnvironment(EntryFactory entryFactory) {
+        this(entryFactory, new HashMap<>());
     }
 
     @Override
-    public Result<VariableEntry> putVariable(String identifier, VariableEntry variableEntry) {
+    public Result<VariableEntry> putVariable(String identifier, Types type) {
         if (isVariableDeclared(identifier)) {
             return new IncorrectResult<>("Can't create an already created variable.");
         }
-        variables().put(identifier, variableEntry);
-        return new CorrectResult<>(variableEntry);
+        VariableEntry variableEntry = entryFactory.createVariableEntry(type, null);
+        return new CorrectResult<>(variables.put(identifier, variableEntry));
     }
 
     @Override
-    public Result<VariableEntry> modifyVariable(String identifier, VariableEntry variableEntry) {
+    public Result<VariableEntry> modifyVariable(String identifier, Object value) {
         if (!isVariableDeclared(identifier)) {
             return new IncorrectResult<>("Can't modify an uninitialized variable.");
         }
-        variables().put(identifier, variableEntry);
-        return new CorrectResult<>(variableEntry);
+        VariableEntry oldVariableEntry = variables.get(identifier);
+        Types type = oldVariableEntry.type();
+        VariableEntry newVariableEntry = entryFactory.createVariableEntry(type, value);
+        return new CorrectResult<>(variables.put(identifier, newVariableEntry));
     }
 
     @Override
@@ -51,7 +53,7 @@ public final class GlobalEnvironment implements Environment {
             return new IncorrectResult<>(
                     "There is no variable declared with identifier: " + identifier);
         }
-        return new CorrectResult<>(variables().get(identifier));
+        return new CorrectResult<>(variables.get(identifier));
     }
 
     @Override

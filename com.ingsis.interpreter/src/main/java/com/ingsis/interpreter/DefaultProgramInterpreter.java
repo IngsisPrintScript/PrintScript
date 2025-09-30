@@ -10,11 +10,11 @@ import com.ingsis.result.Result;
 import com.ingsis.visitors.Interpretable;
 import com.ingsis.visitors.Interpreter;
 
-public final class DefaultInterpreter implements ProgramInterpreter {
+public final class DefaultProgramInterpreter implements ProgramInterpreter {
     private final PeekableIterator<Interpretable> interpretableStream;
     private final Interpreter interpreter;
 
-    public DefaultInterpreter(
+    public DefaultProgramInterpreter(
             PeekableIterator<Interpretable> interpretableStream, Interpreter interpreter) {
         this.interpretableStream = interpretableStream;
         this.interpreter = interpreter;

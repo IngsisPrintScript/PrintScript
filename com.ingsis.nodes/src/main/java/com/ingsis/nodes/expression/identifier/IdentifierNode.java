@@ -19,11 +19,6 @@ public record IdentifierNode(String name) implements ExpressionNode {
     }
 
     @Override
-    public Result<String> acceptInterpreter(Interpreter interpreter) {
-        return interpreter.interpret(this);
-    }
-
-    @Override
     public Result<String> acceptVisitor(Visitor visitor) {
         return visitor.visit(this);
     }
@@ -31,5 +26,10 @@ public record IdentifierNode(String name) implements ExpressionNode {
     @Override
     public List<ExpressionNode> children() {
         return List.of();
+    }
+
+    @Override
+    public Result<String> acceptInterpreter(Interpreter interpreter) {
+        return interpreter.interpret(this);
     }
 }

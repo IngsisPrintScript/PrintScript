@@ -10,12 +10,13 @@ import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
+import com.ingsis.visitors.Interpretable;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
 
 public record LetKeywordNode(
         TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode)
-        implements Node, Checkable {
+        implements Node, Checkable, Interpretable {
 
     @Override
     public Result<String> acceptChecker(Checker checker) {

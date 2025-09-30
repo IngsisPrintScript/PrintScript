@@ -6,11 +6,12 @@ package com.ingsis.runtime.environment;
 
 import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.VariableEntry;
+import com.ingsis.types.Types;
 
 public sealed interface Environment permits GlobalEnvironment, DefaultEnvironment {
-    Result<VariableEntry> putVariable(String identifier, VariableEntry variableEntry);
+    Result<VariableEntry> putVariable(String identifier, Types type);
 
-    Result<VariableEntry> modifyVariable(String identifier, VariableEntry variableEntry);
+    Result<VariableEntry> modifyVariable(String identifier, Object value);
 
     Result<VariableEntry> getVariable(String identifier);
 

@@ -19,7 +19,7 @@ public record IfKeywordNode(
         OperatorNode condition,
         Collection<Interpretable> thenBody,
         Collection<Interpretable> elseBody)
-        implements Node, Checkable {
+        implements Node, Checkable, Interpretable {
 
     public IfKeywordNode {
         thenBody = Collections.unmodifiableCollection(thenBody);

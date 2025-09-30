@@ -4,6 +4,8 @@ plugins {
 
 dependencies {
     implementation project(':com.ingsis.peekableiterator')
+    implementation project(':com.ingsis.runtime')
     implementation project(':com.ingsis.nodes')
     implementation project(':com.ingsis.result')
+    implementation project(':com.ingsis.types')
 }

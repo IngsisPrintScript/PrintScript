@@ -4,13 +4,71 @@
 
 package com.ingsis.interpreter.visitor;
 
+import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.nodes.keyword.IfKeywordNode;
+import com.ingsis.nodes.keyword.LetKeywordNode;
+import com.ingsis.result.CorrectResult;
+import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
-import com.ingsis.visitors.Interpretable;
+import com.ingsis.runtime.Runtime;
+import com.ingsis.runtime.environment.entries.VariableEntry;
+import com.ingsis.types.Types;
 import com.ingsis.visitors.Interpreter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
-public class DefaultInterpreterVisitor implements Interpretable {
+@SuppressFBWarnings("EI_EXPOSE_REP2")
+public final class DefaultInterpreterVisitor implements Interpreter {
+    private final Runtime runtime;
+
+    public DefaultInterpreterVisitor(Runtime runtime) {
+        this.runtime = runtime;
+    }
+
     @Override
-    public Result<String> acceptInterpreter(Interpreter interpreter) {
-        return null;
+    public Result<String> interpret(IfKeywordNode ifKeywordNode) {
+        return new IncorrectResult<>("not implemented yet.");
+    }
+
+    private Result<String> interpret(TypeAssignationNode typeAssignationNode) {
+        String identifier = typeAssignationNode.identifierNode().name();
+        Types type = typeAssignationNode.typeNode().type();
+        Result<VariableEntry> declareVarResult =
+                runtime.getCurrentEnvironment().putVariable(identifier, type);
+        if (!declareVarResult.isCorrect()) {
+            return new IncorrectResult<>(declareVarResult);
+        }
+        return new CorrectResult<>(
+                "Variable " + identifier + " has been declared with type " + type.keyword());
+    }
+
+    private Result<String> interpret(ValueAssignationNode valueAssignationNode) {
+        String identifier = valueAssignationNode.identifierNode().name();
+        Object value = valueAssignationNode.expressionNode().acceptInterpreter(this);
+        Result<VariableEntry> modifyVarResult =
+                runtime.getCurrentEnvironment().modifyVariable(identifier, value);
+        if (!modifyVarResult.isCorrect()) {
+            return new IncorrectResult<>(modifyVarResult);
+        }
+        return new CorrectResult<>("Variable " + identifier + " value was updated to " + value);
+    }
+
+    @Override
+    public Result<String> interpret(LetKeywordNode letKeywordNode) {
+        Result<String> typeAssignationResult = interpret(letKeywordNode.typeAssignationNode());
+        if (!typeAssignationResult.isCorrect()) {
+            return new IncorrectResult<>(typeAssignationResult);
+        }
+        Result<String> valueAssignationResult = interpret(letKeywordNode.valueAssignationNode());
+        if (!valueAssignationResult.isCorrect()) {
+            return new IncorrectResult<>(valueAssignationResult);
+        }
+        return new CorrectResult<>("New variable declared and initialized.");
+    }
+
+    @Override
+    public Result<String> interpret(ExpressionNode expressionNode) {
+        return new IncorrectResult<>("not implemented yet.");
     }
 }

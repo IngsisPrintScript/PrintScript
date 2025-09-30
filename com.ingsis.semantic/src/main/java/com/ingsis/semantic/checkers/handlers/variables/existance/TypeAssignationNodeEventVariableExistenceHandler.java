@@ -11,7 +11,6 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.runtime.environment.entries.DefaultVariableEntry;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -36,8 +35,7 @@ public final class TypeAssignationNodeEventVariableExistenceHandler
                                     "Variable " + identifierNode.name() + " is not declared."));
         }
 
-        runtime.getCurrentEnvironment()
-                .putVariable(identifierNode.name(), new DefaultVariableEntry(typeNode.type()));
+        runtime.getCurrentEnvironment().putVariable(identifierNode.name(), typeNode.type());
 
         return new CorrectResult<>("Variable " + identifierNode.name() + " is already declared.");
     }
