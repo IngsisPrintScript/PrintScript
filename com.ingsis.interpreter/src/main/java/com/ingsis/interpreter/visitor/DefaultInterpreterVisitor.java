@@ -5,7 +5,6 @@
 package com.ingsis.interpreter.visitor;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
-import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
@@ -26,9 +25,9 @@ public final class DefaultInterpreterVisitor implements Interpreter {
     private final ExpressionSolutionStrategy expressionSolutionStrategy;
 
     public DefaultInterpreterVisitor(
-            Runtime runtime, SolutionStrategyFactory solutionStrategyFactory) {
+            Runtime runtime, ExpressionSolutionStrategy expressionSolutionStrategy) {
         this.runtime = runtime;
-        this.expressionSolutionStrategy = solutionStrategyFactory.constructDefaultStrategy();
+        this.expressionSolutionStrategy = expressionSolutionStrategy;
     }
 
     @Override

@@ -20,15 +20,15 @@ public final class DefaultSyntacticParser implements SyntacticParser {
 
     public DefaultSyntacticParser(
             TokenStream tokenStream,
-            Queue<Checkable> checkableBuffer,
-            ParserRegistry parserRegistry) {
+            ParserRegistry parserRegistry,
+            Queue<Checkable> checkableBuffer) {
         this.tokenStream = tokenStream;
         this.checkableBuffer = new LinkedList<>(checkableBuffer);
         this.parserRegistry = parserRegistry;
     }
 
     public DefaultSyntacticParser(TokenStream tokenStream, ParserRegistry parserRegistry) {
-        this(tokenStream, new LinkedList<>(), parserRegistry);
+        this(tokenStream, parserRegistry, new LinkedList<>());
     }
 
     @Override

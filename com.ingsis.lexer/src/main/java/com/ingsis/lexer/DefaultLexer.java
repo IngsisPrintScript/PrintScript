@@ -19,15 +19,15 @@ public final class DefaultLexer implements Lexer {
 
     public DefaultLexer(
             PeekableIterator<Character> charIterator,
-            Queue<Token> tokenBuffer,
-            Tokenizer tokenizer) {
+            Tokenizer tokenizer,
+            Queue<Token> tokenBuffer) {
         this.charIterator = charIterator;
         this.tokenBuffer = new LinkedList<>(tokenBuffer);
         this.tokenizer = tokenizer;
     }
 
     public DefaultLexer(PeekableIterator<Character> charIterator, Tokenizer tokenizer) {
-        this(charIterator, new LinkedList<>(), tokenizer);
+        this(charIterator, tokenizer, new LinkedList<>());
     }
 
     @Override

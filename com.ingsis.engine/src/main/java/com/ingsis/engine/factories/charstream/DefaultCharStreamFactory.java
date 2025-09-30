@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.charstream.factories;
+package com.ingsis.engine.factories.charstream;
 
 import com.ingsis.charstream.FromFileCharStream;
 import com.ingsis.charstream.InMemoryCharStream;
