@@ -14,5 +14,5 @@ public interface Interpreter {
 
     Result<String> interpret(LetKeywordNode letKeywordNode);
 
-    Result<String> interpret(ExpressionNode expressionNode);
+    Result<Object> interpret(ExpressionNode expressionNode);
 }

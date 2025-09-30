@@ -5,6 +5,8 @@
 package com.ingsis.nodes.expression.operator;
 
 import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.result.CorrectResult;
+import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpreter;
@@ -20,7 +22,11 @@ public record BinaryOperatorNode(String symbol, ExpressionNode left, ExpressionN
 
     @Override
     public Result<String> acceptInterpreter(Interpreter interpreter) {
-        return interpreter.interpret(this);
+        Result<Object> interpretResult = interpreter.interpret(this);
+        if (!interpretResult.isCorrect()) {
+            return new IncorrectResult<>(interpretResult);
+        }
+        return new CorrectResult<>("Interpreted successfully.");
     }
 
     @Override

@@ -45,7 +45,11 @@ public final class DefaultInterpreterVisitor implements Interpreter {
 
     private Result<String> interpret(ValueAssignationNode valueAssignationNode) {
         String identifier = valueAssignationNode.identifierNode().name();
-        Object value = valueAssignationNode.expressionNode().acceptInterpreter(this);
+        Result<Object> valueResult = this.interpret(valueAssignationNode.expressionNode());
+        if (!valueResult.isCorrect()) {
+            return new IncorrectResult<>(valueResult);
+        }
+        Object value = valueResult.result();
         Result<VariableEntry> modifyVarResult =
                 runtime.getCurrentEnvironment().modifyVariable(identifier, value);
         if (!modifyVarResult.isCorrect()) {
@@ -68,7 +72,7 @@ public final class DefaultInterpreterVisitor implements Interpreter {
     }
 
     @Override
-    public Result<String> interpret(ExpressionNode expressionNode) {
+    public Result<Object> interpret(ExpressionNode expressionNode) {
         return new IncorrectResult<>("not implemented yet.");
     }
 }
