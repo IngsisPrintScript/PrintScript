@@ -13,11 +13,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Queue;
 
-public final class DefaultCodeInterpreterFactory implements CodeInterpreterFactory {
+public final class DefaultProgramInterpreterFactory implements ProgramInterpreterFactory {
     private final SemanticFactory semanticFactory;
     private final InterpreterVisitorFactory interpreterFactory;
 
-    public DefaultCodeInterpreterFactory(
+    public DefaultProgramInterpreterFactory(
             SemanticFactory semanticFactory, InterpreterVisitorFactory interpreterFactory) {
         this.semanticFactory = semanticFactory;
         this.interpreterFactory = interpreterFactory;

@@ -34,7 +34,12 @@ public final class BinaryOperatorParser implements Parser {
         if (!consumeLeftChildResult.isCorrect()) {
             return new IncorrectResult<>(consumeLeftChildResult);
         }
-        OperatorNode leftChild = (OperatorNode) consumeLeftChildResult.result();
+        OperatorNode leftChild;
+        try {
+            leftChild = (OperatorNode) consumeLeftChildResult.result();
+        } catch (Exception e) {
+            return new IncorrectResult<>(e.getMessage());
+        }
 
         if (!stream.match(OPERATOR_TEMPLATE)) {
             return new CorrectResult<>(leftChild);

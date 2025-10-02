@@ -6,8 +6,8 @@ package com.ingsis.engine;
 
 import com.ingsis.engine.factories.charstream.CharStreamFactory;
 import com.ingsis.engine.factories.charstream.DefaultCharStreamFactory;
-import com.ingsis.engine.factories.interpreter.CodeInterpreterFactory;
-import com.ingsis.engine.factories.interpreter.DefaultCodeInterpreterFactory;
+import com.ingsis.engine.factories.interpreter.DefaultProgramInterpreterFactory;
+import com.ingsis.engine.factories.interpreter.ProgramInterpreterFactory;
 import com.ingsis.engine.factories.lexer.DefaultLexerFactory;
 import com.ingsis.engine.factories.lexer.LexerFactory;
 import com.ingsis.engine.factories.semantic.DefaultSemanticFactory;
@@ -69,6 +69,7 @@ public final class CliEngine implements Engine {
 
                 Result<String> result = interpreter.interpret();
                 System.out.println(result);
+                System.out.println(DefaultRuntime.getInstance());
             }
         } catch (Exception e) {
             System.err.println("Error in REPL: " + e.getMessage());
@@ -91,9 +92,9 @@ public final class CliEngine implements Engine {
         SolutionStrategyFactory solutionStrategyFactory = new DefaultSolutionStrategyFactory();
         InterpreterVisitorFactory interpreterVisitorFactory =
                 new DefaultInterpreterVisitorFactory(solutionStrategyFactory);
-        CodeInterpreterFactory codeInterpreterFactory =
-                new DefaultCodeInterpreterFactory(semanticFactory, interpreterVisitorFactory);
-        return codeInterpreterFactory.createCliProgramInterpreter(
+        ProgramInterpreterFactory programInterpreterFactory =
+                new DefaultProgramInterpreterFactory(semanticFactory, interpreterVisitorFactory);
+        return programInterpreterFactory.createCliProgramInterpreter(
                 buffer, DefaultRuntime.getInstance());
     }
 }
