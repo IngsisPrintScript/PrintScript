@@ -33,7 +33,9 @@ import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import com.ingsis.tokens.factories.TokenFactory;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import picocli.CommandLine;
@@ -50,7 +52,8 @@ public final class CliEngine implements Engine {
 
     @Override
     public void run() {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
             System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
 
             String line;
@@ -71,7 +74,7 @@ public final class CliEngine implements Engine {
                 System.out.println(result);
                 System.out.println(DefaultRuntime.getInstance());
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Error in REPL: " + e.getMessage());
             e.printStackTrace();
         }
