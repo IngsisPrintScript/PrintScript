@@ -2,6 +2,10 @@ plugins {
     id 'buildlogic.java-application-conventions'
 }
 
+application{
+    mainClassName="CliEngine"
+  }
+
 dependencies {
     implementation project(':com.ingsis.tokenstream')
     implementation project(':com.ingsis.interpreter')
