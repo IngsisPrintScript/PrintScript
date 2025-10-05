@@ -3,7 +3,7 @@ plugins {
 }
 
 application{
-    mainClassName="CliEngine"
+    mainClassName="com.ingsis.engine.CliEngine"
   }
 
 dependencies {
