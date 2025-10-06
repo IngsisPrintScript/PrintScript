@@ -50,10 +50,9 @@ public final class DefaultSyntacticParser implements SyntacticParser {
             return true;
         }
 
-        Checkable next = (Checkable) computeNext();
-
+        Node next = computeNext();
         if (next != null) {
-            checkableBuffer.add(next);
+            checkableBuffer.add((Checkable) next);
         }
 
         return next != null;
@@ -68,11 +67,10 @@ public final class DefaultSyntacticParser implements SyntacticParser {
     }
 
     private Node computeNext() {
-        Node candidate = null;
         Result<? extends Node> parseResult = parse();
         if (parseResult.isCorrect()) {
-            candidate = parseResult.result();
+            return parseResult.result();
         }
-        return candidate;
+        return null;
     }
 }

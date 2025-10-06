@@ -27,15 +27,17 @@ public final class DefaultProgramInterpreterFactory implements ProgramInterprete
     public ProgramInterpreter createCliProgramInterpreter(
             Queue<Character> buffer, Runtime runtime) {
         return new DefaultProgramInterpreter(
-                semanticFactory.createCliSemanticChecker(buffer),
-                interpreterFactory.createDefaultInterpreter(runtime));
+                semanticFactory.createCliSemanticChecker(buffer, runtime),
+                interpreterFactory.createDefaultInterpreter(runtime),
+                runtime);
     }
 
     @Override
     public ProgramInterpreter createFileProgramInterpreter(Path filePath, Runtime runtime)
             throws IOException {
         return new DefaultProgramInterpreter(
-                semanticFactory.createFileSemanticChecker(filePath),
-                interpreterFactory.createDefaultInterpreter(runtime));
+                semanticFactory.createFileSemanticChecker(filePath, runtime),
+                interpreterFactory.createDefaultInterpreter(runtime),
+                runtime);
     }
 }

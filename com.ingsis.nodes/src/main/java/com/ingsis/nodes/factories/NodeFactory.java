@@ -4,6 +4,7 @@
 
 package com.ingsis.nodes.factories;
 
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
@@ -26,10 +27,10 @@ public interface NodeFactory {
             TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
 
     BinaryOperatorNode createBinaryOperatorNode(
-            String symbol, OperatorNode leftChild, OperatorNode rightChild);
+            String symbol, ExpressionNode leftChild, ExpressionNode rightChild);
 
     ValueAssignationNode createValueAssignationNode(
-            IdentifierNode identifierNode, OperatorNode operatorNode);
+            IdentifierNode identifierNode, ExpressionNode expressionNode);
 
     TypeAssignationNode createTypeAssignationNode(IdentifierNode identifierNode, TypeNode typeNode);
 

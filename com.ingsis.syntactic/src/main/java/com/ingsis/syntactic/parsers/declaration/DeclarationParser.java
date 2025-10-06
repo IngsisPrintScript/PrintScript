@@ -5,6 +5,7 @@
 package com.ingsis.syntactic.parsers.declaration;
 
 import com.ingsis.nodes.Node;
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.factories.NodeFactory;
@@ -13,23 +14,25 @@ import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
 import com.ingsis.syntactic.parsers.operators.TypeAssignationParser;
-import com.ingsis.syntactic.parsers.operators.ValueAssignationParser;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
 
 public final class DeclarationParser implements Parser {
     private final Token LET_TOKEN_TEMPLATE;
+    private final Token VALUE_ASSIGNATION_TEMPLATE;
     private final TypeAssignationParser TYPE_ASSIGNATION_PARSER;
-    private final ValueAssignationParser VALUE_ASSIGNATION_PARSER;
+    private final BinaryOperatorParser OPERATOR_PARSER;
     private final NodeFactory NODE_FACTORY;
 
     public DeclarationParser(
             TokenFactory TOKEN_FACTORY, ParserFactory PARSER_FACTORY, NodeFactory NODE_FACTORY) {
         this.LET_TOKEN_TEMPLATE = TOKEN_FACTORY.createKeywordToken("let");
+        this.VALUE_ASSIGNATION_TEMPLATE = TOKEN_FACTORY.createOperatorToken("=");
+        this.OPERATOR_PARSER = PARSER_FACTORY.createBinaryOperatorParser();
         this.TYPE_ASSIGNATION_PARSER = PARSER_FACTORY.createTypeAssignationParser();
-        this.VALUE_ASSIGNATION_PARSER = PARSER_FACTORY.createValueAssignationParser();
         this.NODE_FACTORY = NODE_FACTORY;
     }
 
@@ -47,12 +50,20 @@ public final class DeclarationParser implements Parser {
         }
         TypeAssignationNode typeAssignationNode = parseTypeAssignationResult.result();
 
-        Result<ValueAssignationNode> parseValueAssignationResult =
-                VALUE_ASSIGNATION_PARSER.parse(stream);
-        if (!parseValueAssignationResult.isCorrect()) {
-            return new IncorrectResult<>(parseValueAssignationResult);
+        Result<Token> consumeValueAssignationResult = stream.consume(VALUE_ASSIGNATION_TEMPLATE);
+        if (!consumeValueAssignationResult.isCorrect()) {
+            return new IncorrectResult<>(consumeValueAssignationResult);
         }
-        ValueAssignationNode valueAssignationNode = parseValueAssignationResult.result();
+
+        Result<ExpressionNode> parseTypeResult = OPERATOR_PARSER.parse(stream);
+        if (!parseTypeResult.isCorrect()) {
+            return new IncorrectResult<>(parseTypeResult);
+        }
+        ExpressionNode expressionNode = parseTypeResult.result();
+
+        ValueAssignationNode valueAssignationNode =
+                NODE_FACTORY.createValueAssignationNode(
+                        typeAssignationNode.identifierNode(), expressionNode);
 
         return new CorrectResult<>(
                 NODE_FACTORY.createLetNode(typeAssignationNode, valueAssignationNode));

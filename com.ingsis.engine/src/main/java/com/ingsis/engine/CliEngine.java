@@ -71,8 +71,10 @@ public final class CliEngine implements Engine {
                 ProgramInterpreter interpreter = buildInterpreter(buffer);
 
                 Result<String> result = interpreter.interpret();
-                System.out.println(result);
-                System.out.println(DefaultRuntime.getInstance());
+                if (!result.isCorrect()) {
+                    System.out.print(result.error());
+                    System.out.print("\n");
+                }
             }
         } catch (IOException e) {
             System.err.println("Error in REPL: " + e.getMessage());

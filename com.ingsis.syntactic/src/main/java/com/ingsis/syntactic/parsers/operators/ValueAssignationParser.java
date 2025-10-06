@@ -4,8 +4,8 @@
 
 package com.ingsis.syntactic.parsers.operators;
 
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.factories.NodeFactory;
 import com.ingsis.result.CorrectResult;
@@ -46,13 +46,13 @@ public final class ValueAssignationParser implements Parser {
             return new IncorrectResult<>(consumeValueAssignationResult);
         }
 
-        Result<OperatorNode> parseTypeResult = OPERATOR_PARSER.parse(stream);
+        Result<ExpressionNode> parseTypeResult = OPERATOR_PARSER.parse(stream);
         if (!parseTypeResult.isCorrect()) {
             return new IncorrectResult<>(parseTypeResult);
         }
-        OperatorNode operatorNode = parseTypeResult.result();
+        ExpressionNode expressionNode = parseTypeResult.result();
 
         return new CorrectResult<>(
-                NODE_FACTORY.createValueAssignationNode(identifierNode, operatorNode));
+                NODE_FACTORY.createValueAssignationNode(identifierNode, expressionNode));
     }
 }

@@ -27,7 +27,7 @@ public final class ValueAssignationNodeEventVariableExistenceHandler
     public Result<String> handle(ValueAssignationNode node) {
         IdentifierNode identifierNode = node.identifierNode();
 
-        if (runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
+        if (!runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
             runtime.getCurrentEnvironment()
                     .setExecutionResult(
                             new IncorrectResult<>(

@@ -28,7 +28,7 @@ public final class TypeAssignationNodeEventVariableExistenceHandler
         IdentifierNode identifierNode = node.identifierNode();
         TypeNode typeNode = node.typeNode();
 
-        if (!runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
+        if (runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
             runtime.getCurrentEnvironment()
                     .setExecutionResult(
                             new IncorrectResult<>(

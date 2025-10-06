@@ -9,6 +9,7 @@ import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.tokens.Token;
+import com.ingsis.tokens.factories.DefaultTokensFactory;
 
 public final class DefaultTokenStream implements TokenStream {
     private final PeekableIterator<Token> tokens;
@@ -19,17 +20,19 @@ public final class DefaultTokenStream implements TokenStream {
 
     @Override
     public Result<Token> consume() {
-        if (tokens.hasNext()) return new CorrectResult<>(tokens.next());
+        if (tokens.hasNext()) {
+            return new CorrectResult<>(tokens.next());
+        }
         return new IncorrectResult<>("No more tokens.");
     }
 
     @Override
     public Result<Token> consume(Token tokenTemplate) {
+        consumeAll(new DefaultTokensFactory().createSeparatorToken(""));
         if (!match(tokenTemplate)) {
             return new IncorrectResult<>("Token does not match template.");
         }
-        Token nextToken = tokens.next();
-        return new CorrectResult<>(nextToken);
+        return consume();
     }
 
     @Override
