@@ -5,74 +5,85 @@
 package com.ingsis.semantic;
 
 import com.ingsis.peekableiterator.PeekableIterator;
+import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checkable;
+import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpretable;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
 public final class DefaultSemanticChecker implements SemanticChecker {
-    private final PeekableIterator<Checkable> checkableStream;
-    private final Queue<Interpretable> interpretableBuffer;
+  private final PeekableIterator<Checkable> checkableStream;
+  private final Queue<Interpretable> interpretableBuffer;
+  private final Checker checker;
 
-    public DefaultSemanticChecker(
-            PeekableIterator<Checkable> checkableStream, Queue<Interpretable> interpretableBuffer) {
-        this.checkableStream = checkableStream;
-        this.interpretableBuffer = new LinkedList<>(interpretableBuffer);
+  public DefaultSemanticChecker(
+      PeekableIterator<Checkable> checkableStream,
+      Checker checker,
+      Queue<Interpretable> interpretableBuffer) {
+    this.checkableStream = checkableStream;
+    this.checker = checker;
+    this.interpretableBuffer = new LinkedList<>(interpretableBuffer);
+  }
+
+  public DefaultSemanticChecker(PeekableIterator<Checkable> checkableStream, Checker checker) {
+    this(checkableStream, checker, new LinkedList<>());
+  }
+
+  @Override
+  public Result<Interpretable> parse() {
+    Checkable checkable = checkableStream.next();
+    Result<String> checkResult = checkable.acceptChecker(checker);
+    if (!checkResult.isCorrect()) {
+      return new IncorrectResult<>(checkResult);
+    }
+    return new CorrectResult<Interpretable>((Interpretable) checkable);
+  }
+
+  @Override
+  public Interpretable peek() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
     }
 
-    public DefaultSemanticChecker(PeekableIterator<Checkable> checkableStream) {
-        this(checkableStream, new LinkedList<>());
+    return interpretableBuffer.peek();
+  }
+
+  @Override
+  public boolean hasNext() {
+    if (!interpretableBuffer.isEmpty()) {
+      return true;
     }
 
-    @Override
-    public Result<Interpretable> parse() {
-        return new IncorrectResult<>("Not implemented yet.");
+    Interpretable next = computeNext();
+
+    if (next != null) {
+      interpretableBuffer.add(next);
     }
 
-    @Override
-    public Interpretable peek() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
+    return next != null;
+  }
 
-        return interpretableBuffer.peek();
+  @Override
+  public Interpretable next() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
     }
 
-    @Override
-    public boolean hasNext() {
-        if (!interpretableBuffer.isEmpty()) {
-            return true;
-        }
+    return interpretableBuffer.poll();
+  }
 
-        Interpretable next = computeNext();
-
-        if (next != null) {
-            interpretableBuffer.add(next);
-        }
-
-        return next != null;
+  private Interpretable computeNext() {
+    Interpretable candidate = null;
+    if (checkableStream.hasNext()) {
+      Result<Interpretable> parseResult = parse();
+      if (parseResult.isCorrect()) {
+        candidate = parseResult.result();
+      }
     }
-
-    @Override
-    public Interpretable next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-
-        return interpretableBuffer.poll();
-    }
-
-    private Interpretable computeNext() {
-        Interpretable candidate = null;
-        if (checkableStream.hasNext()) {
-            Result<Interpretable> parseResult = parse();
-            if (parseResult.isCorrect()) {
-                candidate = parseResult.result();
-            }
-        }
-        return candidate;
-    }
+    return candidate;
+  }
 }
