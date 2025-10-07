@@ -18,7 +18,7 @@ public class CallFunctionNode implements Node, Checkable, Interpretable {
 
   public CallFunctionNode(IdentifierNode identifierNode, List<ExpressionNode> argumentNodes) {
     this.identifierNode = identifierNode;
-    this.argumentNodes = argumentNodes;
+    this.argumentNodes = List.copyOf(argumentNodes);
   }
 
   public IdentifierNode identifierNode() {
