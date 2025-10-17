@@ -42,11 +42,11 @@ final class CallFunctionParser implements Parser {
     }
     IdentifierNode identifierNode = parseIdentifierNodeResult.result();
 
-    Result<List<ExpressionNode>> parseArgumentsResult = parseArguments(stream);
-    if (!parseArgumentsResult.isCorrect()) {
-      return new IncorrectResult<>(parseArgumentsResult);
+    Result<List<ExpressionNode>> parseFunctionCallResult = parseFunctionCall(stream);
+    if (!parseFunctionCallResult.isCorrect()) {
+      return new IncorrectResult<>(parseFunctionCallResult);
     }
-    List<ExpressionNode> arguments = parseArgumentsResult.result();
+    List<ExpressionNode> arguments = parseFunctionCallResult.result();
 
     Result<Token> consumeEndOfLineResult = stream.consume(EOL_TEMPLATE);
     if (!consumeEndOfLineResult.isCorrect()) {
@@ -56,13 +56,34 @@ final class CallFunctionParser implements Parser {
     return new CorrectResult<CallFunctionNode>(new CallFunctionNode(identifierNode, arguments));
   }
 
-  private Result<List<ExpressionNode>> parseArguments(TokenStream stream) {
+  private Result<List<ExpressionNode>> parseFunctionCall(TokenStream stream) {
     Result<Token> consumeLeftParenthesisResult = stream.consume(LEFT_PARENTHESIS_TEMPLATE);
     if (!consumeLeftParenthesisResult.isCorrect()) {
       return new IncorrectResult<>(consumeLeftParenthesisResult);
     }
 
+    Result<List<ExpressionNode>> parseArgumentsResult = parseArguments(stream);
+    if (!parseArgumentsResult.isCorrect()) {
+      return new IncorrectResult<>(parseArgumentsResult);
+    }
+
+    Result<Token> consumeRightParenthesisResult = stream.consume(RIGHT_PARENTHESIS_TEMPLATE);
+    if (!consumeRightParenthesisResult.isCorrect()) {
+      return new IncorrectResult<>(consumeRightParenthesisResult);
+    }
+
+    return parseArgumentsResult;
+  }
+
+  private Result<List<ExpressionNode>> parseArguments(TokenStream stream) {
     List<ExpressionNode> arguments = new ArrayList<>();
+    Result<ExpressionNode> parseFirstArgument = OPERATOR_PARSER.parse(stream);
+    if (!parseFirstArgument.isCorrect()) {
+      return new CorrectResult<List<ExpressionNode>>(arguments);
+    }
+    ExpressionNode firstArgument = parseFirstArgument.result();
+    arguments.add(firstArgument);
+
     while (stream.consume(COMMA_SEPARATOR_TEMPLATE).isCorrect()) {
       Result<ExpressionNode> parseExpressionResult = OPERATOR_PARSER.parse(stream);
       if (!parseExpressionResult.isCorrect()) {
@@ -70,11 +91,6 @@ final class CallFunctionParser implements Parser {
       }
       ExpressionNode expressionNode = parseExpressionResult.result();
       arguments.add(expressionNode);
-    }
-
-    Result<Token> consumeRightParenthesisResult = stream.consume(RIGHT_PARENTHESIS_TEMPLATE);
-    if (!consumeRightParenthesisResult.isCorrect()) {
-      return new IncorrectResult<>(consumeRightParenthesisResult);
     }
 
     return new CorrectResult<>(arguments);
