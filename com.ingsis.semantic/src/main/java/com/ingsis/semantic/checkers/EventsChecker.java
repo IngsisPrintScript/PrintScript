@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.result.IncorrectResult;
@@ -51,10 +50,5 @@ public final class EventsChecker implements Checker {
       return new IncorrectResult<>("No publisher for node type: " + nodeClass);
     }
     return eventPublisher.notify(node);
-  }
-
-  @Override
-  public Result<String> check(CallFunctionNode callFunctionNode) {
-    return dispatch(callFunctionNode);
   }
 }

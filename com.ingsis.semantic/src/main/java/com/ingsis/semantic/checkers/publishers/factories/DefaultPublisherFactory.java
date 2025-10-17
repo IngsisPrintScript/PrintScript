@@ -5,7 +5,6 @@
 package com.ingsis.semantic.checkers.publishers.factories;
 
 import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import com.ingsis.semantic.checkers.handlers.factories.HandlersFactory;
@@ -42,11 +41,5 @@ public final class DefaultPublisherFactory implements PublishersFactory {
     handlers.add(handlersFactory.createExpressionVariableExistenceHandler());
     handlers.add(handlersFactory.createOperatorValidityHandler());
     return handlers;
-  }
-
-  @Override
-  public GenericNodeEventPublisher<CallFunctionNode> createCallFunctionNodePublisher() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'createCallFunctionNodePublisher'");
   }
 }
