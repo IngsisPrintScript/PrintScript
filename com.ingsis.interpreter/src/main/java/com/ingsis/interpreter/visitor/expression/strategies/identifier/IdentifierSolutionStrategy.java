@@ -34,7 +34,7 @@ public class IdentifierSolutionStrategy implements ExpressionSolutionStrategy {
         }
         IdentifierNode identifierNode = (IdentifierNode) expressionNode;
         Result<VariableEntry> getVarEntry =
-                runtime.getCurrentEnvironment().getVariable(identifierNode.name());
+                runtime.getCurrentEnvironment().readVariable(identifierNode.name());
         if (!getVarEntry.isCorrect()) {
             return new IncorrectResult<>(getVarEntry);
         }
