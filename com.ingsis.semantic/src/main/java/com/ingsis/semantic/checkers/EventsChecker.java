@@ -54,7 +54,6 @@ public final class EventsChecker implements Checker {
 
   @Override
   public Result<String> check(CallFunctionNode callFunctionNode) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'check'");
+    return dispatch(callFunctionNode);
   }
 }
