@@ -5,7 +5,7 @@
 package com.ingsis.semantic.checkers.publishers.factories;
 
 import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.function.CallFunctionNode;
+import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import com.ingsis.semantic.checkers.handlers.factories.HandlersFactory;

@@ -4,9 +4,12 @@
 
 package com.ingsis.semantic.checkers;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.function.CallFunctionNode;
+import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.result.IncorrectResult;
@@ -14,8 +17,6 @@ import com.ingsis.result.Result;
 import com.ingsis.semantic.checkers.publishers.GenericNodeEventPublisher;
 import com.ingsis.semantic.checkers.publishers.factories.PublishersFactory;
 import com.ingsis.visitors.Checker;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public final class EventsChecker implements Checker {
   private final Map<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>> eventPublishers;
