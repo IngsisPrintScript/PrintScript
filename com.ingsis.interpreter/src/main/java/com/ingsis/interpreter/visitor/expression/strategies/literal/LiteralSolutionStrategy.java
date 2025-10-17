@@ -21,10 +21,6 @@ public class LiteralSolutionStrategy implements ExpressionSolutionStrategy {
         this.nextStrategy = nextStrategy;
     }
 
-    private Boolean canSolve(ExpressionNode expressionNode) {
-        return expressionNode instanceof LiteralNode;
-    }
-
     private Result<Object> getNewObject(String input) {
         DefaultStringTypeGetter stringTypeGetter = new DefaultStringTypeGetter();
         Types inputType = stringTypeGetter.getType(input);
@@ -43,10 +39,9 @@ public class LiteralSolutionStrategy implements ExpressionSolutionStrategy {
 
     @Override
     public Result<Object> solve(Interpreter interpreter, ExpressionNode expressionNode) {
-        if (!canSolve(expressionNode)) {
+        if (!(expressionNode instanceof LiteralNode literalNode)) {
             return nextStrategy.solve(interpreter, expressionNode);
         }
-        LiteralNode literalNode = (LiteralNode) expressionNode;
         return getNewObject(literalNode.value());
     }
 }

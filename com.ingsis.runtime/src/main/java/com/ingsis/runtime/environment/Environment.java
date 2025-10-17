@@ -13,28 +13,32 @@ import java.util.List;
 import java.util.Map;
 
 public sealed interface Environment permits GlobalEnvironment, DefaultEnvironment {
-  Result<VariableEntry> createVariable(String identifier, Types type);
+    Result<VariableEntry> createVariable(String identifier, Types type);
 
-  Result<VariableEntry> readVariable(String identifier);
+    Result<VariableEntry> readVariable(String identifier);
 
-  Result<VariableEntry> updateVariable(String identifier, Object value);
+    Result<VariableEntry> updateVariable(String identifier, Object value);
 
-  Boolean isVariableDeclared(String identifier);
+    Boolean isVariableDeclared(String identifier);
 
-  Boolean isVariableInitialized(String identifier);
+    Boolean isVariableInitialized(String identifier);
 
-  Result<FunctionEntry> createFunction(
-      String identifier, Map<String, Types> arguments, Types returnType);
+    Result<FunctionEntry> createFunction(
+            String identifier, Map<String, Types> arguments, Types returnType);
 
-  Result<FunctionEntry> readFunction(String identifier);
+    Result<FunctionEntry> readFunction(String identifier);
 
-  Result<FunctionEntry> updateFunction(String identifier, List<ExpressionNode> body);
+    Result<FunctionEntry> updateFunction(String identifier, List<ExpressionNode> body);
 
-  Boolean isFunctionDeclared(String identifier);
+    Boolean isFunctionDeclared(String identifier);
 
-  Boolean isFunctionInitialized(String identifier);
+    Boolean isFunctionInitialized(String identifier);
 
-  void setExecutionResult(Result<String> result);
+    void setExecutionResult(Result<String> result);
 
-  Result<String> getExecutionResult();
+    Result<String> getExecutionResult();
+
+    Boolean isIdentifierDeclared(String identifier);
+
+    Boolean isIdentifierInitialized(String identifier);
 }

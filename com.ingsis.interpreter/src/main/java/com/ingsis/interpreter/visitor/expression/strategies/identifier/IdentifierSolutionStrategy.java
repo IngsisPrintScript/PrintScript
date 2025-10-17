@@ -13,7 +13,9 @@ import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.visitors.Interpreter;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressFBWarnings("EI_EXPOSE_REP2")
 public class IdentifierSolutionStrategy implements ExpressionSolutionStrategy {
     private final Runtime runtime;
     private final ExpressionSolutionStrategy nextStrategy;
@@ -23,16 +25,11 @@ public class IdentifierSolutionStrategy implements ExpressionSolutionStrategy {
         this.nextStrategy = nextStrategy;
     }
 
-    private boolean canSolve(ExpressionNode expressionNode) {
-        return expressionNode instanceof IdentifierNode;
-    }
-
     @Override
     public Result<Object> solve(Interpreter interpreter, ExpressionNode expressionNode) {
-        if (!canSolve(expressionNode)) {
+        if (!(expressionNode instanceof IdentifierNode identifierNode)) {
             return nextStrategy.solve(interpreter, expressionNode);
         }
-        IdentifierNode identifierNode = (IdentifierNode) expressionNode;
         Result<VariableEntry> getVarEntry =
                 runtime.getCurrentEnvironment().readVariable(identifierNode.name());
         if (!getVarEntry.isCorrect()) {

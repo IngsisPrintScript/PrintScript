@@ -16,23 +16,23 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class IfNodeCorrectTypeEventHandler implements NodeEventHandler<IfKeywordNode> {
-  private final Runtime runtime;
+    private final Runtime runtime;
 
-  public IfNodeCorrectTypeEventHandler(Runtime runtime) {
-    this.runtime = runtime;
-  }
-
-  @Override
-  public Result<String> handle(IfKeywordNode node) {
-    Types expectedType = Types.BOOLEAN;
-    Types actualType = new DefaultExpressionTypeGetter(runtime).getType(node.condition());
-    if (!expectedType.equals(actualType)) {
-      return new IncorrectResult<>(
-          "Condition evaluation type should be: "
-              + expectedType
-              + " but was: "
-              + actualType);
+    public IfNodeCorrectTypeEventHandler(Runtime runtime) {
+        this.runtime = runtime;
     }
-    return new CorrectResult<>("Condition evaluation type is correct.");
-  }
+
+    @Override
+    public Result<String> handle(IfKeywordNode node) {
+        Types expectedType = Types.BOOLEAN;
+        Types actualType = new DefaultExpressionTypeGetter(runtime).getType(node.condition());
+        if (!expectedType.equals(actualType)) {
+            return new IncorrectResult<>(
+                    "Condition evaluation type should be: "
+                            + expectedType
+                            + " but was: "
+                            + actualType);
+        }
+        return new CorrectResult<>("Condition evaluation type is correct.");
+    }
 }

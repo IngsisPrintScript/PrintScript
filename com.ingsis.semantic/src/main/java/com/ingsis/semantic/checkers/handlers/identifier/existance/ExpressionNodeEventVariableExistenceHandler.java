@@ -16,31 +16,31 @@ import java.util.Collection;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class ExpressionNodeEventVariableExistenceHandler
-    implements NodeEventHandler<ExpressionNode> {
-  private final Runtime runtime;
+        implements NodeEventHandler<ExpressionNode> {
+    private final Runtime runtime;
 
-  public ExpressionNodeEventVariableExistenceHandler(Runtime runtime) {
-    this.runtime = runtime;
-  }
-
-  @Override
-  public Result<String> handle(ExpressionNode node) {
-    Collection<ExpressionNode> children = node.children();
-
-    if (node instanceof IdentifierNode(String name)) {
-      if (!runtime.getCurrentEnvironment().isVariableInitialized(name)) {
-        return new IncorrectResult<>("The variable " + name + " is not initialized.");
-      }
-      return new CorrectResult<>("The variable " + name + " is initialized.");
+    public ExpressionNodeEventVariableExistenceHandler(Runtime runtime) {
+        this.runtime = runtime;
     }
 
-    for (ExpressionNode child : children) {
-      Result<String> result = handle(child);
-      if (!result.isCorrect()) {
-        return result;
-      }
-    }
+    @Override
+    public Result<String> handle(ExpressionNode node) {
+        Collection<ExpressionNode> children = node.children();
 
-    return new CorrectResult<>("All used variables are initialized");
-  }
+        if (node instanceof IdentifierNode(String name)) {
+            if (!runtime.getCurrentEnvironment().isIdentifierInitialized(name)) {
+                return new IncorrectResult<>("The identifier " + name + " is not initialized.");
+            }
+            return new CorrectResult<>("The identifier " + name + " is initialized.");
+        }
+
+        for (ExpressionNode child : children) {
+            Result<String> result = this.handle(child);
+            if (!result.isCorrect()) {
+                return result;
+            }
+        }
+
+        return new CorrectResult<>("All used identifiers are initialized");
+    }
 }

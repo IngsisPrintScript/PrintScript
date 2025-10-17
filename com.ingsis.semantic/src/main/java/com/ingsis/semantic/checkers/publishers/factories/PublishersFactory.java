@@ -9,7 +9,7 @@ import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.semantic.checkers.publishers.GenericNodeEventPublisher;
 
 public interface PublishersFactory {
-  GenericNodeEventPublisher<LetKeywordNode> createLetNodePublisher();
+    GenericNodeEventPublisher<LetKeywordNode> createLetNodePublisher();
 
-  GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher();
+    GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher();
 }

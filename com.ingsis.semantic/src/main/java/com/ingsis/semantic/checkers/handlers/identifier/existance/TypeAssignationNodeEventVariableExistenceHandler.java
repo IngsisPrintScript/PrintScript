@@ -16,27 +16,27 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class TypeAssignationNodeEventVariableExistenceHandler
-    implements NodeEventHandler<TypeAssignationNode> {
-  private final Runtime runtime;
+        implements NodeEventHandler<TypeAssignationNode> {
+    private final Runtime runtime;
 
-  public TypeAssignationNodeEventVariableExistenceHandler(Runtime runtime) {
-    this.runtime = runtime;
-  }
-
-  @Override
-  public Result<String> handle(TypeAssignationNode node) {
-    IdentifierNode identifierNode = node.identifierNode();
-    TypeNode typeNode = node.typeNode();
-
-    if (runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
-      runtime.getCurrentEnvironment()
-          .setExecutionResult(
-              new IncorrectResult<>(
-                  "Variable " + identifierNode.name() + " is not declared."));
+    public TypeAssignationNodeEventVariableExistenceHandler(Runtime runtime) {
+        this.runtime = runtime;
     }
 
-    runtime.getCurrentEnvironment().createVariable(identifierNode.name(), typeNode.type());
+    @Override
+    public Result<String> handle(TypeAssignationNode node) {
+        IdentifierNode identifierNode = node.identifierNode();
+        TypeNode typeNode = node.typeNode();
 
-    return new CorrectResult<>("Variable " + identifierNode.name() + " is already declared.");
-  }
+        if (runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
+            runtime.getCurrentEnvironment()
+                    .setExecutionResult(
+                            new IncorrectResult<>(
+                                    "Variable " + identifierNode.name() + " is not declared."));
+        }
+
+        runtime.getCurrentEnvironment().createVariable(identifierNode.name(), typeNode.type());
+
+        return new CorrectResult<>("Variable " + identifierNode.name() + " is already declared.");
+    }
 }

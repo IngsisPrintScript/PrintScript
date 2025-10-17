@@ -10,9 +10,9 @@ import com.ingsis.nodes.keyword.LetKeywordNode;
 import com.ingsis.result.Result;
 
 public interface Checker {
-  Result<String> check(IfKeywordNode ifKeywordNode);
+    Result<String> check(IfKeywordNode ifKeywordNode);
 
-  Result<String> check(LetKeywordNode letKeywordNode);
+    Result<String> check(LetKeywordNode letKeywordNode);
 
-  Result<String> check(ExpressionNode expressionNode);
+    Result<String> check(ExpressionNode expressionNode);
 }
