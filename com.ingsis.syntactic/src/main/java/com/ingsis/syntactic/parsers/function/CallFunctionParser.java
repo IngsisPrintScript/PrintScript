@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.function.CallFunctionNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
@@ -53,7 +53,7 @@ final class CallFunctionParser implements Parser {
       return new IncorrectResult<>(consumeEndOfLineResult);
     }
 
-    return new CorrectResult<CallFunctionNode>(new CallFunctionNode(identifierNode, arguments));
+    return new CorrectResult<>(new CallFunctionNode(identifierNode, arguments));
   }
 
   private Result<List<ExpressionNode>> parseFunctionCall(TokenStream stream) {
