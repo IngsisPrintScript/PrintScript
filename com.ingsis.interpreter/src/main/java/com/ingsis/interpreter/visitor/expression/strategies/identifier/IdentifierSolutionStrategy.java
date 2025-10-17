@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.interpreter.visitor.expression.strategies.identifier;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
@@ -11,30 +15,30 @@ import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.visitors.Interpreter;
 
 public class IdentifierSolutionStrategy implements ExpressionSolutionStrategy {
-  private final Runtime runtime;
-  private final ExpressionSolutionStrategy nextStrategy;
+    private final Runtime runtime;
+    private final ExpressionSolutionStrategy nextStrategy;
 
-  public IdentifierSolutionStrategy(ExpressionSolutionStrategy nextStrategy, Runtime runtime) {
-    this.runtime = runtime;
-    this.nextStrategy = nextStrategy;
-  }
-
-  private boolean canSolve(ExpressionNode expressionNode) {
-    return expressionNode instanceof IdentifierNode;
-  }
-
-  @Override
-  public Result<Object> solve(Interpreter interpreter, ExpressionNode expressionNode) {
-    if (!canSolve(expressionNode)) {
-      return nextStrategy.solve(interpreter, expressionNode);
+    public IdentifierSolutionStrategy(ExpressionSolutionStrategy nextStrategy, Runtime runtime) {
+        this.runtime = runtime;
+        this.nextStrategy = nextStrategy;
     }
-    IdentifierNode identifierNode = (IdentifierNode) expressionNode;
-    Result<VariableEntry> getVarEntry = runtime.getCurrentEnvironment().getVariable(identifierNode.name());
-    if (!getVarEntry.isCorrect()) {
-      return new IncorrectResult<>(getVarEntry);
-    }
-    Object value = getVarEntry.result().value();
-    return new CorrectResult<Object>(value);
-  }
 
+    private boolean canSolve(ExpressionNode expressionNode) {
+        return expressionNode instanceof IdentifierNode;
+    }
+
+    @Override
+    public Result<Object> solve(Interpreter interpreter, ExpressionNode expressionNode) {
+        if (!canSolve(expressionNode)) {
+            return nextStrategy.solve(interpreter, expressionNode);
+        }
+        IdentifierNode identifierNode = (IdentifierNode) expressionNode;
+        Result<VariableEntry> getVarEntry =
+                runtime.getCurrentEnvironment().getVariable(identifierNode.name());
+        if (!getVarEntry.isCorrect()) {
+            return new IncorrectResult<>(getVarEntry);
+        }
+        Object value = getVarEntry.result().value();
+        return new CorrectResult<Object>(value);
+    }
 }

@@ -12,12 +12,11 @@ import com.ingsis.interpreter.visitor.expression.strategies.literal.LiteralSolut
 import com.ingsis.runtime.DefaultRuntime;
 
 public final class DefaultSolutionStrategyFactory implements SolutionStrategyFactory {
-  @Override
-  public ExpressionSolutionStrategy constructDefaultStrategy() {
-    return new AdditionSolutionStrategy(
-        new LiteralSolutionStrategy(
-            new IdentifierSolutionStrategy(
-                new FinalStrategy(),
-                DefaultRuntime.getInstance())));
-  }
+    @Override
+    public ExpressionSolutionStrategy constructDefaultStrategy() {
+        return new AdditionSolutionStrategy(
+                new LiteralSolutionStrategy(
+                        new IdentifierSolutionStrategy(
+                                new FinalStrategy(), DefaultRuntime.getInstance())));
+    }
 }
