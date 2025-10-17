@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation project(':com.ingsis.nodes')
     implementation project(':com.ingsis.types')
     implementation project(':com.ingsis.result')
 }
