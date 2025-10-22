@@ -17,41 +17,40 @@ import java.util.List;
 import java.util.Map;
 
 public final class DefaultEnvironmentFactory implements EnvironmentFactory {
-    private final EntryFactory entryFactory;
+  private final EntryFactory entryFactory;
 
-    public DefaultEnvironmentFactory(EntryFactory entryFactory) {
-        this.entryFactory = entryFactory;
-    }
+  public DefaultEnvironmentFactory(EntryFactory entryFactory) {
+    this.entryFactory = entryFactory;
+  }
 
-    @Override
-    public Environment createGlobalEnvironment() {
-        return new GlobalEnvironment(
-                entryFactory, createGlobalVariables(), createGlobalFunctions());
-    }
+  @Override
+  public Environment createGlobalEnvironment() {
+    GlobalEnvironment global = new GlobalEnvironment(entryFactory);
+    addGlobalFunctions(global);
+    addGlobalVariables(global);
+    return global;
+  }
 
-    @Override
-    public Environment createLocalEnvironment(Environment father) {
-        return new DefaultEnvironment(entryFactory, father);
-    }
+  @Override
+  public Environment createLocalEnvironment(Environment father) {
+    return new DefaultEnvironment(entryFactory, father);
+  }
 
-    private Map<String, VariableEntry> createGlobalVariables() {
-        return Map.of();
-    }
+  private void addGlobalVariables(GlobalEnvironment global) {
+    return;
+  }
 
-    private Map<String, FunctionEntry> createGlobalFunctions() {
-        Map<String, FunctionEntry> functions = new HashMap<>();
-        functions.put(
-                "println",
-                entryFactory.createFunctionEntry(
-                        Types.NIL,
-                        Map.of("string", Types.STRING),
-                        List.of(
-                                new GlobalFunctionBody(
-                                        args -> {
-                                            String s = (String) args[0];
-                                            System.out.println(s);
-                                            return null;
-                                        }))));
-        return functions;
-    }
+  private void addGlobalFunctions(GlobalEnvironment global) {
+    global.createFunction("println", Map.of("string", Types.STRING), Types.NIL);
+    global.updateFunction(
+        "println",
+        List.of(
+            new GlobalFunctionBody(
+                args -> {
+                  String s = (String) args[0];
+                  System.out.println(s);
+                  return null;
+                })));
+    return;
+  }
 }
