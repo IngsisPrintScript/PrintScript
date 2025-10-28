@@ -15,6 +15,8 @@ import java.util.Map;
 public sealed interface Environment permits GlobalEnvironment, DefaultEnvironment {
   Result<VariableEntry> createVariable(String identifier, Types type);
 
+  Map<String, VariableEntry> readAll();
+
   Result<VariableEntry> readVariable(String identifier);
 
   Result<VariableEntry> updateVariable(String identifier, Object value);

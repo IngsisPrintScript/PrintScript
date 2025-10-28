@@ -8,11 +8,8 @@ import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.DefaultEnvironment;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.GlobalEnvironment;
-import com.ingsis.runtime.environment.entries.FunctionEntry;
-import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.runtime.environment.entries.factories.EntryFactory;
 import com.ingsis.types.Types;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -46,9 +43,9 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
         "println",
         List.of(
             new GlobalFunctionBody(
+                List.of("string"),
                 args -> {
-                  String s = (String) args[0];
-                  System.out.println(s);
+                  System.out.println(args[0]);
                   return null;
                 })));
     return;

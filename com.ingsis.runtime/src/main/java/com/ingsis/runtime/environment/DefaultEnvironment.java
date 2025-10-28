@@ -140,17 +140,18 @@ public final class DefaultEnvironment implements Environment {
     FunctionEntry oldFunctionEntry = functions.get(identifier);
     FunctionEntry newFunctionEntry = entryFactory.createFunctionEntry(
         oldFunctionEntry.returnType(), oldFunctionEntry.arguments(), body, this);
+    functions.put(identifier, newFunctionEntry);
     return new CorrectResult<>(newFunctionEntry);
   }
 
   @Override
   public Boolean isFunctionDeclared(String identifier) {
-    return isFunctionDeclaredHere(identifier);
+    return isFunctionDeclaredHere(identifier) || father.isFunctionDeclared(identifier);
   }
 
   @Override
   public Boolean isFunctionInitialized(String identifier) {
-    return isFunctionDeclared(identifier) && isFunctionInitializedHere(identifier);
+    return isFunctionInitializedHere(identifier) || father.isFunctionInitialized(identifier);
   }
 
   private Boolean isFunctionDeclaredHere(String identifier) {
@@ -158,7 +159,7 @@ public final class DefaultEnvironment implements Environment {
   }
 
   private Boolean isFunctionInitializedHere(String identifier) {
-    return functions.get(identifier).body() != null;
+    return isFunctionDeclaredHere(identifier) && functions.get(identifier).body() != null;
   }
 
   @Override
@@ -169,5 +170,10 @@ public final class DefaultEnvironment implements Environment {
   @Override
   public Boolean isIdentifierInitialized(String identifier) {
     return isVariableInitialized(identifier) || isFunctionInitialized(identifier);
+  }
+
+  @Override
+  public Map<String, VariableEntry> readAll() {
+    return Map.copyOf(variables);
   }
 }

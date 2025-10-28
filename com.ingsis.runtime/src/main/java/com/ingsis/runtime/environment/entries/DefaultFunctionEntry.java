@@ -18,6 +18,10 @@ public record DefaultFunctionEntry(
 
   public DefaultFunctionEntry {
     arguments = Map.copyOf(arguments);
-    body = List.copyOf(body);
+    if (body == null) {
+      body = null;
+    } else {
+      body = List.copyOf(body);
+    }
   }
 }

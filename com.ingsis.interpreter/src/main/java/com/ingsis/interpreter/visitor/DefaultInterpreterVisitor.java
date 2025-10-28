@@ -21,62 +21,60 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultInterpreterVisitor implements Interpreter {
-    private final Runtime runtime;
-    private final ExpressionSolutionStrategy expressionSolutionStrategy;
+  private final Runtime runtime;
+  private final ExpressionSolutionStrategy expressionSolutionStrategy;
 
-    public DefaultInterpreterVisitor(
-            Runtime runtime, ExpressionSolutionStrategy expressionSolutionStrategy) {
-        this.runtime = runtime;
-        this.expressionSolutionStrategy = expressionSolutionStrategy;
-    }
+  public DefaultInterpreterVisitor(
+      Runtime runtime, ExpressionSolutionStrategy expressionSolutionStrategy) {
+    this.runtime = runtime;
+    this.expressionSolutionStrategy = expressionSolutionStrategy;
+  }
 
-    @Override
-    public Result<String> interpret(IfKeywordNode ifKeywordNode) {
-        return new IncorrectResult<>("not implemented yet.");
-    }
+  @Override
+  public Result<String> interpret(IfKeywordNode ifKeywordNode) {
+    return new IncorrectResult<>("not implemented yet.");
+  }
 
-    private Result<String> interpret(TypeAssignationNode typeAssignationNode) {
-        String identifier = typeAssignationNode.identifierNode().name();
-        Types type = typeAssignationNode.typeNode().type();
-        Result<VariableEntry> declareVarResult =
-                runtime.getCurrentEnvironment().createVariable(identifier, type);
-        if (!declareVarResult.isCorrect()) {
-            return new IncorrectResult<>(declareVarResult);
-        }
-        return new CorrectResult<>(
-                "Variable " + identifier + " has been declared with type " + type.keyword());
+  private Result<String> interpret(TypeAssignationNode typeAssignationNode) {
+    String identifier = typeAssignationNode.identifierNode().name();
+    Types type = typeAssignationNode.typeNode().type();
+    Result<VariableEntry> declareVarResult = runtime.getCurrentEnvironment().createVariable(identifier, type);
+    if (!declareVarResult.isCorrect()) {
+      return new IncorrectResult<>(declareVarResult);
     }
+    return new CorrectResult<>(
+        "Variable " + identifier + " has been declared with type " + type.keyword());
+  }
 
-    private Result<String> interpret(ValueAssignationNode valueAssignationNode) {
-        String identifier = valueAssignationNode.identifierNode().name();
-        Result<Object> valueResult = this.interpret(valueAssignationNode.expressionNode());
-        if (!valueResult.isCorrect()) {
-            return new IncorrectResult<>(valueResult);
-        }
-        Object value = valueResult.result();
-        Result<VariableEntry> modifyVarResult =
-                runtime.getCurrentEnvironment().updateVariable(identifier, value);
-        if (!modifyVarResult.isCorrect()) {
-            return new IncorrectResult<>(modifyVarResult);
-        }
-        return new CorrectResult<>("Variable " + identifier + " value was updated to " + value);
+  private Result<String> interpret(ValueAssignationNode valueAssignationNode) {
+    String identifier = valueAssignationNode.identifierNode().name();
+    Result<Object> valueResult = this.interpret(valueAssignationNode.expressionNode());
+    if (!valueResult.isCorrect()) {
+      return new IncorrectResult<>(valueResult);
     }
+    Object value = valueResult.result();
+    Result<VariableEntry> modifyVarResult = runtime.getCurrentEnvironment().updateVariable(identifier, value);
+    if (!modifyVarResult.isCorrect()) {
+      return new IncorrectResult<>(modifyVarResult);
+    }
+    return new CorrectResult<>("Variable " + identifier + " value was updated to " + value);
+  }
 
-    @Override
-    public Result<String> interpret(LetKeywordNode letKeywordNode) {
-        Result<String> typeAssignationResult = interpret(letKeywordNode.typeAssignationNode());
-        if (!typeAssignationResult.isCorrect()) {
-            return new IncorrectResult<>(typeAssignationResult);
-        }
-        Result<String> valueAssignationResult = interpret(letKeywordNode.valueAssignationNode());
-        if (!valueAssignationResult.isCorrect()) {
-            return new IncorrectResult<>(valueAssignationResult);
-        }
-        return new CorrectResult<>("New variable declared and initialized.");
+  @Override
+  public Result<String> interpret(LetKeywordNode letKeywordNode) {
+    Result<String> typeAssignationResult = interpret(letKeywordNode.typeAssignationNode());
+    if (!typeAssignationResult.isCorrect()) {
+      return new IncorrectResult<>(typeAssignationResult);
     }
+    Result<String> valueAssignationResult = interpret(letKeywordNode.valueAssignationNode());
+    if (!valueAssignationResult.isCorrect()) {
+      return new IncorrectResult<>(valueAssignationResult);
+    }
+    return new CorrectResult<>("New variable declared and initialized.");
+  }
 
-    @Override
-    public Result<Object> interpret(ExpressionNode expressionNode) {
-        return expressionSolutionStrategy.solve(this, expressionNode);
-    }
+  @Override
+  public Result<Object> interpret(ExpressionNode expressionNode) {
+    return expressionSolutionStrategy.solve(this, expressionNode);
+  }
 }

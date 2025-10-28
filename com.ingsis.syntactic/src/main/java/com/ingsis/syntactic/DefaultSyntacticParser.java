@@ -14,63 +14,64 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 
 public final class DefaultSyntacticParser implements SyntacticParser {
-    private final TokenStream tokenStream;
-    private final Queue<Checkable> checkableBuffer;
-    private final ParserRegistry parserRegistry;
+  private final TokenStream tokenStream;
+  private final Queue<Checkable> checkableBuffer;
+  private final ParserRegistry parserRegistry;
 
-    public DefaultSyntacticParser(
-            TokenStream tokenStream,
-            ParserRegistry parserRegistry,
-            Queue<Checkable> checkableBuffer) {
-        this.tokenStream = tokenStream;
-        this.checkableBuffer = new LinkedList<>(checkableBuffer);
-        this.parserRegistry = parserRegistry;
+  public DefaultSyntacticParser(
+      TokenStream tokenStream,
+      ParserRegistry parserRegistry,
+      Queue<Checkable> checkableBuffer) {
+    this.tokenStream = tokenStream;
+    this.checkableBuffer = new LinkedList<>(checkableBuffer);
+    this.parserRegistry = parserRegistry;
+  }
+
+  public DefaultSyntacticParser(TokenStream tokenStream, ParserRegistry parserRegistry) {
+    this(tokenStream, parserRegistry, new LinkedList<>());
+  }
+
+  @Override
+  public Result<? extends Node> parse() {
+    return parserRegistry.parse(tokenStream);
+  }
+
+  @Override
+  public Checkable peek() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
+    }
+    return checkableBuffer.peek();
+  }
+
+  @Override
+  public boolean hasNext() {
+    if (!checkableBuffer.isEmpty()) {
+      return true;
     }
 
-    public DefaultSyntacticParser(TokenStream tokenStream, ParserRegistry parserRegistry) {
-        this(tokenStream, parserRegistry, new LinkedList<>());
+    Node next = computeNext();
+    if (next != null) {
+      checkableBuffer.add((Checkable) next);
     }
 
-    @Override
-    public Result<? extends Node> parse() {
-        return parserRegistry.parse(tokenStream);
+    return next != null;
+  }
+
+  @Override
+  public Checkable next() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
     }
+    return checkableBuffer.poll();
+  }
 
-    @Override
-    public Checkable peek() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return checkableBuffer.peek();
+  private Node computeNext() {
+    Result<? extends Node> parseResult = parse();
+    if (parseResult.isCorrect()) {
+      tokenStream.cleanBuffer();
+      return parseResult.result();
     }
-
-    @Override
-    public boolean hasNext() {
-        if (!checkableBuffer.isEmpty()) {
-            return true;
-        }
-
-        Node next = computeNext();
-        if (next != null) {
-            checkableBuffer.add((Checkable) next);
-        }
-
-        return next != null;
-    }
-
-    @Override
-    public Checkable next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return checkableBuffer.poll();
-    }
-
-    private Node computeNext() {
-        Result<? extends Node> parseResult = parse();
-        if (parseResult.isCorrect()) {
-            return parseResult.result();
-        }
-        return null;
-    }
+    return null;
+  }
 }
