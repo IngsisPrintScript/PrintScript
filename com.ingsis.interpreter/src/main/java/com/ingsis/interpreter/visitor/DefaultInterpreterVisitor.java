@@ -9,7 +9,7 @@ import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.nodes.keyword.LetKeywordNode;
+import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
@@ -35,7 +35,7 @@ public final class DefaultInterpreterVisitor implements Interpreter {
     return new IncorrectResult<>("not implemented yet.");
   }
 
-  private Result<String> interpret(TypeAssignationNode typeAssignationNode) {
+  private Result<String> declareVar(TypeAssignationNode typeAssignationNode) {
     String identifier = typeAssignationNode.identifierNode().name();
     Types type = typeAssignationNode.typeNode().type();
     Result<VariableEntry> declareVarResult = runtime.getCurrentEnvironment().createVariable(identifier, type);
@@ -46,7 +46,7 @@ public final class DefaultInterpreterVisitor implements Interpreter {
         "Variable " + identifier + " has been declared with type " + type.keyword());
   }
 
-  private Result<String> interpret(ValueAssignationNode valueAssignationNode) {
+  private Result<String> initializeVal(ValueAssignationNode valueAssignationNode) {
     String identifier = valueAssignationNode.identifierNode().name();
     Result<Object> valueResult = this.interpret(valueAssignationNode.expressionNode());
     if (!valueResult.isCorrect()) {
@@ -60,17 +60,42 @@ public final class DefaultInterpreterVisitor implements Interpreter {
     return new CorrectResult<>("Variable " + identifier + " value was updated to " + value);
   }
 
-  @Override
-  public Result<String> interpret(LetKeywordNode letKeywordNode) {
-    Result<String> typeAssignationResult = interpret(letKeywordNode.typeAssignationNode());
+  private Result<String> defineVar(DeclarationKeywordNode declarationKeywordNode) {
+    Result<String> typeAssignationResult = declareVar(declarationKeywordNode.typeAssignationNode());
     if (!typeAssignationResult.isCorrect()) {
       return new IncorrectResult<>(typeAssignationResult);
     }
-    Result<String> valueAssignationResult = interpret(letKeywordNode.valueAssignationNode());
+    Result<String> valueAssignationResult = initializeVal(declarationKeywordNode.valueAssignationNode());
     if (!valueAssignationResult.isCorrect()) {
       return new IncorrectResult<>(valueAssignationResult);
     }
     return new CorrectResult<>("New variable declared and initialized.");
+  }
+
+  private Result<String> defineVal(DeclarationKeywordNode declarationKeywordNode) {
+    TypeAssignationNode typeAssignationNode = declarationKeywordNode.typeAssignationNode();
+    Types type = typeAssignationNode.typeNode().type();
+    String identifier = typeAssignationNode.identifierNode().name();
+    ValueAssignationNode valueAssignationNode = declarationKeywordNode.valueAssignationNode();
+    Result<Object> solveExpressionResult = this.interpret(valueAssignationNode.expressionNode());
+    if (!solveExpressionResult.isCorrect()) {
+      return new IncorrectResult<>(solveExpressionResult);
+    }
+    Object value = solveExpressionResult.result();
+    Result<VariableEntry> createConstResult = runtime.getCurrentEnvironment().createVariable(identifier, type, value);
+    if (!createConstResult.isCorrect()) {
+      return new IncorrectResult<>(createConstResult);
+    }
+    return new CorrectResult<>("New variable declared and initialized.");
+  }
+
+  @Override
+  public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
+    if (declarationKeywordNode.isMutable()) {
+      return defineVar(declarationKeywordNode);
+    } else {
+      return defineVal(declarationKeywordNode);
+    }
   }
 
   @Override

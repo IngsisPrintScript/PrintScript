@@ -22,11 +22,13 @@ public final class DefaultEnvironment implements Environment {
   private final EntryFactory entryFactory;
   private final Map<String, FunctionEntry> functions;
   private final Map<String, VariableEntry> variables;
+
   private final Environment father;
 
   public DefaultEnvironment(
       EntryFactory entryFactory,
       Map<String, VariableEntry> variables,
+      Map<String, VariableEntry> values,
       Map<String, FunctionEntry> functions,
       Environment father) {
     this.entryFactory = entryFactory;
@@ -36,7 +38,7 @@ public final class DefaultEnvironment implements Environment {
   }
 
   public DefaultEnvironment(EntryFactory entryFactory, Environment father) {
-    this(entryFactory, new HashMap<>(), new HashMap<>(), father);
+    this(entryFactory, new HashMap<>(), new HashMap<>(), new HashMap<>(), father);
   }
 
   private Map<String, VariableEntry> variables() {
@@ -52,7 +54,7 @@ public final class DefaultEnvironment implements Environment {
     if (isVariableDeclared(identifier)) {
       return new IncorrectResult<>("Can't create an already created variable.");
     }
-    VariableEntry variableEntry = entryFactory.createVariableEntry(type, null);
+    VariableEntry variableEntry = entryFactory.createVariableEntry(type, null, true);
     return new CorrectResult<>(variables().put(identifier, variableEntry));
   }
 
@@ -64,8 +66,11 @@ public final class DefaultEnvironment implements Environment {
       return father.updateVariable(identifier, value);
     }
     VariableEntry oldVariableEntry = variables().get(identifier);
+    if (!oldVariableEntry.isMutable()) {
+      return new IncorrectResult<>("Tried modifying an inmutable variable.");
+    }
     Types type = oldVariableEntry.type();
-    VariableEntry newVariableEntry = entryFactory.createVariableEntry(type, value);
+    VariableEntry newVariableEntry = entryFactory.createVariableEntry(type, value, oldVariableEntry.isMutable());
     return new CorrectResult<>(variables().put(identifier, newVariableEntry));
   }
 
@@ -175,5 +180,15 @@ public final class DefaultEnvironment implements Environment {
   @Override
   public Map<String, VariableEntry> readAll() {
     return Map.copyOf(variables);
+  }
+
+  @Override
+  public Result<VariableEntry> createVariable(String identifier, Types type, Object value) {
+    if (isVariableDeclared(identifier)) {
+      return new IncorrectResult<>("Cannot declare already created variable: " + identifier);
+    }
+    VariableEntry variableEntry = entryFactory.createVariableEntry(type, value, false);
+    this.variables.put(identifier, variableEntry);
+    return new CorrectResult<>(variableEntry);
   }
 }

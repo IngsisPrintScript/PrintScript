@@ -7,7 +7,9 @@ package com.ingsis.runtime.environment.entries;
 import com.ingsis.types.Types;
 
 public sealed interface VariableEntry permits DefaultVariableEntry {
-    Types type();
+  Types type();
 
-    Object value();
+  Boolean isMutable();
+
+  Object value();
 }

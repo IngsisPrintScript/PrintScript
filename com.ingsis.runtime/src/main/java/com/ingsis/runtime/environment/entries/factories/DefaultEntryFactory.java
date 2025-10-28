@@ -16,8 +16,8 @@ import java.util.Map;
 
 public final class DefaultEntryFactory implements EntryFactory {
   @Override
-  public VariableEntry createVariableEntry(Types type, Object value) {
-    return new DefaultVariableEntry(type, value);
+  public VariableEntry createVariableEntry(Types type, Object value, Boolean isMutable) {
+    return new DefaultVariableEntry(type, value, isMutable);
   }
 
   @Override
@@ -28,5 +28,4 @@ public final class DefaultEntryFactory implements EntryFactory {
       Environment closure) {
     return new DefaultFunctionEntry(returnType, arguments, body, closure);
   }
-
 }

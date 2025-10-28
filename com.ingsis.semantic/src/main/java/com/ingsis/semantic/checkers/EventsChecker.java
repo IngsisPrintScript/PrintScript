@@ -7,7 +7,7 @@ package com.ingsis.semantic.checkers;
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.nodes.keyword.LetKeywordNode;
+import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.semantic.checkers.publishers.GenericNodeEventPublisher;
@@ -21,7 +21,7 @@ public final class EventsChecker implements Checker {
 
   public EventsChecker(PublishersFactory publishersFactory) {
     this.eventPublishers = new LinkedHashMap<>();
-    eventPublishers.put(LetKeywordNode.class, publishersFactory.createLetNodePublisher());
+    eventPublishers.put(DeclarationKeywordNode.class, publishersFactory.createLetNodePublisher());
     eventPublishers.put(
         ExpressionNode.class, publishersFactory.createExpressionNodePublisher());
   }
@@ -32,8 +32,8 @@ public final class EventsChecker implements Checker {
   }
 
   @Override
-  public Result<String> check(LetKeywordNode letKeywordNode) {
-    return dispatch(letKeywordNode, LetKeywordNode.class);
+  public Result<String> check(DeclarationKeywordNode letKeywordNode) {
+    return dispatch(letKeywordNode, DeclarationKeywordNode.class);
   }
 
   @Override

@@ -19,5 +19,5 @@ public interface EntryFactory {
       List<ExpressionNode> body,
       Environment closure);
 
-  VariableEntry createVariableEntry(Types type, Object value);
+  VariableEntry createVariableEntry(Types type, Object value, Boolean isMutable);
 }

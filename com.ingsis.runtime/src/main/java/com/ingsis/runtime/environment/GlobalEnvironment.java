@@ -40,7 +40,7 @@ public final class GlobalEnvironment implements Environment {
     if (isVariableDeclared(identifier)) {
       return new IncorrectResult<>("Can't create an already created variable.");
     }
-    VariableEntry variableEntry = entryFactory.createVariableEntry(type, null);
+    VariableEntry variableEntry = entryFactory.createVariableEntry(type, null, true);
     return new CorrectResult<>(variables.put(identifier, variableEntry));
   }
 
@@ -50,8 +50,11 @@ public final class GlobalEnvironment implements Environment {
       return new IncorrectResult<>("Can't modify an uninitialized variable.");
     }
     VariableEntry oldVariableEntry = variables.get(identifier);
+    if (!oldVariableEntry.isMutable()) {
+      return new IncorrectResult<>("Cannot modify an inmutable variable.");
+    }
     Types type = oldVariableEntry.type();
-    VariableEntry newVariableEntry = entryFactory.createVariableEntry(type, value);
+    VariableEntry newVariableEntry = entryFactory.createVariableEntry(type, value, oldVariableEntry.isMutable());
     return new CorrectResult<>(variables.put(identifier, newVariableEntry));
   }
 
@@ -146,5 +149,15 @@ public final class GlobalEnvironment implements Environment {
   @Override
   public Map<String, VariableEntry> readAll() {
     return Map.copyOf(variables);
+  }
+
+  @Override
+  public Result<VariableEntry> createVariable(String identifier, Types type, Object value) {
+    if (isVariableDeclared(identifier)) {
+      return new IncorrectResult<>("Cannot declare already created variable: " + identifier);
+    }
+    VariableEntry variableEntry = entryFactory.createVariableEntry(type, value, false);
+    this.variables.put(identifier, variableEntry);
+    return new CorrectResult<>(variableEntry);
   }
 }
