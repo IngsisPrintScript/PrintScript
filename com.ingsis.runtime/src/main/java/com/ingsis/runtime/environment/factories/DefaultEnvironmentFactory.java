@@ -61,6 +61,21 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                   Object input = scanner.nextLine();
                   return input;
                 })));
+    global.createFunction("readEnv", Map.of("string", Types.STRING), Types.UNDEFINED);
+    global.updateFunction(
+        "readEnv",
+        List.of(
+            new GlobalFunctionBody(
+                List.of("string"),
+                args -> {
+                  if (args.length == 0 || args[0] == null)
+                    return null;
+                  String varName = args[0].toString();
+                  String env = System.getenv(varName);
+                  if (env == null)
+                    return "";
+                  return env;
+                })));
     return;
   }
 }
