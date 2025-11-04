@@ -12,6 +12,7 @@ import com.ingsis.runtime.environment.entries.factories.EntryFactory;
 import com.ingsis.types.Types;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 
 public final class DefaultEnvironmentFactory implements EnvironmentFactory {
   private final EntryFactory entryFactory;
@@ -47,6 +48,18 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                 args -> {
                   System.out.println(args[0]);
                   return null;
+                })));
+    global.createFunction("readInput", Map.of("string", Types.STRING), Types.UNDEFINED);
+    global.updateFunction(
+        "readInput",
+        List.of(
+            new GlobalFunctionBody(
+                List.of("string"),
+                args -> {
+                  System.out.println(args[0]);
+                  Scanner scanner = new Scanner(System.in);
+                  Object input = scanner.nextLine();
+                  return input;
                 })));
     return;
   }

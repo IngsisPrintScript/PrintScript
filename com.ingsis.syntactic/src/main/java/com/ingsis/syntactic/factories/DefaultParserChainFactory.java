@@ -17,8 +17,16 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
   }
 
   @Override
-  public ParserRegistry createDefaultChain() {
-    return createKeywordsParserRegistry(createOperatorParserRegistry());
+  public Parser createDefaultChain() {
+    return createKeywordsParserRegistry(createExpressionChain());
+  }
+
+  @Override
+  public Parser createExpressionChain() {
+    ParserRegistry registry = new DefaultParserRegistry();
+    registry.registerParser(createOperatorParserRegistry());
+    registry.registerParser(PARSER_FACTORY.createCallFunctionParser());
+    return registry;
   }
 
   private ParserRegistry createKeywordsParserRegistry(Parser nextParser) {

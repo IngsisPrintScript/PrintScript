@@ -6,7 +6,7 @@ package com.ingsis.syntactic;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.result.Result;
-import com.ingsis.syntactic.parsers.ParserRegistry;
+import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.tokenstream.TokenStream;
 import com.ingsis.visitors.Checkable;
 import java.util.LinkedList;
@@ -16,24 +16,24 @@ import java.util.Queue;
 public final class DefaultSyntacticParser implements SyntacticParser {
   private final TokenStream tokenStream;
   private final Queue<Checkable> checkableBuffer;
-  private final ParserRegistry parserRegistry;
+  private final Parser parser;
 
   public DefaultSyntacticParser(
       TokenStream tokenStream,
-      ParserRegistry parserRegistry,
+      Parser parser,
       Queue<Checkable> checkableBuffer) {
     this.tokenStream = tokenStream;
     this.checkableBuffer = new LinkedList<>(checkableBuffer);
-    this.parserRegistry = parserRegistry;
+    this.parser = parser;
   }
 
-  public DefaultSyntacticParser(TokenStream tokenStream, ParserRegistry parserRegistry) {
-    this(tokenStream, parserRegistry, new LinkedList<>());
+  public DefaultSyntacticParser(TokenStream tokenStream, Parser parser) {
+    this(tokenStream, parser, new LinkedList<>());
   }
 
   @Override
   public Result<? extends Node> parse() {
-    return parserRegistry.parse(tokenStream);
+    return parser.parse(tokenStream);
   }
 
   @Override

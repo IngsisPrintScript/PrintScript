@@ -40,6 +40,7 @@ public final class DefaultParserFactory implements ParserFactory {
 
   private Parser binaryLeafOperators() {
     ParserRegistry registry = new DefaultParserRegistry();
+    registry.registerParser(createCallFunctionParser());
     registry.registerParser(createLiteralParser());
     registry.registerParser(createIdentifierParser());
     return registry;

@@ -13,7 +13,6 @@ import com.ingsis.result.Result;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.factories.ParserFactory;
 import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
-import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
@@ -24,17 +23,15 @@ public final class CallFunctionParser implements Parser {
   private final Token LEFT_PARENTHESIS_TEMPLATE;
   private final Token RIGHT_PARENTHESIS_TEMPLATE;
   private final Token COMMA_SEPARATOR_TEMPLATE;
-  private final Token EOL_TEMPLATE;
   private final IdentifierParser IDENTIFIER_PARSER;
-  private final BinaryOperatorParser OPERATOR_PARSER;
+  private final ParserFactory PARSER_FACTORY;
 
   public CallFunctionParser(TokenFactory tokenFactory, ParserFactory parserFactory) {
     LEFT_PARENTHESIS_TEMPLATE = tokenFactory.createSeparatorToken("(");
     RIGHT_PARENTHESIS_TEMPLATE = tokenFactory.createSeparatorToken(")");
     COMMA_SEPARATOR_TEMPLATE = tokenFactory.createSeparatorToken(",");
-    EOL_TEMPLATE = tokenFactory.createEndOfLineToken(";");
     IDENTIFIER_PARSER = parserFactory.createIdentifierParser();
-    OPERATOR_PARSER = parserFactory.createBinaryOperatorParser();
+    this.PARSER_FACTORY = parserFactory;
   }
 
   private Boolean canParse(TokenStream stream) {
@@ -62,11 +59,6 @@ public final class CallFunctionParser implements Parser {
     }
     List<ExpressionNode> arguments = parseFunctionCallResult.result();
 
-    Result<Token> consumeEndOfLineResult = stream.consume(EOL_TEMPLATE);
-    if (!consumeEndOfLineResult.isCorrect()) {
-      return new IncorrectResult<>(consumeEndOfLineResult);
-    }
-
     return new CorrectResult<>(new CallFunctionNode(identifierNode, arguments));
   }
 
@@ -91,7 +83,7 @@ public final class CallFunctionParser implements Parser {
 
   private Result<List<ExpressionNode>> parseArguments(TokenStream stream) {
     List<ExpressionNode> arguments = new ArrayList<>();
-    Result<ExpressionNode> parseFirstArgument = OPERATOR_PARSER.parse(stream);
+    Result<ExpressionNode> parseFirstArgument = PARSER_FACTORY.createBinaryOperatorParser().parse(stream);
     if (!parseFirstArgument.isCorrect()) {
       return new CorrectResult<List<ExpressionNode>>(arguments);
     }
@@ -99,7 +91,7 @@ public final class CallFunctionParser implements Parser {
     arguments.add(firstArgument);
 
     while (stream.consume(COMMA_SEPARATOR_TEMPLATE).isCorrect()) {
-      Result<ExpressionNode> parseExpressionResult = OPERATOR_PARSER.parse(stream);
+      Result<ExpressionNode> parseExpressionResult = PARSER_FACTORY.createBinaryOperatorParser().parse(stream);
       if (!parseExpressionResult.isCorrect()) {
         return new IncorrectResult<>(parseExpressionResult);
       }

@@ -4,8 +4,10 @@
 
 package com.ingsis.syntactic.factories;
 
-import com.ingsis.syntactic.parsers.ParserRegistry;
+import com.ingsis.syntactic.parsers.Parser;
 
 public interface ParserChainFactory {
-    ParserRegistry createDefaultChain();
+  Parser createDefaultChain();
+
+  Parser createExpressionChain();
 }
