@@ -5,6 +5,7 @@
 package com.ingsis.semantic.checkers.handlers.operators;
 
 import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.OperatorNode;
@@ -14,6 +15,7 @@ import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import com.ingsis.typer.expression.DefaultExpressionTypeGetter;
+import com.ingsis.typer.function.DefaultFunctionTypeGetter;
 import com.ingsis.typer.identifier.DefaultIdentifierTypeGetter;
 import com.ingsis.typer.literal.DefaultLiteralTypeGetter;
 import com.ingsis.types.Types;
@@ -59,6 +61,13 @@ public final class OperatorNodeValidityHandler implements NodeEventHandler<Expre
         return new CorrectResult<>("Identifier matches expected type.");
       } else {
         return new IncorrectResult<>("Identifier does not match expected type.");
+      }
+    } else if (node instanceof CallFunctionNode callFunctionNode) {
+      Boolean check = new DefaultFunctionTypeGetter(runtime).getType(callFunctionNode).isCompatibleWith(expectedType);
+      if (check) {
+        return new CorrectResult<>("Function returns needed type");
+      } else {
+        return new IncorrectResult<>("Function does not return needed type");
       }
     }
     List<ExpressionNode> children = node.children();

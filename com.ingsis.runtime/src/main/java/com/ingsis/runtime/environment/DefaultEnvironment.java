@@ -191,4 +191,14 @@ public final class DefaultEnvironment implements Environment {
     this.variables.put(identifier, variableEntry);
     return new CorrectResult<>(variableEntry);
   }
+
+  @Override
+  public Result<VariableEntry> deleteVariable(String identifier) {
+    if (!isVariableDeclared(identifier)) {
+      return new IncorrectResult<>("Tryied deleting a non-existing variable.");
+    } else if (!isVariableDeclaredHere(identifier)) {
+      return new CorrectResult<>(variables.remove(identifier));
+    }
+    return father().deleteVariable(identifier);
+  }
 }

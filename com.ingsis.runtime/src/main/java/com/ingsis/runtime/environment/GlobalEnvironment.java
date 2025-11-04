@@ -160,4 +160,12 @@ public final class GlobalEnvironment implements Environment {
     this.variables.put(identifier, variableEntry);
     return new CorrectResult<>(variableEntry);
   }
+
+  @Override
+  public Result<VariableEntry> deleteVariable(String identifier) {
+    if (!isVariableDeclared(identifier)) {
+      return new IncorrectResult<>("Tryied deleting a non-existing variable.");
+    }
+    return new CorrectResult<>(variables.remove(identifier));
+  }
 }

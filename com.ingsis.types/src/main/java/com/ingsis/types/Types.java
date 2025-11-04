@@ -30,8 +30,12 @@ public enum Types {
     return regEx;
   }
 
+  public boolean isCompatibleWith(Object object) {
+    String string = object.toString();
+    return this.checkFormat(string);
+  }
+
   public boolean isCompatibleWith(Types other) {
-    // UNDEFINED is compatible with any type
     if (this == UNDEFINED || other == UNDEFINED)
       return true;
     return this.equals(other);

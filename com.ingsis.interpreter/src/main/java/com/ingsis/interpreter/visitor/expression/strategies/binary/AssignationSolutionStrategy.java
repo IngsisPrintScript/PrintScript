@@ -8,8 +8,10 @@ import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionSt
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.result.CorrectResult;
+import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
+import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.visitors.Interpreter;
 import java.util.List;
 
@@ -42,6 +44,14 @@ public final class AssignationSolutionStrategy implements ExpressionSolutionStra
     Result<Object> interpretChild = interpreter.interpret(varNewExpression);
     if (!interpretChild.isCorrect()) {
       return interpretChild;
+    }
+    Result<VariableEntry> getVariableEntryResult = RUNTIME.getCurrentEnvironment().readVariable(identifierNode.name());
+    if (!getVariableEntryResult.isCorrect()) {
+      return new IncorrectResult<>(getVariableEntryResult);
+    }
+    VariableEntry variableEntry = getVariableEntryResult.result();
+    if (!variableEntry.type().isCompatibleWith(interpretChild.result())) {
+      return new IncorrectResult<>("Value type does not matches expected type.");
     }
     RUNTIME.getCurrentEnvironment().updateVariable(identifierNode.name(), interpretChild.result());
     return new CorrectResult<>(interpretChild.result());

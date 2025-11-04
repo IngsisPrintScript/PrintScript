@@ -23,6 +23,8 @@ public sealed interface Environment permits GlobalEnvironment, DefaultEnvironmen
 
   Result<VariableEntry> updateVariable(String identifier, Object value);
 
+  Result<VariableEntry> deleteVariable(String identifier);
+
   Boolean isVariableDeclared(String identifier);
 
   Boolean isVariableInitialized(String identifier);

@@ -53,6 +53,15 @@ public final class DefaultInterpreterVisitor implements Interpreter {
       return new IncorrectResult<>(valueResult);
     }
     Object value = valueResult.result();
+    Result<VariableEntry> getVariableEntryResult = runtime.getCurrentEnvironment().readVariable(identifier);
+    if (!getVariableEntryResult.isCorrect()) {
+      return new IncorrectResult<>(getVariableEntryResult);
+    }
+    VariableEntry variableEntry = getVariableEntryResult.result();
+    if (!variableEntry.type().isCompatibleWith(value)) {
+      runtime.getCurrentEnvironment().deleteVariable(identifier);
+      return new IncorrectResult<>("Tried initializing a var with a non correct type value");
+    }
     Result<VariableEntry> modifyVarResult = runtime.getCurrentEnvironment().updateVariable(identifier, value);
     if (!modifyVarResult.isCorrect()) {
       return new IncorrectResult<>(modifyVarResult);
@@ -82,6 +91,14 @@ public final class DefaultInterpreterVisitor implements Interpreter {
       return new IncorrectResult<>(solveExpressionResult);
     }
     Object value = solveExpressionResult.result();
+    Result<VariableEntry> getVariableEntryResult = runtime.getCurrentEnvironment().readVariable(identifier);
+    if (!getVariableEntryResult.isCorrect()) {
+      return new IncorrectResult<>(getVariableEntryResult);
+    }
+    VariableEntry variableEntry = getVariableEntryResult.result();
+    if (!variableEntry.type().isCompatibleWith(value)) {
+      return new IncorrectResult<>("Tried initializing a val with a non correct type value");
+    }
     Result<VariableEntry> createConstResult = runtime.getCurrentEnvironment().createVariable(identifier, type, value);
     if (!createConstResult.isCorrect()) {
       return new IncorrectResult<>(createConstResult);
