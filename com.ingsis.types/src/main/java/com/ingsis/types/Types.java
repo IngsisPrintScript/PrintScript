@@ -30,6 +30,13 @@ public enum Types {
     return regEx;
   }
 
+  public boolean isCompatibleWith(Types other) {
+    // UNDEFINED is compatible with any type
+    if (this == UNDEFINED || other == UNDEFINED)
+      return true;
+    return this.equals(other);
+  }
+
   public boolean checkFormat(String input) {
     return input.matches(this.regEx());
   }

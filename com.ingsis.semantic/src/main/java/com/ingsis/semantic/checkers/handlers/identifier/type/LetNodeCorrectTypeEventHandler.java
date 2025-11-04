@@ -27,7 +27,7 @@ public final class LetNodeCorrectTypeEventHandler implements NodeEventHandler<De
     Types expectedType = node.typeAssignationNode().typeNode().type();
     Types actualType = new DefaultExpressionTypeGetter(runtime)
         .getType(node.valueAssignationNode().expressionNode());
-    if (!expectedType.equals(actualType) && !actualType.equals(Types.UNDEFINED)) {
+    if (!expectedType.isCompatibleWith(actualType)) {
       return new IncorrectResult<>(
           "Variable type: " + expectedType + " is not equal to " + actualType);
     }
