@@ -41,6 +41,5 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
   private void registerKeywordsParsers(ParserRegistry<Node> registry) {
     registry.registerParser(PARSER_FACTORY.createDeclarationParser());
     registry.registerParser(PARSER_FACTORY.createConditionalParser());
-    registry.registerParser(PARSER_FACTORY.createCallFunctionParser());
   }
 }

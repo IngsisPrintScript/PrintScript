@@ -16,6 +16,7 @@ import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
+
 import java.util.ArrayList;
 import java.util.List;
 
