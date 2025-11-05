@@ -4,24 +4,24 @@
 
 package com.ingsis.nodes.factories;
 
+import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
-import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.type.TypeNode;
-import com.ingsis.visitors.Interpretable;
-import java.util.Collection;
+
+import java.util.List;
 
 public interface NodeFactory {
   IfKeywordNode createConditionalNode(
-      OperatorNode booleanExpression,
-      Collection<Interpretable> thenBody,
-      Collection<Interpretable> elseBody);
+      ExpressionNode condition,
+      List<Node> thenBody,
+      List<Node> elseBody);
 
   DeclarationKeywordNode createLetNode(
       TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);

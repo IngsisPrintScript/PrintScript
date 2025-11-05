@@ -16,18 +16,18 @@ import java.util.Queue;
 public final class DefaultSyntacticParser implements SyntacticParser {
   private final TokenStream tokenStream;
   private final Queue<Checkable> checkableBuffer;
-  private final Parser parser;
+  private final Parser<Node> parser;
 
   public DefaultSyntacticParser(
       TokenStream tokenStream,
-      Parser parser,
+      Parser<Node> parser,
       Queue<Checkable> checkableBuffer) {
     this.tokenStream = tokenStream;
     this.checkableBuffer = new LinkedList<>(checkableBuffer);
     this.parser = parser;
   }
 
-  public DefaultSyntacticParser(TokenStream tokenStream, Parser parser) {
+  public DefaultSyntacticParser(TokenStream tokenStream, Parser<Node> parser) {
     this(tokenStream, parser, new LinkedList<>());
   }
 

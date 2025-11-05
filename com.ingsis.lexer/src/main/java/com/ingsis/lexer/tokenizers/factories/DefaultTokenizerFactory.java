@@ -9,6 +9,7 @@ import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.lexer.tokenizers.TokenizersRegistry;
 import com.ingsis.lexer.tokenizers.identifier.IdentifierTokenizer;
 import com.ingsis.lexer.tokenizers.keyword.ConstKeywordTokenizer;
+import com.ingsis.lexer.tokenizers.keyword.ElseKeywordTokenizer;
 import com.ingsis.lexer.tokenizers.keyword.IfKeywordTokenizer;
 import com.ingsis.lexer.tokenizers.keyword.LetKeywordTokenizer;
 import com.ingsis.lexer.tokenizers.literal.BooleanLiteralTokenizer;
@@ -48,6 +49,7 @@ public final class DefaultTokenizerFactory implements TokenizerFactory {
     registry.registerTokenizer(new LetKeywordTokenizer(tokenFactory));
     registry.registerTokenizer(new ConstKeywordTokenizer(tokenFactory));
     registry.registerTokenizer(new IfKeywordTokenizer(tokenFactory));
+    registry.registerTokenizer(new ElseKeywordTokenizer(tokenFactory));
     return registry;
   }
 

@@ -11,7 +11,7 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
 
-public final class LineExpressionParser implements Parser {
+public final class LineExpressionParser implements Parser<ExpressionNode> {
   private final BinaryOperatorParser CORE_EXPRESSION_PARSER;
   private final Token EOL_TEMPLATE;
 

@@ -14,7 +14,7 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
 
-public final class IdentifierParser implements Parser {
+public final class IdentifierParser implements Parser<IdentifierNode> {
   private final Token IDENTIFIER_TOKEN_TEMPLATE;
   private final NodeFactory NODE_FACTORY;
 

@@ -8,23 +8,23 @@ import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
-import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.types.Types;
-import com.ingsis.visitors.Interpretable;
-import java.util.Collection;
+import com.ingsis.nodes.Node;
+
+import java.util.List;
 
 public final class DefaultNodeFactory implements NodeFactory {
   @Override
   public IfKeywordNode createConditionalNode(
-      OperatorNode booleanExpression,
-      Collection<Interpretable> thenBody,
-      Collection<Interpretable> elseBody) {
-    return new IfKeywordNode(booleanExpression, thenBody, elseBody);
+      ExpressionNode condition,
+      List<Node> thenBody,
+      List<Node> elseBody) {
+    return new IfKeywordNode(condition, thenBody, elseBody);
   }
 
   @Override

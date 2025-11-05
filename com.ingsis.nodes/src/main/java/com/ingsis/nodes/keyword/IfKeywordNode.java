@@ -5,49 +5,52 @@
 package com.ingsis.nodes.keyword;
 
 import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.operator.OperatorNode;
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpretable;
 import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.List;
 
 public record IfKeywordNode(
-        OperatorNode condition,
-        Collection<Interpretable> thenBody,
-        Collection<Interpretable> elseBody)
-        implements Node, Checkable, Interpretable {
+    ExpressionNode condition,
+    List<Node> thenBody,
+    List<Node> elseBody)
+    implements Node, Checkable, Interpretable {
 
-    public IfKeywordNode {
-        thenBody = Collections.unmodifiableCollection(thenBody);
-        elseBody = Collections.unmodifiableCollection(elseBody);
-    }
+  public IfKeywordNode {
+    thenBody = List.copyOf(thenBody);
+    elseBody = List.copyOf(elseBody);
+  }
 
-    @Override
-    public Collection<Interpretable> thenBody() {
-        return Collections.unmodifiableCollection(thenBody);
-    }
+  public IfKeywordNode(ExpressionNode condition, List<Node> thenBody) {
+    this(condition, thenBody, List.of());
+  }
 
-    @Override
-    public Collection<Interpretable> elseBody() {
-        return Collections.unmodifiableCollection(elseBody);
-    }
+  @Override
+  public List<Node> thenBody() {
+    return List.copyOf(thenBody);
+  }
 
-    @Override
-    public Result<String> acceptChecker(Checker checker) {
-        return checker.check(this);
-    }
+  @Override
+  public List<Node> elseBody() {
+    return List.copyOf(elseBody);
+  }
 
-    @Override
-    public Result<String> acceptInterpreter(Interpreter interpreter) {
-        return interpreter.interpret(this);
-    }
+  @Override
+  public Result<String> acceptChecker(Checker checker) {
+    return checker.check(this);
+  }
 
-    @Override
-    public Result<String> acceptVisitor(Visitor visitor) {
-        return visitor.visit(this);
-    }
+  @Override
+  public Result<String> acceptInterpreter(Interpreter interpreter) {
+    return interpreter.interpret(this);
+  }
+
+  @Override
+  public Result<String> acceptVisitor(Visitor visitor) {
+    return visitor.visit(this);
+  }
 }

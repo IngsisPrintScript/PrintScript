@@ -9,6 +9,7 @@ import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.factories.NodeFactory;
+import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
@@ -20,7 +21,7 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
 
-public final class DeclarationParser implements Parser {
+public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
   private final Token LET_TOKEN_TEMPLATE;
   private final Token CONST_TOKEN_TEMPLATE;
   private final Token VALUE_ASSIGNATION_TEMPLATE;
@@ -51,7 +52,7 @@ public final class DeclarationParser implements Parser {
   }
 
   @Override
-  public Result<Node> parse(TokenStream stream) {
+  public Result<DeclarationKeywordNode> parse(TokenStream stream) {
     Result<Token> consumeDeclarationKeywordResult = consumeDeclarationKeyword(stream);
     if (!consumeDeclarationKeywordResult.isCorrect()) {
       return new IncorrectResult<>(consumeDeclarationKeywordResult);

@@ -6,6 +6,7 @@ package com.ingsis.syntactic.parsers.operator;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.expression.operator.OperatorNode;
 import com.ingsis.nodes.factories.NodeFactory;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
@@ -15,13 +16,13 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
 
-public final class BinaryOperatorParser implements Parser {
+public final class BinaryOperatorParser implements Parser<ExpressionNode> {
   private final Token OPERATOR_TEMPLATE;
-  private final Parser LEAF_NODES_PARSER;
+  private final Parser<ExpressionNode> LEAF_NODES_PARSER;
   private final NodeFactory NODE_FACTORY;
 
   public BinaryOperatorParser(
-      NodeFactory NODE_FACTORY, TokenFactory TOKEN_FACTORY, Parser LEAF_NODES_PARSER) {
+      NodeFactory NODE_FACTORY, TokenFactory TOKEN_FACTORY, Parser<ExpressionNode> LEAF_NODES_PARSER) {
     this.OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken("");
     this.LEAF_NODES_PARSER = LEAF_NODES_PARSER;
     this.NODE_FACTORY = NODE_FACTORY;

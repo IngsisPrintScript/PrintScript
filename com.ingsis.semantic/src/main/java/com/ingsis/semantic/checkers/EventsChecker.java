@@ -21,6 +21,7 @@ public final class EventsChecker implements Checker {
 
   public EventsChecker(PublishersFactory publishersFactory) {
     this.eventPublishers = new LinkedHashMap<>();
+    eventPublishers.put(IfKeywordNode.class, publishersFactory.createConditionalNodePublisher());
     eventPublishers.put(DeclarationKeywordNode.class, publishersFactory.createLetNodePublisher());
     eventPublishers.put(
         ExpressionNode.class, publishersFactory.createExpressionNodePublisher());

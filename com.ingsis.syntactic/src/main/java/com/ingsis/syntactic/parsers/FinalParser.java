@@ -9,10 +9,10 @@ import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.tokenstream.TokenStream;
 
-public final class FinalParser implements Parser {
+public final class FinalParser<T extends Node> implements Parser<T> {
 
-    @Override
-    public Result<Node> parse(TokenStream stream) {
-        return new IncorrectResult<>("There was no parser able to handle that stream.");
-    }
+  @Override
+  public Result<T> parse(TokenStream stream) {
+    return new IncorrectResult<>("There was no parser able to handle that stream.");
+  }
 }

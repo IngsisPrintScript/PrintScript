@@ -6,39 +6,39 @@ package com.ingsis.syntactic.parsers;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.result.Result;
-import com.ingsis.tokens.DefaultToken;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import com.ingsis.tokenstream.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DefaultParserRegistry implements ParserRegistry {
-  private final Parser nextRegistry;
-  private final List<Parser> parsers;
+public final class DefaultParserRegistry<T extends Node> implements ParserRegistry<T> {
+  private final Parser<? extends T> nextRegistry;
+  private final List<Parser<? extends T>> parsers;
 
-  public DefaultParserRegistry(Parser nextRegistry) {
+  public DefaultParserRegistry(Parser<? extends T> nextRegistry) {
     this.nextRegistry = nextRegistry;
     this.parsers = new ArrayList<>();
   }
 
   public DefaultParserRegistry() {
-    this(new FinalParser());
+    this(new FinalParser<T>());
   }
 
   @Override
-  public void registerParser(Parser parser) {
+  public void registerParser(Parser<? extends T> parser) {
     parsers.add(parser);
   }
 
+  @SuppressWarnings("unchecked")
   @Override
-  public Result<? extends Node> parse(TokenStream stream) {
+  public Result<T> parse(TokenStream stream) {
     stream.consumeAll(new DefaultTokensFactory().createSeparatorToken(""));
-    for (Parser parser : parsers) {
-      Result<? extends Node> result = parser.parse(stream);
+    for (Parser<? extends T> parser : parsers) {
+      Result<? extends T> result = parser.parse(stream);
       if (result.isCorrect()) {
-        return result;
+        return (Result<T>) result;
       }
     }
-    return nextRegistry.parse(stream);
+    return (Result<T>) nextRegistry.parse(stream);
   }
 }

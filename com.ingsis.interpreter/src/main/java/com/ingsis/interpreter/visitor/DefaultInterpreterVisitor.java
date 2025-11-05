@@ -4,7 +4,10 @@
 
 package com.ingsis.interpreter.visitor;
 
+import java.util.List;
+
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
+import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
@@ -16,6 +19,7 @@ import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.types.Types;
+import com.ingsis.visitors.Interpretable;
 import com.ingsis.visitors.Interpreter;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -32,7 +36,31 @@ public final class DefaultInterpreterVisitor implements Interpreter {
 
   @Override
   public Result<String> interpret(IfKeywordNode ifKeywordNode) {
-    return new IncorrectResult<>("not implemented yet.");
+    Result<Object> solveConditionResult = this.interpret(ifKeywordNode.condition());
+    if (!solveConditionResult.isCorrect()) {
+      return new IncorrectResult<>(solveConditionResult);
+    }
+    Object conditionValue = solveConditionResult.result();
+    switch (conditionValue.toString()) {
+      case "true":
+        return interpretChildren(ifKeywordNode.thenBody());
+      case "false":
+        return interpretChildren(ifKeywordNode.elseBody());
+    }
+    return new IncorrectResult<>("Something went wrong.");
+  }
+
+  private Result<String> interpretChildren(List<Node> children) {
+    for (Node child : children) {
+      if (!(child instanceof Interpretable interpretableChild)) {
+        return new IncorrectResult<>("Then child is not interpretable");
+      }
+      Result<String> interpretChildResult = interpretableChild.acceptInterpreter(this);
+      if (!interpretChildResult.isCorrect()) {
+        return new IncorrectResult<>(interpretChildResult);
+      }
+    }
+    return new CorrectResult<>("Children interpreted correctly.");
   }
 
   private Result<String> declareVar(TypeAssignationNode typeAssignationNode) {

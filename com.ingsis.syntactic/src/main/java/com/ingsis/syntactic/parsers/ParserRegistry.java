@@ -4,6 +4,8 @@
 
 package com.ingsis.syntactic.parsers;
 
-public interface ParserRegistry extends Parser {
-    void registerParser(Parser parser);
+import com.ingsis.nodes.Node;
+
+public interface ParserRegistry<T extends Node> extends Parser<T> {
+  void registerParser(Parser<? extends T> parser);
 }

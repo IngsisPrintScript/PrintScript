@@ -19,7 +19,7 @@ import com.ingsis.tokenstream.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class CallFunctionParser implements Parser {
+public final class CallFunctionParser implements Parser<CallFunctionNode> {
   private final Token LEFT_PARENTHESIS_TEMPLATE;
   private final Token RIGHT_PARENTHESIS_TEMPLATE;
   private final Token COMMA_SEPARATOR_TEMPLATE;

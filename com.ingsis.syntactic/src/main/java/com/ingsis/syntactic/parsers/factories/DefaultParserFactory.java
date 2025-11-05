@@ -4,11 +4,14 @@
 
 package com.ingsis.syntactic.parsers.factories;
 
+import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.factories.NodeFactory;
+import com.ingsis.syntactic.factories.DefaultParserChainFactory;
 import com.ingsis.syntactic.parsers.DefaultParserRegistry;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.ParserRegistry;
 import com.ingsis.syntactic.parsers.TypeParser;
+import com.ingsis.syntactic.parsers.conditional.ConditionalParser;
 import com.ingsis.syntactic.parsers.declaration.DeclarationParser;
 import com.ingsis.syntactic.parsers.expression.LineExpressionParser;
 import com.ingsis.syntactic.parsers.function.CallFunctionParser;
@@ -38,8 +41,8 @@ public final class DefaultParserFactory implements ParserFactory {
     return new BinaryOperatorParser(NODE_FACTORY, TOKEN_FACTORY, binaryLeafOperators());
   }
 
-  private Parser binaryLeafOperators() {
-    ParserRegistry registry = new DefaultParserRegistry();
+  private Parser<ExpressionNode> binaryLeafOperators() {
+    ParserRegistry<ExpressionNode> registry = new DefaultParserRegistry<>();
     registry.registerParser(createCallFunctionParser());
     registry.registerParser(createLiteralParser());
     registry.registerParser(createIdentifierParser());
@@ -79,5 +82,12 @@ public final class DefaultParserFactory implements ParserFactory {
   @Override
   public LineExpressionParser createLineExpressionParser() {
     return new LineExpressionParser(TOKEN_FACTORY, this);
+  }
+
+  @Override
+  public ConditionalParser createConditionalParser() {
+    return new ConditionalParser(TOKEN_FACTORY, this,
+        NODE_FACTORY,
+        new DefaultParserChainFactory(this).createDefaultChain());
   }
 }
