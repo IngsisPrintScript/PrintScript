@@ -11,35 +11,32 @@ import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.nodes.type.TypeNode;
-
 import java.util.List;
 
 public interface NodeFactory {
-  IfKeywordNode createConditionalNode(
-      ExpressionNode condition,
-      List<Node> thenBody,
-      List<Node> elseBody);
+    IfKeywordNode createConditionalNode(
+            ExpressionNode condition, List<Node> thenBody, List<Node> elseBody);
 
-  DeclarationKeywordNode createLetNode(
-      TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
+    DeclarationKeywordNode createLetNode(
+            TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
 
-  DeclarationKeywordNode createConstNode(
-      TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
+    DeclarationKeywordNode createConstNode(
+            TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
 
-  BinaryOperatorNode createBinaryOperatorNode(
-      String symbol, ExpressionNode leftChild, ExpressionNode rightChild);
+    BinaryOperatorNode createBinaryOperatorNode(
+            String symbol, ExpressionNode leftChild, ExpressionNode rightChild);
 
-  ValueAssignationNode createValueAssignationNode(
-      IdentifierNode identifierNode, ExpressionNode expressionNode);
+    ValueAssignationNode createValueAssignationNode(
+            IdentifierNode identifierNode, ExpressionNode expressionNode);
 
-  TypeAssignationNode createTypeAssignationNode(IdentifierNode identifierNode, TypeNode typeNode);
+    TypeAssignationNode createTypeAssignationNode(IdentifierNode identifierNode, TypeNode typeNode);
 
-  TypeNode createTypeNode(String type);
+    TypeNode createTypeNode(String type);
 
-  IdentifierNode createIdentifierNode(String name);
+    IdentifierNode createIdentifierNode(String name);
 
-  LiteralNode createLiteralNode(String value);
+    LiteralNode createLiteralNode(String value);
 }

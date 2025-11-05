@@ -6,8 +6,9 @@ package com.ingsis.runtime.environment.entries;
 
 import com.ingsis.types.Types;
 
-public record DefaultVariableEntry(Types type, Object value, Boolean isMutable) implements VariableEntry {
-  public DefaultVariableEntry(Types type, Boolean isMutable) {
-    this(type, null, isMutable);
-  }
+public record DefaultVariableEntry(Types type, Object value, Boolean isMutable)
+        implements VariableEntry {
+    public DefaultVariableEntry(Types type, Boolean isMutable) {
+        this(type, null, isMutable);
+    }
 }

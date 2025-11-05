@@ -6,7 +6,7 @@ package com.ingsis.syntactic.parsers.factories;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.syntactic.factories.DefaultParserChainFactory;
+import com.ingsis.syntactic.factories.ParserChainFactory;
 import com.ingsis.syntactic.parsers.DefaultParserRegistry;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.ParserRegistry;
@@ -85,9 +85,7 @@ public final class DefaultParserFactory implements ParserFactory {
   }
 
   @Override
-  public ConditionalParser createConditionalParser() {
-    return new ConditionalParser(TOKEN_FACTORY, this,
-        NODE_FACTORY,
-        new DefaultParserChainFactory(this).createDefaultChain());
+  public ConditionalParser createConditionalParser(ParserChainFactory chainFactory) {
+    return new ConditionalParser(TOKEN_FACTORY, this, NODE_FACTORY, chainFactory);
   }
 }

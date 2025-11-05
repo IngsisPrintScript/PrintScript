@@ -14,40 +14,50 @@ import com.ingsis.visitors.Visitor;
 import java.util.List;
 import java.util.function.Function;
 
-public record GlobalFunctionBody(List<String> argNames, Function<Object[], Object> lambda) implements ExpressionNode {
+public record GlobalFunctionBody(List<String> argNames, Function<Object[], Object> lambda)
+        implements ExpressionNode {
 
-  @Override
-  public Result<String> acceptVisitor(Visitor visitor) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
-  }
-
-  @Override
-  public Result<String> acceptChecker(Checker checker) {
-    return checker.check(this);
-  }
-
-  @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    Result<Object> interpretResult = interpreter.interpret(this);
-    if (!interpretResult.isCorrect()) {
-      return new IncorrectResult<>(interpretResult);
+    public GlobalFunctionBody {
+        argNames = List.copyOf(argNames);
     }
-    return new CorrectResult<>("Interpreted successfully.");
-  }
 
-  @Override
-  public List<ExpressionNode> children() {
-    return List.of();
-  }
+    @Override
+    public List<String> argNames() {
+        return List.copyOf(argNames);
+    }
 
-  @Override
-  public Boolean isTerminalNode() {
-    return true;
-  }
+    @Override
+    public Result<String> acceptVisitor(Visitor visitor) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'acceptVisitor'");
+    }
 
-  @Override
-  public String symbol() {
-    return "";
-  }
+    @Override
+    public Result<String> acceptChecker(Checker checker) {
+        return checker.check(this);
+    }
+
+    @Override
+    public Result<String> acceptInterpreter(Interpreter interpreter) {
+        Result<Object> interpretResult = interpreter.interpret(this);
+        if (!interpretResult.isCorrect()) {
+            return new IncorrectResult<>(interpretResult);
+        }
+        return new CorrectResult<>("Interpreted successfully.");
+    }
+
+    @Override
+    public List<ExpressionNode> children() {
+        return List.of();
+    }
+
+    @Override
+    public Boolean isTerminalNode() {
+        return true;
+    }
+
+    @Override
+    public String symbol() {
+        return "";
+    }
 }

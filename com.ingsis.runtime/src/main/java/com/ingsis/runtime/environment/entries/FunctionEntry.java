@@ -12,11 +12,11 @@ import java.util.Map;
 
 public interface FunctionEntry {
 
-  Types returnType();
+    Types returnType();
 
-  Map<String, Types> arguments();
+    Map<String, Types> arguments();
 
-  List<ExpressionNode> body();
+    List<ExpressionNode> body();
 
-  Environment closure();
+    Environment closure();
 }

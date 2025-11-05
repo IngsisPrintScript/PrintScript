@@ -25,69 +25,69 @@ import com.ingsis.types.Types;
 import java.util.List;
 
 public final class DefaultTokenizerFactory implements TokenizerFactory {
-  private final TokenFactory tokenFactory;
+    private final TokenFactory tokenFactory;
 
-  public DefaultTokenizerFactory(TokenFactory tokenFactory) {
-    this.tokenFactory = tokenFactory;
-  }
-
-  @Override
-  public Tokenizer createTokenizer() {
-    return separatorTokenizer(
-        operatorTokenizer(
-            keywordTokenizer(literalTokenizer(typeTokenizer(identifierTokenizer())))));
-  }
-
-  private Tokenizer identifierTokenizer() {
-    TokenizersRegistry registry = new DefaultTokenizersRegistry();
-    registry.registerTokenizer(new IdentifierTokenizer(tokenFactory));
-    return registry;
-  }
-
-  private Tokenizer keywordTokenizer(Tokenizer nextTokenizer) {
-    TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
-    registry.registerTokenizer(new LetKeywordTokenizer(tokenFactory));
-    registry.registerTokenizer(new ConstKeywordTokenizer(tokenFactory));
-    registry.registerTokenizer(new IfKeywordTokenizer(tokenFactory));
-    registry.registerTokenizer(new ElseKeywordTokenizer(tokenFactory));
-    return registry;
-  }
-
-  private Tokenizer literalTokenizer(Tokenizer nextTokenizer) {
-    TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
-    registry.registerTokenizer(new StringLiteralTokenizer(tokenFactory));
-    registry.registerTokenizer(new NumberLiteralTokenizer(tokenFactory));
-    registry.registerTokenizer(new BooleanLiteralTokenizer(tokenFactory));
-    return registry;
-  }
-
-  private Tokenizer operatorTokenizer(Tokenizer nextTokenizer) {
-    TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
-    List<String> operators = List.of(":", "=", "+", "-", "/", "*");
-    for (String operator : operators) {
-      registry.registerTokenizer(new GenericOperatorTokenizer(tokenFactory, operator));
+    public DefaultTokenizerFactory(TokenFactory tokenFactory) {
+        this.tokenFactory = tokenFactory;
     }
-    return registry;
-  }
 
-  private Tokenizer separatorTokenizer(Tokenizer nextTokenizer) {
-    TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
-    registry.registerTokenizer(new SpaceSeparatorTokenizer(tokenFactory, " "));
-    registry.registerTokenizer(new SpaceSeparatorTokenizer(tokenFactory, "\t"));
-    registry.registerTokenizer(new SpaceSeparatorTokenizer(tokenFactory, "\n"));
-    List<String> separators = List.of(",", "(", ")", "[", "]", "{", "}");
-    for (String separator : separators) {
-      registry.registerTokenizer(new GenericSeparatorTokenizer(tokenFactory, separator));
+    @Override
+    public Tokenizer createTokenizer() {
+        return separatorTokenizer(
+                operatorTokenizer(
+                        keywordTokenizer(literalTokenizer(typeTokenizer(identifierTokenizer())))));
     }
-    registry.registerTokenizer(new EndOfLineSeparatorTokenizer(tokenFactory));
-    return registry;
-  }
 
-  private Tokenizer typeTokenizer(Tokenizer nextTokenizer) {
-    TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
-    for (Types type : Types.values()) {
-      registry.registerTokenizer(new GenericTypeTokenizer(tokenFactory, type));
+    private Tokenizer identifierTokenizer() {
+        TokenizersRegistry registry = new DefaultTokenizersRegistry();
+        registry.registerTokenizer(new IdentifierTokenizer(tokenFactory));
+        return registry;
     }
-    return registry;
-  }
+
+    private Tokenizer keywordTokenizer(Tokenizer nextTokenizer) {
+        TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
+        registry.registerTokenizer(new LetKeywordTokenizer(tokenFactory));
+        registry.registerTokenizer(new ConstKeywordTokenizer(tokenFactory));
+        registry.registerTokenizer(new IfKeywordTokenizer(tokenFactory));
+        registry.registerTokenizer(new ElseKeywordTokenizer(tokenFactory));
+        return registry;
+    }
+
+    private Tokenizer literalTokenizer(Tokenizer nextTokenizer) {
+        TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
+        registry.registerTokenizer(new StringLiteralTokenizer(tokenFactory));
+        registry.registerTokenizer(new NumberLiteralTokenizer(tokenFactory));
+        registry.registerTokenizer(new BooleanLiteralTokenizer(tokenFactory));
+        return registry;
+    }
+
+    private Tokenizer operatorTokenizer(Tokenizer nextTokenizer) {
+        TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
+        List<String> operators = List.of(":", "=", "+", "-", "/", "*");
+        for (String operator : operators) {
+            registry.registerTokenizer(new GenericOperatorTokenizer(tokenFactory, operator));
+        }
+        return registry;
+    }
+
+    private Tokenizer separatorTokenizer(Tokenizer nextTokenizer) {
+        TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
+        registry.registerTokenizer(new SpaceSeparatorTokenizer(tokenFactory, " "));
+        registry.registerTokenizer(new SpaceSeparatorTokenizer(tokenFactory, "\t"));
+        registry.registerTokenizer(new SpaceSeparatorTokenizer(tokenFactory, "\n"));
+        List<String> separators = List.of(",", "(", ")", "[", "]", "{", "}");
+        for (String separator : separators) {
+            registry.registerTokenizer(new GenericSeparatorTokenizer(tokenFactory, separator));
+        }
+        registry.registerTokenizer(new EndOfLineSeparatorTokenizer(tokenFactory));
+        return registry;
+    }
+
+    private Tokenizer typeTokenizer(Tokenizer nextTokenizer) {
+        TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
+        for (Types type : Types.values()) {
+            registry.registerTokenizer(new GenericTypeTokenizer(tokenFactory, type));
+        }
+        return registry;
+    }
 }

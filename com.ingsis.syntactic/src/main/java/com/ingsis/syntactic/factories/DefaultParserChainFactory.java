@@ -6,40 +6,51 @@ package com.ingsis.syntactic.factories;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.syntactic.parsers.DefaultParserRegistry;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.ParserRegistry;
+import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.tokens.factories.DefaultTokensFactory;
 
 public final class DefaultParserChainFactory implements ParserChainFactory {
-  private final ParserFactory PARSER_FACTORY;
-  private static Parser<Node> cachedChain;
+  private final ParserFactory parserFactory;
 
-  public DefaultParserChainFactory(ParserFactory PARSER_FACTORY) {
-    this.PARSER_FACTORY = PARSER_FACTORY;
+  public DefaultParserChainFactory(ParserFactory parserFactory) {
+    this.parserFactory = parserFactory;
+  }
+
+  private static class LazyHolder {
+    static final Parser<Node> INSTANCE = buildStaticChain();
+  }
+
+  private static Parser<Node> buildStaticChain() {
+    ParserFactory parserFactory = new DefaultParserFactory(new DefaultTokensFactory(), new DefaultNodeFactory());
+    DefaultParserChainFactory chainFactory = new DefaultParserChainFactory(parserFactory);
+
+    ParserRegistry<Node> registry = new DefaultParserRegistry<>(chainFactory.createExpressionChain());
+
+    chainFactory.registerKeywordsParsers(registry);
+
+    return registry;
   }
 
   @Override
   public Parser<Node> createDefaultChain() {
-    if (cachedChain != null) {
-      return cachedChain;
-    }
-    ParserRegistry<Node> registry = new DefaultParserRegistry<>(createExpressionChain());
-    cachedChain = registry;
-    registerKeywordsParsers(registry);
-    return registry;
+    return LazyHolder.INSTANCE;
   }
 
   @Override
   public Parser<ExpressionNode> createExpressionChain() {
     ParserRegistry<ExpressionNode> registry = new DefaultParserRegistry<>();
-    registry.registerParser(PARSER_FACTORY.createLineExpressionParser());
-    registry.registerParser(PARSER_FACTORY.createCallFunctionParser());
+    registry.registerParser(parserFactory.createLineExpressionParser());
+    registry.registerParser(parserFactory.createCallFunctionParser());
     return registry;
   }
 
   private void registerKeywordsParsers(ParserRegistry<Node> registry) {
-    registry.registerParser(PARSER_FACTORY.createDeclarationParser());
-    registry.registerParser(PARSER_FACTORY.createConditionalParser());
+    registry.registerParser(parserFactory.createDeclarationParser());
+    registry.registerParser(parserFactory.createConditionalParser(this));
   }
 }

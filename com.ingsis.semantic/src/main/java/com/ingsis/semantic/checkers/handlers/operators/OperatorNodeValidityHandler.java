@@ -24,61 +24,69 @@ import java.util.List;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class OperatorNodeValidityHandler implements NodeEventHandler<ExpressionNode> {
-  private final Runtime runtime;
+    private final Runtime runtime;
 
-  public OperatorNodeValidityHandler(Runtime runtime) {
-    this.runtime = runtime;
-  }
-
-  @Override
-  public Result<String> handle(ExpressionNode node) {
-    if (node instanceof OperatorNode operatorNode) {
-      if (operatorNode.symbol().equals("+")) {
-        return new CorrectResult<>(
-            "Since it's an addition it will al be casted to string and then operated.");
-      }
-      Types expectedType = new DefaultExpressionTypeGetter(runtime)
-          .getType(operatorNode.children().get(0));
-      return recursiveCheck(expectedType, node);
+    public OperatorNodeValidityHandler(Runtime runtime) {
+        this.runtime = runtime;
     }
 
-    return new CorrectResult<>("All not operators expression pass this check.");
-  }
+    @Override
+    public Result<String> handle(ExpressionNode node) {
+        if (node instanceof OperatorNode operatorNode) {
+            if (operatorNode.symbol().equals("+")) {
+                return new CorrectResult<>(
+                        "Since it's an addition it will al be casted to string and then operated.");
+            }
+            Types expectedType =
+                    new DefaultExpressionTypeGetter(runtime)
+                            .getType(operatorNode.children().get(0));
+            return recursiveCheck(expectedType, node);
+        }
 
-  private Result<String> recursiveCheck(Types expectedType, ExpressionNode node) {
-    if (node instanceof LiteralNode literalNode) {
-      boolean checkResult = new DefaultLiteralTypeGetter().getType(literalNode).isCompatibleWith(expectedType);
-      if (checkResult) {
-        return new CorrectResult<>("Literal matches expected type.");
-      } else {
-        return new IncorrectResult<>("Literal does not match expected type.");
-      }
-    } else if (node instanceof IdentifierNode identifierNode) {
-      boolean checkResult = new DefaultIdentifierTypeGetter(runtime)
-          .getType(identifierNode)
-          .isCompatibleWith(expectedType);
-      if (checkResult) {
-        return new CorrectResult<>("Identifier matches expected type.");
-      } else {
-        return new IncorrectResult<>("Identifier does not match expected type.");
-      }
-    } else if (node instanceof CallFunctionNode callFunctionNode) {
-      Boolean check = new DefaultFunctionTypeGetter(runtime).getType(callFunctionNode).isCompatibleWith(expectedType);
-      if (check) {
-        return new CorrectResult<>("Function returns needed type");
-      } else {
-        return new IncorrectResult<>("Function does not return needed type");
-      }
-    }
-    List<ExpressionNode> children = node.children();
-
-    for (ExpressionNode child : children) {
-      Result<String> checkTypeResult = recursiveCheck(expectedType, child);
-      if (!checkTypeResult.isCorrect()) {
-        return new IncorrectResult<>(checkTypeResult);
-      }
+        return new CorrectResult<>("All not operators expression pass this check.");
     }
 
-    return new CorrectResult<>("Types matched.");
-  }
+    private Result<String> recursiveCheck(Types expectedType, ExpressionNode node) {
+        if (node instanceof LiteralNode literalNode) {
+            boolean checkResult =
+                    new DefaultLiteralTypeGetter()
+                            .getType(literalNode)
+                            .isCompatibleWith(expectedType);
+            if (checkResult) {
+                return new CorrectResult<>("Literal matches expected type.");
+            } else {
+                return new IncorrectResult<>("Literal does not match expected type.");
+            }
+        } else if (node instanceof IdentifierNode identifierNode) {
+            boolean checkResult =
+                    new DefaultIdentifierTypeGetter(runtime)
+                            .getType(identifierNode)
+                            .isCompatibleWith(expectedType);
+            if (checkResult) {
+                return new CorrectResult<>("Identifier matches expected type.");
+            } else {
+                return new IncorrectResult<>("Identifier does not match expected type.");
+            }
+        } else if (node instanceof CallFunctionNode callFunctionNode) {
+            Boolean check =
+                    new DefaultFunctionTypeGetter(runtime)
+                            .getType(callFunctionNode)
+                            .isCompatibleWith(expectedType);
+            if (check) {
+                return new CorrectResult<>("Function returns needed type");
+            } else {
+                return new IncorrectResult<>("Function does not return needed type");
+            }
+        }
+        List<ExpressionNode> children = node.children();
+
+        for (ExpressionNode child : children) {
+            Result<String> checkTypeResult = recursiveCheck(expectedType, child);
+            if (!checkTypeResult.isCorrect()) {
+                return new IncorrectResult<>(checkTypeResult);
+            }
+        }
+
+        return new CorrectResult<>("Types matched.");
+    }
 }

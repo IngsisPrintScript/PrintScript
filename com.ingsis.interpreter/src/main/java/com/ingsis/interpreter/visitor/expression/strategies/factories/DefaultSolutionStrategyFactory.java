@@ -17,25 +17,34 @@ import com.ingsis.interpreter.visitor.expression.strategies.identifier.Identifie
 import com.ingsis.interpreter.visitor.expression.strategies.literal.LiteralSolutionStrategy;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+@SuppressFBWarnings(
+        value = "EI2",
+        justification = "Runtime is intentionally passed and stored; design needs mutability.")
 public final class DefaultSolutionStrategyFactory implements SolutionStrategyFactory {
-  private final Runtime RUNTIME;
+    private final Runtime RUNTIME;
 
-  public DefaultSolutionStrategyFactory(Runtime runtime) {
-    this.RUNTIME = runtime;
-  }
+    public DefaultSolutionStrategyFactory(Runtime runtime) {
+        this.RUNTIME = runtime;
+    }
 
-  @Override
-  public ExpressionSolutionStrategy constructDefaultStrategy() {
-    return new AssignationSolutionStrategy(RUNTIME,
-        new MultiplicationSolutionStrategy(
-            new DivitionSolutionStrategy(
-                new SubstractionSolutionStrategy(
-                    new AdditionSolutionStrategy(
-                        new FunctionCallSolutionStrategy(RUNTIME,
-                            new GlobalFunctionBodySolutionStrategy(RUNTIME,
-                                new LiteralSolutionStrategy(
-                                    new IdentifierSolutionStrategy(
-                                        new FinalStrategy(), DefaultRuntime.getInstance())))))))));
-  }
+    @Override
+    public ExpressionSolutionStrategy constructDefaultStrategy() {
+        return new AssignationSolutionStrategy(
+                RUNTIME,
+                new MultiplicationSolutionStrategy(
+                        new DivitionSolutionStrategy(
+                                new SubstractionSolutionStrategy(
+                                        new AdditionSolutionStrategy(
+                                                new FunctionCallSolutionStrategy(
+                                                        RUNTIME,
+                                                        new GlobalFunctionBodySolutionStrategy(
+                                                                RUNTIME,
+                                                                new LiteralSolutionStrategy(
+                                                                        new IdentifierSolutionStrategy(
+                                                                                new FinalStrategy(),
+                                                                                DefaultRuntime
+                                                                                        .getInstance())))))))));
+    }
 }

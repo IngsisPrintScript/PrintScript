@@ -11,15 +11,15 @@ import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 
 public interface HandlersFactory {
-  NodeEventHandler<DeclarationKeywordNode> createLetVariableExistenceHandler();
+    NodeEventHandler<DeclarationKeywordNode> createLetVariableExistenceHandler();
 
-  NodeEventHandler<DeclarationKeywordNode> createLetCorrectTypeHandler();
+    NodeEventHandler<DeclarationKeywordNode> createLetCorrectTypeHandler();
 
-  NodeEventHandler<TypeAssignationNode> createTypeAssignationVariableExistenceHandler();
+    NodeEventHandler<TypeAssignationNode> createTypeAssignationVariableExistenceHandler();
 
-  NodeEventHandler<ValueAssignationNode> createValueAssignationVariableExistenceHandler();
+    NodeEventHandler<ValueAssignationNode> createValueAssignationVariableExistenceHandler();
 
-  NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler();
+    NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler();
 
-  NodeEventHandler<ExpressionNode> createOperatorValidityHandler();
+    NodeEventHandler<ExpressionNode> createOperatorValidityHandler();
 }

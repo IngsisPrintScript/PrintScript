@@ -1,7 +1,8 @@
-package com.ingsis.syntactic.parsers.conditional;
+/*
+ * My Project
+ */
 
-import java.util.ArrayList;
-import java.util.List;
+package com.ingsis.syntactic.parsers.conditional;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.nodes.expression.ExpressionNode;
@@ -10,11 +11,14 @@ import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.syntactic.factories.ParserChainFactory;
 import com.ingsis.syntactic.parsers.Parser;
 import com.ingsis.syntactic.parsers.factories.ParserFactory;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.tokenstream.TokenStream;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class ConditionalParser implements Parser<IfKeywordNode> {
   private final Token IF_TEMPLATE;
@@ -24,11 +28,14 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
   private final Token LEFT_BRACE_TEMPLATE;
   private final Token RIGHT_BRACE_TEMPLATE;
   private final Parser<ExpressionNode> EXPRESSION_PARSER;
-  private final Parser<Node> BODY_PARSER;
+  private final ParserChainFactory CHAIN_FACTORY;
   private final NodeFactory NODE_FACTORY;
 
-  public ConditionalParser(TokenFactory TOKEN_FACTORY, ParserFactory PARSER_FACTORY, NodeFactory nodeFactory,
-      Parser<Node> bodyParser) {
+  public ConditionalParser(
+      TokenFactory TOKEN_FACTORY,
+      ParserFactory PARSER_FACTORY,
+      NodeFactory nodeFactory,
+      ParserChainFactory CHAIN_FACTORY) {
     this.IF_TEMPLATE = TOKEN_FACTORY.createKeywordToken("if");
     this.ELSE_TEMPLATE = TOKEN_FACTORY.createKeywordToken("else");
     this.LEFT_PARENTHESIS_TEMPLATE = TOKEN_FACTORY.createSeparatorToken("(");
@@ -36,7 +43,7 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
     this.LEFT_BRACE_TEMPLATE = TOKEN_FACTORY.createSeparatorToken("{");
     this.RIGHT_BRACE_TEMPLATE = TOKEN_FACTORY.createSeparatorToken("}");
     this.EXPRESSION_PARSER = PARSER_FACTORY.createBinaryOperatorParser();
-    this.BODY_PARSER = bodyParser;
+    this.CHAIN_FACTORY = CHAIN_FACTORY;
     this.NODE_FACTORY = nodeFactory;
   }
 
@@ -92,7 +99,7 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
     }
     List<Node> body = new ArrayList<>();
     while (!stream.consume(RIGHT_BRACE_TEMPLATE).isCorrect()) {
-      Result<Node> parseBodyItemResult = BODY_PARSER.parse(stream);
+      Result<Node> parseBodyItemResult = CHAIN_FACTORY.createDefaultChain().parse(stream);
       if (!parseBodyItemResult.isCorrect()) {
         return new IncorrectResult<>(parseBodyItemResult);
       }

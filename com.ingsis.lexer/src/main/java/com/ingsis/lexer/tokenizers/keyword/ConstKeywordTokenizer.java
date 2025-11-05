@@ -12,23 +12,23 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 
 public final class ConstKeywordTokenizer implements Tokenizer {
-  String template;
-  TokenFactory tokenFactory;
+    String template;
+    TokenFactory tokenFactory;
 
-  public ConstKeywordTokenizer(TokenFactory tokenFactory) {
-    this.template = "const";
-    this.tokenFactory = tokenFactory;
-  }
-
-  private Boolean canTokenize(String input) {
-    return input.equals(template);
-  }
-
-  @Override
-  public Result<Token> tokenize(String input) {
-    if (!canTokenize(input)) {
-      return new IncorrectResult<>("Input is different from const: " + input);
+    public ConstKeywordTokenizer(TokenFactory tokenFactory) {
+        this.template = "const";
+        this.tokenFactory = tokenFactory;
     }
-    return new CorrectResult<>(tokenFactory.createKeywordToken(input));
-  }
+
+    private Boolean canTokenize(String input) {
+        return input.equals(template);
+    }
+
+    @Override
+    public Result<Token> tokenize(String input) {
+        if (!canTokenize(input)) {
+            return new IncorrectResult<>("Input is different from const: " + input);
+        }
+        return new CorrectResult<>(tokenFactory.createKeywordToken(input));
+    }
 }

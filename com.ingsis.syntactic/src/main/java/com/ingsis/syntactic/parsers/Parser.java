@@ -9,5 +9,5 @@ import com.ingsis.result.Result;
 import com.ingsis.tokenstream.TokenStream;
 
 public interface Parser<T extends Node> {
-  Result<T> parse(TokenStream stream);
+    Result<T> parse(TokenStream stream);
 }

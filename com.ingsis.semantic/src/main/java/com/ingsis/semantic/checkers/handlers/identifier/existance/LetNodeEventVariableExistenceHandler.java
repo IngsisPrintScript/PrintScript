@@ -16,33 +16,35 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class LetNodeEventVariableExistenceHandler
-    implements NodeEventHandler<DeclarationKeywordNode> {
-  private final Runtime runtime;
+        implements NodeEventHandler<DeclarationKeywordNode> {
+    private final Runtime runtime;
 
-  public LetNodeEventVariableExistenceHandler(Runtime runtime) {
-    this.runtime = runtime;
-  }
-
-  @Override
-  public Result<String> handle(DeclarationKeywordNode node) {
-    TypeAssignationNode typeAssignationNode = node.typeAssignationNode();
-
-    Result<String> checkTypeAssignationNode = new TypeAssignationNodeEventVariableExistenceHandler(runtime)
-        .handle(typeAssignationNode);
-
-    if (!checkTypeAssignationNode.isCorrect()) {
-      return new IncorrectResult<>(checkTypeAssignationNode);
+    public LetNodeEventVariableExistenceHandler(Runtime runtime) {
+        this.runtime = runtime;
     }
 
-    ValueAssignationNode valueAssignationNode = node.valueAssignationNode();
+    @Override
+    public Result<String> handle(DeclarationKeywordNode node) {
+        TypeAssignationNode typeAssignationNode = node.typeAssignationNode();
 
-    Result<String> checkValueAssignationNode = new ValueAssignationNodeEventVariableExistenceHandler(runtime)
-        .handle(valueAssignationNode);
+        Result<String> checkTypeAssignationNode =
+                new TypeAssignationNodeEventVariableExistenceHandler(runtime)
+                        .handle(typeAssignationNode);
 
-    if (!checkValueAssignationNode.isCorrect()) {
-      return new IncorrectResult<>(checkValueAssignationNode);
+        if (!checkTypeAssignationNode.isCorrect()) {
+            return new IncorrectResult<>(checkTypeAssignationNode);
+        }
+
+        ValueAssignationNode valueAssignationNode = node.valueAssignationNode();
+
+        Result<String> checkValueAssignationNode =
+                new ValueAssignationNodeEventVariableExistenceHandler(runtime)
+                        .handle(valueAssignationNode);
+
+        if (!checkValueAssignationNode.isCorrect()) {
+            return new IncorrectResult<>(checkValueAssignationNode);
+        }
+
+        return new CorrectResult<>("All variables inside the assignation are correctly used.");
     }
-
-    return new CorrectResult<>("All variables inside the assignation are correctly used.");
-  }
 }

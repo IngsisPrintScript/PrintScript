@@ -14,28 +14,28 @@ import java.nio.file.Path;
 import java.util.Queue;
 
 public final class DefaultProgramInterpreterFactory implements ProgramInterpreterFactory {
-  private final SemanticFactory semanticFactory;
-  private final InterpreterVisitorFactory interpreterFactory;
+    private final SemanticFactory semanticFactory;
+    private final InterpreterVisitorFactory interpreterFactory;
 
-  public DefaultProgramInterpreterFactory(
-      SemanticFactory semanticFactory, InterpreterVisitorFactory interpreterFactory) {
-    this.semanticFactory = semanticFactory;
-    this.interpreterFactory = interpreterFactory;
-  }
+    public DefaultProgramInterpreterFactory(
+            SemanticFactory semanticFactory, InterpreterVisitorFactory interpreterFactory) {
+        this.semanticFactory = semanticFactory;
+        this.interpreterFactory = interpreterFactory;
+    }
 
-  @Override
-  public ProgramInterpreter createCliProgramInterpreter(
-      Queue<Character> buffer, Runtime runtime) {
-    return new DefaultProgramInterpreter(
-        semanticFactory.createCliSemanticChecker(buffer, runtime),
-        interpreterFactory.createDefaultInterpreter(runtime));
-  }
+    @Override
+    public ProgramInterpreter createCliProgramInterpreter(
+            Queue<Character> buffer, Runtime runtime) {
+        return new DefaultProgramInterpreter(
+                semanticFactory.createCliSemanticChecker(buffer, runtime),
+                interpreterFactory.createDefaultInterpreter(runtime));
+    }
 
-  @Override
-  public ProgramInterpreter createFileProgramInterpreter(Path filePath, Runtime runtime)
-      throws IOException {
-    return new DefaultProgramInterpreter(
-        semanticFactory.createFileSemanticChecker(filePath, runtime),
-        interpreterFactory.createDefaultInterpreter(runtime));
-  }
+    @Override
+    public ProgramInterpreter createFileProgramInterpreter(Path filePath, Runtime runtime)
+            throws IOException {
+        return new DefaultProgramInterpreter(
+                semanticFactory.createFileSemanticChecker(filePath, runtime),
+                interpreterFactory.createDefaultInterpreter(runtime));
+    }
 }

@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface EntryFactory {
-  FunctionEntry createFunctionEntry(
-      Types returnType,
-      Map<String, Types> arguments,
-      List<ExpressionNode> body,
-      Environment closure);
+    FunctionEntry createFunctionEntry(
+            Types returnType,
+            Map<String, Types> arguments,
+            List<ExpressionNode> body,
+            Environment closure);
 
-  VariableEntry createVariableEntry(Types type, Object value, Boolean isMutable);
+    VariableEntry createVariableEntry(Types type, Object value, Boolean isMutable);
 }

@@ -15,22 +15,24 @@ import com.ingsis.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
-public final class LetNodeCorrectTypeEventHandler implements NodeEventHandler<DeclarationKeywordNode> {
-  private final Runtime runtime;
+public final class LetNodeCorrectTypeEventHandler
+        implements NodeEventHandler<DeclarationKeywordNode> {
+    private final Runtime runtime;
 
-  public LetNodeCorrectTypeEventHandler(Runtime runtime) {
-    this.runtime = runtime;
-  }
-
-  @Override
-  public Result<String> handle(DeclarationKeywordNode node) {
-    Types expectedType = node.typeAssignationNode().typeNode().type();
-    Types actualType = new DefaultExpressionTypeGetter(runtime)
-        .getType(node.valueAssignationNode().expressionNode());
-    if (!expectedType.isCompatibleWith(actualType)) {
-      return new IncorrectResult<>(
-          "Variable type: " + expectedType + " is not equal to " + actualType);
+    public LetNodeCorrectTypeEventHandler(Runtime runtime) {
+        this.runtime = runtime;
     }
-    return new CorrectResult<>("Variable type: " + expectedType + " is equal to " + actualType);
-  }
+
+    @Override
+    public Result<String> handle(DeclarationKeywordNode node) {
+        Types expectedType = node.typeAssignationNode().typeNode().type();
+        Types actualType =
+                new DefaultExpressionTypeGetter(runtime)
+                        .getType(node.valueAssignationNode().expressionNode());
+        if (!expectedType.isCompatibleWith(actualType)) {
+            return new IncorrectResult<>(
+                    "Variable type: " + expectedType + " is not equal to " + actualType);
+        }
+        return new CorrectResult<>("Variable type: " + expectedType + " is equal to " + actualType);
+    }
 }
