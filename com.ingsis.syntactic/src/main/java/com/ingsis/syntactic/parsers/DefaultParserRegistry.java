@@ -32,7 +32,7 @@ public final class DefaultParserRegistry<T extends Node> implements ParserRegist
   @SuppressWarnings("unchecked")
   @Override
   public Result<T> parse(TokenStream stream) {
-    stream.consumeAll(new DefaultTokensFactory().createSeparatorToken(""));
+    stream.consumeAll(new DefaultTokensFactory().createSeparatorToken(" "));
     for (Parser<? extends T> parser : parsers) {
       Result<? extends T> result = parser.parse(stream);
       if (result.isCorrect()) {
