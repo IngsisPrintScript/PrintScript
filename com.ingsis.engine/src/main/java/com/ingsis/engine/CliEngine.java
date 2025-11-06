@@ -62,7 +62,6 @@ public final class CliEngine implements Engine {
 
     @Override
     public void run() {
-        file = Path.of("/home/garro/Faculty/IngSis/PrintScript/test.pisp");
         if (file != null) {
             runFile(file);
         } else {
