@@ -53,3 +53,6 @@ interpreter/.testFiles/interpret/*
 build
 
 gradle.properties
+
+### PrintScript Files
+*.pisp
