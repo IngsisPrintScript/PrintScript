@@ -55,4 +55,4 @@ build
 gradle.properties
 
 ### PrintScript Files
-*.pisp
+test.pisp
