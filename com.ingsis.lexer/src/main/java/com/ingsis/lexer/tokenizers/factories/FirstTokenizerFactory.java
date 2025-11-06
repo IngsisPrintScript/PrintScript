@@ -8,11 +8,7 @@ import com.ingsis.lexer.tokenizers.DefaultTokenizersRegistry;
 import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.lexer.tokenizers.TokenizersRegistry;
 import com.ingsis.lexer.tokenizers.identifier.IdentifierTokenizer;
-import com.ingsis.lexer.tokenizers.keyword.ConstKeywordTokenizer;
-import com.ingsis.lexer.tokenizers.keyword.ElseKeywordTokenizer;
-import com.ingsis.lexer.tokenizers.keyword.IfKeywordTokenizer;
 import com.ingsis.lexer.tokenizers.keyword.LetKeywordTokenizer;
-import com.ingsis.lexer.tokenizers.literal.BooleanLiteralTokenizer;
 import com.ingsis.lexer.tokenizers.literal.NumberLiteralTokenizer;
 import com.ingsis.lexer.tokenizers.literal.StringLiteralTokenizer;
 import com.ingsis.lexer.tokenizers.operator.GenericOperatorTokenizer;
@@ -24,10 +20,10 @@ import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.types.Types;
 import java.util.List;
 
-public final class DefaultTokenizerFactory implements TokenizerFactory {
+public final class FirstTokenizerFactory implements TokenizerFactory {
     private final TokenFactory tokenFactory;
 
-    public DefaultTokenizerFactory(TokenFactory tokenFactory) {
+    public FirstTokenizerFactory(TokenFactory tokenFactory) {
         this.tokenFactory = tokenFactory;
     }
 
@@ -47,9 +43,6 @@ public final class DefaultTokenizerFactory implements TokenizerFactory {
     private Tokenizer keywordTokenizer(Tokenizer nextTokenizer) {
         TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
         registry.registerTokenizer(new LetKeywordTokenizer(tokenFactory));
-        registry.registerTokenizer(new ConstKeywordTokenizer(tokenFactory));
-        registry.registerTokenizer(new IfKeywordTokenizer(tokenFactory));
-        registry.registerTokenizer(new ElseKeywordTokenizer(tokenFactory));
         return registry;
     }
 
@@ -57,7 +50,6 @@ public final class DefaultTokenizerFactory implements TokenizerFactory {
         TokenizersRegistry registry = new DefaultTokenizersRegistry(nextTokenizer);
         registry.registerTokenizer(new StringLiteralTokenizer(tokenFactory));
         registry.registerTokenizer(new NumberLiteralTokenizer(tokenFactory));
-        registry.registerTokenizer(new BooleanLiteralTokenizer(tokenFactory));
         return registry;
     }
 

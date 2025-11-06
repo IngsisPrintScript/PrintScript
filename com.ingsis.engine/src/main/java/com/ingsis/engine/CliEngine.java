@@ -16,12 +16,14 @@ import com.ingsis.engine.factories.syntactic.DefaultSyntacticFactory;
 import com.ingsis.engine.factories.syntactic.SyntacticFactory;
 import com.ingsis.engine.factories.tokenstream.DefaultTokenStreamFactory;
 import com.ingsis.engine.factories.tokenstream.TokenStreamFactory;
+import com.ingsis.engine.versions.Version;
 import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.DefaultSolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.factory.DefaultInterpreterVisitorFactory;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
-import com.ingsis.lexer.tokenizers.factories.DefaultTokenizerFactory;
+import com.ingsis.lexer.tokenizers.factories.FirstTokenizerFactory;
+import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.nodes.factories.NodeFactory;
@@ -47,8 +49,11 @@ import picocli.CommandLine.Option;
         mixinStandardHelpOptions = true,
         description = "Runs the interpreter with CLI input")
 public final class CliEngine implements Engine {
-    @Option(names = "--file", description = "Path to a PrintScript file to execute")
+    @Option(names = "--file", description = "Path to a PrintScript file to execute.")
     private Path file;
+
+    @Option(names = "--version", description = "PrintScript version to use.", required = true)
+    private Version version;
 
     public static void main(String[] args) {
         int exitCode = new CommandLine(new CliEngine()).execute(args);
@@ -111,7 +116,17 @@ public final class CliEngine implements Engine {
     private ProgramInterpreterFactory createProgramInterpreterFactory() {
         CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
         TokenFactory tokenFactory = new DefaultTokensFactory();
-        TokenizerFactory tokenizerFactory = new DefaultTokenizerFactory(tokenFactory);
+        TokenizerFactory tokenizerFactory;
+        switch (version) {
+            case V1_0:
+                tokenizerFactory = new FirstTokenizerFactory(tokenFactory);
+                break;
+            case V1_1:
+                tokenizerFactory = new SecondTokenizerFactory(tokenFactory);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported version: " + version);
+        }
         LexerFactory lexerFactory = new DefaultLexerFactory(charStreamFactory, tokenizerFactory);
         TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory);
         NodeFactory nodeFactory = new DefaultNodeFactory();
