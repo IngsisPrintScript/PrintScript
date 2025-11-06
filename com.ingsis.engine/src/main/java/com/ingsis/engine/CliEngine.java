@@ -36,72 +36,99 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Queue;
 import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
-@CommandLine.Command(
-        name = "cli-engine",
-        mixinStandardHelpOptions = true,
-        description = "Runs the interpreter with CLI input")
+@CommandLine.Command(name = "cli-engine", mixinStandardHelpOptions = true, description = "Runs the interpreter with CLI input")
 public final class CliEngine implements Engine {
-    public static void main(String[] args) {
-        int exitCode = new CommandLine(new CliEngine()).execute(args);
-        System.exit(exitCode);
+  @Option(names = "--file", description = "Path to a PrintScript file to execute")
+  private Path file;
+
+  public static void main(String[] args) {
+    int exitCode = new CommandLine(new CliEngine()).execute(args);
+    System.exit(exitCode);
+  }
+
+  @Override
+  public void run() {
+    file = Path.of("/home/garro/Faculty/IngSis/PrintScript/test.pisp");
+    if (file != null) {
+      runFile(file);
+    } else {
+      runREPL();
     }
+  }
 
-    @Override
-    public void run() {
-        try (BufferedReader reader =
-                new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-            DefaultRuntime.getInstance().push();
-            System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
+  private void runFile(Path file) {
+    try {
+      Result<String> interpretResult = buildFileInterpreter(file).interpret();
+      if (!interpretResult.isCorrect()) {
+        System.out.print("Error: " + interpretResult.error());
+      }
+    } catch (Exception e) {
+      System.out.print("Error: " + e.getMessage());
+    }
+  }
 
-            String line;
-            while (true) {
-                System.out.print("> ");
-                line = reader.readLine();
-                if (line == null || line.equalsIgnoreCase("exit")) {
-                    System.out.println("Goodbye!");
-                    break;
-                }
+  private void runREPL() {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+      DefaultRuntime.getInstance().push();
+      System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
 
-                Queue<Character> buffer = new ArrayDeque<>();
-                line.chars().forEach(c -> buffer.add((char) c));
-
-                ProgramInterpreter interpreter = buildInterpreter(buffer);
-
-                Result<String> result = interpreter.interpret();
-                if (!result.isCorrect()) {
-                    System.out.print(result.error());
-                    System.out.print("\n");
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("Error in REPL: " + e.getMessage());
-            e.printStackTrace();
+      String line;
+      while (true) {
+        System.out.print("> ");
+        line = reader.readLine();
+        if (line == null || line.equalsIgnoreCase("exit")) {
+          System.out.println("Goodbye!");
+          break;
         }
-    }
 
-    private ProgramInterpreter buildInterpreter(Queue<Character> buffer) {
-        CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
-        TokenFactory tokenFactory = new DefaultTokensFactory();
-        TokenizerFactory tokenizerFactory = new DefaultTokenizerFactory(tokenFactory);
-        LexerFactory lexerFactory = new DefaultLexerFactory(charStreamFactory, tokenizerFactory);
-        TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory);
-        NodeFactory nodeFactory = new DefaultNodeFactory();
-        ParserChainFactory parserChainFactory =
-                new DefaultParserChainFactory(new DefaultParserFactory(tokenFactory, nodeFactory));
-        SyntacticFactory syntacticFactory =
-                new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
-        SemanticFactory semanticFactory = new DefaultSemanticFactory(syntacticFactory);
-        SolutionStrategyFactory solutionStrategyFactory =
-                new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
-        InterpreterVisitorFactory interpreterVisitorFactory =
-                new DefaultInterpreterVisitorFactory(solutionStrategyFactory);
-        ProgramInterpreterFactory programInterpreterFactory =
-                new DefaultProgramInterpreterFactory(semanticFactory, interpreterVisitorFactory);
-        return programInterpreterFactory.createCliProgramInterpreter(
-                buffer, DefaultRuntime.getInstance());
+        Queue<Character> buffer = new ArrayDeque<>();
+        line.chars().forEach(c -> buffer.add((char) c));
+
+        ProgramInterpreter interpreter = buildReplInterpreter(buffer);
+
+        Result<String> result = interpreter.interpret();
+        if (!result.isCorrect()) {
+          System.out.print(result.error());
+          System.out.print("\n");
+        }
+      }
+    } catch (IOException e) {
+      System.err.println("Error in REPL: " + e.getMessage());
+      e.printStackTrace();
     }
+  }
+
+  private ProgramInterpreterFactory createProgramInterpreterFactory() {
+    CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
+    TokenFactory tokenFactory = new DefaultTokensFactory();
+    TokenizerFactory tokenizerFactory = new DefaultTokenizerFactory(tokenFactory);
+    LexerFactory lexerFactory = new DefaultLexerFactory(charStreamFactory, tokenizerFactory);
+    TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory);
+    NodeFactory nodeFactory = new DefaultNodeFactory();
+    ParserChainFactory parserChainFactory = new DefaultParserChainFactory(
+        new DefaultParserFactory(tokenFactory, nodeFactory));
+    SyntacticFactory syntacticFactory = new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
+    SemanticFactory semanticFactory = new DefaultSemanticFactory(syntacticFactory);
+    SolutionStrategyFactory solutionStrategyFactory = new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
+    InterpreterVisitorFactory interpreterVisitorFactory = new DefaultInterpreterVisitorFactory(solutionStrategyFactory);
+    ProgramInterpreterFactory programInterpreterFactory = new DefaultProgramInterpreterFactory(semanticFactory,
+        interpreterVisitorFactory);
+    return programInterpreterFactory;
+  }
+
+  private ProgramInterpreter buildReplInterpreter(Queue<Character> buffer) {
+    return createProgramInterpreterFactory()
+        .createCliProgramInterpreter(buffer, DefaultRuntime.getInstance());
+  }
+
+  private ProgramInterpreter buildFileInterpreter(Path file) throws IOException {
+    return createProgramInterpreterFactory()
+        .createFileProgramInterpreter(file, DefaultRuntime.getInstance());
+  }
 }

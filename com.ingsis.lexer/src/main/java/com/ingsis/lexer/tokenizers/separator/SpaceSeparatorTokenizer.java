@@ -12,24 +12,24 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 
 public final class SpaceSeparatorTokenizer implements Tokenizer {
-    String template;
-    TokenFactory tokenFactory;
+  String template;
+  TokenFactory tokenFactory;
 
-    public SpaceSeparatorTokenizer(TokenFactory tokenFactory, String template) {
-        this.template = template;
-        this.tokenFactory = tokenFactory;
-    }
+  public SpaceSeparatorTokenizer(TokenFactory tokenFactory, String template) {
+    this.template = template;
+    this.tokenFactory = tokenFactory;
+  }
 
-    private Boolean canTokenize(String input) {
-        return input.equals(template);
-    }
+  private Boolean canTokenize(String input) {
+    return input.equals(template);
+  }
 
-    @Override
-    public Result<Token> tokenize(String input) {
-        if (!canTokenize(input)) {
-            return new IncorrectResult<>(
-                    String.format("Input is not a whitespace separator '%s': %s", template, input));
-        }
-        return new CorrectResult<>(tokenFactory.createSeparatorToken(input));
+  @Override
+  public Result<Token> tokenize(String input) {
+    if (!canTokenize(input)) {
+      return new IncorrectResult<>(
+          String.format("Input is not a whitespace separator '%s': %s", template, input));
     }
+    return new CorrectResult<>(tokenFactory.createSpaceSeparatorToken(input));
+  }
 }

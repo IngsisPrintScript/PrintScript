@@ -17,23 +17,23 @@ import com.ingsis.syntactic.parsers.operators.TypeAssignationParser;
 import com.ingsis.syntactic.parsers.operators.ValueAssignationParser;
 
 public interface ParserFactory {
-  CallFunctionParser createCallFunctionParser();
+    CallFunctionParser createCallFunctionParser();
 
-  DeclarationParser createDeclarationParser();
+    DeclarationParser createDeclarationParser();
 
-  ConditionalParser createConditionalParser(ParserChainFactory chainFactory);
+    ConditionalParser createConditionalParser(ParserChainFactory chainFactory);
 
-  BinaryOperatorParser createBinaryOperatorParser();
+    BinaryOperatorParser createBinaryOperatorParser();
 
-  ValueAssignationParser createValueAssignationParser();
+    ValueAssignationParser createValueAssignationParser();
 
-  TypeAssignationParser createTypeAssignationParser();
+    TypeAssignationParser createTypeAssignationParser();
 
-  TypeParser createTypeParser();
+    TypeParser createTypeParser();
 
-  IdentifierParser createIdentifierParser();
+    IdentifierParser createIdentifierParser();
 
-  LiteralParser createLiteralParser();
+    LiteralParser createLiteralParser();
 
-  LineExpressionParser createLineExpressionParser();
+    LineExpressionParser createLineExpressionParser();
 }
