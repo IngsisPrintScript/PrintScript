@@ -1,0 +1,8 @@
+plugins {
+    id 'buildlogic.java-library-conventions'
+}
+
+dependencies {
+    implementation project(':com.ingsis.result')
+    implementation project(':com.ingsis.runtime')
+}

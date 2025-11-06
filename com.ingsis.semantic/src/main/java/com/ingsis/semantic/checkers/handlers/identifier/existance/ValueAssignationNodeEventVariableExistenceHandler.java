@@ -16,33 +16,30 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class ValueAssignationNodeEventVariableExistenceHandler
-        implements NodeEventHandler<ValueAssignationNode> {
-    private final Runtime runtime;
+    implements NodeEventHandler<ValueAssignationNode> {
+  private final Runtime runtime;
 
-    public ValueAssignationNodeEventVariableExistenceHandler(Runtime runtime) {
-        this.runtime = runtime;
+  public ValueAssignationNodeEventVariableExistenceHandler(Runtime runtime) {
+    this.runtime = runtime;
+  }
+
+  @Override
+  public Result<String> handle(ValueAssignationNode node) {
+    IdentifierNode identifierNode = node.identifierNode();
+
+    if (!runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
+      return new IncorrectResult<>("Variable " + identifierNode.name() + " is already declared.");
     }
 
-    @Override
-    public Result<String> handle(ValueAssignationNode node) {
-        IdentifierNode identifierNode = node.identifierNode();
+    ExpressionNode expressionNode = node.expressionNode();
+    Result<String> checkExpressionVariables = new ExpressionNodeEventVariableExistenceHandler(runtime)
+        .handle(expressionNode);
 
-        if (!runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
-            runtime.getCurrentEnvironment()
-                    .setExecutionResult(
-                            new IncorrectResult<>(
-                                    "Variable " + identifierNode.name() + " is already declared."));
-        }
-
-        ExpressionNode expressionNode = node.expressionNode();
-        Result<String> checkExpressionVariables =
-                new ExpressionNodeEventVariableExistenceHandler(runtime).handle(expressionNode);
-
-        if (!checkExpressionVariables.isCorrect()) {
-            return new IncorrectResult<>(checkExpressionVariables);
-        }
-
-        return new CorrectResult<>(
-                "Variable " + identifierNode.name() + " is not declared and variables used are.");
+    if (!checkExpressionVariables.isCorrect()) {
+      return new IncorrectResult<>(checkExpressionVariables);
     }
+
+    return new CorrectResult<>(
+        "Variable " + identifierNode.name() + " is not declared and variables used are.");
+  }
 }
