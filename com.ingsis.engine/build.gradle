@@ -20,4 +20,5 @@ dependencies {
     implementation project(':com.ingsis.metachar')
     implementation project(':com.ingsis.result')
     implementation project(':com.ingsis.result.factory')
+    implementation project(':com.ingsis.rule.observer')
 }

@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.publishers;
+package com.ingsis.rule.observer.publishers;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.result.Result;

@@ -6,10 +6,10 @@ package com.ingsis.engine.factories.semantic;
 
 import com.ingsis.engine.factories.syntactic.SyntacticFactory;
 import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.rule.observer.factories.DefaultCheckerFactory;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.DefaultSemanticChecker;
 import com.ingsis.semantic.SemanticChecker;
-import com.ingsis.semantic.checkers.factories.DefaultCheckerFactory;
 import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.semantic.checkers.publishers.factories.DefaultPublisherFactory;
 import java.io.IOException;

@@ -9,8 +9,8 @@ import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.result.Result;
 import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")

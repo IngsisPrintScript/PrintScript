@@ -2,13 +2,13 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.handlers.factories;
+package com.ingsis.rule.observer.handlers.factories;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
 
 public interface HandlersFactory {
     NodeEventHandler<DeclarationKeywordNode> createLetVariableExistenceHandler();

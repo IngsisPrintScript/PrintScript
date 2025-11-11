@@ -8,8 +8,8 @@ import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.result.Result;
 import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Collection;
 

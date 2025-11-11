@@ -2,12 +2,12 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.publishers;
+package com.ingsis.rule.observer.publishers;
 
 import com.ingsis.nodes.Node;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.Result;
-import com.ingsis.semantic.checkers.handlers.NodeEventHandler;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import java.util.Collection;
 import java.util.List;
 

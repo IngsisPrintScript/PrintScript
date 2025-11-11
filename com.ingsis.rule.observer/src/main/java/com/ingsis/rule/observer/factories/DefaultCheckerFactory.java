@@ -2,10 +2,10 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.factories;
+package com.ingsis.rule.observer.factories;
 
-import com.ingsis.semantic.checkers.EventsChecker;
-import com.ingsis.semantic.checkers.publishers.factories.PublishersFactory;
+import com.ingsis.rule.observer.EventsChecker;
+import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
 import com.ingsis.visitors.Checker;
 
 public class DefaultCheckerFactory implements CheckerFactory {
