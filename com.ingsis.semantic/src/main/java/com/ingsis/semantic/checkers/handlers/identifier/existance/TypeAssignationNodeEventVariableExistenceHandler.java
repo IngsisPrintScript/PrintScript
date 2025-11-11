@@ -15,30 +15,30 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class TypeAssignationNodeEventVariableExistenceHandler
-    implements NodeEventHandler<TypeAssignationNode> {
-  private final Runtime runtime;
-  private final ResultFactory resultFactory;
+        implements NodeEventHandler<TypeAssignationNode> {
+    private final Runtime runtime;
+    private final ResultFactory resultFactory;
 
-  public TypeAssignationNodeEventVariableExistenceHandler(Runtime runtime, ResultFactory resultFactory) {
-    this.runtime = runtime;
-    this.resultFactory = resultFactory;
-  }
-
-  @Override
-  public Result<String> handle(TypeAssignationNode node) {
-    IdentifierNode identifierNode = node.identifierNode();
-    TypeNode typeNode = node.typeNode();
-
-    if (runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
-      return resultFactory.createIncorrectResult(String.format(
-          "Redeclaration identifier: %s, on line: %d and column:%d",
-          identifierNode.name(),
-          identifierNode.line(),
-          identifierNode.column()));
+    public TypeAssignationNodeEventVariableExistenceHandler(
+            Runtime runtime, ResultFactory resultFactory) {
+        this.runtime = runtime;
+        this.resultFactory = resultFactory;
     }
 
-    runtime.getCurrentEnvironment().createVariable(identifierNode.name(), typeNode.type());
+    @Override
+    public Result<String> handle(TypeAssignationNode node) {
+        IdentifierNode identifierNode = node.identifierNode();
+        TypeNode typeNode = node.typeNode();
 
-    return resultFactory.createCorrectResult("Check passed.");
-  }
+        if (runtime.getCurrentEnvironment().isVariableDeclared(identifierNode.name())) {
+            return resultFactory.createIncorrectResult(
+                    String.format(
+                            "Redeclaration identifier: %s, on line: %d and column:%d",
+                            identifierNode.name(), identifierNode.line(), identifierNode.column()));
+        }
+
+        runtime.getCurrentEnvironment().createVariable(identifierNode.name(), typeNode.type());
+
+        return resultFactory.createCorrectResult("Check passed.");
+    }
 }

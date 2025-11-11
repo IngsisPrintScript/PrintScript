@@ -11,9 +11,8 @@ import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.types.Types;
@@ -26,18 +25,22 @@ import java.util.List;
 public final class DefaultInterpreterVisitor implements Interpreter {
     private final Runtime runtime;
     private final ExpressionSolutionStrategy expressionSolutionStrategy;
+    private final ResultFactory resultFactory;
 
     public DefaultInterpreterVisitor(
-            Runtime runtime, ExpressionSolutionStrategy expressionSolutionStrategy) {
+            Runtime runtime,
+            ExpressionSolutionStrategy expressionSolutionStrategy,
+            ResultFactory resultFactory) {
         this.runtime = runtime;
         this.expressionSolutionStrategy = expressionSolutionStrategy;
+        this.resultFactory = resultFactory;
     }
 
     @Override
     public Result<String> interpret(IfKeywordNode ifKeywordNode) {
         Result<Object> solveConditionResult = this.interpret(ifKeywordNode.condition());
         if (!solveConditionResult.isCorrect()) {
-            return new IncorrectResult<>(solveConditionResult);
+            return resultFactory.cloneIncorrectResult(solveConditionResult);
         }
         Object conditionValue = solveConditionResult.result();
         switch (conditionValue.toString()) {
@@ -46,20 +49,26 @@ public final class DefaultInterpreterVisitor implements Interpreter {
             case "false":
                 return interpretChildren(ifKeywordNode.elseBody());
         }
-        return new IncorrectResult<>("Something went wrong.");
+        return resultFactory.createIncorrectResult(
+                String.format(
+                        "Something went wrong on line: %d and column:%d.",
+                        ifKeywordNode.condition().line(), ifKeywordNode.condition().column()));
     }
 
     private Result<String> interpretChildren(List<Node> children) {
         for (Node child : children) {
             if (!(child instanceof Interpretable interpretableChild)) {
-                return new IncorrectResult<>("Then child is not interpretable");
+                return resultFactory.createIncorrectResult(
+                        String.format(
+                                "Unable to interpret node on line:%d and column:%d",
+                                child.line(), child.column()));
             }
             Result<String> interpretChildResult = interpretableChild.acceptInterpreter(this);
             if (!interpretChildResult.isCorrect()) {
-                return new IncorrectResult<>(interpretChildResult);
+                return resultFactory.cloneIncorrectResult(interpretChildResult);
             }
         }
-        return new CorrectResult<>("Children interpreted correctly.");
+        return resultFactory.createCorrectResult("Children interpreted correctly.");
     }
 
     private Result<String> declareVar(TypeAssignationNode typeAssignationNode) {
@@ -68,49 +77,51 @@ public final class DefaultInterpreterVisitor implements Interpreter {
         Result<VariableEntry> declareVarResult =
                 runtime.getCurrentEnvironment().createVariable(identifier, type);
         if (!declareVarResult.isCorrect()) {
-            return new IncorrectResult<>(declareVarResult);
+            return resultFactory.cloneIncorrectResult(declareVarResult);
         }
-        return new CorrectResult<>(
-                "Variable " + identifier + " has been declared with type " + type.keyword());
+        return resultFactory.createCorrectResult("Interpreted succesfully.");
     }
 
     private Result<String> initializeVal(ValueAssignationNode valueAssignationNode) {
         String identifier = valueAssignationNode.identifierNode().name();
         Result<Object> valueResult = this.interpret(valueAssignationNode.expressionNode());
         if (!valueResult.isCorrect()) {
-            return new IncorrectResult<>(valueResult);
+            return resultFactory.cloneIncorrectResult(valueResult);
         }
         Object value = valueResult.result();
         Result<VariableEntry> getVariableEntryResult =
                 runtime.getCurrentEnvironment().readVariable(identifier);
         if (!getVariableEntryResult.isCorrect()) {
-            return new IncorrectResult<>(getVariableEntryResult);
+            return resultFactory.cloneIncorrectResult(getVariableEntryResult);
         }
         VariableEntry variableEntry = getVariableEntryResult.result();
         if (!variableEntry.type().isCompatibleWith(value)) {
             runtime.getCurrentEnvironment().deleteVariable(identifier);
-            return new IncorrectResult<>("Tried initializing a var with a non correct type value");
+            return resultFactory.createIncorrectResult(
+                    String.format(
+                            "User provided an unexepcted type on line:%d and column:%d",
+                            valueAssignationNode.line(), valueAssignationNode.line()));
         }
         Result<VariableEntry> modifyVarResult =
                 runtime.getCurrentEnvironment().updateVariable(identifier, value);
         if (!modifyVarResult.isCorrect()) {
-            return new IncorrectResult<>(modifyVarResult);
+            return resultFactory.cloneIncorrectResult(modifyVarResult);
         }
-        return new CorrectResult<>("Variable " + identifier + " value was updated to " + value);
+        return resultFactory.createCorrectResult("Interpreted correctly.");
     }
 
     private Result<String> defineVar(DeclarationKeywordNode declarationKeywordNode) {
         Result<String> typeAssignationResult =
                 declareVar(declarationKeywordNode.typeAssignationNode());
         if (!typeAssignationResult.isCorrect()) {
-            return new IncorrectResult<>(typeAssignationResult);
+            return resultFactory.cloneIncorrectResult(typeAssignationResult);
         }
         Result<String> valueAssignationResult =
                 initializeVal(declarationKeywordNode.valueAssignationNode());
         if (!valueAssignationResult.isCorrect()) {
-            return new IncorrectResult<>(valueAssignationResult);
+            return resultFactory.cloneIncorrectResult(valueAssignationResult);
         }
-        return new CorrectResult<>("New variable declared and initialized.");
+        return resultFactory.createCorrectResult("Interpreted correctly.");
     }
 
     private Result<String> defineVal(DeclarationKeywordNode declarationKeywordNode) {
@@ -121,24 +132,28 @@ public final class DefaultInterpreterVisitor implements Interpreter {
         Result<Object> solveExpressionResult =
                 this.interpret(valueAssignationNode.expressionNode());
         if (!solveExpressionResult.isCorrect()) {
-            return new IncorrectResult<>(solveExpressionResult);
+            return resultFactory.cloneIncorrectResult(solveExpressionResult);
         }
         Object value = solveExpressionResult.result();
         Result<VariableEntry> getVariableEntryResult =
                 runtime.getCurrentEnvironment().readVariable(identifier);
         if (!getVariableEntryResult.isCorrect()) {
-            return new IncorrectResult<>(getVariableEntryResult);
+            return resultFactory.cloneIncorrectResult(getVariableEntryResult);
         }
         VariableEntry variableEntry = getVariableEntryResult.result();
         if (!variableEntry.type().isCompatibleWith(value)) {
-            return new IncorrectResult<>("Tried initializing a val with a non correct type value");
+            return resultFactory.createIncorrectResult(
+                    String.format(
+                            "Passed a value with unexpected type to assignation on line:%d and"
+                                    + " column:%d",
+                            declarationKeywordNode.line(), declarationKeywordNode.column()));
         }
         Result<VariableEntry> createConstResult =
                 runtime.getCurrentEnvironment().createVariable(identifier, type, value);
         if (!createConstResult.isCorrect()) {
-            return new IncorrectResult<>(createConstResult);
+            return resultFactory.cloneIncorrectResult(createConstResult);
         }
-        return new CorrectResult<>("New variable declared and initialized.");
+        return resultFactory.createCorrectResult("Interpreted correctly.");
     }
 
     @Override

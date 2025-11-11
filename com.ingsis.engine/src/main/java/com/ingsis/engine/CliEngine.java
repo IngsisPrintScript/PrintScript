@@ -49,109 +49,123 @@ import java.util.Queue;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
-@SuppressFBWarnings(value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR", justification = "version is set by PicoCLI before use")
-@CommandLine.Command(name = "cli-engine", mixinStandardHelpOptions = true, description = "Runs the interpreter with CLI input")
+@SuppressFBWarnings(
+        value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR",
+        justification = "version is set by PicoCLI before use")
+@CommandLine.Command(
+        name = "cli-engine",
+        mixinStandardHelpOptions = true,
+        description = "Runs the interpreter with CLI input")
 public final class CliEngine implements Engine {
-  @Option(names = "--file", description = "Path to a PrintScript file to execute.")
-  private Path file;
+    @Option(names = "--file", description = "Path to a PrintScript file to execute.")
+    private Path file;
 
-  @Option(names = "--version", description = "PrintScript version to use.", required = true)
-  private Version version;
+    @Option(names = "--version", description = "PrintScript version to use.", required = true)
+    private Version version;
 
-  public static void main(String[] args) {
-    int exitCode = new CommandLine(new CliEngine()).execute(args);
-    System.exit(exitCode);
-  }
-
-  @Override
-  public void run() {
-    if (file != null) {
-      runFile(file);
-    } else {
-      runREPL();
+    public static void main(String[] args) {
+        int exitCode = new CommandLine(new CliEngine()).execute(args);
+        System.exit(exitCode);
     }
-  }
 
-  private void runFile(Path file) {
-    try {
-      System.out.println("Interpreting file: " + file);
-      Result<String> interpretResult = buildFileInterpreter(file).interpret();
-      IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-      if (!interpretResult.isCorrect() && executionError != null) {
-        System.out.print("Error: " + executionError.error() + "\n");
-      }
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-  }
-
-  private void runREPL() {
-    try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-      DefaultRuntime.getInstance().push();
-      System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
-
-      String line;
-      while (true) {
-        System.out.print("> ");
-        line = reader.readLine();
-        if (line == null || line.equalsIgnoreCase("exit")) {
-          System.out.println("Goodbye!");
-          break;
+    @Override
+    public void run() {
+        if (file != null) {
+            runFile(file);
+        } else {
+            runREPL();
         }
+    }
 
-        Queue<Character> buffer = new ArrayDeque<>();
-        line.chars().forEach(c -> buffer.add((char) c));
-
-        Result<String> interpretResult = buildReplInterpreter(buffer).interpret();
-        IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-        if (!interpretResult.isCorrect() && executionError != null) {
-          System.out.print("Error: " + executionError.error() + "\n");
-          System.out.print("Error: " + interpretResult.error() + "\n");
+    private void runFile(Path file) {
+        try {
+            System.out.println("Interpreting file: " + file);
+            Result<String> interpretResult = buildFileInterpreter(file).interpret();
+            IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+            if (!interpretResult.isCorrect() && executionError != null) {
+                System.out.print("Error: " + executionError.error() + "\n");
+            }
+        } catch (Exception e) {
+            System.out.println(e);
         }
-      }
-    } catch (IOException e) {
-      System.err.println("Error in REPL: " + e.getMessage());
-      e.printStackTrace();
     }
-  }
 
-  private ProgramInterpreterFactory createProgramInterpreterFactory() {
-    ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-    CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
-    TokenFactory tokenFactory = new DefaultTokensFactory();
-    TokenizerFactory tokenizerFactory;
-    switch (version) {
-      case V1_0:
-        tokenizerFactory = new FirstTokenizerFactory(tokenFactory);
-        break;
-      case V1_1:
-        tokenizerFactory = new SecondTokenizerFactory(tokenFactory);
-        break;
-      default:
-        throw new IllegalArgumentException("Unsupported version: " + version);
+    private void runREPL() {
+        try (BufferedReader reader =
+                new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+            DefaultRuntime.getInstance().push();
+            System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
+
+            String line;
+            while (true) {
+                System.out.print("> ");
+                line = reader.readLine();
+                if (line == null || line.equalsIgnoreCase("exit")) {
+                    System.out.println("Goodbye!");
+                    break;
+                }
+
+                Queue<Character> buffer = new ArrayDeque<>();
+                line.chars().forEach(c -> buffer.add((char) c));
+
+                Result<String> interpretResult = buildReplInterpreter(buffer).interpret();
+                IncorrectResult<?> executionError =
+                        DefaultRuntime.getInstance().getExecutionError();
+                if (!interpretResult.isCorrect() && executionError != null) {
+                    System.out.print("Error: " + executionError.error() + "\n");
+                    System.out.print("Error: " + interpretResult.error() + "\n");
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error in REPL: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
-    LexerFactory lexerFactory = new DefaultLexerFactory(
-        charStreamFactory, tokenizerFactory, DefaultRuntime.getInstance());
-    TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory, resultFactory);
-    NodeFactory nodeFactory = new DefaultNodeFactory();
-    ParserChainFactory parserChainFactory = new DefaultParserChainFactory(
-        new DefaultParserFactory(tokenFactory, nodeFactory));
-    SyntacticFactory syntacticFactory = new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
-    SemanticFactory semanticFactory = new DefaultSemanticFactory(syntacticFactory, resultFactory);
-    SolutionStrategyFactory solutionStrategyFactory = new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
-    InterpreterVisitorFactory interpreterVisitorFactory = new DefaultInterpreterVisitorFactory(solutionStrategyFactory);
-    ProgramInterpreterFactory programInterpreterFactory = new DefaultProgramInterpreterFactory(semanticFactory,
-        interpreterVisitorFactory);
-    return programInterpreterFactory;
-  }
 
-  private ProgramInterpreter buildReplInterpreter(Queue<Character> buffer) {
-    return createProgramInterpreterFactory()
-        .createCliProgramInterpreter(buffer, DefaultRuntime.getInstance());
-  }
+    private ProgramInterpreterFactory createProgramInterpreterFactory() {
+        ResultFactory resultFactory =
+                new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
+        CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
+        TokenFactory tokenFactory = new DefaultTokensFactory();
+        TokenizerFactory tokenizerFactory;
+        switch (version) {
+            case V1_0:
+                tokenizerFactory = new FirstTokenizerFactory(tokenFactory);
+                break;
+            case V1_1:
+                tokenizerFactory = new SecondTokenizerFactory(tokenFactory);
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported version: " + version);
+        }
+        LexerFactory lexerFactory =
+                new DefaultLexerFactory(
+                        charStreamFactory, tokenizerFactory, DefaultRuntime.getInstance());
+        TokenStreamFactory tokenStreamFactory =
+                new DefaultTokenStreamFactory(lexerFactory, resultFactory);
+        NodeFactory nodeFactory = new DefaultNodeFactory();
+        ParserChainFactory parserChainFactory =
+                new DefaultParserChainFactory(new DefaultParserFactory(tokenFactory, nodeFactory));
+        SyntacticFactory syntacticFactory =
+                new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
+        SemanticFactory semanticFactory =
+                new DefaultSemanticFactory(syntacticFactory, resultFactory);
+        SolutionStrategyFactory solutionStrategyFactory =
+                new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
+        InterpreterVisitorFactory interpreterVisitorFactory =
+                new DefaultInterpreterVisitorFactory(solutionStrategyFactory, resultFactory);
+        ProgramInterpreterFactory programInterpreterFactory =
+                new DefaultProgramInterpreterFactory(semanticFactory, interpreterVisitorFactory);
+        return programInterpreterFactory;
+    }
 
-  private ProgramInterpreter buildFileInterpreter(Path file) throws IOException {
-    return createProgramInterpreterFactory()
-        .createFileProgramInterpreter(file, DefaultRuntime.getInstance());
-  }
+    private ProgramInterpreter buildReplInterpreter(Queue<Character> buffer) {
+        return createProgramInterpreterFactory()
+                .createCliProgramInterpreter(buffer, DefaultRuntime.getInstance());
+    }
+
+    private ProgramInterpreter buildFileInterpreter(Path file) throws IOException {
+        return createProgramInterpreterFactory()
+                .createFileProgramInterpreter(file, DefaultRuntime.getInstance());
+    }
 }

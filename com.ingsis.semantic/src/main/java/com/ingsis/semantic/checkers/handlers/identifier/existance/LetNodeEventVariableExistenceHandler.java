@@ -15,36 +15,36 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class LetNodeEventVariableExistenceHandler
-    implements NodeEventHandler<DeclarationKeywordNode> {
-  private final Runtime runtime;
-  private final ResultFactory resultFactory;
+        implements NodeEventHandler<DeclarationKeywordNode> {
+    private final Runtime runtime;
+    private final ResultFactory resultFactory;
 
-  public LetNodeEventVariableExistenceHandler(Runtime runtime, ResultFactory resultFactory) {
-    this.runtime = runtime;
-    this.resultFactory = resultFactory;
-  }
-
-  @Override
-  public Result<String> handle(DeclarationKeywordNode node) {
-    TypeAssignationNode typeAssignationNode = node.typeAssignationNode();
-
-    Result<String> checkTypeAssignationNode = new TypeAssignationNodeEventVariableExistenceHandler(runtime,
-        resultFactory)
-        .handle(typeAssignationNode);
-
-    if (!checkTypeAssignationNode.isCorrect()) {
-      return resultFactory.cloneIncorrectResult(checkTypeAssignationNode);
+    public LetNodeEventVariableExistenceHandler(Runtime runtime, ResultFactory resultFactory) {
+        this.runtime = runtime;
+        this.resultFactory = resultFactory;
     }
 
-    ValueAssignationNode valueAssignationNode = node.valueAssignationNode();
+    @Override
+    public Result<String> handle(DeclarationKeywordNode node) {
+        TypeAssignationNode typeAssignationNode = node.typeAssignationNode();
 
-    Result<String> checkValueAssignationNode = new ValueAssignationNodeEventVariableExistenceHandler(runtime,
-        resultFactory)
-        .handle(valueAssignationNode);
+        Result<String> checkTypeAssignationNode =
+                new TypeAssignationNodeEventVariableExistenceHandler(runtime, resultFactory)
+                        .handle(typeAssignationNode);
 
-    if (!checkValueAssignationNode.isCorrect()) {
-      return resultFactory.cloneIncorrectResult(checkValueAssignationNode);
+        if (!checkTypeAssignationNode.isCorrect()) {
+            return resultFactory.cloneIncorrectResult(checkTypeAssignationNode);
+        }
+
+        ValueAssignationNode valueAssignationNode = node.valueAssignationNode();
+
+        Result<String> checkValueAssignationNode =
+                new ValueAssignationNodeEventVariableExistenceHandler(runtime, resultFactory)
+                        .handle(valueAssignationNode);
+
+        if (!checkValueAssignationNode.isCorrect()) {
+            return resultFactory.cloneIncorrectResult(checkValueAssignationNode);
+        }
+        return resultFactory.createCorrectResult("Check passed.");
     }
-    return resultFactory.createCorrectResult("Check passed.");
-  }
 }

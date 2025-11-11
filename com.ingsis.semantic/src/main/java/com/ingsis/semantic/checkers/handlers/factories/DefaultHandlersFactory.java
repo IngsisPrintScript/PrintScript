@@ -21,41 +21,41 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultHandlersFactory implements HandlersFactory {
-  private final Runtime runtime;
-  private final ResultFactory resultFactory;
+    private final Runtime runtime;
+    private final ResultFactory resultFactory;
 
-  public DefaultHandlersFactory(Runtime runtime, ResultFactory resultFactory) {
-    this.runtime = runtime;
-    this.resultFactory = resultFactory;
-  }
+    public DefaultHandlersFactory(Runtime runtime, ResultFactory resultFactory) {
+        this.runtime = runtime;
+        this.resultFactory = resultFactory;
+    }
 
-  @Override
-  public NodeEventHandler<DeclarationKeywordNode> createLetVariableExistenceHandler() {
-    return new LetNodeEventVariableExistenceHandler(runtime, resultFactory);
-  }
+    @Override
+    public NodeEventHandler<DeclarationKeywordNode> createLetVariableExistenceHandler() {
+        return new LetNodeEventVariableExistenceHandler(runtime, resultFactory);
+    }
 
-  @Override
-  public NodeEventHandler<TypeAssignationNode> createTypeAssignationVariableExistenceHandler() {
-    return new TypeAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
-  }
+    @Override
+    public NodeEventHandler<TypeAssignationNode> createTypeAssignationVariableExistenceHandler() {
+        return new TypeAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
+    }
 
-  @Override
-  public NodeEventHandler<ValueAssignationNode> createValueAssignationVariableExistenceHandler() {
-    return new ValueAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
-  }
+    @Override
+    public NodeEventHandler<ValueAssignationNode> createValueAssignationVariableExistenceHandler() {
+        return new ValueAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
+    }
 
-  @Override
-  public NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler() {
-    return new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory);
-  }
+    @Override
+    public NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler() {
+        return new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory);
+    }
 
-  @Override
-  public NodeEventHandler<ExpressionNode> createOperatorValidityHandler() {
-    return new OperatorNodeValidityHandler(runtime, resultFactory);
-  }
+    @Override
+    public NodeEventHandler<ExpressionNode> createOperatorValidityHandler() {
+        return new OperatorNodeValidityHandler(runtime, resultFactory);
+    }
 
-  @Override
-  public NodeEventHandler<DeclarationKeywordNode> createLetCorrectTypeHandler() {
-    return new LetNodeCorrectTypeEventHandler(runtime, resultFactory);
-  }
+    @Override
+    public NodeEventHandler<DeclarationKeywordNode> createLetCorrectTypeHandler() {
+        return new LetNodeCorrectTypeEventHandler(runtime, resultFactory);
+    }
 }
