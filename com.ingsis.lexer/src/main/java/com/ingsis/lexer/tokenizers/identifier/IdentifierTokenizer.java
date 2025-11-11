@@ -11,26 +11,27 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 
 public final class IdentifierTokenizer implements Tokenizer {
-  private final String regExPattern;
-  private final TokenFactory tokenFactory;
-  private final ResultFactory resultFactory;
+    private final String regExPattern;
+    private final TokenFactory tokenFactory;
+    private final ResultFactory resultFactory;
 
-  public IdentifierTokenizer(TokenFactory tokenFactory, ResultFactory resultFactory) {
-    this.regExPattern = "^[A-Za-z_][A-Za-z0-9_]*$";
-    this.tokenFactory = tokenFactory;
-    this.resultFactory = resultFactory;
-  }
-
-  private Boolean canTokenize(String input) {
-    return input.matches(regExPattern);
-  }
-
-  @Override
-  public Result<Token> tokenize(String input, Integer line, Integer column) {
-    if (!canTokenize(input)) {
-      return resultFactory.createIncorrectResult(String.format(
-          "Unknown token on line:%d and column:%d", line, column));
+    public IdentifierTokenizer(TokenFactory tokenFactory, ResultFactory resultFactory) {
+        this.regExPattern = "^[A-Za-z_][A-Za-z0-9_]*$";
+        this.tokenFactory = tokenFactory;
+        this.resultFactory = resultFactory;
     }
-    return resultFactory.createCorrectResult(tokenFactory.createIdentifierToken(input, line, column));
-  }
+
+    private Boolean canTokenize(String input) {
+        return input.matches(regExPattern);
+    }
+
+    @Override
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
+        if (!canTokenize(input)) {
+            return resultFactory.createIncorrectResult(
+                    String.format("Unknown token on line:%d and column:%d", line, column));
+        }
+        return resultFactory.createCorrectResult(
+                tokenFactory.createIdentifierToken(input, line, column));
+    }
 }

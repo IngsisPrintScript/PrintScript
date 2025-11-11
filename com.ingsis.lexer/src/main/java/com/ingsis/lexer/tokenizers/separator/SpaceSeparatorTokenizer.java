@@ -11,26 +11,28 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 
 public final class SpaceSeparatorTokenizer implements Tokenizer {
-  private final String template;
-  private final TokenFactory tokenFactory;
-  private final ResultFactory resultFactory;
+    private final String template;
+    private final TokenFactory tokenFactory;
+    private final ResultFactory resultFactory;
 
-  public SpaceSeparatorTokenizer(TokenFactory tokenFactory, String template, ResultFactory resultFactory) {
-    this.template = template;
-    this.tokenFactory = tokenFactory;
-    this.resultFactory = resultFactory;
-  }
-
-  private Boolean canTokenize(String input) {
-    return input.equals(template);
-  }
-
-  @Override
-  public Result<Token> tokenize(String input, Integer line, Integer column) {
-    if (!canTokenize(input)) {
-      return resultFactory.createIncorrectResult(String.format(
-          "Unknown token on line:%d and column:%d", line, column));
+    public SpaceSeparatorTokenizer(
+            TokenFactory tokenFactory, String template, ResultFactory resultFactory) {
+        this.template = template;
+        this.tokenFactory = tokenFactory;
+        this.resultFactory = resultFactory;
     }
-    return resultFactory.createCorrectResult(tokenFactory.createSpaceSeparatorToken(input, line, column));
-  }
+
+    private Boolean canTokenize(String input) {
+        return input.equals(template);
+    }
+
+    @Override
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
+        if (!canTokenize(input)) {
+            return resultFactory.createIncorrectResult(
+                    String.format("Unknown token on line:%d and column:%d", line, column));
+        }
+        return resultFactory.createCorrectResult(
+                tokenFactory.createSpaceSeparatorToken(input, line, column));
+    }
 }
