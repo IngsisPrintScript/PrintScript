@@ -93,6 +93,9 @@ public final class DefaultLexer implements Lexer {
       charIterator.next();
     }
     if (cadidateToken == null) {
+      if (stringBuilder.getColumn() == null || stringBuilder.getLine() == null) {
+        return RESULT_FACTORY.createIncorrectResult("Input ended while expecting more chars.");
+      }
       return RESULT_FACTORY.createIncorrectResult(
           String.format(
               "Unkown token on line: %d and column: %d",

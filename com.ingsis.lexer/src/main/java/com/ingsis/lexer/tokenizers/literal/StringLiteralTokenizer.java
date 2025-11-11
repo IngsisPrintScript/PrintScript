@@ -5,31 +5,33 @@
 package com.ingsis.lexer.tokenizers.literal;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 
 public final class StringLiteralTokenizer implements Tokenizer {
-    private final String regExPattern;
-    private final TokenFactory tokenFactory;
+  private final String regExPattern;
+  private final TokenFactory tokenFactory;
+  private final ResultFactory resultFactory;
 
-    public StringLiteralTokenizer(TokenFactory tokenFactory) {
-        this.regExPattern = "^(?:\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|'(?:[^'\\\\]|\\\\.)*')$";
-        this.tokenFactory = tokenFactory;
-    }
+  public StringLiteralTokenizer(TokenFactory tokenFactory, ResultFactory resultFactory) {
+    this.regExPattern = "^(?:\\\"(?:[^\\\"\\\\]|\\\\.)*\\\"|'(?:[^'\\\\]|\\\\.)*')$";
+    this.tokenFactory = tokenFactory;
+    this.resultFactory = resultFactory;
+  }
 
-    private Boolean canTokenize(String input) {
-        return input.matches(regExPattern) && input.length() > 1;
-    }
+  private Boolean canTokenize(String input) {
+    return input.matches(regExPattern) && input.length() > 1;
+  }
 
-    @Override
-    public Result<Token> tokenize(String input, Integer line, Integer column) {
-        if (!canTokenize(input)) {
-            return new IncorrectResult<>("Input is not a valid string: " + input);
-        }
-        String unquoted = input.substring(1, input.length() - 1);
-        return new CorrectResult<>(tokenFactory.createLiteralToken(unquoted, line, column));
+  @Override
+  public Result<Token> tokenize(String input, Integer line, Integer column) {
+    if (!canTokenize(input)) {
+      return resultFactory.createIncorrectResult(String.format(
+          "Unknown token on line:%d and column:%d", line, column));
     }
+    String unquoted = input.substring(1, input.length() - 1);
+    return resultFactory.createCorrectResult(tokenFactory.createLiteralToken(unquoted, line, column));
+  }
 }

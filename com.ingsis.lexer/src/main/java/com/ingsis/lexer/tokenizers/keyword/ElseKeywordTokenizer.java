@@ -5,30 +5,32 @@
 package com.ingsis.lexer.tokenizers.keyword;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 
 public final class ElseKeywordTokenizer implements Tokenizer {
-    String template;
-    TokenFactory tokenFactory;
+  private final String template;
+  private final TokenFactory tokenFactory;
+  private final ResultFactory resultFactory;
 
-    public ElseKeywordTokenizer(TokenFactory tokenFactory) {
-        this.template = "else";
-        this.tokenFactory = tokenFactory;
-    }
+  public ElseKeywordTokenizer(TokenFactory tokenFactory, ResultFactory resultFactory) {
+    this.template = "else";
+    this.tokenFactory = tokenFactory;
+    this.resultFactory = resultFactory;
+  }
 
-    private Boolean canTokenize(String input) {
-        return input.equals(template);
-    }
+  private Boolean canTokenize(String input) {
+    return input.equals(template);
+  }
 
-    @Override
-    public Result<Token> tokenize(String input, Integer line, Integer column) {
-        if (!canTokenize(input)) {
-            return new IncorrectResult<>("Input is different from else: " + input);
-        }
-        return new CorrectResult<>(tokenFactory.createKeywordToken(input, line, column));
+  @Override
+  public Result<Token> tokenize(String input, Integer line, Integer column) {
+    if (!canTokenize(input)) {
+      return resultFactory.createIncorrectResult(String.format(
+          "Unknown token on line:%d and column:%d", line, column));
     }
+    return resultFactory.createCorrectResult(tokenFactory.createKeywordToken(input, line, column));
+  }
 }
