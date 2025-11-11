@@ -17,7 +17,9 @@ import com.ingsis.visitors.Visitor;
 public record DeclarationKeywordNode(
         TypeAssignationNode typeAssignationNode,
         ValueAssignationNode valueAssignationNode,
-        Boolean isMutable)
+        Boolean isMutable,
+        Integer line,
+        Integer column)
         implements Node, Checkable, Interpretable {
 
     @Override

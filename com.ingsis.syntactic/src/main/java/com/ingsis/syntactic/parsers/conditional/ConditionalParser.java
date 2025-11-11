@@ -49,7 +49,8 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
 
     @Override
     public Result<IfKeywordNode> parse(TokenStream stream) {
-        if (!stream.consume(IF_TEMPLATE).isCorrect()) {
+        Result<Token> consumeIfKeywordResult = stream.consume(IF_TEMPLATE);
+        if (!consumeIfKeywordResult.isCorrect()) {
             return new IncorrectResult<>("Stream was not a conditional");
         }
         Result<ExpressionNode> parseConditionResult = parseCondition(stream);
@@ -61,13 +62,15 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
         if (!parseThenBodyResult.isCorrect()) {
             return new IncorrectResult<>(parseThenBodyResult);
         }
-
+        Token ifToken = consumeIfKeywordResult.result();
         if (!stream.consume(ELSE_TEMPLATE).isCorrect()) {
             return new CorrectResult<>(
                     NODE_FACTORY.createConditionalNode(
                             parseConditionResult.result(),
                             parseThenBodyResult.result(),
-                            List.of()));
+                            List.of(),
+                            ifToken.line(),
+                            ifToken.column()));
         }
 
         Result<List<Node>> parseElseBodyResult = parseBody(stream);
@@ -79,7 +82,9 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
                 NODE_FACTORY.createConditionalNode(
                         parseConditionResult.result(),
                         parseThenBodyResult.result(),
-                        parseElseBodyResult.result()));
+                        parseElseBodyResult.result(),
+                        ifToken.line(),
+                        ifToken.column()));
     }
 
     private Result<ExpressionNode> parseCondition(TokenStream stream) {

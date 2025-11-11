@@ -5,6 +5,7 @@
 package com.ingsis.engine.factories.semantic;
 
 import com.ingsis.engine.factories.syntactic.SyntacticFactory;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.DefaultSemanticChecker;
 import com.ingsis.semantic.SemanticChecker;
@@ -17,9 +18,11 @@ import java.util.Queue;
 
 public final class DefaultSemanticFactory implements SemanticFactory {
     private final SyntacticFactory syntacticFactory;
+    private final ResultFactory resultFactory;
 
-    public DefaultSemanticFactory(SyntacticFactory syntacticFactory) {
+    public DefaultSemanticFactory(SyntacticFactory syntacticFactory, ResultFactory resultFactory) {
         this.syntacticFactory = syntacticFactory;
+        this.resultFactory = resultFactory;
     }
 
     @Override
@@ -28,7 +31,8 @@ public final class DefaultSemanticFactory implements SemanticFactory {
                 syntacticFactory.createCliSyntacticChecker(buffer),
                 new DefaultCheckerFactory()
                         .createInMemoryEventBasedChecker(
-                                new DefaultPublisherFactory(new DefaultHandlersFactory(runtime))),
+                                new DefaultPublisherFactory(
+                                        new DefaultHandlersFactory(runtime, resultFactory))),
                 runtime);
     }
 
@@ -39,7 +43,8 @@ public final class DefaultSemanticFactory implements SemanticFactory {
                 syntacticFactory.createFileSyntacticChecker(filePath),
                 new DefaultCheckerFactory()
                         .createInMemoryEventBasedChecker(
-                                new DefaultPublisherFactory(new DefaultHandlersFactory(runtime))),
+                                new DefaultPublisherFactory(
+                                        new DefaultHandlersFactory(runtime, resultFactory))),
                 runtime);
     }
 }

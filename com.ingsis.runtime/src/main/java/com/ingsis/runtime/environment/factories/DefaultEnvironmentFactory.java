@@ -53,7 +53,9 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 args -> {
                                     System.out.println(args[0]);
                                     return null;
-                                })));
+                                },
+                                null,
+                                null)));
         global.createFunction("readInput", Map.of("string", Types.STRING), Types.UNDEFINED);
         global.updateFunction(
                 "readInput",
@@ -66,7 +68,9 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                             new Scanner(System.in, StandardCharsets.UTF_8);
                                     Object input = scanner.nextLine();
                                     return input;
-                                })));
+                                },
+                                null,
+                                null)));
         global.createFunction("readEnv", Map.of("string", Types.STRING), Types.UNDEFINED);
         global.updateFunction(
                 "readEnv",
@@ -79,7 +83,9 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                     String env = System.getenv(varName);
                                     if (env == null) return "";
                                     return env;
-                                })));
+                                },
+                                null,
+                                null)));
         return;
     }
 }

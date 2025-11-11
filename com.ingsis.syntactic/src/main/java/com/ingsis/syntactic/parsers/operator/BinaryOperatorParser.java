@@ -58,6 +58,11 @@ public final class BinaryOperatorParser implements Parser<ExpressionNode> {
         ExpressionNode rightChild = parseRightResult.result();
 
         return new CorrectResult<>(
-                NODE_FACTORY.createBinaryOperatorNode(symbol, leftChild, rightChild));
+                NODE_FACTORY.createBinaryOperatorNode(
+                        symbol,
+                        leftChild,
+                        rightChild,
+                        operatorToken.line(),
+                        operatorToken.column()));
     }
 }

@@ -9,7 +9,7 @@ import com.ingsis.result.Result;
 import com.ingsis.types.Types;
 import com.ingsis.visitors.Visitor;
 
-public record TypeNode(Types type) implements Node {
+public record TypeNode(Types type, Integer line, Integer column) implements Node {
 
     @Override
     public Result<String> acceptVisitor(Visitor visitor) {

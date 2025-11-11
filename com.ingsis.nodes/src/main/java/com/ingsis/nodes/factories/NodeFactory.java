@@ -18,25 +18,43 @@ import java.util.List;
 
 public interface NodeFactory {
     IfKeywordNode createConditionalNode(
-            ExpressionNode condition, List<Node> thenBody, List<Node> elseBody);
+            ExpressionNode condition,
+            List<Node> thenBody,
+            List<Node> elseBody,
+            Integer line,
+            Integer column);
 
     DeclarationKeywordNode createLetNode(
-            TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
+            TypeAssignationNode typeAssignationNode,
+            ValueAssignationNode valueAssignationNode,
+            Integer line,
+            Integer column);
 
     DeclarationKeywordNode createConstNode(
-            TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode);
+            TypeAssignationNode typeAssignationNode,
+            ValueAssignationNode valueAssignationNode,
+            Integer line,
+            Integer column);
 
     BinaryOperatorNode createBinaryOperatorNode(
-            String symbol, ExpressionNode leftChild, ExpressionNode rightChild);
+            String symbol,
+            ExpressionNode leftChild,
+            ExpressionNode rightChild,
+            Integer line,
+            Integer column);
 
     ValueAssignationNode createValueAssignationNode(
-            IdentifierNode identifierNode, ExpressionNode expressionNode);
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
+            Integer line,
+            Integer column);
 
-    TypeAssignationNode createTypeAssignationNode(IdentifierNode identifierNode, TypeNode typeNode);
+    TypeAssignationNode createTypeAssignationNode(
+            IdentifierNode identifierNode, TypeNode typeNode, Integer line, Integer column);
 
-    TypeNode createTypeNode(String type);
+    TypeNode createTypeNode(String type, Integer line, Integer column);
 
-    IdentifierNode createIdentifierNode(String name);
+    IdentifierNode createIdentifierNode(String name, Integer line, Integer column);
 
-    LiteralNode createLiteralNode(String value);
+    LiteralNode createLiteralNode(String value, Integer line, Integer column);
 }

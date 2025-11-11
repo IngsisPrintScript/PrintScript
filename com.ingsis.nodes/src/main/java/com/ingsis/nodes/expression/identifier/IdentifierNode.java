@@ -13,7 +13,7 @@ import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
 import java.util.List;
 
-public record IdentifierNode(String name) implements ExpressionNode {
+public record IdentifierNode(String name, Integer line, Integer column) implements ExpressionNode {
 
     @Override
     public Result<String> acceptChecker(Checker checker) {

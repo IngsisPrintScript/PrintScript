@@ -10,7 +10,8 @@ import com.ingsis.nodes.type.TypeNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Visitor;
 
-public record TypeAssignationNode(IdentifierNode identifierNode, TypeNode typeNode)
+public record TypeAssignationNode(
+        IdentifierNode identifierNode, TypeNode typeNode, Integer line, Integer column)
         implements Node {
     @Override
     public Result<String> acceptVisitor(Visitor visitor) {

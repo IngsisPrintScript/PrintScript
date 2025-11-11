@@ -29,6 +29,8 @@ public final class TypeParser implements Parser<TypeNode> {
             return new IncorrectResult<>(consumeTypeResult);
         }
         Token typeToken = consumeTypeResult.result();
-        return new CorrectResult<>(NODE_FACTORY.createTypeNode(typeToken.value()));
+        return new CorrectResult<>(
+                NODE_FACTORY.createTypeNode(
+                        typeToken.value(), typeToken.line(), typeToken.column()));
     }
 }

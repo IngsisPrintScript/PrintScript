@@ -6,6 +6,7 @@ package com.ingsis.result.factory;
 
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
+import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -29,8 +30,10 @@ public class LoggerResultFactory implements ResultFactory {
     }
 
     @Override
-    public <T> IncorrectResult<T> cloneIncorrectResult(IncorrectResult<?> originalIncorrectResult) {
-        return SUB_FACTORY.cloneIncorrectResult(originalIncorrectResult);
+    public <T> IncorrectResult<T> cloneIncorrectResult(Result<?> originalIncorrectResult) {
+        IncorrectResult<T> result = SUB_FACTORY.cloneIncorrectResult(originalIncorrectResult);
+        RUNTIME.setExecutionError(result);
+        return result;
     }
 
     @Override

@@ -13,7 +13,8 @@ import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
 import java.util.List;
 
-public record BinaryOperatorNode(String symbol, ExpressionNode left, ExpressionNode right)
+public record BinaryOperatorNode(
+        String symbol, ExpressionNode left, ExpressionNode right, Integer line, Integer column)
         implements OperatorNode {
     @Override
     public Result<String> acceptChecker(Checker checker) {

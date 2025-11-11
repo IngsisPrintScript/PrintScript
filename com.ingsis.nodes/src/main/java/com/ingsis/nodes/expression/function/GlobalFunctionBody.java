@@ -14,7 +14,8 @@ import com.ingsis.visitors.Visitor;
 import java.util.List;
 import java.util.function.Function;
 
-public record GlobalFunctionBody(List<String> argNames, Function<Object[], Object> lambda)
+public record GlobalFunctionBody(
+        List<String> argNames, Function<Object[], Object> lambda, Integer line, Integer column)
         implements ExpressionNode {
 
     public GlobalFunctionBody {

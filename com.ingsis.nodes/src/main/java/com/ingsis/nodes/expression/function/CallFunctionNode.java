@@ -15,19 +15,18 @@ import com.ingsis.visitors.Visitor;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CallFunctionNode implements ExpressionNode {
-    private final IdentifierNode identifierNode;
-    private final List<ExpressionNode> argumentNodes;
+public record CallFunctionNode(
+        IdentifierNode identifierNode,
+        List<ExpressionNode> argumentNodes,
+        Integer line,
+        Integer column)
+        implements ExpressionNode {
 
-    public CallFunctionNode(IdentifierNode identifierNode, List<ExpressionNode> argumentNodes) {
-        this.identifierNode = identifierNode;
-        this.argumentNodes = List.copyOf(argumentNodes);
+    public CallFunctionNode {
+        argumentNodes = List.copyOf(argumentNodes);
     }
 
-    public IdentifierNode identifierNode() {
-        return identifierNode;
-    }
-
+    @Override
     public List<ExpressionNode> argumentNodes() {
         return List.copyOf(argumentNodes);
     }

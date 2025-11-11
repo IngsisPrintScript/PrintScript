@@ -30,6 +30,8 @@ public final class IdentifierParser implements Parser<IdentifierNode> {
             return new IncorrectResult<>(consumeIdentifierResult);
         }
         Token identifierToken = consumeIdentifierResult.result();
-        return new CorrectResult<>(NODE_FACTORY.createIdentifierNode(identifierToken.value()));
+        return new CorrectResult<>(
+                NODE_FACTORY.createIdentifierNode(
+                        identifierToken.value(), identifierToken.line(), identifierToken.column()));
     }
 }

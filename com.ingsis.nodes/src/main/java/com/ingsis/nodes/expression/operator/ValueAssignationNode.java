@@ -10,7 +10,8 @@ import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Visitor;
 
-public record ValueAssignationNode(IdentifierNode identifierNode, ExpressionNode expressionNode)
+public record ValueAssignationNode(
+        IdentifierNode identifierNode, ExpressionNode expressionNode, Integer line, Integer column)
         implements Node {
     @Override
     public Result<String> acceptVisitor(Visitor visitor) {

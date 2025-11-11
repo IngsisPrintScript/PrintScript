@@ -30,6 +30,8 @@ public final class LiteralParser implements Parser<LiteralNode> {
             return new IncorrectResult<>(consumeLiteralResult);
         }
         Token literalToken = consumeLiteralResult.result();
-        return new CorrectResult<>(NODE_FACTORY.createLiteralNode(literalToken.value()));
+        return new CorrectResult<>(
+                NODE_FACTORY.createLiteralNode(
+                        literalToken.value(), literalToken.line(), literalToken.column()));
     }
 }

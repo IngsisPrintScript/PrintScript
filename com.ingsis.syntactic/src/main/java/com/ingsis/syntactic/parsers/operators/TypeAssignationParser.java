@@ -52,7 +52,12 @@ public final class TypeAssignationParser implements Parser<TypeAssignationNode> 
         }
         TypeNode typeNode = parseTypeResult.result();
 
+        Token typeAssignation = consumeTypeAssignationResult.result();
         return new CorrectResult<>(
-                NODE_FACTORY.createTypeAssignationNode(identifierNode, typeNode));
+                NODE_FACTORY.createTypeAssignationNode(
+                        identifierNode,
+                        typeNode,
+                        typeAssignation.line(),
+                        typeAssignation.column()));
     }
 }

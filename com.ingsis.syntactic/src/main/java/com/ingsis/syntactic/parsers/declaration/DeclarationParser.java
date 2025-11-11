@@ -56,7 +56,8 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
         if (!consumeDeclarationKeywordResult.isCorrect()) {
             return new IncorrectResult<>(consumeDeclarationKeywordResult);
         }
-        Boolean isConst = consumeDeclarationKeywordResult.result().value().equals("const");
+        Token declarationKeyword = consumeDeclarationKeywordResult.result();
+        Boolean isConst = declarationKeyword.value().equals("const");
 
         Result<TypeAssignationNode> parseTypeAssignationResult =
                 TYPE_ASSIGNATION_PARSER.parse(stream);
@@ -76,16 +77,28 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
         }
         ExpressionNode expressionNode = parseExpressionResult.result();
 
+        Token valueAssignationoToken = consumeValueAssignationResult.result();
         ValueAssignationNode valueAssignationNode =
                 NODE_FACTORY.createValueAssignationNode(
-                        typeAssignationNode.identifierNode(), expressionNode);
+                        typeAssignationNode.identifierNode(),
+                        expressionNode,
+                        valueAssignationoToken.line(),
+                        valueAssignationoToken.column());
 
         if (isConst) {
             return new CorrectResult<>(
-                    NODE_FACTORY.createConstNode(typeAssignationNode, valueAssignationNode));
+                    NODE_FACTORY.createConstNode(
+                            typeAssignationNode,
+                            valueAssignationNode,
+                            declarationKeyword.line(),
+                            declarationKeyword.column()));
         } else {
             return new CorrectResult<>(
-                    NODE_FACTORY.createLetNode(typeAssignationNode, valueAssignationNode));
+                    NODE_FACTORY.createLetNode(
+                            typeAssignationNode,
+                            valueAssignationNode,
+                            declarationKeyword.line(),
+                            declarationKeyword.column()));
         }
     }
 }

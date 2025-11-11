@@ -59,7 +59,9 @@ public final class CallFunctionParser implements Parser<CallFunctionNode> {
         }
         List<ExpressionNode> arguments = parseFunctionCallResult.result();
 
-        return new CorrectResult<>(new CallFunctionNode(identifierNode, arguments));
+        return new CorrectResult<>(
+                new CallFunctionNode(
+                        identifierNode, arguments, identifierNode.line(), identifierNode.column()));
     }
 
     private Result<List<ExpressionNode>> parseFunctionCall(TokenStream stream) {

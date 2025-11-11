@@ -52,7 +52,12 @@ public final class ValueAssignationParser implements Parser<ValueAssignationNode
         }
         ExpressionNode expressionNode = parseTypeResult.result();
 
+        Token valueAssignation = consumeValueAssignationResult.result();
         return new CorrectResult<>(
-                NODE_FACTORY.createValueAssignationNode(identifierNode, expressionNode));
+                NODE_FACTORY.createValueAssignationNode(
+                        identifierNode,
+                        expressionNode,
+                        valueAssignation.line(),
+                        valueAssignation.column()));
     }
 }

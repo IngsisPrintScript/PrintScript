@@ -20,52 +20,71 @@ import java.util.List;
 public final class DefaultNodeFactory implements NodeFactory {
     @Override
     public IfKeywordNode createConditionalNode(
-            ExpressionNode condition, List<Node> thenBody, List<Node> elseBody) {
-        return new IfKeywordNode(condition, thenBody, elseBody);
+            ExpressionNode condition,
+            List<Node> thenBody,
+            List<Node> elseBody,
+            Integer line,
+            Integer column) {
+        return new IfKeywordNode(condition, thenBody, elseBody, line, column);
     }
 
     @Override
     public DeclarationKeywordNode createLetNode(
-            TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode) {
-        return new DeclarationKeywordNode(typeAssignationNode, valueAssignationNode, true);
+            TypeAssignationNode typeAssignationNode,
+            ValueAssignationNode valueAssignationNode,
+            Integer line,
+            Integer column) {
+        return new DeclarationKeywordNode(
+                typeAssignationNode, valueAssignationNode, true, line, column);
     }
 
     @Override
     public DeclarationKeywordNode createConstNode(
-            TypeAssignationNode typeAssignationNode, ValueAssignationNode valueAssignationNode) {
-        return new DeclarationKeywordNode(typeAssignationNode, valueAssignationNode, false);
+            TypeAssignationNode typeAssignationNode,
+            ValueAssignationNode valueAssignationNode,
+            Integer line,
+            Integer column) {
+        return new DeclarationKeywordNode(
+                typeAssignationNode, valueAssignationNode, false, line, column);
     }
 
     @Override
     public BinaryOperatorNode createBinaryOperatorNode(
-            String symbol, ExpressionNode leftChild, ExpressionNode rightChild) {
-        return new BinaryOperatorNode(symbol, leftChild, rightChild);
+            String symbol,
+            ExpressionNode leftChild,
+            ExpressionNode rightChild,
+            Integer line,
+            Integer column) {
+        return new BinaryOperatorNode(symbol, leftChild, rightChild, line, column);
     }
 
     @Override
     public ValueAssignationNode createValueAssignationNode(
-            IdentifierNode identifierNode, ExpressionNode expressionNode) {
-        return new ValueAssignationNode(identifierNode, expressionNode);
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
+            Integer line,
+            Integer column) {
+        return new ValueAssignationNode(identifierNode, expressionNode, line, column);
     }
 
     @Override
     public TypeAssignationNode createTypeAssignationNode(
-            IdentifierNode identifierNode, TypeNode typeNode) {
-        return new TypeAssignationNode(identifierNode, typeNode);
+            IdentifierNode identifierNode, TypeNode typeNode, Integer line, Integer column) {
+        return new TypeAssignationNode(identifierNode, typeNode, line, column);
     }
 
     @Override
-    public TypeNode createTypeNode(String type) {
-        return new TypeNode(Types.fromKeyword(type));
+    public TypeNode createTypeNode(String type, Integer line, Integer column) {
+        return new TypeNode(Types.fromKeyword(type), line, column);
     }
 
     @Override
-    public IdentifierNode createIdentifierNode(String name) {
-        return new IdentifierNode(name);
+    public IdentifierNode createIdentifierNode(String name, Integer line, Integer column) {
+        return new IdentifierNode(name, line, column);
     }
 
     @Override
-    public LiteralNode createLiteralNode(String value) {
-        return new LiteralNode(value);
+    public LiteralNode createLiteralNode(String value, Integer line, Integer column) {
+        return new LiteralNode(value, line, column);
     }
 }

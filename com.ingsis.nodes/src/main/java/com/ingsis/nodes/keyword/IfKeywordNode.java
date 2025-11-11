@@ -14,7 +14,12 @@ import com.ingsis.visitors.Interpreter;
 import com.ingsis.visitors.Visitor;
 import java.util.List;
 
-public record IfKeywordNode(ExpressionNode condition, List<Node> thenBody, List<Node> elseBody)
+public record IfKeywordNode(
+        ExpressionNode condition,
+        List<Node> thenBody,
+        List<Node> elseBody,
+        Integer line,
+        Integer column)
         implements Node, Checkable, Interpretable {
 
     public IfKeywordNode {
@@ -22,8 +27,9 @@ public record IfKeywordNode(ExpressionNode condition, List<Node> thenBody, List<
         elseBody = List.copyOf(elseBody);
     }
 
-    public IfKeywordNode(ExpressionNode condition, List<Node> thenBody) {
-        this(condition, thenBody, List.of());
+    public IfKeywordNode(
+            ExpressionNode condition, List<Node> thenBody, Integer line, Integer column) {
+        this(condition, thenBody, List.of(), line, column);
     }
 
     @Override

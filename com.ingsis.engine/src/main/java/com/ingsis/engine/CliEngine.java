@@ -31,6 +31,7 @@ import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.result.factory.LoggerResultFactory;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.syntactic.factories.DefaultParserChainFactory;
 import com.ingsis.syntactic.factories.ParserChainFactory;
@@ -121,6 +122,8 @@ public final class CliEngine implements Engine {
     }
 
     private ProgramInterpreterFactory createProgramInterpreterFactory() {
+        ResultFactory resultFactory =
+                new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
         CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
         TokenFactory tokenFactory = new DefaultTokensFactory();
         TokenizerFactory tokenizerFactory;
@@ -138,16 +141,14 @@ public final class CliEngine implements Engine {
                 new DefaultLexerFactory(
                         charStreamFactory, tokenizerFactory, DefaultRuntime.getInstance());
         TokenStreamFactory tokenStreamFactory =
-                new DefaultTokenStreamFactory(
-                        lexerFactory,
-                        new LoggerResultFactory(
-                                new DefaultResultFactory(), DefaultRuntime.getInstance()));
+                new DefaultTokenStreamFactory(lexerFactory, resultFactory);
         NodeFactory nodeFactory = new DefaultNodeFactory();
         ParserChainFactory parserChainFactory =
                 new DefaultParserChainFactory(new DefaultParserFactory(tokenFactory, nodeFactory));
         SyntacticFactory syntacticFactory =
                 new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
-        SemanticFactory semanticFactory = new DefaultSemanticFactory(syntacticFactory);
+        SemanticFactory semanticFactory =
+                new DefaultSemanticFactory(syntacticFactory, resultFactory);
         SolutionStrategyFactory solutionStrategyFactory =
                 new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
         InterpreterVisitorFactory interpreterVisitorFactory =
