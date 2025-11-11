@@ -8,8 +8,8 @@ import com.ingsis.engine.factories.charstream.CharStreamFactory;
 import com.ingsis.lexer.DefaultLexer;
 import com.ingsis.lexer.Lexer;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
-import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.result.factory.LoggerResultFactory;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.Runtime;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
@@ -34,18 +34,19 @@ public final class DefaultLexerFactory implements LexerFactory {
     }
 
     @Override
-    public Lexer createCliLexer(Queue<Character> buffer) {
+    public Lexer createCliLexer(Queue<Character> buffer, ResultFactory resultFactory) {
         return new DefaultLexer(
                 charStreamFactory.inMemoryCharIterator(buffer),
                 tokenizerFactory.createTokenizer(),
-                new LoggerResultFactory(new DefaultResultFactory(), runtime));
+                new LoggerResultFactory(resultFactory, runtime));
     }
 
     @Override
-    public Lexer createFromFileLexer(Path filePath) throws IOException {
+    public Lexer createFromFileLexer(Path filePath, ResultFactory resultFactory)
+            throws IOException {
         return new DefaultLexer(
                 charStreamFactory.fromFileCharIterator(filePath),
                 tokenizerFactory.createTokenizer(),
-                new LoggerResultFactory(new DefaultResultFactory(), runtime));
+                new LoggerResultFactory(resultFactory, runtime));
     }
 }

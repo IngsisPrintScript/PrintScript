@@ -28,6 +28,9 @@ import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.nodes.factories.NodeFactory;
 import com.ingsis.result.IncorrectResult;
+import com.ingsis.result.Result;
+import com.ingsis.result.factory.DefaultResultFactory;
+import com.ingsis.result.factory.LoggerResultFactory;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.syntactic.factories.DefaultParserChainFactory;
 import com.ingsis.syntactic.factories.ParserChainFactory;
@@ -76,13 +79,13 @@ public final class CliEngine implements Engine {
     private void runFile(Path file) {
         try {
             System.out.println("Interpreting file: " + file);
-            buildFileInterpreter(file).interpret();
+            Result<String> interpretResult = buildFileInterpreter(file).interpret();
             IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-            if (executionError != null) {
-                System.out.println(executionError.error());
+            if (!interpretResult.isCorrect() && executionError != null) {
+                System.out.print("Error: " + executionError.error() + "\n");
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
         }
     }
 
@@ -104,12 +107,11 @@ public final class CliEngine implements Engine {
                 Queue<Character> buffer = new ArrayDeque<>();
                 line.chars().forEach(c -> buffer.add((char) c));
 
-                buildReplInterpreter(buffer).interpret();
+                Result<String> interpretResult = buildReplInterpreter(buffer).interpret();
                 IncorrectResult<?> executionError =
                         DefaultRuntime.getInstance().getExecutionError();
-                if (executionError != null) {
-                    System.out.print(executionError.error());
-                    System.out.print("\n");
+                if (!interpretResult.isCorrect() && executionError != null) {
+                    System.out.print("Error: " + executionError.error() + "\n");
                 }
             }
         } catch (IOException e) {
@@ -135,7 +137,11 @@ public final class CliEngine implements Engine {
         LexerFactory lexerFactory =
                 new DefaultLexerFactory(
                         charStreamFactory, tokenizerFactory, DefaultRuntime.getInstance());
-        TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory);
+        TokenStreamFactory tokenStreamFactory =
+                new DefaultTokenStreamFactory(
+                        lexerFactory,
+                        new LoggerResultFactory(
+                                new DefaultResultFactory(), DefaultRuntime.getInstance()));
         NodeFactory nodeFactory = new DefaultNodeFactory();
         ParserChainFactory parserChainFactory =
                 new DefaultParserChainFactory(new DefaultParserFactory(tokenFactory, nodeFactory));

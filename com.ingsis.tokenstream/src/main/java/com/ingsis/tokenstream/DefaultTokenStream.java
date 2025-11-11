@@ -8,6 +8,7 @@ import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import java.util.ArrayList;
@@ -17,14 +18,16 @@ public final class DefaultTokenStream implements TokenStream {
     private final PeekableIterator<Token> tokens;
     private final List<Token> tokenBuffer;
     private final Token SPACE_TOKEN_TEMPLATE;
+    private final ResultFactory RESULT_FACTORY;
     private Integer pointer;
 
-    public DefaultTokenStream(PeekableIterator<Token> tokenStream) {
+    public DefaultTokenStream(PeekableIterator<Token> tokenStream, ResultFactory resultFactory) {
         this.tokens = tokenStream;
         this.SPACE_TOKEN_TEMPLATE =
                 new DefaultTokensFactory().createSpaceSeparatorToken("", null, null);
         this.tokenBuffer = new ArrayList<>();
         this.pointer = 0;
+        this.RESULT_FACTORY = resultFactory;
     }
 
     @Override
@@ -43,7 +46,14 @@ public final class DefaultTokenStream implements TokenStream {
     public Result<Token> consume(Token tokenTemplate) {
         consumeAll(SPACE_TOKEN_TEMPLATE);
         if (!baseMatch(tokenTemplate)) {
-            return new IncorrectResult<>("Token does not match template.");
+            if (!this.hasNext()) {
+                return RESULT_FACTORY.createIncorrectResult("Uncomplete tokens sequence");
+            }
+            Token peekToken = this.peek();
+            return RESULT_FACTORY.createIncorrectResult(
+                    String.format(
+                            "Unexpected token on line: %d and column: %d",
+                            peekToken.line(), peekToken.column()));
         }
         return consume();
     }
