@@ -27,13 +27,14 @@ import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.result.Result;
+import com.ingsis.result.IncorrectResult;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.syntactic.factories.DefaultParserChainFactory;
 import com.ingsis.syntactic.factories.ParserChainFactory;
 import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import com.ingsis.tokens.factories.TokenFactory;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,6 +45,9 @@ import java.util.Queue;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
+@SuppressFBWarnings(
+        value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR",
+        justification = "version is set by PicoCLI before use")
 @CommandLine.Command(
         name = "cli-engine",
         mixinStandardHelpOptions = true,
@@ -71,12 +75,14 @@ public final class CliEngine implements Engine {
 
     private void runFile(Path file) {
         try {
-            Result<String> interpretResult = buildFileInterpreter(file).interpret();
-            if (!interpretResult.isCorrect()) {
-                System.out.print("Error: " + interpretResult.error());
+            System.out.println("Interpreting file: " + file);
+            buildFileInterpreter(file).interpret();
+            IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+            if (executionError != null) {
+                System.out.println(executionError.error());
             }
         } catch (Exception e) {
-            System.out.print("Error: " + e.getMessage());
+            System.out.println(e.getMessage());
         }
     }
 
@@ -98,11 +104,11 @@ public final class CliEngine implements Engine {
                 Queue<Character> buffer = new ArrayDeque<>();
                 line.chars().forEach(c -> buffer.add((char) c));
 
-                ProgramInterpreter interpreter = buildReplInterpreter(buffer);
-
-                Result<String> result = interpreter.interpret();
-                if (!result.isCorrect()) {
-                    System.out.print(result.error());
+                buildReplInterpreter(buffer).interpret();
+                IncorrectResult<?> executionError =
+                        DefaultRuntime.getInstance().getExecutionError();
+                if (executionError != null) {
+                    System.out.print(executionError.error());
                     System.out.print("\n");
                 }
             }
@@ -126,7 +132,9 @@ public final class CliEngine implements Engine {
             default:
                 throw new IllegalArgumentException("Unsupported version: " + version);
         }
-        LexerFactory lexerFactory = new DefaultLexerFactory(charStreamFactory, tokenizerFactory);
+        LexerFactory lexerFactory =
+                new DefaultLexerFactory(
+                        charStreamFactory, tokenizerFactory, DefaultRuntime.getInstance());
         TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory);
         NodeFactory nodeFactory = new DefaultNodeFactory();
         ParserChainFactory parserChainFactory =

@@ -25,10 +25,10 @@ public final class EndOfLineSeparatorTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Input is not valid end of line: " + input);
         }
-        return new CorrectResult<>(tokenFactory.createEndOfLineToken(input));
+        return new CorrectResult<>(tokenFactory.createEndOfLineToken(input, line, column));
     }
 }

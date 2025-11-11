@@ -10,7 +10,7 @@ import com.ingsis.tokens.Token;
 
 public final class FinalTokenizer implements Tokenizer {
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         return new IncorrectResult<>(
                 "There was no tokenizer able to tokenize that input: " + input);
     }

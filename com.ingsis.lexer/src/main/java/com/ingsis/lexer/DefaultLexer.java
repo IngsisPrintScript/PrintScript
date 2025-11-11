@@ -5,83 +5,102 @@
 package com.ingsis.lexer;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
+import com.ingsis.metachar.MetaChar;
+import com.ingsis.metachar.string.builder.MetaCharStringBuilder;
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.Result;
+import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
 public final class DefaultLexer implements Lexer {
-    private final PeekableIterator<Character> charIterator;
-    private final Queue<Token> tokenBuffer;
-    private final Tokenizer tokenizer;
+  private final PeekableIterator<MetaChar> charIterator;
+  private final Queue<Token> tokenBuffer;
+  private final Tokenizer tokenizer;
+  private final ResultFactory RESULT_FACTORY;
 
-    public DefaultLexer(
-            PeekableIterator<Character> charIterator,
-            Tokenizer tokenizer,
-            Queue<Token> tokenBuffer) {
-        this.charIterator = charIterator;
-        this.tokenBuffer = new LinkedList<>(tokenBuffer);
-        this.tokenizer = tokenizer;
+  public DefaultLexer(
+      PeekableIterator<MetaChar> charIterator,
+      Tokenizer tokenizer,
+      Queue<Token> tokenBuffer,
+      ResultFactory resultFactory) {
+    this.charIterator = charIterator;
+    this.tokenBuffer = new LinkedList<>(tokenBuffer);
+    this.tokenizer = tokenizer;
+    this.RESULT_FACTORY = resultFactory;
+  }
+
+  public DefaultLexer(
+      PeekableIterator<MetaChar> charIterator,
+      Tokenizer tokenizer,
+      ResultFactory resultFactory) {
+    this(charIterator, tokenizer, new LinkedList<>(), resultFactory);
+  }
+
+  @Override
+  public Result<Token> analyze(MetaCharStringBuilder stringBuilder) {
+    return tokenizer.tokenize(
+        stringBuilder.getString(), stringBuilder.getLine(), stringBuilder.getColumn());
+  }
+
+  @Override
+  public Token peek() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
+    }
+    return tokenBuffer.peek();
+  }
+
+  @Override
+  public boolean hasNext() {
+    if (!tokenBuffer.isEmpty()) {
+      return true;
     }
 
-    public DefaultLexer(PeekableIterator<Character> charIterator, Tokenizer tokenizer) {
-        this(charIterator, tokenizer, new LinkedList<>());
+    Token nextToken = computeNext();
+
+    if (nextToken != null) {
+      tokenBuffer.add(nextToken);
     }
 
-    @Override
-    public Result<Token> analyze(String input) {
-        return tokenizer.tokenize(input);
-    }
+    return nextToken != null;
+  }
 
-    @Override
-    public Token peek() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
+  @Override
+  public Token next() {
+    if (!hasNext()) {
+      throw new NoSuchElementException();
+    }
+    return tokenBuffer.poll();
+  }
+
+  private Token computeNext() {
+    Token cadidateToken = null;
+    MetaCharStringBuilder stringBuilder = new MetaCharStringBuilder();
+    while (charIterator.hasNext()) {
+      MetaChar nextChar = charIterator.peek();
+      stringBuilder.append(nextChar);
+      Result<Token> analyzeInputResult = this.analyze(stringBuilder);
+      if (analyzeInputResult.isCorrect()) {
+        cadidateToken = analyzeInputResult.result();
+      } else {
+        if (cadidateToken != null) {
+          return cadidateToken;
         }
-        return tokenBuffer.peek();
+      }
+      charIterator.next();
     }
-
-    @Override
-    public boolean hasNext() {
-        if (!tokenBuffer.isEmpty()) {
-            return true;
-        }
-
-        Token nextToken = computeNext();
-
-        if (nextToken != null) {
-            tokenBuffer.add(nextToken);
-        }
-
-        return nextToken != null;
+    if (cadidateToken == null
+        && stringBuilder.getColumn() != null
+        && stringBuilder.getLine() != null) {
+      RESULT_FACTORY.createIncorrectResult(
+          String.format(
+              "Not a valid token on line: %d and column: %d",
+              stringBuilder.getLine(),
+              stringBuilder.getColumn()));
     }
-
-    @Override
-    public Token next() {
-        if (!hasNext()) {
-            throw new NoSuchElementException();
-        }
-        return tokenBuffer.poll();
-    }
-
-    private Token computeNext() {
-        Token cadidateToken = null;
-        StringBuilder stringBuilder = new StringBuilder();
-        while (charIterator.hasNext()) {
-            Character nextChar = charIterator.peek();
-            stringBuilder.append(nextChar);
-            Result<Token> analyzeInputResult = this.analyze(stringBuilder.toString());
-            if (analyzeInputResult.isCorrect()) {
-                cadidateToken = analyzeInputResult.result();
-            } else {
-                if (cadidateToken != null) {
-                    return cadidateToken;
-                }
-            }
-            charIterator.next();
-        }
-        return cadidateToken;
-    }
+    return cadidateToken;
+  }
 }

@@ -4,24 +4,29 @@
 
 package com.ingsis.charstream;
 
+import com.ingsis.metachar.MetaChar;
 import com.ingsis.peekableiterator.PeekableIterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
-public final class InMemoryCharStream implements PeekableIterator<Character> {
+public final class InMemoryCharStream implements PeekableIterator<MetaChar> {
     private final Queue<Character> buffer;
+    private Integer currentLine;
+    private Integer currentColumn;
 
     public InMemoryCharStream(Queue<Character> buffer) {
         this.buffer = new LinkedList<>(buffer);
+        this.currentLine = 1;
+        this.currentColumn = 1;
     }
 
     @Override
-    public Character peek() {
+    public MetaChar peek() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return buffer.peek();
+        return new MetaChar(buffer.peek(), currentLine, currentColumn);
     }
 
     @Override
@@ -30,11 +35,18 @@ public final class InMemoryCharStream implements PeekableIterator<Character> {
     }
 
     @Override
-    public Character next() {
+    public MetaChar next() {
         if (!hasNext()) {
             throw new NoSuchElementException();
         }
-        return buffer.poll();
+        MetaChar result = new MetaChar(buffer.poll(), currentLine, currentColumn);
+        if (result.character() == '\n') {
+            currentColumn = 0;
+            currentLine++;
+        } else {
+            currentColumn++;
+        }
+        return result;
     }
 
     public void addChars(Iterable<Character> chars) {

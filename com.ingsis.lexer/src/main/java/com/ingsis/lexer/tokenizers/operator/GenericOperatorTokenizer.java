@@ -25,11 +25,11 @@ public final class GenericOperatorTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>(
                     String.format("Input is not expected operator '%s': %s", template, input));
         }
-        return new CorrectResult<>(tokenFactory.createOperatorToken(input));
+        return new CorrectResult<>(tokenFactory.createOperatorToken(input, line, column));
     }
 }

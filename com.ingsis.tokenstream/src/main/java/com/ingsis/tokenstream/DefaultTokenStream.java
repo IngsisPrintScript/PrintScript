@@ -21,7 +21,8 @@ public final class DefaultTokenStream implements TokenStream {
 
     public DefaultTokenStream(PeekableIterator<Token> tokenStream) {
         this.tokens = tokenStream;
-        this.SPACE_TOKEN_TEMPLATE = new DefaultTokensFactory().createSpaceSeparatorToken("");
+        this.SPACE_TOKEN_TEMPLATE =
+                new DefaultTokensFactory().createSpaceSeparatorToken("", null, null);
         this.tokenBuffer = new ArrayList<>();
         this.pointer = 0;
     }

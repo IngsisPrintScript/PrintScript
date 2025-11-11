@@ -8,5 +8,5 @@ import com.ingsis.result.Result;
 import com.ingsis.tokens.Token;
 
 public interface Tokenizer {
-    Result<Token> tokenize(String input);
+    Result<Token> tokenize(String input, Integer line, Integer column);
 }

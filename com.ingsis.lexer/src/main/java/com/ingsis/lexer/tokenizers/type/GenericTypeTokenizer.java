@@ -26,10 +26,10 @@ public final class GenericTypeTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Input is not type: " + type.keyword());
         }
-        return new CorrectResult<>(tokenFactory.createTypeToken(type.keyword()));
+        return new CorrectResult<>(tokenFactory.createTypeToken(type.keyword(), line, column));
     }
 }

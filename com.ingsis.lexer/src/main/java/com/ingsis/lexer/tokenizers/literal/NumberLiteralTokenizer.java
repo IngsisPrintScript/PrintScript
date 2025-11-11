@@ -26,10 +26,10 @@ public final class NumberLiteralTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Input was invalid number: " + input);
         }
-        return new CorrectResult<>(tokenFactory.createLiteralToken(input));
+        return new CorrectResult<>(tokenFactory.createLiteralToken(input, line, column));
     }
 }

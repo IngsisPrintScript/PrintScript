@@ -25,11 +25,11 @@ public final class StringLiteralTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Input is not a valid string: " + input);
         }
         String unquoted = input.substring(1, input.length() - 1);
-        return new CorrectResult<>(tokenFactory.createLiteralToken(unquoted));
+        return new CorrectResult<>(tokenFactory.createLiteralToken(unquoted, line, column));
     }
 }

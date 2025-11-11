@@ -4,10 +4,11 @@
 
 package com.ingsis.tokens;
 
-public record DefaultToken(String name, String value) implements Token {
+public record DefaultToken(String name, String value, Integer line, Integer column)
+        implements Token {
 
     public DefaultToken(Token token) {
-        this(token.name(), token.value());
+        this(token.name(), token.value(), token.line(), token.column());
     }
 
     @Override

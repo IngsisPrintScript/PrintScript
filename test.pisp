@@ -1,7 +1,7 @@
 let a: String = "AAA";
 let b: String = "BBB";
 if (readInput("true or false: ")) {
-  println(a);
+println(a);
 } else {
-  println(b);
+println(b);
 }

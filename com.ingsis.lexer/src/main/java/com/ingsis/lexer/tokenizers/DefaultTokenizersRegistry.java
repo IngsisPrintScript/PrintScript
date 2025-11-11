@@ -22,14 +22,14 @@ public final class DefaultTokenizersRegistry implements TokenizersRegistry {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         for (Tokenizer tokenizer : tokenizers) {
-            Result<Token> result = tokenizer.tokenize(input);
+            Result<Token> result = tokenizer.tokenize(input, 0, null);
             if (result.isCorrect()) {
                 return result;
             }
         }
-        return nextTokenizer.tokenize(input);
+        return nextTokenizer.tokenize(input, 0, null);
     }
 
     @Override

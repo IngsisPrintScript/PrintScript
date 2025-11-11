@@ -4,6 +4,7 @@
 
 package com.ingsis.charstream;
 
+import com.ingsis.metachar.MetaChar;
 import com.ingsis.peekableiterator.PeekableIterator;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 
-public final class FromFileCharStream implements PeekableIterator<Character>, AutoCloseable {
+public final class FromFileCharStream implements PeekableIterator<MetaChar>, AutoCloseable {
     private final BufferedReader reader;
     private final InMemoryCharStream buffer;
     private boolean endOfFile;
@@ -39,7 +40,7 @@ public final class FromFileCharStream implements PeekableIterator<Character>, Au
     }
 
     @Override
-    public Character peek() {
+    public MetaChar peek() {
         if (!buffer.hasNext()) {
             fillBuffer();
         }
@@ -55,7 +56,7 @@ public final class FromFileCharStream implements PeekableIterator<Character>, Au
     }
 
     @Override
-    public Character next() {
+    public MetaChar next() {
         if (!buffer.hasNext()) {
             fillBuffer();
         }

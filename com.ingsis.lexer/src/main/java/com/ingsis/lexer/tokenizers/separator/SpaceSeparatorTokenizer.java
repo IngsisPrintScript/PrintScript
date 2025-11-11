@@ -25,11 +25,11 @@ public final class SpaceSeparatorTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>(
                     String.format("Input is not a whitespace separator '%s': %s", template, input));
         }
-        return new CorrectResult<>(tokenFactory.createSpaceSeparatorToken(input));
+        return new CorrectResult<>(tokenFactory.createSpaceSeparatorToken(input, line, column));
     }
 }

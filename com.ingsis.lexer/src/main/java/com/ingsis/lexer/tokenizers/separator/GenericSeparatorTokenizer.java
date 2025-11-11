@@ -25,11 +25,11 @@ public final class GenericSeparatorTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>(
                     String.format("Input is not expected separator '%s': %s", template, input));
         }
-        return new CorrectResult<>(tokenFactory.createSeparatorToken(input));
+        return new CorrectResult<>(tokenFactory.createSeparatorToken(input, line, column));
     }
 }

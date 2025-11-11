@@ -25,10 +25,10 @@ public final class IdentifierTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Invalid identifier: " + input);
         }
-        return new CorrectResult<>(tokenFactory.createIdentifierToken(input));
+        return new CorrectResult<>(tokenFactory.createIdentifierToken(input, line, column));
     }
 }

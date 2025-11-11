@@ -26,10 +26,10 @@ public final class BooleanLiteralTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Input is not a valid boolean: " + input);
         }
-        return new CorrectResult<>(tokenFactory.createLiteralToken(input));
+        return new CorrectResult<>(tokenFactory.createLiteralToken(input, line, column));
     }
 }

@@ -25,10 +25,10 @@ public final class IfKeywordTokenizer implements Tokenizer {
     }
 
     @Override
-    public Result<Token> tokenize(String input) {
+    public Result<Token> tokenize(String input, Integer line, Integer column) {
         if (!canTokenize(input)) {
             return new IncorrectResult<>("Input is different from if: " + input);
         }
-        return new CorrectResult<>(tokenFactory.createKeywordToken(input));
+        return new CorrectResult<>(tokenFactory.createKeywordToken(input, line, column));
     }
 }
