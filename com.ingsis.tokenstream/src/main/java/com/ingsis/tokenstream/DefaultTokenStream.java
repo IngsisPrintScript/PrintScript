@@ -89,6 +89,7 @@ public final class DefaultTokenStream implements TokenStream {
 
   @Override
   public Token peek() {
+    consumeAll(SPACE_TOKEN_TEMPLATE);
     if (pointer < tokenBuffer.size()) {
       return tokenBuffer.get(pointer);
     }
@@ -110,10 +111,12 @@ public final class DefaultTokenStream implements TokenStream {
 
   @Override
   public Token peek(int offset) {
+    consumeAll(SPACE_TOKEN_TEMPLATE);
     while (offset + pointer >= tokenBuffer.size()) {
       if (!tokens.hasNext()) {
         return null;
       }
+      consumeAll(SPACE_TOKEN_TEMPLATE);
       tokenBuffer.add(tokens.next());
     }
     return tokenBuffer.get(pointer + offset);
