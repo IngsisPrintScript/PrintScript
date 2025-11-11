@@ -113,7 +113,6 @@ public final class CliEngine implements Engine {
                         DefaultRuntime.getInstance().getExecutionError();
                 if (!interpretResult.isCorrect() && executionError != null) {
                     System.out.print("Error: " + executionError.error() + "\n");
-                    System.out.print("Error: " + interpretResult.error() + "\n");
                 }
             }
         } catch (IOException e) {
