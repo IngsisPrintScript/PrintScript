@@ -12,6 +12,7 @@ import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
 import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,6 +33,18 @@ public final class EventsChecker implements Checker {
 
     @Override
     public Result<String> check(IfKeywordNode ifKeywordNode) {
+        for (Node child : ifKeywordNode.thenBody()) {
+            Result<String> checkChildResult = ((Checkable) child).acceptChecker(this);
+            if (!checkChildResult.isCorrect()) {
+                return checkChildResult;
+            }
+        }
+        for (Node child : ifKeywordNode.elseBody()) {
+            Result<String> checkChildResult = ((Checkable) child).acceptChecker(this);
+            if (!checkChildResult.isCorrect()) {
+                return checkChildResult;
+            }
+        }
         return dispatch(ifKeywordNode, IfKeywordNode.class);
     }
 

@@ -15,16 +15,26 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public final class DefaultPublisherFactory implements PublishersFactory {
+public final class DefaultSemanticPublisherFactory implements PublishersFactory {
     private final HandlersFactory handlersFactory;
 
-    public DefaultPublisherFactory(HandlersFactory handlersFactory) {
+    public DefaultSemanticPublisherFactory(HandlersFactory handlersFactory) {
         this.handlersFactory = handlersFactory;
     }
 
     @Override
     public GenericNodeEventPublisher<DeclarationKeywordNode> createLetNodePublisher() {
         return new GenericNodeEventPublisher<>(createLetNodeEventHandlers());
+    }
+
+    @Override
+    public GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher() {
+        return new GenericNodeEventPublisher<ExpressionNode>(createExpressionNodeEventHandlers());
+    }
+
+    @Override
+    public GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher() {
+        return new GenericNodeEventPublisher<>(List.of());
     }
 
     private Collection<NodeEventHandler<DeclarationKeywordNode>> createLetNodeEventHandlers() {
@@ -34,20 +44,10 @@ public final class DefaultPublisherFactory implements PublishersFactory {
         return handlers;
     }
 
-    @Override
-    public GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher() {
-        return new GenericNodeEventPublisher<ExpressionNode>(createExpressionNodeEventHandlers());
-    }
-
     private Collection<NodeEventHandler<ExpressionNode>> createExpressionNodeEventHandlers() {
         Collection<NodeEventHandler<ExpressionNode>> handlers = new ArrayList<>();
         handlers.add(handlersFactory.createExpressionVariableExistenceHandler());
         handlers.add(handlersFactory.createOperatorValidityHandler());
         return handlers;
-    }
-
-    @Override
-    public GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher() {
-        return new GenericNodeEventPublisher<>(List.of());
     }
 }

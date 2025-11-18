@@ -8,6 +8,7 @@ application{
 
 dependencies {
     implementation project(':com.ingsis.tokenstream')
+    implementation project(':com.ingsis.sca')
     implementation project(':com.ingsis.interpreter')
     implementation project(':com.ingsis.syntactic')
     implementation project(':com.ingsis.semantic')

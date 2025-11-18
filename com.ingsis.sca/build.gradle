@@ -1,3 +1,14 @@
 plugins {
     id 'buildlogic.java-library-conventions'
 }
+
+dependencies {
+    implementation project(':com.ingsis.peekableiterator')
+    implementation project(':com.ingsis.runtime')
+    implementation project(':com.ingsis.nodes')
+    implementation project(':com.ingsis.typer')
+    implementation project(':com.ingsis.result.factory')
+    implementation project(':com.ingsis.rule.observer')
+    implementation project(':com.ingsis.result')
+    implementation project(':com.ingsis.types')
+}

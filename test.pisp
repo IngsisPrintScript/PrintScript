@@ -1,4 +1,4 @@
-let a: String = "AAA";
+let a_b: String = "AAA";
 let b: String = "BBB";
 if (readInput("true or false: ")) {
 println(a);
