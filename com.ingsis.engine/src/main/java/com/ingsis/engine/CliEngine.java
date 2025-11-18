@@ -92,11 +92,13 @@ public final class CliEngine implements Engine {
       IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
       if (!analyzeResult.isCorrect() && executionError != null) {
         System.out.print("Error: " + executionError.error() + "\n");
+      } else {
+        System.out.print("Checks passed.");
+
       }
     } catch (Exception e) {
       System.out.print(e.getMessage());
     }
-    System.out.print("Checks passed.");
   }
 
   private void runFile(Path file) {
