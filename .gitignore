@@ -56,3 +56,8 @@ gradle.properties
 
 ### PrintScript Files
 test.pisp
+
+### Devin Files
+./devin
+wiki.json
+DeepWiki.md
