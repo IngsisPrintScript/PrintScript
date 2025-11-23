@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.engine.factories.sca;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

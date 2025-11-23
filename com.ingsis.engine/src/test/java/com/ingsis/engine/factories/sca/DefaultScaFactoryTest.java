@@ -1,16 +1,20 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.engine.factories.sca;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.SemanticChecker;
 import com.ingsis.sca.ProgramSca;
+import com.ingsis.semantic.SemanticChecker;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.ArrayDeque;
 import java.util.NoSuchElementException;
 import java.util.Queue;
-import java.util.ArrayDeque;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -27,10 +31,12 @@ class DefaultScaFactoryTest {
         com.ingsis.engine.factories.semantic.SemanticFactory semFactory =
                 new com.ingsis.engine.factories.semantic.SemanticFactory() {
                     @Override
-                    public SemanticChecker createCliSemanticChecker(Queue<Character> buffer, Runtime runtime) {
+                    public SemanticChecker createCliSemanticChecker(
+                            Queue<Character> buffer, Runtime runtime) {
                         return new SemanticChecker() {
                             @Override
-                            public com.ingsis.result.Result<com.ingsis.visitors.Interpretable> parse() {
+                            public com.ingsis.result.Result<com.ingsis.visitors.Interpretable>
+                                    parse() {
                                 return new com.ingsis.result.IncorrectResult<>("no");
                             }
 
@@ -52,12 +58,15 @@ class DefaultScaFactoryTest {
                     }
 
                     @Override
-                    public SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime) throws IOException {
+                    public SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime)
+                            throws IOException {
                         return createCliSemanticChecker(new ArrayDeque<>(), runtime);
                     }
                 };
 
-        ProgramSca sca = factory.createSca(semFactory, Path.of("nonexistent"), DefaultRuntime.getInstance(), null);
+        ProgramSca sca =
+                factory.createSca(
+                        semFactory, Path.of("nonexistent"), DefaultRuntime.getInstance(), null);
         assertNotNull(sca);
         com.ingsis.result.Result<String> res = sca.analyze();
         assertTrue(res.isCorrect());

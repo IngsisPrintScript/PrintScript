@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.engine.factories.tokenstream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,36 +19,49 @@ class DefaultTokenStreamFactoryTest {
 
     @BeforeEach
     void setup() {
-        factory = new DefaultTokenStreamFactory(
-                new com.ingsis.engine.factories.lexer.LexerFactory() {
-                    @Override
-                    public com.ingsis.lexer.Lexer createCliLexer(Queue<Character> buffer, com.ingsis.result.factory.ResultFactory resultFactory) {
-                        return new com.ingsis.lexer.Lexer() {
+        factory =
+                new DefaultTokenStreamFactory(
+                        new com.ingsis.engine.factories.lexer.LexerFactory() {
                             @Override
-                            public boolean hasNext() {
-                                return false;
+                            public com.ingsis.lexer.Lexer createCliLexer(
+                                    Queue<Character> buffer,
+                                    com.ingsis.result.factory.ResultFactory resultFactory) {
+                                return new com.ingsis.lexer.Lexer() {
+                                    @Override
+                                    public boolean hasNext() {
+                                        return false;
+                                    }
+
+                                    @Override
+                                    public com.ingsis.tokens.Token peek() {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public com.ingsis.tokens.Token next() {
+                                        return null;
+                                    }
+
+                                    @Override
+                                    public com.ingsis.result.Result<com.ingsis.tokens.Token>
+                                            analyze(
+                                                    com.ingsis.metachar.string.builder
+                                                                    .MetaCharStringBuilder
+                                                            stringBuilder) {
+                                        return new com.ingsis.result.IncorrectResult<>("no");
+                                    }
+                                };
                             }
 
                             @Override
-                            public com.ingsis.tokens.Token peek() {
-                                return null;
+                            public com.ingsis.lexer.Lexer createFromFileLexer(
+                                    Path filePath,
+                                    com.ingsis.result.factory.ResultFactory resultFactory)
+                                    throws IOException {
+                                return createCliLexer(new ArrayDeque<>(), resultFactory);
                             }
-
-                            @Override
-                            public com.ingsis.tokens.Token next() {
-                                return null;
-                            }
-
-                            @Override
-                            public com.ingsis.result.Result<com.ingsis.tokens.Token> analyze(com.ingsis.metachar.string.builder.MetaCharStringBuilder stringBuilder) {
-                                return new com.ingsis.result.IncorrectResult<>("no");
-                            }
-                        };
-                    }
-
-                    @Override
-                    public com.ingsis.lexer.Lexer createFromFileLexer(Path filePath, com.ingsis.result.factory.ResultFactory resultFactory) throws IOException { return createCliLexer(new ArrayDeque<>(), resultFactory); }
-                }, new DefaultResultFactory());
+                        },
+                        new DefaultResultFactory());
     }
 
     @Test

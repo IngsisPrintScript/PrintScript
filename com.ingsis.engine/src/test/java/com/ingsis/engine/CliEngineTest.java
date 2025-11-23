@@ -1,22 +1,22 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.engine;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Field;
-import java.nio.file.Path;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayDeque;
 import java.util.Queue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 class CliEngineTest {
     private CliEngine engine;
@@ -89,10 +89,12 @@ class CliEngineTest {
     @Test
     void runREPL_whenExecutionError_printsError() throws Exception {
         // set an execution error in the runtime
-        com.ingsis.result.IncorrectResult<String> err = new com.ingsis.result.IncorrectResult<>("err");
+        com.ingsis.result.IncorrectResult<String> err =
+                new com.ingsis.result.IncorrectResult<>("err");
         com.ingsis.runtime.DefaultRuntime.getInstance().setExecutionError(err);
 
-        // provide a line that will be interpreted (empty interpretation -> incorrect result) then exit
+        // provide a line that will be interpreted (empty interpretation -> incorrect result) then
+        // exit
         String input = "1\nexit\n";
         ByteArrayInputStream in = new ByteArrayInputStream(input.getBytes());
         ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -131,7 +133,8 @@ class CliEngineTest {
     @Test
     void buildFileInterpreterReturnsNotNull() throws Exception {
         java.nio.file.Path tmp = java.nio.file.Files.createTempFile("ps-file", ".ps");
-        Method m = CliEngine.class.getDeclaredMethod("buildFileInterpreter", java.nio.file.Path.class);
+        Method m =
+                CliEngine.class.getDeclaredMethod("buildFileInterpreter", java.nio.file.Path.class);
         m.setAccessible(true);
         Object pi = m.invoke(engine, tmp);
         assertNotNull(pi);
@@ -141,7 +144,8 @@ class CliEngineTest {
     @Test
     void buildProgramScaAndCheckerNotNull() throws Exception {
         java.nio.file.Path tmp = java.nio.file.Files.createTempFile("ps-sca", ".ps");
-        Method mSca = CliEngine.class.getDeclaredMethod("buildProgramSca", java.nio.file.Path.class);
+        Method mSca =
+                CliEngine.class.getDeclaredMethod("buildProgramSca", java.nio.file.Path.class);
         mSca.setAccessible(true);
         Object sca = mSca.invoke(engine, tmp);
         assertNotNull(sca);

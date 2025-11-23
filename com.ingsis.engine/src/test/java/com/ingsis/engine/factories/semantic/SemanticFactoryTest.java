@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.engine.factories.semantic;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
