@@ -17,7 +17,7 @@ public class OrInMemoryNodeEventHandlerRegistry<T extends Node>
 
     public OrInMemoryNodeEventHandlerRegistry(
             List<NodeEventHandler<T>> handlers, ResultFactory resultFactory) {
-        this.handlers = List.copyOf(handlers);
+        this.handlers = new ArrayList<>(handlers);
         this.resultFactory = resultFactory;
     }
 

@@ -5,7 +5,6 @@
 package com.ingsis.rule.observer.publishers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.result.CorrectResult;
@@ -15,15 +14,12 @@ import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class GenericNodeEventPublisherTest {
+class GenericNodeEventPublisherExtraTest {
 
     @Test
-    void whenListenerFails_thenNotifyReturnsIncorrect() {
-        GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
-                new GenericNodeEventPublisher<>(
-                        List.of(
-                                (NodeEventHandler<com.ingsis.nodes.Node>)
-                                        (n -> new IncorrectResult<>("err"))));
+    void singleHandlerConstructorReturnsCorrect() {
+        NodeEventHandler<com.ingsis.nodes.Node> h = n -> new CorrectResult<>("ok");
+        GenericNodeEventPublisher<com.ingsis.nodes.Node> pub = new GenericNodeEventPublisher<>(h);
 
         com.ingsis.nodes.Node n =
                 new com.ingsis.nodes.Node() {
@@ -45,17 +41,17 @@ class GenericNodeEventPublisherTest {
                 };
 
         Result<String> r = pub.notify(n);
-        assertFalse(r.isCorrect());
-        assertEquals("err", r.error());
+        assertTrue(r.isCorrect());
+        assertTrue(r.result().startsWith("Let node passed the following semantic rules:"));
     }
 
     @Test
-    void whenAllListenersPass_thenReturnsCorrectWithMessage() {
+    void multipleHandlers_stopAtFirstIncorrect() {
+        NodeEventHandler<com.ingsis.nodes.Node> good = n -> new CorrectResult<>("ok");
+        NodeEventHandler<com.ingsis.nodes.Node> bad = n -> new IncorrectResult<>("boom");
+
         GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
-                new GenericNodeEventPublisher<>(
-                        List.of(
-                                (NodeEventHandler<com.ingsis.nodes.Node>)
-                                        (n -> new CorrectResult<>("ok"))));
+                new GenericNodeEventPublisher<>(List.of(good, bad));
 
         com.ingsis.nodes.Node n =
                 new com.ingsis.nodes.Node() {
@@ -77,6 +73,7 @@ class GenericNodeEventPublisherTest {
                 };
 
         Result<String> r = pub.notify(n);
-        assertTrue(r.result().startsWith("Let node passed the following semantic rules:"));
+        assertTrue(!r.isCorrect());
+        assertEquals("boom", r.error());
     }
 }
