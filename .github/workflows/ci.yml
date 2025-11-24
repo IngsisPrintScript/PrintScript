@@ -9,6 +9,6 @@ on:
 
 jobs:
   run-ci:
-    uses: IngsisPrintScript/workflows-and-actions/.github/workflows/printscript-ci.yml@main
+    uses: IngsisPrintScript/workflows-and-actions/.github/workflows/printscript-ci.yaml@main
     with:
       java-version: "21"
