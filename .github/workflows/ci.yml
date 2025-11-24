@@ -29,6 +29,6 @@ jobs:
 
       - name: Add coverage link to PR summary
         run: |
-          echo "## 📊 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "[➡️ View HTML Report](coverage/index.html)" >> $GITHUB_STEP_SUMMARY
+          echo "[View HTML Report](coverage/index.html)" >> $GITHUB_STEP_SUMMARY
