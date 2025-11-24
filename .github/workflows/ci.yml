@@ -12,3 +12,23 @@ jobs:
     uses: IngsisPrintScript/workflows-and-actions/.github/workflows/printscript-ci.yaml@main
     with:
       java-version: "21"
+
+  get-coverage:
+    needs: run-ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download Jacoco report
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
+
+      - name: Print where it is
+        run: |
+          echo "Jacoco report downloaded to coverage/" >> $GITHUB_STEP_SUMMARY
+
+      - name: Add coverage link to PR summary
+        run: |
+          echo "## 📊 Coverage Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "[➡️ View HTML Report](coverage/index.html)" >> $GITHUB_STEP_SUMMARY
