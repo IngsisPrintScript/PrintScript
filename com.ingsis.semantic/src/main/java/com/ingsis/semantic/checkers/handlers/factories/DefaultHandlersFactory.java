@@ -8,8 +8,8 @@ import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.rule.observer.handlers.AndInMemoryNodeEventHandlerRegistry;
 import com.ingsis.rule.observer.handlers.FinalHandler;
-import com.ingsis.rule.observer.handlers.InMemoryNodeEventHandlerRegistry;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.rule.observer.handlers.NodeEventHandlerRegistry;
 import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
@@ -33,7 +33,7 @@ public final class DefaultHandlersFactory implements HandlerFactory {
 
   @Override
   public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
-    NodeEventHandlerRegistry<DeclarationKeywordNode> handler = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
+    NodeEventHandlerRegistry<DeclarationKeywordNode> handler = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
     handler.register(new LetNodeEventVariableExistenceHandler(runtime, resultFactory));
     handler.register(new LetNodeCorrectTypeEventHandler(runtime, resultFactory));
     return handler;
@@ -41,14 +41,14 @@ public final class DefaultHandlersFactory implements HandlerFactory {
 
   @Override
   public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
-    NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
+    NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
     handlerRegistry.register(new FinalHandler<>(resultFactory));
     return handlerRegistry;
   }
 
   @Override
   public NodeEventHandler<ExpressionNode> createExpressionHandler() {
-    NodeEventHandlerRegistry<ExpressionNode> handlerRegistry = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
+    NodeEventHandlerRegistry<ExpressionNode> handlerRegistry = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
     handlerRegistry.register(new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory));
     handlerRegistry.register(new OperatorNodeValidityHandler(runtime, resultFactory));
     return handlerRegistry;
