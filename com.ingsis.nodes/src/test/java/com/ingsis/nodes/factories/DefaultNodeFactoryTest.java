@@ -1,6 +1,11 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.nodes.factories;
 
-import com.ingsis.nodes.Node;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
@@ -8,13 +13,9 @@ import com.ingsis.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.nodes.type.TypeNode;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DefaultNodeFactoryTest {
 
@@ -43,13 +44,20 @@ public class DefaultNodeFactoryTest {
         IfKeywordNode ifNode = factory.createConditionalNode(bin, List.of(), List.of(), 1, 1);
         assertEquals(0, ifNode.thenBody().size());
 
-        TypeAssignationNode typeAssign = factory.createTypeAssignationNode(idFrom("x"), factory.createTypeNode("integer",1,1),1,1);
-        ValueAssignationNode valueAssign = factory.createValueAssignationNode(idFrom("x"), litFrom("1"),1,1);
+        TypeAssignationNode typeAssign =
+                factory.createTypeAssignationNode(
+                        idFrom("x"), factory.createTypeNode("integer", 1, 1), 1, 1);
+        ValueAssignationNode valueAssign =
+                factory.createValueAssignationNode(idFrom("x"), litFrom("1"), 1, 1);
         DeclarationKeywordNode decl = factory.createLetNode(typeAssign, valueAssign, 1, 1);
         assertEquals(Boolean.TRUE, decl.isMutable());
     }
 
-    private IdentifierNode idFrom(String n) { return factory.createIdentifierNode(n, 1, 1); }
+    private IdentifierNode idFrom(String n) {
+        return factory.createIdentifierNode(n, 1, 1);
+    }
 
-    private LiteralNode litFrom(String v) { return factory.createLiteralNode(v, 1, 1); }
+    private LiteralNode litFrom(String v) {
+        return factory.createLiteralNode(v, 1, 1);
+    }
 }

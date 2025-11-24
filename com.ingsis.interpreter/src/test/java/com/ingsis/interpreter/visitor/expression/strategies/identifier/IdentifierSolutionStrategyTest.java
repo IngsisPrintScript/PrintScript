@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.interpreter.visitor.expression.strategies.identifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,9 +35,10 @@ class IdentifierSolutionStrategyTest {
 
     @Test
     void readsValueFromRuntime() {
-        ExpressionSolutionStrategy next = (i, e) -> {
-            throw new AssertionError("Should not be called");
-        };
+        ExpressionSolutionStrategy next =
+                (i, e) -> {
+                    throw new AssertionError("Should not be called");
+                };
         IdentifierSolutionStrategy strat = new IdentifierSolutionStrategy(next, runtime);
 
         Result<Object> r = strat.solve((Interpreter) null, new IdentifierNode("x", 0, 0));

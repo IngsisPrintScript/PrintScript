@@ -1,15 +1,19 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.interpreter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.visitors.Interpretable;
 import com.ingsis.visitors.Interpreter;
-import com.ingsis.peekableiterator.PeekableIterator;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,22 +33,27 @@ class DefaultProgramInterpreterTest {
         items.add(makeInterpretable(new CorrectResult<>("two")));
 
         PeekableIterator<Interpretable> it = new ListPeekableIterator(items);
-        Interpreter dummy = new Interpreter() {
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                throw new AssertionError("Should not be called");
-            }
+        Interpreter dummy =
+                new Interpreter() {
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                        throw new AssertionError("Should not be called");
+                    }
 
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                throw new AssertionError("Should not be called");
-            }
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                    declarationKeywordNode) {
+                        throw new AssertionError("Should not be called");
+                    }
 
-            @Override
-            public com.ingsis.result.Result<Object> interpret(com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                return new CorrectResult<>("ok");
-            }
-        };
+                    @Override
+                    public com.ingsis.result.Result<Object> interpret(
+                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                        return new CorrectResult<>("ok");
+                    }
+                };
 
         DefaultProgramInterpreter interpreterObj = new DefaultProgramInterpreter(it, dummy);
 
@@ -60,22 +69,27 @@ class DefaultProgramInterpreterTest {
         items.add(makeInterpretable(new CorrectResult<>("c")));
 
         PeekableIterator<Interpretable> it = new ListPeekableIterator(items);
-        Interpreter dummy = new Interpreter() {
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                throw new AssertionError("Should not be called");
-            }
+        Interpreter dummy =
+                new Interpreter() {
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                        throw new AssertionError("Should not be called");
+                    }
 
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                throw new AssertionError("Should not be called");
-            }
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                    declarationKeywordNode) {
+                        throw new AssertionError("Should not be called");
+                    }
 
-            @Override
-            public com.ingsis.result.Result<Object> interpret(com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                return new CorrectResult<>("ok");
-            }
-        };
+                    @Override
+                    public com.ingsis.result.Result<Object> interpret(
+                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                        return new CorrectResult<>("ok");
+                    }
+                };
 
         DefaultProgramInterpreter interpreterObj = new DefaultProgramInterpreter(it, dummy);
 

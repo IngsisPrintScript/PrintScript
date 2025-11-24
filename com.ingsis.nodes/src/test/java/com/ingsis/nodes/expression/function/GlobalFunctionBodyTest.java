@@ -1,14 +1,15 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.nodes.expression.function;
-
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class GlobalFunctionBodyTest {
 
@@ -32,23 +33,49 @@ public class GlobalFunctionBodyTest {
 
     @Test
     public void interpreterPathsAndSymbolAndChildren() {
-        com.ingsis.visitors.Interpreter good = new com.ingsis.visitors.Interpreter() {
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) { return new com.ingsis.result.CorrectResult<>("ok"); }
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) { return new com.ingsis.result.CorrectResult<>("ok"); }
-            @Override
-            public com.ingsis.result.Result<Object> interpret(com.ingsis.nodes.expression.ExpressionNode expressionNode) { return new com.ingsis.result.CorrectResult<>(new Object()); }
-        };
+        com.ingsis.visitors.Interpreter good =
+                new com.ingsis.visitors.Interpreter() {
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                        return new com.ingsis.result.CorrectResult<>("ok");
+                    }
 
-        com.ingsis.visitors.Interpreter bad = new com.ingsis.visitors.Interpreter() {
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) { return new com.ingsis.result.CorrectResult<>("ok"); }
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) { return new com.ingsis.result.CorrectResult<>("ok"); }
-            @Override
-            public com.ingsis.result.Result<Object> interpret(com.ingsis.nodes.expression.ExpressionNode expressionNode) { return new com.ingsis.result.IncorrectResult<>("err"); }
-        };
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                    declarationKeywordNode) {
+                        return new com.ingsis.result.CorrectResult<>("ok");
+                    }
+
+                    @Override
+                    public com.ingsis.result.Result<Object> interpret(
+                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                        return new com.ingsis.result.CorrectResult<>(new Object());
+                    }
+                };
+
+        com.ingsis.visitors.Interpreter bad =
+                new com.ingsis.visitors.Interpreter() {
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                        return new com.ingsis.result.CorrectResult<>("ok");
+                    }
+
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                    declarationKeywordNode) {
+                        return new com.ingsis.result.CorrectResult<>("ok");
+                    }
+
+                    @Override
+                    public com.ingsis.result.Result<Object> interpret(
+                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                        return new com.ingsis.result.IncorrectResult<>("err");
+                    }
+                };
 
         assertEquals("Interpreted successfully.", body.acceptInterpreter(good).result());
         assertEquals("err", body.acceptInterpreter(bad).error());

@@ -1,12 +1,15 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.nodes.expression.operator.strategies;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.Result;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import org.junit.jupiter.api.Test;
 
 public class OperatorStrategyTest {
     @Test

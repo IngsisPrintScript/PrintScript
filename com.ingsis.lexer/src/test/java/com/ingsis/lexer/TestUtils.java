@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.lexer;
 
 import com.ingsis.result.factory.DefaultResultFactory;

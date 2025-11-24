@@ -1,4 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.lexer.tokenizers;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.lexer.TestUtils;
 import com.ingsis.lexer.tokenizers.identifier.IdentifierTokenizer;
@@ -8,10 +16,6 @@ import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DefaultTokenizersRegistryTest {
     private TokenFactory tokenFactory;

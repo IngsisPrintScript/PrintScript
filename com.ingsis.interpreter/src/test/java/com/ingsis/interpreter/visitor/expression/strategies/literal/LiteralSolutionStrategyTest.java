@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.interpreter.visitor.expression.strategies.literal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -13,22 +17,27 @@ class LiteralSolutionStrategyTest {
     @Test
     void parsesNumberStringAndBoolean() {
         ExpressionSolutionStrategy strat = new LiteralSolutionStrategy(null);
-        Interpreter dummy = new Interpreter() {
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                throw new AssertionError("Should not be called");
-            }
+        Interpreter dummy =
+                new Interpreter() {
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                        throw new AssertionError("Should not be called");
+                    }
 
-            @Override
-            public com.ingsis.result.Result<String> interpret(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                throw new AssertionError("Should not be called");
-            }
+                    @Override
+                    public com.ingsis.result.Result<String> interpret(
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                    declarationKeywordNode) {
+                        throw new AssertionError("Should not be called");
+                    }
 
-            @Override
-            public com.ingsis.result.Result<Object> interpret(com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                throw new AssertionError("Should not be called");
-            }
-        };
+                    @Override
+                    public com.ingsis.result.Result<Object> interpret(
+                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                        throw new AssertionError("Should not be called");
+                    }
+                };
 
         Result<Object> r1 = strat.solve(dummy, new LiteralNode("123", 0, 0));
         assertTrue(r1.isCorrect());

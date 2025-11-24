@@ -1,12 +1,14 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.lexer.tokenizers;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class FinalTokenizerTest {
     @Test

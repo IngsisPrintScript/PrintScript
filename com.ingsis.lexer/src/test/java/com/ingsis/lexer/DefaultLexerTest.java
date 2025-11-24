@@ -1,21 +1,23 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.lexer;
 
-import com.ingsis.metachar.MetaChar;
-import com.ingsis.peekableiterator.PeekableIterator;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
-import com.ingsis.result.Result;
+import com.ingsis.metachar.MetaChar;
+import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.TokenFactory;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DefaultLexerTest {
     private TokenFactory tokenFactory;
@@ -35,7 +37,8 @@ public class DefaultLexerTest {
             chars.add(c);
         }
         PeekableIterator<MetaChar> charStream = new ListPeekableCharIterator(chars);
-        Tokenizer tokenizer = new SecondTokenizerFactory(tokenFactory, resultFactory).createTokenizer();
+        Tokenizer tokenizer =
+                new SecondTokenizerFactory(tokenFactory, resultFactory).createTokenizer();
         DefaultLexer lexer = new DefaultLexer(charStream, tokenizer, resultFactory);
 
         assertTrue(lexer.hasNext());
@@ -62,7 +65,8 @@ public class DefaultLexerTest {
         Queue<Character> chars = new LinkedList<>();
         for (char c : "123".toCharArray()) chars.add(c);
         PeekableIterator<MetaChar> charStream = new ListPeekableCharIterator(chars);
-        Tokenizer tokenizer = new SecondTokenizerFactory(tokenFactory, resultFactory).createTokenizer();
+        Tokenizer tokenizer =
+                new SecondTokenizerFactory(tokenFactory, resultFactory).createTokenizer();
         DefaultLexer lexer = new DefaultLexer(charStream, tokenizer, resultFactory);
 
         assertTrue(lexer.hasNext());

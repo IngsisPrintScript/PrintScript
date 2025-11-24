@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.interpreter.visitor.expression.strategies.function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -8,11 +12,9 @@ import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.result.Result;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.types.Types;
 import com.ingsis.visitors.Interpreter;
 import java.util.List;
-import java.util.function.Function;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,10 +36,15 @@ class GlobalFunctionBodySolutionStrategyTest {
 
     @Test
     void evaluatesLambdaWithRuntimeParameters() {
-        ExpressionSolutionStrategy next = (i, e) -> { throw new AssertionError(); };
-        GlobalFunctionBodySolutionStrategy strat = new GlobalFunctionBodySolutionStrategy(runtime, next);
+        ExpressionSolutionStrategy next =
+                (i, e) -> {
+                    throw new AssertionError();
+                };
+        GlobalFunctionBodySolutionStrategy strat =
+                new GlobalFunctionBodySolutionStrategy(runtime, next);
 
-        GlobalFunctionBody body = new GlobalFunctionBody(List.of("a"), (Object[] arr) -> ((Double) arr[0]) * 2, 0, 0);
+        GlobalFunctionBody body =
+                new GlobalFunctionBody(List.of("a"), (Object[] arr) -> ((Double) arr[0]) * 2, 0, 0);
 
         Result<Object> res = strat.solve((Interpreter) null, body);
         assertTrue(res.isCorrect());

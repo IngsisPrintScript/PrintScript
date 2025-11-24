@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.interpreter.visitor.expression.strategies;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
