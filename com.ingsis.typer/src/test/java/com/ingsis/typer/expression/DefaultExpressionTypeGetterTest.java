@@ -93,7 +93,7 @@ class DefaultExpressionTypeGetterTest {
                             com.ingsis.visitors.Interpreter interpreter) {
                         throw new UnsupportedOperationException();
                     }
-                    
+
                     @Override
                     public Integer line() {
                         return 1;
