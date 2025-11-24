@@ -9,18 +9,19 @@ import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.result.Result;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import java.util.function.Supplier;
 
 public class FormatterPrintlnHandler implements NodeEventHandler<ExpressionNode> {
     private final Integer amountOfLinesBeforeCall;
-    private final NodeEventHandler<ExpressionNode> expressionHandler;
+    private final Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier;
     private final ResultFactory resultFactory;
 
     public FormatterPrintlnHandler(
             Integer amountOfLinesBeforeCall,
-            NodeEventHandler<ExpressionNode> expressionHandler,
+            Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier,
             ResultFactory resultFactory) {
         this.amountOfLinesBeforeCall = amountOfLinesBeforeCall;
-        this.expressionHandler = expressionHandler;
+        this.expressionHandlerSupplier = expressionHandlerSupplier;
         this.resultFactory = resultFactory;
     }
 
@@ -39,7 +40,7 @@ public class FormatterPrintlnHandler implements NodeEventHandler<ExpressionNode>
         sb.append(callFunctionNode.symbol());
         sb.append("( ");
         Result<String> parseExpressionResult =
-                expressionHandler.handle(callFunctionNode.children().get(0));
+                expressionHandlerSupplier.get().handle(callFunctionNode.children().get(0));
         if (!parseExpressionResult.isCorrect()) {
             return resultFactory.cloneIncorrectResult(parseExpressionResult);
         }

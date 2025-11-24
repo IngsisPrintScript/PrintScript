@@ -4,6 +4,7 @@
 
 package com.ingsis.formatter.handlers.factories;
 
+import com.ingsis.formatter.handlers.FormatterConditionalHandler;
 import com.ingsis.formatter.handlers.FormatterDeclarationHandler;
 import com.ingsis.formatter.handlers.FormatterIdentifierHandler;
 import com.ingsis.formatter.handlers.FormatterLiteralHandler;
@@ -14,21 +15,27 @@ import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.rule.observer.handlers.AndInMemoryNodeEventHandlerRegistry;
-import com.ingsis.rule.observer.handlers.FinalHandler;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.rule.observer.handlers.NodeEventHandlerRegistry;
 import com.ingsis.rule.observer.handlers.OrInMemoryNodeEventHandlerRegistry;
 import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.rule.status.provider.RuleStatusProvider;
+import com.ingsis.visitors.Checker;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 
 public class InMemoryFormatterHandlerFactory implements HandlerFactory {
+    private final Supplier<Checker> eventsCheckerSupplier;
     private final ResultFactory resultFactory;
     private final RuleStatusProvider ruleStatusProvider;
 
     public InMemoryFormatterHandlerFactory(
-            ResultFactory resultFactory, RuleStatusProvider ruleStatusProvider) {
+            ResultFactory resultFactory,
+            RuleStatusProvider ruleStatusProvider,
+            Supplier<Checker> eventsCheckerSupplier) {
         this.resultFactory = resultFactory;
         this.ruleStatusProvider = ruleStatusProvider;
+        this.eventsCheckerSupplier = eventsCheckerSupplier;
     }
 
     @Override
@@ -49,39 +56,32 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
     public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
         NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry =
                 new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
-        handlerRegistry.register(new FinalHandler<>(resultFactory));
+        handlerRegistry.register(
+                new FormatterConditionalHandler(eventsCheckerSupplier, resultFactory));
         return handlerRegistry;
     }
 
     @Override
     public NodeEventHandler<ExpressionNode> createExpressionHandler() {
-        NodeEventHandlerRegistry<ExpressionNode> handlerRegistry =
-                new OrInMemoryNodeEventHandlerRegistry<>(resultFactory);
-        handlerRegistry.register(
-                new FormatterOperatorHandler(resultFactory, createOperatorLeafExpressionHandler()));
-        handlerRegistry.register(new FormatterIdentifierHandler(resultFactory));
-        handlerRegistry.register(new FormatterLiteralHandler(resultFactory));
-        return handlerRegistry;
-    }
+        AtomicReference<NodeEventHandler<ExpressionNode>> ref = new AtomicReference<>();
 
-    private NodeEventHandler<ExpressionNode> createOperatorLeafExpressionHandler() {
-        NodeEventHandlerRegistry<ExpressionNode> handlerRegistry =
+        Supplier<NodeEventHandler<ExpressionNode>> self = ref::get;
+
+        OrInMemoryNodeEventHandlerRegistry<ExpressionNode> registry =
                 new OrInMemoryNodeEventHandlerRegistry<>(resultFactory);
-        handlerRegistry.register(new FormatterLiteralHandler(resultFactory));
-        handlerRegistry.register(new FormatterIdentifierHandler(resultFactory));
-        handlerRegistry.register(
+
+        registry.register(new FormatterLiteralHandler(resultFactory));
+        registry.register(new FormatterIdentifierHandler(resultFactory));
+
+        registry.register(new FormatterOperatorHandler(resultFactory, self));
+        registry.register(
                 new FormatterPrintlnHandler(
-                        ruleStatusProvider.getRuleValue("printlnLines", Integer.class),
-                        createCallFunctionLeafExpressionHandler(),
+                        ruleStatusProvider.getRuleValue("printlnSeparationLines", Integer.class),
+                        self,
                         resultFactory));
-        return handlerRegistry;
-    }
 
-    private NodeEventHandler<ExpressionNode> createCallFunctionLeafExpressionHandler() {
-        NodeEventHandlerRegistry<ExpressionNode> handlerRegistry =
-                new OrInMemoryNodeEventHandlerRegistry<>(resultFactory);
-        handlerRegistry.register(new FormatterLiteralHandler(resultFactory));
-        handlerRegistry.register(new FormatterIdentifierHandler(resultFactory));
-        return handlerRegistry;
+        ref.set(registry);
+
+        return registry;
     }
 }

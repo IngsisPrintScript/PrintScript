@@ -39,6 +39,8 @@ import com.ingsis.result.factory.LoggerResultFactory;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.rule.observer.EventsChecker;
 import com.ingsis.rule.observer.factories.DefaultCheckerFactory;
+import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
+import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
 import com.ingsis.rule.status.provider.YamlRuleStatusProvider;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.sca.ProgramSca;
@@ -49,6 +51,7 @@ import com.ingsis.syntactic.factories.ParserChainFactory;
 import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.visitors.Checker;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,6 +60,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Queue;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
@@ -236,15 +241,25 @@ public final class CliEngine implements Engine {
 
     private EventsChecker buildFormatterChecker() {
 
-        return (EventsChecker)
-                new DefaultCheckerFactory()
-                        .createInMemoryEventBasedChecker(
-                                new InMemoryFormatterPublisherFactory(
-                                        new InMemoryFormatterHandlerFactory(
-                                                new LoggerResultFactory(
-                                                        new DefaultResultFactory(),
-                                                        DefaultRuntime.getInstance()),
-                                                new YamlRuleStatusProvider(formatConfig))));
+        AtomicReference<Checker> checkerRef = new AtomicReference<>();
+        Supplier<Checker> checkerSupplier = checkerRef::get;
+
+        HandlerFactory handlerFactory =
+                new InMemoryFormatterHandlerFactory(
+                        new LoggerResultFactory(
+                                new DefaultResultFactory(), DefaultRuntime.getInstance()),
+                        new YamlRuleStatusProvider(formatConfig),
+                        checkerSupplier // <-- IMPORTANT
+                        );
+
+        PublishersFactory publishersFactory = new InMemoryFormatterPublisherFactory(handlerFactory);
+
+        Checker checker =
+                new DefaultCheckerFactory().createInMemoryEventBasedChecker(publishersFactory);
+
+        checkerRef.set(checker);
+
+        return (EventsChecker) checker;
     }
 
     private ProgramFormatter buildProgramFormatter(Path file) throws IOException {

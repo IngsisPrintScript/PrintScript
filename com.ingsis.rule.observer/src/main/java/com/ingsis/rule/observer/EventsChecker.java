@@ -11,24 +11,19 @@ import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
-import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
 import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public final class EventsChecker implements Checker {
-    private final Map<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>>
-            eventPublishers;
+    private final Supplier<Map<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>>>
+            publishersSupplier;
 
-    public EventsChecker(PublishersFactory publishersFactory) {
-        this.eventPublishers = new LinkedHashMap<>();
-        eventPublishers.put(
-                IfKeywordNode.class, publishersFactory.createConditionalNodePublisher());
-        eventPublishers.put(
-                DeclarationKeywordNode.class, publishersFactory.createLetNodePublisher());
-        eventPublishers.put(
-                ExpressionNode.class, publishersFactory.createExpressionNodePublisher());
+    public EventsChecker(
+            Supplier<Map<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>>>
+                    publishersSupplier) {
+        this.publishersSupplier = publishersSupplier;
     }
 
     @Override
@@ -60,6 +55,8 @@ public final class EventsChecker implements Checker {
 
     @SuppressWarnings("unchecked")
     private <T extends Node> Result<String> dispatch(T node, Class<?> mapClass) {
+        Map<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>> eventPublishers =
+                publishersSupplier.get();
         if (!eventPublishers.containsKey(mapClass)) {
             return new IncorrectResult<>("No publisher for node type: " + node.getClass());
         }
