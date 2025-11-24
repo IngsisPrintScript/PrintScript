@@ -11,6 +11,7 @@ import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
 import java.lang.reflect.Method;
 import java.util.List;
@@ -27,7 +28,11 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.keyword.DeclarationKeywordNode>
                             createLetNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new CorrectResult<>("ok")));
+                                List.of(
+                                        (NodeEventHandler<
+                                                        com.ingsis.nodes.keyword
+                                                                .DeclarationKeywordNode>)
+                                                (node -> new CorrectResult<>("ok"))));
                     }
 
                     @Override
@@ -35,7 +40,9 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.keyword.IfKeywordNode>
                             createConditionalNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new CorrectResult<>("ok")));
+                                List.of(
+                                        (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
+                                                (node -> new CorrectResult<>("ok"))));
                     }
 
                     @Override
@@ -43,7 +50,10 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.expression.ExpressionNode>
                             createExpressionNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new CorrectResult<>("ok")));
+                                List.of(
+                                        (NodeEventHandler<
+                                                        com.ingsis.nodes.expression.ExpressionNode>)
+                                                (node -> new CorrectResult<>("ok"))));
                     }
                 };
         EventsChecker checker = new EventsChecker(pf);
@@ -162,7 +172,11 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.keyword.DeclarationKeywordNode>
                             createLetNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new IncorrectResult<>("pub-bad")));
+                                List.of(
+                                        (NodeEventHandler<
+                                                        com.ingsis.nodes.keyword
+                                                                .DeclarationKeywordNode>)
+                                                (node -> new IncorrectResult<>("pub-bad"))));
                     }
 
                     @Override
@@ -170,7 +184,9 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.keyword.IfKeywordNode>
                             createConditionalNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new IncorrectResult<>("pub-bad")));
+                                List.of(
+                                        (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
+                                                (node -> new IncorrectResult<>("pub-bad"))));
                     }
 
                     @Override
@@ -178,7 +194,10 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.expression.ExpressionNode>
                             createExpressionNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new IncorrectResult<>("pub-bad")));
+                                List.of(
+                                        (NodeEventHandler<
+                                                        com.ingsis.nodes.expression.ExpressionNode>)
+                                                (node -> new IncorrectResult<>("pub-bad"))));
                     }
                 };
         EventsChecker badChecker = new EventsChecker(badPf);
@@ -241,7 +260,11 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.keyword.DeclarationKeywordNode>
                             createLetNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new CorrectResult<>("ok")));
+                                List.of(
+                                        (NodeEventHandler<
+                                                        com.ingsis.nodes.keyword
+                                                                .DeclarationKeywordNode>)
+                                                (node -> new CorrectResult<>("ok"))));
                     }
 
                     @Override
@@ -249,7 +272,9 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.keyword.IfKeywordNode>
                             createConditionalNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new CorrectResult<>("ok")));
+                                List.of(
+                                        (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
+                                                (node -> new CorrectResult<>("ok"))));
                     }
 
                     @Override
@@ -257,7 +282,10 @@ class EventsCheckerAdditionalTest {
                                     com.ingsis.nodes.expression.ExpressionNode>
                             createExpressionNodePublisher() {
                         return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(node -> new CorrectResult<>("ok")));
+                                List.of(
+                                        (NodeEventHandler<
+                                                        com.ingsis.nodes.expression.ExpressionNode>)
+                                                (node -> new CorrectResult<>("ok"))));
                     }
                 };
         EventsChecker okChecker = new EventsChecker(okPf);

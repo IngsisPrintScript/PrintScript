@@ -82,9 +82,6 @@ public final class CliEngine implements Engine {
     @Option(names = "--formatConfig", description = "Path to the format config file.")
     private Path formatConfig;
 
-    @Option(names = "--file", description = "Path to a PrintScript file.")
-    private Path file;
-
     @Option(names = "--version", description = "PrintScript version to use.", required = true)
     private Version version;
 

@@ -266,4 +266,45 @@ class CliEngineTest {
             assertTrue(ite.getCause() instanceof NullPointerException);
         }
     }
+
+    @Test
+    void buildFormatterCheckerAndProgramFormatterRun() throws Exception {
+        // create a temporary YAML file for formatConfig
+        java.nio.file.Path yaml = java.nio.file.Files.createTempFile("format-config", ".yml");
+        java.nio.file.Files.writeString(yaml, "sampleRule: true\n");
+
+        Field formatConfigField = CliEngine.class.getDeclaredField("formatConfig");
+        formatConfigField.setAccessible(true);
+        formatConfigField.set(engine, yaml);
+
+        // ensure version set
+        Field versionField = CliEngine.class.getDeclaredField("version");
+        versionField.setAccessible(true);
+        versionField.set(engine, com.ingsis.engine.versions.Version.V1_0);
+
+        Method mChecker = CliEngine.class.getDeclaredMethod("buildFormatterChecker");
+        mChecker.setAccessible(true);
+        Object checker = mChecker.invoke(engine);
+        assertNotNull(checker);
+
+        Method mFormatter =
+                CliEngine.class.getDeclaredMethod(
+                        "buildProgramFormatter", java.nio.file.Path.class);
+        mFormatter.setAccessible(true);
+        java.nio.file.Path tmp = java.nio.file.Files.createTempFile("ps-format", ".ps");
+        Object formatter = mFormatter.invoke(engine, tmp);
+        assertNotNull(formatter);
+
+        // try calling format() if possible to exercise behaviour (may return correct/incorrect)
+        try {
+            java.lang.reflect.Method formatMethod = formatter.getClass().getMethod("format");
+            Object r = formatMethod.invoke(formatter);
+            assertNotNull(r);
+        } catch (NoSuchMethodException ignored) {
+            // some formatter implementations may not expose format() publicly
+        }
+
+        java.nio.file.Files.deleteIfExists(yaml);
+        java.nio.file.Files.deleteIfExists(tmp);
+    }
 }

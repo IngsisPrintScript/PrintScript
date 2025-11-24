@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,10 @@ class GenericNodeEventPublisherTest {
     @Test
     void whenListenerFails_thenNotifyReturnsIncorrect() {
         GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
-                new GenericNodeEventPublisher<>(List.of(n -> new IncorrectResult<>("err")));
+                new GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<com.ingsis.nodes.Node>)
+                                        (n -> new IncorrectResult<>("err"))));
         com.ingsis.nodes.Node n =
                 new com.ingsis.nodes.Node() {
                     @Override
@@ -46,7 +50,10 @@ class GenericNodeEventPublisherTest {
     @Test
     void whenAllListenersPass_thenReturnsCorrectWithMessage() {
         GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
-                new GenericNodeEventPublisher<>(List.of(n -> new CorrectResult<>("ok")));
+                new GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<com.ingsis.nodes.Node>)
+                                        (n -> new CorrectResult<>("ok"))));
         com.ingsis.nodes.Node n =
                 new com.ingsis.nodes.Node() {
                     @Override
