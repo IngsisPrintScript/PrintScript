@@ -1,16 +1,18 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.sca.observer.handlers.function.call.global;
 
-import com.ingsis.nodes.expression.ExpressionNode;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.result.Result;
 import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.result.factory.ResultFactory;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class FunctionArgumentTypeCheckerTest {
 
@@ -33,8 +35,10 @@ class FunctionArgumentTypeCheckerTest {
         FunctionArgumentTypeChecker checker = new FunctionArgumentTypeChecker(rf, name, 1);
 
         IdentifierNode id = new IdentifierNode(name, 2, 3);
-        CallFunctionNode badArg = new CallFunctionNode(new IdentifierNode("g",5,6), List.of(), 9, 11);
-        CallFunctionNode node = new CallFunctionNode(id, List.of(new IdentifierNode("x",1,1), badArg), 2, 3);
+        CallFunctionNode badArg =
+                new CallFunctionNode(new IdentifierNode("g", 5, 6), List.of(), 9, 11);
+        CallFunctionNode node =
+                new CallFunctionNode(id, List.of(new IdentifierNode("x", 1, 1), badArg), 2, 3);
 
         Result<String> res = checker.handle(node);
         assertFalse(res.isCorrect());

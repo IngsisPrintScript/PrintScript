@@ -1,4 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.semantic;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
@@ -10,11 +16,9 @@ import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DefaultHandlersFactoryTest {
 
@@ -65,15 +69,13 @@ public class DefaultHandlersFactoryTest {
 
     @Test
     public void createOperatorValidityHandler_shouldReturnHandler() {
-        NodeEventHandler<ExpressionNode> handler =
-                factory.createOperatorValidityHandler();
+        NodeEventHandler<ExpressionNode> handler = factory.createOperatorValidityHandler();
         assertNotNull(handler);
     }
 
     @Test
     public void createLetCorrectTypeHandler_shouldReturnHandler() {
-        NodeEventHandler<DeclarationKeywordNode> handler =
-                factory.createLetCorrectTypeHandler();
+        NodeEventHandler<DeclarationKeywordNode> handler = factory.createLetCorrectTypeHandler();
         assertNotNull(handler);
     }
 }

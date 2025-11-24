@@ -1,7 +1,13 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.semantic;
 
-import com.ingsis.nodes.keyword.IfKeywordNode;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.ingsis.nodes.expression.literal.LiteralNode;
+import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
@@ -10,13 +16,10 @@ import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.identifier.type.IfNodeCorrectTypeEventHandler;
+import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class IfNodeCorrectTypeEventHandlerTest {
 

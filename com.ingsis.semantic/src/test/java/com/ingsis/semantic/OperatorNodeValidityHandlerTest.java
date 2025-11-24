@@ -1,4 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.semantic;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
@@ -13,8 +19,6 @@ import com.ingsis.semantic.checkers.handlers.operators.OperatorNodeValidityHandl
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class OperatorNodeValidityHandlerTest {
 

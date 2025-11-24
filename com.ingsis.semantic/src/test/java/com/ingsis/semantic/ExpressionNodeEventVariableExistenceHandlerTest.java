@@ -1,4 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.semantic;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
@@ -12,15 +18,9 @@ import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.identifier.existance.ExpressionNodeEventVariableExistenceHandler;
-import com.ingsis.types.Types;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Collection;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ExpressionNodeEventVariableExistenceHandlerTest {
 
@@ -56,9 +56,10 @@ class ExpressionNodeEventVariableExistenceHandlerTest {
     @Test
     void handle_whenChildrenHaveError_shouldReturnFirstError() {
         // Nodo padre con un hijo IdentifierNode no inicializado
-        ExpressionNode child = new IdentifierNode("v",2,3);
+        ExpressionNode child = new IdentifierNode("v", 2, 3);
 
-        ExpressionNode parent = new BinaryOperatorNode("+",child,new IdentifierNode("p",1,2),1,1);
+        ExpressionNode parent =
+                new BinaryOperatorNode("+", child, new IdentifierNode("p", 1, 2), 1, 1);
 
         Result<String> result = handler.handle(parent);
 
@@ -68,7 +69,7 @@ class ExpressionNodeEventVariableExistenceHandlerTest {
 
     @Test
     void handle_whenAllOk_shouldReturnCorrectResult() {
-        ExpressionNode node = new LiteralNode("a",1,1);
+        ExpressionNode node = new LiteralNode("a", 1, 1);
         Result<String> result = handler.handle(node);
 
         assertInstanceOf(CorrectResult.class, result);

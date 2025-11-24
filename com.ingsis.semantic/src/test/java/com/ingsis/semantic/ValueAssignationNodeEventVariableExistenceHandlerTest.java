@@ -1,6 +1,11 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.semantic;
 
-import com.ingsis.nodes.expression.ExpressionNode;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.ValueAssignationNode;
@@ -14,11 +19,9 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.semantic.checkers.handlers.identifier.existance.ValueAssignationNodeEventVariableExistenceHandler;
 import com.ingsis.types.Types;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class ValueAssignationNodeEventVariableExistenceHandlerTest {
 
@@ -57,7 +60,8 @@ class ValueAssignationNodeEventVariableExistenceHandlerTest {
         env.createVariable("b", Types.STRING);
 
         IdentifierNode id = new IdentifierNode("b", 1, 1);
-        ValueAssignationNode node = new ValueAssignationNode(id, new LiteralNode("Check Passed.",1,1), 1, 1);
+        ValueAssignationNode node =
+                new ValueAssignationNode(id, new LiteralNode("Check Passed.", 1, 1), 1, 1);
 
         Result<String> result = handler.handle(node);
 

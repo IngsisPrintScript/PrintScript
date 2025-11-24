@@ -1,4 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.semantic;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
@@ -9,14 +15,10 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
 import com.ingsis.visitors.Interpretable;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Queue;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 public class DefaultSemanticCheckerTest {
 
@@ -66,7 +68,8 @@ public class DefaultSemanticCheckerTest {
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptInterpreter(com.ingsis.visitors.Interpreter interpreter) {
+        public com.ingsis.result.Result<String> acceptInterpreter(
+                com.ingsis.visitors.Interpreter interpreter) {
             return new CorrectResult<>("ok");
         }
     }
@@ -79,11 +82,30 @@ public class DefaultSemanticCheckerTest {
         items.add(tc);
         PeekableIterator<Checkable> it = new SimplePeekable<>(items);
 
-        DefaultSemanticChecker checker = new DefaultSemanticChecker(it, new Checker() {
-            @Override public Result<String> check(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) { return new CorrectResult<>("ok"); }
-            @Override public Result<String> check(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) { return new CorrectResult<>("ok"); }
-            @Override public Result<String> check(com.ingsis.nodes.expression.ExpressionNode expressionNode) { return new CorrectResult<>("ok"); }
-        }, runtime);
+        DefaultSemanticChecker checker =
+                new DefaultSemanticChecker(
+                        it,
+                        new Checker() {
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                                return new CorrectResult<>("ok");
+                            }
+
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                            declarationKeywordNode) {
+                                return new CorrectResult<>("ok");
+                            }
+
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                                return new CorrectResult<>("ok");
+                            }
+                        },
+                        runtime);
 
         Result<com.ingsis.visitors.Interpretable> result = checker.parse();
 
@@ -99,11 +121,30 @@ public class DefaultSemanticCheckerTest {
         items.add(tc);
         PeekableIterator<Checkable> it = new SimplePeekable<>(items);
 
-        DefaultSemanticChecker checker = new DefaultSemanticChecker(it, new Checker() {
-            @Override public Result<String> check(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) { return new IncorrectResult<>("bad"); }
-            @Override public Result<String> check(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) { return new IncorrectResult<>("bad"); }
-            @Override public Result<String> check(com.ingsis.nodes.expression.ExpressionNode expressionNode) { return new IncorrectResult<>("bad"); }
-        }, runtime);
+        DefaultSemanticChecker checker =
+                new DefaultSemanticChecker(
+                        it,
+                        new Checker() {
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                                return new IncorrectResult<>("bad");
+                            }
+
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                            declarationKeywordNode) {
+                                return new IncorrectResult<>("bad");
+                            }
+
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                                return new IncorrectResult<>("bad");
+                            }
+                        },
+                        runtime);
 
         Result<com.ingsis.visitors.Interpretable> result = checker.parse();
 
@@ -119,11 +160,30 @@ public class DefaultSemanticCheckerTest {
         items.add(tc);
         PeekableIterator<Checkable> it = new SimplePeekable<>(items);
 
-        DefaultSemanticChecker checker = new DefaultSemanticChecker(it, new Checker() {
-            @Override public Result<String> check(com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) { return new CorrectResult<>("ok"); }
-            @Override public Result<String> check(com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) { return new CorrectResult<>("ok"); }
-            @Override public Result<String> check(com.ingsis.nodes.expression.ExpressionNode expressionNode) { return new CorrectResult<>("ok"); }
-        }, runtime);
+        DefaultSemanticChecker checker =
+                new DefaultSemanticChecker(
+                        it,
+                        new Checker() {
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                                return new CorrectResult<>("ok");
+                            }
+
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                            declarationKeywordNode) {
+                                return new CorrectResult<>("ok");
+                            }
+
+                            @Override
+                            public Result<String> check(
+                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                                return new CorrectResult<>("ok");
+                            }
+                        },
+                        runtime);
 
         assertTrue(checker.hasNext());
         com.ingsis.visitors.Interpretable p = checker.peek();

@@ -40,14 +40,14 @@ public final class ValueAssignationNodeEventVariableExistenceHandler
         ExpressionNode expressionNode = node.expressionNode();
         if (expressionNode == null) {
             return resultFactory.createIncorrectResult(
-                String.format(
-                    "Expression is missing for assignation on line: %d and column: %d",
-                    identifierNode.line(), identifierNode.column()));
+                    String.format(
+                            "Expression is missing for assignation on line: %d and column: %d",
+                            identifierNode.line(), identifierNode.column()));
         }
 
         Result<String> checkExpressionVariables =
-            new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory)
-                .handle(expressionNode);
+                new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory)
+                        .handle(expressionNode);
 
         if (!checkExpressionVariables.isCorrect()) {
             return resultFactory.cloneIncorrectResult(checkExpressionVariables);
