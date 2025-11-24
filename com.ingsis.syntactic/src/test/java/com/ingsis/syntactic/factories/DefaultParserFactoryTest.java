@@ -8,7 +8,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.syntactic.parsers.IdentifierParser;
+import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
+import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.syntactic.parsers.TypeParser;
 import com.ingsis.syntactic.parsers.declaration.DeclarationParser;
 import com.ingsis.syntactic.parsers.expression.LineExpressionParser;

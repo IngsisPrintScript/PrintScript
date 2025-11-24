@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.nodes.factories.NodeFactory;
 import com.ingsis.syntactic.parsers.Parser;
+import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import com.ingsis.tokens.factories.TokenFactory;
 import org.junit.jupiter.api.Test;
