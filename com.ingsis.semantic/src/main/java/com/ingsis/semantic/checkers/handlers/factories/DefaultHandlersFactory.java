@@ -18,39 +18,42 @@ import com.ingsis.semantic.checkers.handlers.identifier.existance.ExpressionNode
 import com.ingsis.semantic.checkers.handlers.identifier.existance.LetNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.identifier.type.LetNodeCorrectTypeEventHandler;
 import com.ingsis.semantic.checkers.handlers.operators.OperatorNodeValidityHandler;
-
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultHandlersFactory implements HandlerFactory {
-  private final Runtime runtime;
-  private final ResultFactory resultFactory;
+    private final Runtime runtime;
+    private final ResultFactory resultFactory;
 
-  public DefaultHandlersFactory(Runtime runtime, ResultFactory resultFactory) {
-    this.runtime = runtime;
-    this.resultFactory = resultFactory;
-  }
+    public DefaultHandlersFactory(Runtime runtime, ResultFactory resultFactory) {
+        this.runtime = runtime;
+        this.resultFactory = resultFactory;
+    }
 
-  @Override
-  public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
-    NodeEventHandlerRegistry<DeclarationKeywordNode> handler = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
-    handler.register(new LetNodeEventVariableExistenceHandler(runtime, resultFactory));
-    handler.register(new LetNodeCorrectTypeEventHandler(runtime, resultFactory));
-    return handler;
-  }
+    @Override
+    public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
+        NodeEventHandlerRegistry<DeclarationKeywordNode> handler =
+                new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+        handler.register(new LetNodeEventVariableExistenceHandler(runtime, resultFactory));
+        handler.register(new LetNodeCorrectTypeEventHandler(runtime, resultFactory));
+        return handler;
+    }
 
-  @Override
-  public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
-    NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
-    handlerRegistry.register(new FinalHandler<>(resultFactory));
-    return handlerRegistry;
-  }
+    @Override
+    public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
+        NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry =
+                new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+        handlerRegistry.register(new FinalHandler<>(resultFactory));
+        return handlerRegistry;
+    }
 
-  @Override
-  public NodeEventHandler<ExpressionNode> createExpressionHandler() {
-    NodeEventHandlerRegistry<ExpressionNode> handlerRegistry = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
-    handlerRegistry.register(new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory));
-    handlerRegistry.register(new OperatorNodeValidityHandler(runtime, resultFactory));
-    return handlerRegistry;
-  }
+    @Override
+    public NodeEventHandler<ExpressionNode> createExpressionHandler() {
+        NodeEventHandlerRegistry<ExpressionNode> handlerRegistry =
+                new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+        handlerRegistry.register(
+                new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory));
+        handlerRegistry.register(new OperatorNodeValidityHandler(runtime, resultFactory));
+        return handlerRegistry;
+    }
 }

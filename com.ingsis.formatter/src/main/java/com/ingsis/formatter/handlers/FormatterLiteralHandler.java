@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.formatter.handlers;
 
 import com.ingsis.nodes.expression.ExpressionNode;
@@ -7,18 +11,17 @@ import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
 
 public class FormatterLiteralHandler implements NodeEventHandler<ExpressionNode> {
-  private final ResultFactory resultFactory;
+    private final ResultFactory resultFactory;
 
-  public FormatterLiteralHandler(ResultFactory resultFactory) {
-    this.resultFactory = resultFactory;
-  }
-
-  @Override
-  public Result<String> handle(ExpressionNode node) {
-    if (!(node instanceof LiteralNode literalNode)) {
-      return resultFactory.createIncorrectResult("Incorrect handler.");
+    public FormatterLiteralHandler(ResultFactory resultFactory) {
+        this.resultFactory = resultFactory;
     }
-    return resultFactory.createCorrectResult(literalNode.value());
-  }
 
+    @Override
+    public Result<String> handle(ExpressionNode node) {
+        if (!(node instanceof LiteralNode literalNode)) {
+            return resultFactory.createIncorrectResult("Incorrect handler.");
+        }
+        return resultFactory.createCorrectResult(literalNode.value());
+    }
 }

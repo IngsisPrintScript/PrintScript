@@ -10,9 +10,9 @@ import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
 
 public interface HandlerFactory {
-  public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler();
+    public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler();
 
-  public NodeEventHandler<IfKeywordNode> createConditionalHandler();
+    public NodeEventHandler<IfKeywordNode> createConditionalHandler();
 
-  public NodeEventHandler<ExpressionNode> createExpressionHandler();
+    public NodeEventHandler<ExpressionNode> createExpressionHandler();
 }

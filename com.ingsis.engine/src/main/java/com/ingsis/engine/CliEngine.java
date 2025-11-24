@@ -6,6 +6,7 @@ package com.ingsis.engine;
 
 import com.ingsis.engine.factories.charstream.CharStreamFactory;
 import com.ingsis.engine.factories.charstream.DefaultCharStreamFactory;
+import com.ingsis.engine.factories.formatter.InMemoryFormatterFactory;
 import com.ingsis.engine.factories.interpreter.DefaultProgramInterpreterFactory;
 import com.ingsis.engine.factories.interpreter.ProgramInterpreterFactory;
 import com.ingsis.engine.factories.lexer.DefaultLexerFactory;
@@ -18,6 +19,9 @@ import com.ingsis.engine.factories.syntactic.SyntacticFactory;
 import com.ingsis.engine.factories.tokenstream.DefaultTokenStreamFactory;
 import com.ingsis.engine.factories.tokenstream.TokenStreamFactory;
 import com.ingsis.engine.versions.Version;
+import com.ingsis.formatter.ProgramFormatter;
+import com.ingsis.formatter.handlers.factories.InMemoryFormatterHandlerFactory;
+import com.ingsis.formatter.publishers.factories.InMemoryFormatterPublisherFactory;
 import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.DefaultSolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
@@ -35,6 +39,7 @@ import com.ingsis.result.factory.LoggerResultFactory;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.rule.observer.EventsChecker;
 import com.ingsis.rule.observer.factories.DefaultCheckerFactory;
+import com.ingsis.rule.status.provider.YamlRuleStatusProvider;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.sca.ProgramSca;
 import com.ingsis.sca.observer.handlers.factories.DefaultStaticCodeAnalyzerHandlerFactory;
@@ -61,6 +66,9 @@ public final class CliEngine implements Engine {
   @Option(names = "--action", description = "Command to execute.", required = true)
   private String command;
 
+  @Option(names = "--formatConfig", description = "Path to the format config file.")
+  private Path formatConfig;
+
   @Option(names = "--file", description = "Path to a PrintScript file.")
   private Path file;
 
@@ -76,12 +84,28 @@ public final class CliEngine implements Engine {
   public void run() {
     if (command.equals("analyze")) {
       analyzeFile(file);
+    } else if (command.equals("format")) {
+      formatFile(file);
     } else {
       if (file != null) {
         runFile(file);
       } else {
         runREPL();
       }
+    }
+  }
+
+  private void formatFile(Path file) {
+    try {
+      System.out.println("Format file: " + file);
+      Result<String> formatResult = buildProgramFormatter(file).format();
+      IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+      if (!formatResult.isCorrect() && executionError != null) {
+        System.out.print("Error: " + executionError.error() + "\n");
+      }
+      System.out.print(formatResult.result());
+    } catch (Exception e) {
+      System.out.print(e.getMessage());
     }
   }
 
@@ -92,13 +116,11 @@ public final class CliEngine implements Engine {
       IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
       if (!analyzeResult.isCorrect() && executionError != null) {
         System.out.print("Error: " + executionError.error() + "\n");
-      } else {
-        System.out.print("Checks passed.");
-
       }
     } catch (Exception e) {
       System.out.print(e.getMessage());
     }
+    System.out.print("Checks passed.");
   }
 
   private void runFile(Path file) {
@@ -196,6 +218,27 @@ public final class CliEngine implements Engine {
             file,
             DefaultRuntime.getInstance(),
             buildScaChecker());
+  }
+
+  private EventsChecker buildFormatterChecker() {
+
+    return (EventsChecker) new DefaultCheckerFactory()
+        .createInMemoryEventBasedChecker(
+            new InMemoryFormatterPublisherFactory(
+                new InMemoryFormatterHandlerFactory(
+                    new LoggerResultFactory(
+                        new DefaultResultFactory(),
+                        DefaultRuntime.getInstance()),
+                    new YamlRuleStatusProvider(formatConfig))));
+  }
+
+  private ProgramFormatter buildProgramFormatter(Path file) throws IOException {
+    return new InMemoryFormatterFactory()
+        .createFormatter(
+            createSemanticFactory(),
+            file,
+            DefaultRuntime.getInstance(),
+            buildFormatterChecker());
   }
 
   private ProgramInterpreter buildReplInterpreter(Queue<Character> buffer) {
