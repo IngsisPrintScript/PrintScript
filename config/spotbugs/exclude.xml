@@ -1,5 +1,22 @@
 <FindBugsFilter>
+    <?xml version="1.0" encoding="UTF-8"?>
+    <FindBugsFilter>
+        <!-- Exclude generated classes (already present) -->
+        <Match>
+            <Class name="~.*\.generated\..*"/>
+        </Match>
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+    <!-- Exclude generated classes (already present) -->
     <Match>
         <Class name="~.*\.generated\..*"/>
+    </Match>
+
+    <!-- Suppress warnings about exposing internal mutable representation via returns -->
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP"/>
+    </Match>
+    <Match>
+        <Bug pattern="EI_EXPOSE_REP2"/>
     </Match>
 </FindBugsFilter>

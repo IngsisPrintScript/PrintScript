@@ -6,7 +6,6 @@ package com.ingsis.sca;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.rule.observer.EventsChecker;
 import com.ingsis.visitors.Checkable;
@@ -24,10 +23,9 @@ public class InMemoryProgramSca implements ProgramSca {
 
     @Override
     public Result<String> analyze() {
-        Result<String> finalResult = new IncorrectResult<>("");
         while (checkableStream.hasNext()) {
             Checkable next = (Checkable) checkableStream.next();
-            finalResult = next.acceptChecker(eventsChecker);
+            Result<String> finalResult = next.acceptChecker(eventsChecker);
             if (!finalResult.isCorrect()) {
                 return finalResult;
             }

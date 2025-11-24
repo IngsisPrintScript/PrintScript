@@ -169,8 +169,12 @@ tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach { task ->
         html.outputLocation.set(layout.buildDirectory.file("custom-reports/spotbugs/${task.name}.html"))
         xml.required.set(false)
     }
-    if (file("${project.rootDir}/config/spotbugs/exclude.xml").exists()) {
-        excludeFilter.set(file("${project.rootDir}/config/spotbugs/exclude.xml"))
+    def eiFilter = file("${project.rootDir}/config/spotbugs/exclude-ei.xml")
+    def mainFilter = file("${project.rootDir}/config/spotbugs/exclude.xml")
+    if (eiFilter.exists()) {
+        excludeFilter.set(eiFilter)
+    } else if (mainFilter.exists()) {
+        excludeFilter.set(mainFilter)
     }
 }
 // ============ JACOCO REPORTS ============

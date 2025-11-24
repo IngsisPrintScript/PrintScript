@@ -30,7 +30,7 @@ public class FunctionArgumentTypeChecker implements NodeEventHandler<CallFunctio
     public Result<String> handle(CallFunctionNode node) {
         String functionActualName = node.identifierNode().name();
 
-        if (functionActualName != functionExpectedName) {
+        if (!functionExpectedName.equals(functionActualName)) {
             return resultFactory.createCorrectResult("Check passed.");
         }
 
