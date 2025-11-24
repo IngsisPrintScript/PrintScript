@@ -17,34 +17,34 @@ import java.nio.file.Path;
 import java.util.Queue;
 
 public final class DefaultSemanticFactory implements SemanticFactory {
-    private final SyntacticFactory syntacticFactory;
-    private final ResultFactory resultFactory;
+  private final SyntacticFactory syntacticFactory;
+  private final ResultFactory resultFactory;
 
-    public DefaultSemanticFactory(SyntacticFactory syntacticFactory, ResultFactory resultFactory) {
-        this.syntacticFactory = syntacticFactory;
-        this.resultFactory = resultFactory;
-    }
+  public DefaultSemanticFactory(SyntacticFactory syntacticFactory, ResultFactory resultFactory) {
+    this.syntacticFactory = syntacticFactory;
+    this.resultFactory = resultFactory;
+  }
 
-    @Override
-    public SemanticChecker createCliSemanticChecker(Queue<Character> buffer, Runtime runtime) {
-        return new DefaultSemanticChecker(
-                syntacticFactory.createCliSyntacticChecker(buffer),
-                new DefaultCheckerFactory()
-                        .createInMemoryEventBasedChecker(
-                                new DefaultSemanticPublisherFactory(
-                                        new DefaultHandlersFactory(runtime, resultFactory))),
-                runtime);
-    }
+  @Override
+  public SemanticChecker createCliSemanticChecker(Queue<Character> buffer, Runtime runtime) {
+    return new DefaultSemanticChecker(
+        syntacticFactory.createCliSyntacticChecker(buffer),
+        new DefaultCheckerFactory()
+            .createInMemoryEventBasedChecker(
+                new DefaultSemanticPublisherFactory(
+                    new DefaultHandlersFactory(runtime, resultFactory))),
+        runtime);
+  }
 
-    @Override
-    public SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime)
-            throws IOException {
-        return new DefaultSemanticChecker(
-                syntacticFactory.createFileSyntacticChecker(filePath),
-                new DefaultCheckerFactory()
-                        .createInMemoryEventBasedChecker(
-                                new DefaultSemanticPublisherFactory(
-                                        new DefaultHandlersFactory(runtime, resultFactory))),
-                runtime);
-    }
+  @Override
+  public SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime)
+      throws IOException {
+    return new DefaultSemanticChecker(
+        syntacticFactory.createFileSyntacticChecker(filePath),
+        new DefaultCheckerFactory()
+            .createInMemoryEventBasedChecker(
+                new DefaultSemanticPublisherFactory(
+                    new DefaultHandlersFactory(runtime, resultFactory))),
+        runtime);
+  }
 }
