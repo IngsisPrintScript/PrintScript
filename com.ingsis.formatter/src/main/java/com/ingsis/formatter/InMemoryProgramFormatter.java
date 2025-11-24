@@ -20,6 +20,7 @@ public class InMemoryProgramFormatter implements ProgramFormatter {
 
   @Override
   public Result<String> format() {
+    StringBuilder sb = new StringBuilder();
     Result<String> finalResult = new IncorrectResult<>("");
     while (checkableStream.hasNext()) {
       Checkable next = (Checkable) checkableStream.next();
@@ -27,10 +28,10 @@ public class InMemoryProgramFormatter implements ProgramFormatter {
       if (!finalResult.isCorrect()) {
         return finalResult;
       } else {
-        System.out.println(finalResult.result());
+        sb.append(finalResult.result());
       }
     }
-    return new CorrectResult<String>("Check passed.");
+    return new CorrectResult<String>(sb.toString());
   }
 
 }
