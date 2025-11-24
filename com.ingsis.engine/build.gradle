@@ -19,7 +19,9 @@ dependencies {
     implementation project(':com.ingsis.tokens')
     implementation project(':com.ingsis.peekableiterator')
     implementation project(':com.ingsis.metachar')
+    implementation project(':com.ingsis.formatter')
     implementation project(':com.ingsis.result')
     implementation project(':com.ingsis.result.factory')
     implementation project(':com.ingsis.rule.observer')
+    implementation project(':com.ingsis.rule.status.provider')
 }

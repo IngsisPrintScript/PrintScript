@@ -10,18 +10,18 @@ import com.ingsis.result.factory.ResultFactory;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryNodeEventHandlerRegistry<T extends Node>
+public class OrInMemoryNodeEventHandlerRegistry<T extends Node>
         implements NodeEventHandlerRegistry<T> {
     private final List<NodeEventHandler<T>> handlers;
     private final ResultFactory resultFactory;
 
-    public InMemoryNodeEventHandlerRegistry(
+    public OrInMemoryNodeEventHandlerRegistry(
             List<NodeEventHandler<T>> handlers, ResultFactory resultFactory) {
         this.handlers = List.copyOf(handlers);
         this.resultFactory = resultFactory;
     }
 
-    public InMemoryNodeEventHandlerRegistry(ResultFactory resultFactory) {
+    public OrInMemoryNodeEventHandlerRegistry(ResultFactory resultFactory) {
         this(new ArrayList<>(), resultFactory);
     }
 
@@ -29,11 +29,11 @@ public class InMemoryNodeEventHandlerRegistry<T extends Node>
     public Result<String> handle(T node) {
         for (NodeEventHandler<T> handler : handlers) {
             Result<String> handleResult = handler.handle(node);
-            if (!handleResult.isCorrect()) {
-                return resultFactory.cloneIncorrectResult(handleResult);
+            if (handleResult.isCorrect()) {
+                return handleResult;
             }
         }
-        return resultFactory.createCorrectResult("All checks passed.");
+        return resultFactory.createIncorrectResult("No way to handle that.");
     }
 
     @Override

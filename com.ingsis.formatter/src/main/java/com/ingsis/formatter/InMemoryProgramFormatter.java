@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.sca;
+package com.ingsis.formatter;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
@@ -11,26 +11,32 @@ import com.ingsis.rule.observer.EventsChecker;
 import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Interpretable;
 
-public class InMemoryProgramSca implements ProgramSca {
+public class InMemoryProgramFormatter implements ProgramFormatter {
     private final PeekableIterator<Interpretable> checkableStream;
     private final EventsChecker eventsChecker;
 
-    public InMemoryProgramSca(
+    public InMemoryProgramFormatter(
             PeekableIterator<Interpretable> checkableStream, EventsChecker eventsChecker) {
         this.checkableStream = checkableStream;
         this.eventsChecker = eventsChecker;
     }
 
     @Override
-    public Result<String> analyze() {
+    public Result<String> format() {
+        StringBuilder sb = new StringBuilder();
+        Result<String> finalResult;
+
         while (checkableStream.hasNext()) {
             Checkable next = (Checkable) checkableStream.next();
-            Result<String> result = next.acceptChecker(eventsChecker);
+            finalResult = next.acceptChecker(eventsChecker);
 
-            if (!result.isCorrect()) {
-                return result;
+            if (!finalResult.isCorrect()) {
+                return finalResult;
             }
+
+            sb.append(finalResult.result());
         }
-        return new CorrectResult<>("Check passed.");
+
+        return new CorrectResult<>(sb.toString());
     }
 }

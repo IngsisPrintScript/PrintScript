@@ -5,23 +5,23 @@
 package com.ingsis.semantic.checkers.handlers.factories;
 
 import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.rule.observer.handlers.AndInMemoryNodeEventHandlerRegistry;
+import com.ingsis.rule.observer.handlers.FinalHandler;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.rule.observer.handlers.factories.HandlersFactory;
+import com.ingsis.rule.observer.handlers.NodeEventHandlerRegistry;
+import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.identifier.existance.ExpressionNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.identifier.existance.LetNodeEventVariableExistenceHandler;
-import com.ingsis.semantic.checkers.handlers.identifier.existance.TypeAssignationNodeEventVariableExistenceHandler;
-import com.ingsis.semantic.checkers.handlers.identifier.existance.ValueAssignationNodeEventVariableExistenceHandler;
 import com.ingsis.semantic.checkers.handlers.identifier.type.LetNodeCorrectTypeEventHandler;
 import com.ingsis.semantic.checkers.handlers.operators.OperatorNodeValidityHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
-public final class DefaultHandlersFactory implements HandlersFactory {
+public final class DefaultHandlersFactory implements HandlerFactory {
     private final Runtime runtime;
     private final ResultFactory resultFactory;
 
@@ -31,32 +31,29 @@ public final class DefaultHandlersFactory implements HandlersFactory {
     }
 
     @Override
-    public NodeEventHandler<DeclarationKeywordNode> createLetVariableExistenceHandler() {
-        return new LetNodeEventVariableExistenceHandler(runtime, resultFactory);
+    public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
+        NodeEventHandlerRegistry<DeclarationKeywordNode> handler =
+                new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+        handler.register(new LetNodeEventVariableExistenceHandler(runtime, resultFactory));
+        handler.register(new LetNodeCorrectTypeEventHandler(runtime, resultFactory));
+        return handler;
     }
 
     @Override
-    public NodeEventHandler<TypeAssignationNode> createTypeAssignationVariableExistenceHandler() {
-        return new TypeAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
+    public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
+        NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry =
+                new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+        handlerRegistry.register(new FinalHandler<>(resultFactory));
+        return handlerRegistry;
     }
 
     @Override
-    public NodeEventHandler<ValueAssignationNode> createValueAssignationVariableExistenceHandler() {
-        return new ValueAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
-    }
-
-    @Override
-    public NodeEventHandler<ExpressionNode> createExpressionVariableExistenceHandler() {
-        return new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory);
-    }
-
-    @Override
-    public NodeEventHandler<ExpressionNode> createOperatorValidityHandler() {
-        return new OperatorNodeValidityHandler(runtime, resultFactory);
-    }
-
-    @Override
-    public NodeEventHandler<DeclarationKeywordNode> createLetCorrectTypeHandler() {
-        return new LetNodeCorrectTypeEventHandler(runtime, resultFactory);
+    public NodeEventHandler<ExpressionNode> createExpressionHandler() {
+        NodeEventHandlerRegistry<ExpressionNode> handlerRegistry =
+                new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+        handlerRegistry.register(
+                new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory));
+        handlerRegistry.register(new OperatorNodeValidityHandler(runtime, resultFactory));
+        return handlerRegistry;
     }
 }

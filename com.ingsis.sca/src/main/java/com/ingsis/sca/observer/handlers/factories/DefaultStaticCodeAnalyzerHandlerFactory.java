@@ -10,6 +10,7 @@ import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.sca.observer.handlers.DeclarationHandler;
 import com.ingsis.sca.observer.handlers.FinalHandler;
 import com.ingsis.sca.observer.handlers.identifier.IdentifierPatternChecker;

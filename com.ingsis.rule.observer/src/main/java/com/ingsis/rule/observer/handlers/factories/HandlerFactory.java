@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.sca.observer.handlers.factories;
+package com.ingsis.rule.observer.handlers.factories;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
