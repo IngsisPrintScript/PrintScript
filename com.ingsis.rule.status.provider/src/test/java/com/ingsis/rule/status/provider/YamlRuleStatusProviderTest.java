@@ -1,12 +1,15 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.rule.status.provider;
 
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class YamlRuleStatusProviderTest {
 
@@ -35,7 +38,8 @@ class YamlRuleStatusProviderTest {
         Files.writeString(tmp, "ruleC: 123\n");
 
         YamlRuleStatusProvider provider = new YamlRuleStatusProvider(tmp);
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> provider.getRuleStatus("ruleC"));
+        IllegalStateException ex =
+                assertThrows(IllegalStateException.class, () -> provider.getRuleStatus("ruleC"));
         assertTrue(ex.getMessage().contains("not a boolean"));
     }
 
@@ -53,7 +57,8 @@ class YamlRuleStatusProviderTest {
 
         assertNull(provider.getRuleValue("missing", String.class));
 
-        assertThrows(ClassCastException.class, () -> provider.getRuleValue("strRule", Integer.class));
+        assertThrows(
+                ClassCastException.class, () -> provider.getRuleValue("strRule", Integer.class));
     }
 
     @Test
@@ -62,7 +67,8 @@ class YamlRuleStatusProviderTest {
         // write empty content
         Files.writeString(tmp, "");
 
-        IllegalStateException ex = assertThrows(IllegalStateException.class, () -> new YamlRuleStatusProvider(tmp));
+        IllegalStateException ex =
+                assertThrows(IllegalStateException.class, () -> new YamlRuleStatusProvider(tmp));
         assertTrue(ex.getMessage().contains("YAML file is empty or invalid"));
     }
 

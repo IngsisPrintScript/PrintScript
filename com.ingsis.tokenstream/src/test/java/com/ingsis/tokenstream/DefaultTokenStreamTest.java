@@ -1,4 +1,10 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.tokenstream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.Result;
@@ -6,12 +12,9 @@ import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokens.Token;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
-import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class DefaultTokenStreamTest {
 
@@ -19,13 +22,19 @@ class DefaultTokenStreamTest {
         private final List<Token> list;
         private int idx = 0;
 
-        SimplePeekable(List<Token> list) { this.list = new ArrayList<>(list); }
+        SimplePeekable(List<Token> list) {
+            this.list = new ArrayList<>(list);
+        }
 
         @Override
-        public Token peek() { return list.get(idx); }
+        public Token peek() {
+            return list.get(idx);
+        }
 
         @Override
-        public boolean hasNext() { return idx < list.size(); }
+        public boolean hasNext() {
+            return idx < list.size();
+        }
 
         @Override
         public Token next() {
@@ -34,7 +43,9 @@ class DefaultTokenStreamTest {
         }
 
         @Override
-        public void remove() { throw new UnsupportedOperationException(); }
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
     }
 
     @Test

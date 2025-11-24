@@ -1,4 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.result.factory;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.result.CorrectResult;
 import com.ingsis.result.IncorrectResult;
@@ -7,10 +15,6 @@ import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class LoggerResultFactoryTest {
 
