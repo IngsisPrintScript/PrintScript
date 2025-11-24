@@ -1,13 +1,16 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
 import com.ingsis.types.Types;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class DefaultEnvironmentCoverageFinalTest {
 
@@ -30,7 +33,8 @@ class DefaultEnvironmentCoverageFinalTest {
         child.createFunction("fn", java.util.Map.of(), Types.NIL);
         assertTrue(child.isIdentifierDeclared("fn"));
         assertFalse(child.isIdentifierInitialized("fn"));
-        child.updateFunction("fn", List.of(new GlobalFunctionBody(List.of(), args -> null, null, null)));
+        child.updateFunction(
+                "fn", List.of(new GlobalFunctionBody(List.of(), args -> null, null, null)));
         assertTrue(child.isIdentifierInitialized("fn"));
 
         // readAll contains variable

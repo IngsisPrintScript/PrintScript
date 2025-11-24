@@ -1,14 +1,17 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment;
-
-import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
-import com.ingsis.types.Types;
-import org.junit.jupiter.api.Test;
-
-import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
+import com.ingsis.types.Types;
+import java.util.List;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 
 class GlobalEnvironmentMoreTest {
 

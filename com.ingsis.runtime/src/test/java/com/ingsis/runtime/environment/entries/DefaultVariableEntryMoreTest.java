@@ -1,9 +1,13 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment.entries;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.types.Types;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultVariableEntryMoreTest {
 

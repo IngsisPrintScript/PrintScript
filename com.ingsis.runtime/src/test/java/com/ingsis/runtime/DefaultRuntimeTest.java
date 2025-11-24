@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -45,7 +49,8 @@ class DefaultRuntimeTest {
         DefaultEntryFactory entryFactory = new DefaultEntryFactory();
         DefaultFunctionEntry fn =
                 (DefaultFunctionEntry)
-                        entryFactory.createFunctionEntry(Types.NIL, Map.of(), null, runtime.getCurrentEnvironment());
+                        entryFactory.createFunctionEntry(
+                                Types.NIL, Map.of(), null, runtime.getCurrentEnvironment());
         Result<Environment> pushedClosure = runtime.pushClosure(fn);
         assertNotNull(pushedClosure);
 

@@ -1,9 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment.factories;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.runtime.environment.Environment;
-import com.ingsis.runtime.environment.GlobalEnvironment;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
 import com.ingsis.types.Types;
 import org.junit.jupiter.api.Test;
@@ -12,7 +15,8 @@ class DefaultEnvironmentFactoryTest {
 
     @Test
     void globalEnvironmentHasBuiltins() {
-        DefaultEnvironmentFactory factory = new DefaultEnvironmentFactory(new DefaultEntryFactory());
+        DefaultEnvironmentFactory factory =
+                new DefaultEnvironmentFactory(new DefaultEntryFactory());
         Environment global = factory.createGlobalEnvironment();
         // builtin println must be declared
         assertTrue(global.isFunctionDeclared("println"));
@@ -26,7 +30,8 @@ class DefaultEnvironmentFactoryTest {
 
     @Test
     void builtinsAreInitialized() {
-        DefaultEnvironmentFactory factory = new DefaultEnvironmentFactory(new DefaultEntryFactory());
+        DefaultEnvironmentFactory factory =
+                new DefaultEnvironmentFactory(new DefaultEntryFactory());
         Environment global = factory.createGlobalEnvironment();
         // functions should be initialized (updateFunction called)
         assertTrue(global.isFunctionInitialized("println"));

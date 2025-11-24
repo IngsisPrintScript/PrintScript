@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

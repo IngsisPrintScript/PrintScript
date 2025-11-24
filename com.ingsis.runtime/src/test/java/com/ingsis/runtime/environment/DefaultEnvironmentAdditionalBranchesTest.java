@@ -1,13 +1,16 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
 import com.ingsis.types.Types;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class DefaultEnvironmentAdditionalBranchesTest {
 
@@ -28,16 +31,17 @@ class DefaultEnvironmentAdditionalBranchesTest {
         DefaultEnvironment child = new DefaultEnvironment(ef, father);
 
         // delegate update to father
-        var updateRes = child.updateFunction(
-                "fx",
-                List.of(new GlobalFunctionBody(List.of(), args -> null, null, null)));
+        var updateRes =
+                child.updateFunction(
+                        "fx", List.of(new GlobalFunctionBody(List.of(), args -> null, null, null)));
         assertTrue(updateRes.isCorrect());
 
         // create function locally and update it
         child.createFunction("local", java.util.Map.of(), Types.NIL);
-        var up2 = child.updateFunction(
-                "local",
-                List.of(new GlobalFunctionBody(List.of(), args -> null, null, null)));
+        var up2 =
+                child.updateFunction(
+                        "local",
+                        List.of(new GlobalFunctionBody(List.of(), args -> null, null, null)));
         assertTrue(up2.isCorrect());
         assertTrue(child.isFunctionInitialized("local"));
     }

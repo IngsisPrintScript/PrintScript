@@ -1,12 +1,15 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.runtime.environment;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
 import com.ingsis.types.Types;
-import org.junit.jupiter.api.Test;
-
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class DefaultEnvironmentDelegationTest {
 
