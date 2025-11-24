@@ -9,6 +9,7 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,12 +20,18 @@ public class DefaultSemanticPublisherFactoryTest {
     @BeforeEach
     void setUp() {
         Runtime rt = DefaultRuntime.getInstance();
+        rt.push();
         ResultFactory resultFactory = new DefaultResultFactory();
 
         HandlersFactory handlersFactory =
                 new DefaultHandlersFactory(rt,resultFactory);
 
         factory = new DefaultSemanticPublisherFactory(handlersFactory);
+    }
+
+    @AfterEach
+    void tearDown() {
+        DefaultRuntime.getInstance().pop();
     }
 
     @Test

@@ -15,6 +15,7 @@ import com.ingsis.runtime.environment.Environment;
 import com.ingsis.semantic.checkers.handlers.identifier.existance.ValueAssignationNodeEventVariableExistenceHandler;
 import com.ingsis.types.Types;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -29,9 +30,15 @@ class ValueAssignationNodeEventVariableExistenceHandlerTest {
     @BeforeEach
     void setUp() {
         runtime = DefaultRuntime.getInstance();
+        runtime.push();
         env = runtime.getCurrentEnvironment();
         resultFactory = new DefaultResultFactory();
         handler = new ValueAssignationNodeEventVariableExistenceHandler(runtime, resultFactory);
+    }
+
+    @AfterEach
+    void tearDown() {
+        runtime.pop();
     }
 
     @Test

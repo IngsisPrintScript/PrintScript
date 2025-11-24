@@ -11,6 +11,7 @@ import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -24,8 +25,14 @@ public class DefaultHandlersFactoryTest {
     @BeforeEach
     public void setUp() {
         runtime = DefaultRuntime.getInstance();
+        runtime.push();
         resultFactory = new DefaultResultFactory();
         factory = new DefaultHandlersFactory(runtime, resultFactory);
+    }
+
+    @AfterEach
+    public void tearDown() {
+        runtime.pop();
     }
 
     @Test

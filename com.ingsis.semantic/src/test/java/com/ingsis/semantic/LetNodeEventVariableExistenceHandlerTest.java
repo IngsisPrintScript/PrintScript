@@ -15,6 +15,7 @@ import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.semantic.checkers.handlers.identifier.existance.LetNodeEventVariableExistenceHandler;
 import com.ingsis.types.Types;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -29,9 +30,15 @@ public class LetNodeEventVariableExistenceHandlerTest {
     @BeforeEach
     void setUp() {
         runtime = DefaultRuntime.getInstance();
+                runtime.push();
         resultFactory = new DefaultResultFactory();
         handler = new LetNodeEventVariableExistenceHandler(runtime, resultFactory);
     }
+
+        @AfterEach
+        void tearDown() {
+                runtime.pop();
+        }
 
     @Test
     void handle_whenTypeAssignationFails_shouldReturnClonedIncorrect() {
