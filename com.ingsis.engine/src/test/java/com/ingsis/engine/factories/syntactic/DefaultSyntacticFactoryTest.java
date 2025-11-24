@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.syntactic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ingsis.syntactic.SyntacticParser;
 import java.io.IOException;
@@ -21,94 +21,100 @@ class DefaultSyntacticFactoryTest {
     void setup() {
         factory =
                 new DefaultSyntacticFactory(
-                        new com.ingsis.engine.factories.tokenstream.TokenStreamFactory() {
-                            @Override
-                            public com.ingsis.tokenstream.TokenStream createCliTokenStream(
-                                    Queue<Character> buffer) {
-                                return new com.ingsis.tokenstream.TokenStream() {
-                                    @Override
-                                    public com.ingsis.result.Result<com.ingsis.tokens.Token>
-                                            consume() {
-                                        return new com.ingsis.result.IncorrectResult<>("no");
-                                    }
+                        createTokenStreamFactoryStub(), createParserChainFactoryStub());
+    }
 
-                                    @Override
-                                    public com.ingsis.result.Result<com.ingsis.tokens.Token>
-                                            consume(com.ingsis.tokens.Token tokenTemplate) {
-                                        return new com.ingsis.result.IncorrectResult<>("no");
-                                    }
+    private com.ingsis.engine.factories.tokenstream.TokenStreamFactory
+            createTokenStreamFactoryStub() {
+        return new com.ingsis.engine.factories.tokenstream.TokenStreamFactory() {
+            @Override
+            public com.ingsis.tokenstream.TokenStream createCliTokenStream(
+                    Queue<Character> buffer) {
+                return createSimpleTokenStream();
+            }
 
-                                    @Override
-                                    public com.ingsis.result.Result<Integer> consumeAll(
-                                            com.ingsis.tokens.Token token) {
-                                        return new com.ingsis.result.CorrectResult<>(0);
-                                    }
+            @Override
+            public com.ingsis.tokenstream.TokenStream createFileTokenStream(Path filePath)
+                    throws IOException {
+                return createSimpleTokenStream();
+            }
+        };
+    }
 
-                                    @Override
-                                    public boolean match(com.ingsis.tokens.Token tokenTemplate) {
-                                        return false;
-                                    }
+    private com.ingsis.tokenstream.TokenStream createSimpleTokenStream() {
+        return new com.ingsis.tokenstream.TokenStream() {
+            @Override
+            public com.ingsis.result.Result<com.ingsis.tokens.Token> consume() {
+                return new com.ingsis.result.IncorrectResult<>("no");
+            }
 
-                                    @Override
-                                    public com.ingsis.tokens.Token peek() {
-                                        return null;
-                                    }
+            @Override
+            public com.ingsis.result.Result<com.ingsis.tokens.Token> consume(
+                    com.ingsis.tokens.Token tokenTemplate) {
+                return new com.ingsis.result.IncorrectResult<>("no");
+            }
 
-                                    @Override
-                                    public boolean hasNext() {
-                                        return false;
-                                    }
+            @Override
+            public com.ingsis.result.Result<Integer> consumeAll(com.ingsis.tokens.Token token) {
+                return new com.ingsis.result.CorrectResult<>(0);
+            }
 
-                                    @Override
-                                    public com.ingsis.tokens.Token next() {
-                                        return null;
-                                    }
+            @Override
+            public boolean match(com.ingsis.tokens.Token tokenTemplate) {
+                return false;
+            }
 
-                                    @Override
-                                    public com.ingsis.tokens.Token peek(int offset) {
-                                        return null;
-                                    }
+            @Override
+            public com.ingsis.tokens.Token peek() {
+                return null;
+            }
 
-                                    @Override
-                                    public void cleanBuffer() {}
-                                };
-                            }
+            @Override
+            public boolean hasNext() {
+                return false;
+            }
 
-                            @Override
-                            public com.ingsis.tokenstream.TokenStream createFileTokenStream(
-                                    Path filePath) throws IOException {
-                                return createCliTokenStream(new ArrayDeque<>());
-                            }
-                        },
-                        new com.ingsis.syntactic.factories.ParserChainFactory() {
-                            @Override
-                            public com.ingsis.syntactic.parsers.Parser<com.ingsis.nodes.Node>
-                                    createDefaultChain() {
-                                return new com.ingsis.syntactic.parsers.Parser<
-                                        com.ingsis.nodes.Node>() {
-                                    @Override
-                                    public com.ingsis.result.Result<com.ingsis.nodes.Node> parse(
-                                            com.ingsis.tokenstream.TokenStream ts) {
-                                        return new com.ingsis.result.IncorrectResult<>("no");
-                                    }
-                                };
-                            }
+            @Override
+            public com.ingsis.tokens.Token next() {
+                return null;
+            }
 
-                            @Override
-                            public com.ingsis.syntactic.parsers.Parser<
-                                            com.ingsis.nodes.expression.ExpressionNode>
-                                    createExpressionChain() {
-                                return new com.ingsis.syntactic.parsers.Parser<
-                                        com.ingsis.nodes.expression.ExpressionNode>() {
-                                    @Override
-                                    public com.ingsis.result.Result<
-                                                    com.ingsis.nodes.expression.ExpressionNode>
-                                            parse(com.ingsis.tokenstream.TokenStream ts) {
-                                        return new com.ingsis.result.IncorrectResult<>("no");
-                                    }
-                                };
-                            }
-                        });
+            @Override
+            public com.ingsis.tokens.Token peek(int offset) {
+                return null;
+            }
+
+            @Override
+            public void cleanBuffer() {}
+        };
+    }
+
+    private com.ingsis.syntactic.factories.ParserChainFactory createParserChainFactoryStub() {
+        return new com.ingsis.syntactic.factories.ParserChainFactory() {
+            @Override
+            public com.ingsis.syntactic.parsers.Parser<com.ingsis.nodes.Node> createDefaultChain() {
+                return new com.ingsis.syntactic.parsers.Parser<com.ingsis.nodes.Node>() {
+                    @Override
+                    public com.ingsis.result.Result<com.ingsis.nodes.Node> parse(
+                            com.ingsis.tokenstream.TokenStream ts) {
+                        return new com.ingsis.result.IncorrectResult<>("no");
+                    }
+                };
+            }
+
+            @Override
+            public com.ingsis.syntactic.parsers.Parser<com.ingsis.nodes.expression.ExpressionNode>
+                    createExpressionChain() {
+                return new com.ingsis.syntactic.parsers.Parser<
+                        com.ingsis.nodes.expression.ExpressionNode>() {
+                    @Override
+                    public com.ingsis.result.Result<com.ingsis.nodes.expression.ExpressionNode>
+                            parse(com.ingsis.tokenstream.TokenStream ts) {
+                        return new com.ingsis.result.IncorrectResult<>("no");
+                    }
+                };
+            }
+        };
     }
 
     @Test

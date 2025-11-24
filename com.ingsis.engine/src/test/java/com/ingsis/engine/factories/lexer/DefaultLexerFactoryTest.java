@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.lexer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ingsis.lexer.Lexer;
 import com.ingsis.runtime.DefaultRuntime;

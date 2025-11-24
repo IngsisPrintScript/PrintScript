@@ -4,7 +4,9 @@
 
 package com.ingsis.engine.factories.charstream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.metachar.MetaChar;
 import com.ingsis.peekableiterator.PeekableIterator;

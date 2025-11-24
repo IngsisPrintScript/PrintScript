@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.runtime.DefaultRuntime;

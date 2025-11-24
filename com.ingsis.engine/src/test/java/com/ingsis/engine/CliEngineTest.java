@@ -46,7 +46,7 @@ class CliEngineTest {
     }
 
     @Test
-    void createSemanticFactory_V1_1_ReturnsNonNull() throws Exception {
+    void createSemanticFactoryV11ReturnsNonNull() throws Exception {
         Field versionField = CliEngine.class.getDeclaredField("version");
         versionField.setAccessible(true);
         versionField.set(engine, com.ingsis.engine.versions.Version.V1_1);
@@ -58,7 +58,7 @@ class CliEngineTest {
     }
 
     @Test
-    void runREPL_PrintWelcomeAndGoodbye() throws Exception {
+    void runReplPrintWelcomeAndGoodbye() throws Exception {
         // Prepare engine and IO
         Field versionField = CliEngine.class.getDeclaredField("version");
         versionField.setAccessible(true);
@@ -87,7 +87,7 @@ class CliEngineTest {
     }
 
     @Test
-    void runREPL_whenExecutionError_printsError() throws Exception {
+    void runReplWhenExecutionErrorPrintsError() throws Exception {
         // set an execution error in the runtime
         com.ingsis.result.IncorrectResult<String> err =
                 new com.ingsis.result.IncorrectResult<>("err");
@@ -159,7 +159,7 @@ class CliEngineTest {
     }
 
     @Test
-    void run_withAnalyze_printsChecksPassed() throws Exception {
+    void runWithAnalyzePrintsChecksPassed() throws Exception {
         java.nio.file.Path tmp = java.nio.file.Files.createTempFile("ps-analyze", ".ps");
         Field commandField = CliEngine.class.getDeclaredField("command");
         Field fileField = CliEngine.class.getDeclaredField("file");
@@ -183,7 +183,7 @@ class CliEngineTest {
     }
 
     @Test
-    void run_withFile_interpretsFile() throws Exception {
+    void runWithFileInterpretsFile() throws Exception {
         java.nio.file.Path tmp = java.nio.file.Files.createTempFile("ps-run", ".ps");
         Field commandField = CliEngine.class.getDeclaredField("command");
         Field fileField = CliEngine.class.getDeclaredField("file");
@@ -206,7 +206,7 @@ class CliEngineTest {
     }
 
     @Test
-    void run_withAnalyze_nonexistentFile_printsExceptionMessage() throws Exception {
+    void runWithAnalyzeNonexistentFilePrintsExceptionMessage() throws Exception {
         java.nio.file.Path tmp = java.nio.file.Paths.get("does-not-exist-12345.ps");
         Field commandField = CliEngine.class.getDeclaredField("command");
         Field fileField = CliEngine.class.getDeclaredField("file");
@@ -229,7 +229,7 @@ class CliEngineTest {
     }
 
     @Test
-    void run_withFile_nonexistentFile_printsException() throws Exception {
+    void runWithFileNonexistentFilePrintsException() throws Exception {
         java.nio.file.Path tmp = java.nio.file.Paths.get("no-file-here-54321.ps");
         Field commandField = CliEngine.class.getDeclaredField("command");
         Field fileField = CliEngine.class.getDeclaredField("file");
@@ -252,7 +252,7 @@ class CliEngineTest {
     }
 
     @Test
-    void createSemanticFactory_withNullVersion_throwsNPE() throws Exception {
+    void createSemanticFactoryWithNullVersionThrowsNPE() throws Exception {
         Field versionField = CliEngine.class.getDeclaredField("version");
         versionField.setAccessible(true);
         versionField.set(engine, null);

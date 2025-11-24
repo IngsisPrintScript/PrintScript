@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.interpreter;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
@@ -30,65 +30,71 @@ class DefaultProgramInterpreterFactoryTest {
     void setup() {
         factory =
                 new DefaultProgramInterpreterFactory(
-                        new com.ingsis.engine.factories.semantic.SemanticFactory() {
-                            @Override
-                            public SemanticChecker createCliSemanticChecker(
-                                    Queue<Character> buffer, Runtime runtime) {
-                                return new SemanticChecker() {
-                                    @Override
-                                    public Result<Interpretable> parse() {
-                                        return new CorrectResult<>(null);
-                                    }
+                        createSemanticFactoryStub(), createInterpreterVisitorFactoryStub());
+    }
 
-                                    @Override
-                                    public Interpretable peek() {
-                                        throw new NoSuchElementException();
-                                    }
+    private com.ingsis.engine.factories.semantic.SemanticFactory createSemanticFactoryStub() {
+        return new com.ingsis.engine.factories.semantic.SemanticFactory() {
+            @Override
+            public SemanticChecker createCliSemanticChecker(
+                    Queue<Character> buffer, Runtime runtime) {
+                return new SemanticChecker() {
+                    @Override
+                    public Result<Interpretable> parse() {
+                        return new CorrectResult<>(null);
+                    }
 
-                                    @Override
-                                    public boolean hasNext() {
-                                        return false;
-                                    }
+                    @Override
+                    public Interpretable peek() {
+                        throw new NoSuchElementException();
+                    }
 
-                                    @Override
-                                    public Interpretable next() {
-                                        throw new NoSuchElementException();
-                                    }
-                                };
-                            }
+                    @Override
+                    public boolean hasNext() {
+                        return false;
+                    }
 
-                            @Override
-                            public SemanticChecker createFileSemanticChecker(
-                                    Path filePath, Runtime runtime) throws IOException {
-                                return createCliSemanticChecker(new ArrayDeque<>(), runtime);
-                            }
-                        },
-                        new InterpreterVisitorFactory() {
-                            @Override
-                            public Interpreter createDefaultInterpreter(Runtime runtime) {
-                                return new Interpreter() {
-                                    @Override
-                                    public Result<String> interpret(
-                                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                                        return new CorrectResult<>("");
-                                    }
+                    @Override
+                    public Interpretable next() {
+                        throw new NoSuchElementException();
+                    }
+                };
+            }
 
-                                    @Override
-                                    public Result<String> interpret(
-                                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                                    declarationKeywordNode) {
-                                        return new CorrectResult<>("");
-                                    }
+            @Override
+            public SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime)
+                    throws IOException {
+                return createCliSemanticChecker(new ArrayDeque<>(), runtime);
+            }
+        };
+    }
 
-                                    @Override
-                                    public Result<Object> interpret(
-                                            com.ingsis.nodes.expression.ExpressionNode
-                                                    expressionNode) {
-                                        return new CorrectResult<>(null);
-                                    }
-                                };
-                            }
-                        });
+    private InterpreterVisitorFactory createInterpreterVisitorFactoryStub() {
+        return new InterpreterVisitorFactory() {
+            @Override
+            public Interpreter createDefaultInterpreter(Runtime runtime) {
+                return new Interpreter() {
+                    @Override
+                    public Result<String> interpret(
+                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                        return new CorrectResult<>("");
+                    }
+
+                    @Override
+                    public Result<String> interpret(
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode
+                                    declarationKeywordNode) {
+                        return new CorrectResult<>("");
+                    }
+
+                    @Override
+                    public Result<Object> interpret(
+                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                        return new CorrectResult<>(null);
+                    }
+                };
+            }
+        };
     }
 
     @Test
