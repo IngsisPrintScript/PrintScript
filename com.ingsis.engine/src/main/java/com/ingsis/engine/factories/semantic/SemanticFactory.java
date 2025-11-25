@@ -10,9 +10,9 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 public interface SemanticFactory {
-  SemanticChecker fromInputStream(InputStream in) throws IOException;
+    SemanticChecker fromInputStream(InputStream in) throws IOException;
 
-  SemanticChecker fromFile(Path path) throws IOException;
+    SemanticChecker fromFile(Path path) throws IOException;
 
-  SemanticChecker fromString(CharSequence input) throws IOException;
+    SemanticChecker fromString(CharSequence input) throws IOException;
 }

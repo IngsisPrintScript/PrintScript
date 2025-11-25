@@ -14,39 +14,40 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-@SuppressFBWarnings(value = "EI2", justification = "Environment is a shared, controlled mutable dependency.")
+@SuppressFBWarnings(
+        value = "EI2",
+        justification = "Environment is a shared, controlled mutable dependency.")
 public final class InMemoryLexerFactory implements LexerFactory {
-  private final CharStreamFactory charStreamFactory;
-  private final TokenizerFactory tokenizerFactory;
+    private final CharStreamFactory charStreamFactory;
+    private final TokenizerFactory tokenizerFactory;
 
-  public InMemoryLexerFactory(
-      CharStreamFactory charStreamFactory,
-      TokenizerFactory tokenizerFactory) {
-    this.charStreamFactory = charStreamFactory;
-    this.tokenizerFactory = tokenizerFactory;
-  }
+    public InMemoryLexerFactory(
+            CharStreamFactory charStreamFactory, TokenizerFactory tokenizerFactory) {
+        this.charStreamFactory = charStreamFactory;
+        this.tokenizerFactory = tokenizerFactory;
+    }
 
-  @Override
-  public Lexer fromInputStream(InputStream in, ResultFactory resultFactory) throws IOException {
-    return new DefaultLexer(
-        charStreamFactory.fromInputStream(in),
-        tokenizerFactory.createTokenizer(),
-        resultFactory);
-  }
+    @Override
+    public Lexer fromInputStream(InputStream in, ResultFactory resultFactory) throws IOException {
+        return new DefaultLexer(
+                charStreamFactory.fromInputStream(in),
+                tokenizerFactory.createTokenizer(),
+                resultFactory);
+    }
 
-  @Override
-  public Lexer fromFile(Path path, ResultFactory resultFactory) throws IOException {
-    return new DefaultLexer(
-        charStreamFactory.fromFile(path),
-        tokenizerFactory.createTokenizer(),
-        resultFactory);
-  }
+    @Override
+    public Lexer fromFile(Path path, ResultFactory resultFactory) throws IOException {
+        return new DefaultLexer(
+                charStreamFactory.fromFile(path),
+                tokenizerFactory.createTokenizer(),
+                resultFactory);
+    }
 
-  @Override
-  public Lexer fromString(CharSequence input, ResultFactory resultFactory) throws IOException {
-    return new DefaultLexer(
-        charStreamFactory.fromString(input),
-        tokenizerFactory.createTokenizer(),
-        resultFactory);
-  }
+    @Override
+    public Lexer fromString(CharSequence input, ResultFactory resultFactory) throws IOException {
+        return new DefaultLexer(
+                charStreamFactory.fromString(input),
+                tokenizerFactory.createTokenizer(),
+                resultFactory);
+    }
 }

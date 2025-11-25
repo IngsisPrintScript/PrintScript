@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface FormatterFactory {
-  public ProgramFormatter fromFile(
-      SemanticFactory semanticFactory,
-      Path path,
-      Runtime runtime,
-      EventsChecker eventsChecker)
-      throws IOException;
+    public ProgramFormatter fromFile(
+            SemanticFactory semanticFactory,
+            Path path,
+            Runtime runtime,
+            EventsChecker eventsChecker)
+            throws IOException;
 }

@@ -11,10 +11,9 @@ import java.nio.file.Path;
 
 public interface TokenStreamFactory {
 
-  TokenStream fromInputStream(InputStream in) throws IOException;
+    TokenStream fromInputStream(InputStream in) throws IOException;
 
-  TokenStream fromFile(Path path) throws IOException;
+    TokenStream fromFile(Path path) throws IOException;
 
-  TokenStream fromString(CharSequence input) throws IOException;
-
+    TokenStream fromString(CharSequence input) throws IOException;
 }

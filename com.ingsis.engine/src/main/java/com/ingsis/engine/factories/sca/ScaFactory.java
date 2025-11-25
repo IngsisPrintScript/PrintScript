@@ -12,10 +12,10 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public interface ScaFactory {
-  public ProgramSca fromFile(
-      SemanticFactory semanticFactory,
-      Path path,
-      Runtime runtime,
-      EventsChecker eventsChecker)
-      throws IOException;
+    public ProgramSca fromFile(
+            SemanticFactory semanticFactory,
+            Path path,
+            Runtime runtime,
+            EventsChecker eventsChecker)
+            throws IOException;
 }

@@ -14,14 +14,13 @@ import java.nio.file.Path;
 
 public class InMemoryFormatterFactory implements FormatterFactory {
 
-  @Override
-  public ProgramFormatter fromFile(
-      SemanticFactory semanticFactory,
-      Path path,
-      Runtime runtime,
-      EventsChecker eventsChecker)
-      throws IOException {
-    return new InMemoryProgramFormatter(
-        semanticFactory.fromFile(path), eventsChecker);
-  }
+    @Override
+    public ProgramFormatter fromFile(
+            SemanticFactory semanticFactory,
+            Path path,
+            Runtime runtime,
+            EventsChecker eventsChecker)
+            throws IOException {
+        return new InMemoryProgramFormatter(semanticFactory.fromFile(path), eventsChecker);
+    }
 }
