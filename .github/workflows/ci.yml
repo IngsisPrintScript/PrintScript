@@ -21,10 +21,6 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
-          path: |
-            build/reports/jacoco/**
-            **/build/reports/jacoco/**
-            **/build/custom-reports/jacoco/**
           path: coverage
 
       - name: Print where it is
