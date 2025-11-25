@@ -61,89 +61,92 @@ class EventsCheckerTest {
         checker = new EventsChecker(pf);
     }
 
+    private static PublishersFactory incorrectPublishersFactory() {
+        return new PublishersFactory() {
+            @Override
+            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
+                            com.ingsis.nodes.keyword.DeclarationKeywordNode>
+                    createLetNodePublisher() {
+                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<com.ingsis.nodes.keyword.DeclarationKeywordNode>)
+                                        (node -> new IncorrectResult<>("bad"))));
+            }
+
+            @Override
+            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
+                            com.ingsis.nodes.keyword.IfKeywordNode>
+                    createConditionalNodePublisher() {
+                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
+                                        (node -> new IncorrectResult<>("bad"))));
+            }
+
+            @Override
+            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
+                            com.ingsis.nodes.expression.ExpressionNode>
+                    createExpressionNodePublisher() {
+                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<com.ingsis.nodes.expression.ExpressionNode>)
+                                        (node -> new IncorrectResult<>("bad"))));
+            }
+        };
+    }
+
+    private static ExpressionNode simpleExpressionNode() {
+        return new ExpressionNode() {
+            @Override
+            public java.util.List<ExpressionNode> children() {
+                return List.of();
+            }
+
+            @Override
+            public Boolean isTerminalNode() {
+                return true;
+            }
+
+            @Override
+            public String symbol() {
+                return "x";
+            }
+
+            @Override
+            public com.ingsis.result.Result<String> acceptChecker(
+                    com.ingsis.visitors.Checker checker) {
+                return checker.check(this);
+            }
+
+            @Override
+            public com.ingsis.result.Result<String> acceptInterpreter(
+                    com.ingsis.visitors.Interpreter interpreter) {
+                return new CorrectResult<>("interp");
+            }
+
+            @Override
+            public com.ingsis.result.Result<String> acceptVisitor(
+                    com.ingsis.visitors.Visitor visitor) {
+                return new CorrectResult<>("visit");
+            }
+
+            @Override
+            public Integer line() {
+                return 0;
+            }
+
+            @Override
+            public Integer column() {
+                return 0;
+            }
+        };
+    }
+
     @Test
     void dispatchReturnsIncorrectFromPublisher() {
-        PublishersFactory pf =
-                new PublishersFactory() {
-                    @Override
-                    public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode>
-                            createLetNodePublisher() {
-                        return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(
-                                        (NodeEventHandler<
-                                                        com.ingsis.nodes.keyword
-                                                                .DeclarationKeywordNode>)
-                                                (node -> new IncorrectResult<>("bad"))));
-                    }
-
-                    @Override
-                    public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                                    com.ingsis.nodes.keyword.IfKeywordNode>
-                            createConditionalNodePublisher() {
-                        return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(
-                                        (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
-                                                (node -> new IncorrectResult<>("bad"))));
-                    }
-
-                    @Override
-                    public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                                    com.ingsis.nodes.expression.ExpressionNode>
-                            createExpressionNodePublisher() {
-                        return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                                List.of(
-                                        (NodeEventHandler<
-                                                        com.ingsis.nodes.expression.ExpressionNode>)
-                                                (node -> new IncorrectResult<>("bad"))));
-                    }
-                };
+        PublishersFactory pf = incorrectPublishersFactory();
         EventsChecker ec = new EventsChecker(pf);
-        ExpressionNode expr =
-                new ExpressionNode() {
-                    @Override
-                    public java.util.List<ExpressionNode> children() {
-                        return List.of();
-                    }
-
-                    @Override
-                    public Boolean isTerminalNode() {
-                        return true;
-                    }
-
-                    @Override
-                    public String symbol() {
-                        return "x";
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<String> acceptChecker(
-                            com.ingsis.visitors.Checker checker) {
-                        return checker.check(this);
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<String> acceptInterpreter(
-                            com.ingsis.visitors.Interpreter interpreter) {
-                        return new CorrectResult<>("interp");
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<String> acceptVisitor(
-                            com.ingsis.visitors.Visitor visitor) {
-                        return new CorrectResult<>("visit");
-                    }
-
-                    @Override
-                    public Integer line() {
-                        return 0;
-                    }
-
-                    @Override
-                    public Integer column() {
-                        return 0;
-                    }
-                };
+        ExpressionNode expr = simpleExpressionNode();
 
         Result<String> res = ec.check(expr);
         assertFalse(res.isCorrect());
@@ -179,54 +182,7 @@ class EventsCheckerTest {
         CheckableNode checkableChild = new CheckableNode();
         com.ingsis.nodes.keyword.IfKeywordNode ifNode =
                 new com.ingsis.nodes.keyword.IfKeywordNode(
-                        new ExpressionNode() {
-                            @Override
-                            public java.util.List<ExpressionNode> children() {
-                                return List.of();
-                            }
-
-                            @Override
-                            public Boolean isTerminalNode() {
-                                return true;
-                            }
-
-                            @Override
-                            public String symbol() {
-                                return "c";
-                            }
-
-                            @Override
-                            public com.ingsis.result.Result<String> acceptChecker(
-                                    com.ingsis.visitors.Checker checker) {
-                                return checker.check(this);
-                            }
-
-                            @Override
-                            public com.ingsis.result.Result<String> acceptInterpreter(
-                                    com.ingsis.visitors.Interpreter interpreter) {
-                                return new CorrectResult<>("interp");
-                            }
-
-                            @Override
-                            public com.ingsis.result.Result<String> acceptVisitor(
-                                    com.ingsis.visitors.Visitor visitor) {
-                                return new CorrectResult<>("visit");
-                            }
-
-                            @Override
-                            public Integer line() {
-                                return 0;
-                            }
-
-                            @Override
-                            public Integer column() {
-                                return 0;
-                            }
-                        },
-                        List.of(checkableChild),
-                        List.of(),
-                        1,
-                        1);
+                        simpleExpressionNode(), List.of(checkableChild), List.of(), 1, 1);
 
         Result<String> out = checker.check(ifNode);
         assertFalse(out.isCorrect());

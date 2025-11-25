@@ -29,7 +29,7 @@ public class SpaceSeparatorTokenizerTest {
     }
 
     @Test
-    void tokenize_space_returnsSpaceToken() {
+    void tokenizeSpaceReturnsSpaceToken() {
         Result<Token> result = tokenizer.tokenize(" ", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class SpaceSeparatorTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("\n", 1, 1);
         assertFalse(result.isCorrect());
     }

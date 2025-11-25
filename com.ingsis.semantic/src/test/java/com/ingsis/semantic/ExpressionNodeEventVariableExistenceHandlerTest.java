@@ -4,7 +4,9 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
@@ -42,7 +44,7 @@ class ExpressionNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenIdentifierNotInitialized_shouldReturnIncorrectResult() {
+    void handleWhenIdentifierNotInitializedShouldReturnIncorrectResult() {
         // Declaramos el identifier sin inicializar
         IdentifierNode id = new IdentifierNode("u", 1, 1);
         // No creamos variable en el entorno => simula "no inicializado"
@@ -54,7 +56,7 @@ class ExpressionNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenChildrenHaveError_shouldReturnFirstError() {
+    void handleWhenChildrenHaveErrorShouldReturnFirstError() {
         // Nodo padre con un hijo IdentifierNode no inicializado
         ExpressionNode child = new IdentifierNode("v", 2, 3);
 
@@ -68,7 +70,7 @@ class ExpressionNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenAllOk_shouldReturnCorrectResult() {
+    void handleWhenAllOkShouldReturnCorrectResult() {
         ExpressionNode node = new LiteralNode("a", 1, 1);
         Result<String> result = handler.handle(node);
 

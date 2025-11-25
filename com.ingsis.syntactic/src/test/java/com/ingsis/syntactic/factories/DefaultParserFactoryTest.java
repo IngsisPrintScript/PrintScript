@@ -4,7 +4,7 @@
 
 package com.ingsis.syntactic.factories;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.nodes.factories.NodeFactory;

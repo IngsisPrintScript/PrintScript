@@ -15,6 +15,48 @@ public class GlobalFunctionBodyTest {
 
     private GlobalFunctionBody body;
 
+    private static final com.ingsis.visitors.Interpreter GOOD_INTERPRETER =
+            new com.ingsis.visitors.Interpreter() {
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<Object> interpret(
+                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                    return new com.ingsis.result.CorrectResult<>(new Object());
+                }
+            };
+
+    private static final com.ingsis.visitors.Interpreter BAD_INTERPRETER =
+            new com.ingsis.visitors.Interpreter() {
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<Object> interpret(
+                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                    return new com.ingsis.result.IncorrectResult<>("err");
+                }
+            };
+
     @BeforeEach
     public void setUp() {
         body = new GlobalFunctionBody(List.of("a", "b"), args -> "ok", 1, 1);
@@ -33,52 +75,9 @@ public class GlobalFunctionBodyTest {
 
     @Test
     public void interpreterPathsAndSymbolAndChildren() {
-        com.ingsis.visitors.Interpreter good =
-                new com.ingsis.visitors.Interpreter() {
-                    @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new com.ingsis.result.CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new com.ingsis.result.CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<Object> interpret(
-                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                        return new com.ingsis.result.CorrectResult<>(new Object());
-                    }
-                };
-
-        com.ingsis.visitors.Interpreter bad =
-                new com.ingsis.visitors.Interpreter() {
-                    @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new com.ingsis.result.CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new com.ingsis.result.CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public com.ingsis.result.Result<Object> interpret(
-                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                        return new com.ingsis.result.IncorrectResult<>("err");
-                    }
-                };
-
-        assertEquals("Interpreted successfully.", body.acceptInterpreter(good).result());
-        assertEquals("err", body.acceptInterpreter(bad).error());
+        assertEquals(
+                "Interpreted successfully.", body.acceptInterpreter(GOOD_INTERPRETER).result());
+        assertEquals("err", body.acceptInterpreter(BAD_INTERPRETER).error());
         assertEquals("", body.symbol());
         assertEquals(0, body.children().size());
         assertEquals(Boolean.TRUE, body.isTerminalNode());

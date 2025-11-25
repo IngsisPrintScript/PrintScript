@@ -4,7 +4,10 @@
 
 package com.ingsis.syntactic.parsers.operator;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;

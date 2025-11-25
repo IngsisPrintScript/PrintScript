@@ -29,7 +29,7 @@ public class IdentifierTokenizerTest {
     }
 
     @Test
-    void tokenize_validIdentifier_returnsCorrectResult() {
+    void tokenizeValidIdentifierReturnsCorrectResult() {
         Result<Token> result = tokenizer.tokenize("abc123", 1, 1);
         assertTrue(result.isCorrect());
         Token token = result.result();
@@ -38,7 +38,7 @@ public class IdentifierTokenizerTest {
     }
 
     @Test
-    void tokenize_invalidIdentifier_returnsIncorrect() {
+    void tokenizeInvalidIdentifierReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("123abc", 2, 3);
         assertFalse(result.isCorrect());
     }

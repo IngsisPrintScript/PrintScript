@@ -29,7 +29,7 @@ public class IfKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_if_returnsKeyword() {
+    void tokenizeIfReturnsKeyword() {
         Result<Token> result = tokenizer.tokenize("if", 5, 6);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class IfKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_notIf_returnsIncorrect() {
+    void tokenizeNotIfReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("iff", 1, 1);
         assertFalse(result.isCorrect());
     }

@@ -24,7 +24,7 @@ class ResultTest {
     }
 
     @Test
-    void givenResults_whenPolymorphicAccess_thenBehaveAccordingly() {
+    void givenResultsWhenPolymorphicAccessThenBehaveAccordingly() {
         // when/then: correct exposes result and is correct
         assertTrue(correct.isCorrect());
         assertEquals("value", correct.result());

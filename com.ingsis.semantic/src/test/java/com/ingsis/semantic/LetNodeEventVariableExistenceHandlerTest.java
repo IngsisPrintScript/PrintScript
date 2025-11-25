@@ -4,7 +4,8 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
@@ -41,7 +42,7 @@ public class LetNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenTypeAssignationFails_shouldReturnClonedIncorrect() {
+    void handleWhenTypeAssignationFailShouldReturnClonedIncorrect() {
         DeclarationKeywordNode node =
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(
@@ -63,7 +64,7 @@ public class LetNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenValueAssignationFails_shouldReturnClonedIncorrect() {
+    void handleWhenValueAssignationFailsShouldReturnClonedIncorrect() {
         DeclarationKeywordNode node =
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(
@@ -87,7 +88,7 @@ public class LetNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenEverythingOk_shouldReturnCorrectResult() {
+    void handleWhenEverythingOkShouldReturnCorrectResult() {
         DeclarationKeywordNode node =
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(

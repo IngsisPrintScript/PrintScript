@@ -4,7 +4,7 @@
 
 package com.ingsis.sca.observer.handlers.factories;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;

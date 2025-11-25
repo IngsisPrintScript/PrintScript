@@ -29,7 +29,7 @@ public class GenericSeparatorTokenizerTest {
     }
 
     @Test
-    void tokenize_comma_returnsSeparator() {
+    void tokenizeCommaReturnsSeparator() {
         Result<Token> result = tokenizer.tokenize(",", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class GenericSeparatorTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize(";", 1, 1);
         assertFalse(result.isCorrect());
     }

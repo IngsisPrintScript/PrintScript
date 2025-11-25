@@ -29,7 +29,7 @@ public class LetKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_let_returnsKeywordToken() {
+    void tokenizeLetReturnsKeywordToken() {
         Result<Token> result = tokenizer.tokenize("let", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class LetKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("lett", 1, 1);
         assertFalse(result.isCorrect());
     }

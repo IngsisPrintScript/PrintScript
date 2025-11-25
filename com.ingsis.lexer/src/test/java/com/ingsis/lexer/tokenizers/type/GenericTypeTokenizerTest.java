@@ -30,7 +30,7 @@ public class GenericTypeTokenizerTest {
     }
 
     @Test
-    void tokenize_matchingType_returnsTypeToken() {
+    void tokenizeMatchingTypeReturnsTypeToken() {
         Result<Token> result = tokenizer.tokenize(Types.NUMBER.keyword(), 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -39,7 +39,7 @@ public class GenericTypeTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("Unknown", 1, 1);
         assertFalse(result.isCorrect());
     }

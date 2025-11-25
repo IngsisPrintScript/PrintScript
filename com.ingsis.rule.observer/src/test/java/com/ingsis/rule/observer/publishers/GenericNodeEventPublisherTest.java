@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 class GenericNodeEventPublisherTest {
 
     @Test
-    void whenListenerFails_thenNotifyReturnsIncorrect() {
+    void whenListenerFailsThenNotifyReturnsIncorrect() {
         GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
                 new GenericNodeEventPublisher<>(
                         List.of(
@@ -50,7 +50,7 @@ class GenericNodeEventPublisherTest {
     }
 
     @Test
-    void whenAllListenersPass_thenReturnsCorrectWithMessage() {
+    void whenAllListenersPassThenReturnsCorrectWithMessage() {
         GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
                 new GenericNodeEventPublisher<>(
                         List.of(

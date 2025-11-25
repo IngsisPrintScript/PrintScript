@@ -4,7 +4,7 @@
 
 package com.ingsis.sca.observer.publishers.factories;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.result.factory.DefaultResultFactory;

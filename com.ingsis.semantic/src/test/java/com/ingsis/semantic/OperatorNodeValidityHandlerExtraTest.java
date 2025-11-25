@@ -4,7 +4,9 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
@@ -44,7 +46,7 @@ public class OperatorNodeValidityHandlerExtraTest {
     }
 
     @Test
-    void handle_literalMismatch_shouldReturnIncorrect() {
+    void handleLiteralMismatchShouldReturnIncorrect() {
         BinaryOperatorNode node =
                 new BinaryOperatorNode(
                         "-", new LiteralNode("1", 1, 1), new LiteralNode("true", 1, 2), 1, 1);
@@ -56,7 +58,7 @@ public class OperatorNodeValidityHandlerExtraTest {
     }
 
     @Test
-    void handle_identifierMatch_shouldReturnCorrect() {
+    void handleIdentifierMatchShouldReturnCorrect() {
         // create variable x with NUMBER type
         runtime.getCurrentEnvironment().createVariable("x", Types.NUMBER, 1);
 
@@ -71,7 +73,7 @@ public class OperatorNodeValidityHandlerExtraTest {
     }
 
     @Test
-    void handle_functionMismatch_shouldReturnIncorrect() {
+    void handleFunctionMismatchShouldReturnIncorrect() {
         // create function f returning STRING
         runtime.getCurrentEnvironment().createFunction("f", Map.of(), Types.STRING);
 
@@ -87,7 +89,7 @@ public class OperatorNodeValidityHandlerExtraTest {
     }
 
     @Test
-    void handle_functionMatch_shouldReturnCorrect() {
+    void handleFunctionMatchShouldReturnCorrect() {
         // create function f returning NUMBER
         runtime.getCurrentEnvironment().createFunction("g", Map.of(), Types.NUMBER);
 

@@ -4,7 +4,7 @@
 
 package com.ingsis.syntactic.parsers.declaration;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.factories.DefaultNodeFactory;
 import com.ingsis.result.CorrectResult;

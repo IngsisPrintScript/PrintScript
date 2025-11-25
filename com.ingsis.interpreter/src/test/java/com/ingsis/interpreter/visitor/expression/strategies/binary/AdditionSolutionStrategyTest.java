@@ -24,53 +24,53 @@ class AdditionSolutionStrategyTest {
     void addsNumbersAndConcatenatesStringsAndBooleans() {
         ExpressionSolutionStrategy strat = new AdditionSolutionStrategy(new FinalStrategy());
 
-        Interpreter stub =
-                new Interpreter() {
-                    @Override
-                    public com.ingsis.result.Result<String> interpret(IfKeywordNode ifKeywordNode) {
-                        throw new AssertionError("Should not be called");
-                    }
+        Interpreter stub = createStubInterpreter();
 
-                    @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            DeclarationKeywordNode declarationKeywordNode) {
-                        throw new AssertionError("Should not be called");
-                    }
+        assertSolve(strat, stub, "1", "2", 3.0);
+        assertSolve(strat, stub, "hello", " world", "hello world");
+        assertSolve(strat, stub, "true", "false", true);
+    }
 
-                    @Override
-                    public com.ingsis.result.Result<Object> interpret(ExpressionNode node) {
-                        if (node instanceof LiteralNode l) {
-                            String v = l.value();
-                            if (v.equals("1")) return new CorrectResult<>(1.0);
-                            if (v.equals("2")) return new CorrectResult<>(2.0);
-                            if (v.equals("hello")) return new CorrectResult<>("hello");
-                            if (v.equals(" world")) return new CorrectResult<>(" world");
-                            if (v.equals("true")) return new CorrectResult<>(true);
-                            if (v.equals("false")) return new CorrectResult<>(false);
-                        }
-                        return new CorrectResult<>(null);
-                    }
-                };
+    private Interpreter createStubInterpreter() {
+        return new Interpreter() {
+            @Override
+            public com.ingsis.result.Result<String> interpret(IfKeywordNode ifKeywordNode) {
+                throw new AssertionError("Should not be called");
+            }
 
-        BinaryOperatorNode nums =
+            @Override
+            public com.ingsis.result.Result<String> interpret(
+                    DeclarationKeywordNode declarationKeywordNode) {
+                throw new AssertionError("Should not be called");
+            }
+
+            @Override
+            public com.ingsis.result.Result<Object> interpret(ExpressionNode node) {
+                if (node instanceof LiteralNode l) {
+                    String v = l.value();
+                    if (v.equals("1")) return new CorrectResult<>(1.0);
+                    if (v.equals("2")) return new CorrectResult<>(2.0);
+                    if (v.equals("hello")) return new CorrectResult<>("hello");
+                    if (v.equals(" world")) return new CorrectResult<>(" world");
+                    if (v.equals("true")) return new CorrectResult<>(true);
+                    if (v.equals("false")) return new CorrectResult<>(false);
+                }
+                return new CorrectResult<>(null);
+            }
+        };
+    }
+
+    private void assertSolve(
+            ExpressionSolutionStrategy strat,
+            Interpreter stub,
+            String left,
+            String right,
+            Object expected) {
+        BinaryOperatorNode node =
                 new BinaryOperatorNode(
-                        "+", new LiteralNode("1", 0, 0), new LiteralNode("2", 0, 0), 0, 0);
-        Result<Object> rnums = strat.solve(stub, nums);
-        assertTrue(rnums.isCorrect());
-        assertEquals(3.0, rnums.result());
-
-        BinaryOperatorNode strs =
-                new BinaryOperatorNode(
-                        "+", new LiteralNode("hello", 0, 0), new LiteralNode(" world", 0, 0), 0, 0);
-        Result<Object> rstrs = strat.solve(stub, strs);
-        assertTrue(rstrs.isCorrect());
-        assertEquals("hello world", rstrs.result());
-
-        BinaryOperatorNode bools =
-                new BinaryOperatorNode(
-                        "+", new LiteralNode("true", 0, 0), new LiteralNode("false", 0, 0), 0, 0);
-        Result<Object> rbools = strat.solve(stub, bools);
-        assertTrue(rbools.isCorrect());
-        assertEquals(true, rbools.result());
+                        "+", new LiteralNode(left, 0, 0), new LiteralNode(right, 0, 0), 0, 0);
+        Result<Object> res = strat.solve(stub, node);
+        assertTrue(res.isCorrect());
+        assertEquals(expected, res.result());
     }
 }

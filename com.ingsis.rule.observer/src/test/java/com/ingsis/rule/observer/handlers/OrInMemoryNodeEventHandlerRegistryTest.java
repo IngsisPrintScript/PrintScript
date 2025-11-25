@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Test;
 class OrInMemoryNodeEventHandlerRegistryTest {
 
     @Test
-    void whenNoHandler_thenReturnsIncorrect() {
+    void whenNoHandlerThenReturnsIncorrect() {
         ResultFactory rf = new DefaultResultFactory();
         OrInMemoryNodeEventHandlerRegistry<Node> reg = new OrInMemoryNodeEventHandlerRegistry<>(rf);
 

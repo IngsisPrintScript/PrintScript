@@ -27,7 +27,7 @@ public class SecondTokenizerFactoryTest {
     }
 
     @Test
-    void createTokenizer_canTokenizeKeywordsAndBoolean() {
+    void createTokenizerCanTokenizeKeywordsAndBoolean() {
         var tokenizer = factory.createTokenizer();
         Result<Token> r1 = tokenizer.tokenize("if", 1, 1);
         assertTrue(r1.isCorrect());

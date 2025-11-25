@@ -4,7 +4,11 @@
 
 package com.ingsis.lexer;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
@@ -30,7 +34,7 @@ public class DefaultLexerTest {
     }
 
     @Test
-    void iterate_tokensSequencePeekNextHasNext() {
+    void iterateTokensSequencePeekNextHasNext() {
         Queue<Character> chars = new LinkedList<>();
         String input = "let x;";
         for (char c : input.toCharArray()) {
@@ -61,7 +65,7 @@ public class DefaultLexerTest {
     }
 
     @Test
-    void analyze_delegatesToTokenizer() {
+    void analyzeDelegatesToTokenizer() {
         Queue<Character> chars = new LinkedList<>();
         for (char c : "123".toCharArray()) chars.add(c);
         PeekableIterator<MetaChar> charStream = new ListPeekableCharIterator(chars);

@@ -4,7 +4,8 @@
 
 package com.ingsis.runtime.environment;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;

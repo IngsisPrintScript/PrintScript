@@ -4,7 +4,8 @@
 
 package com.ingsis.sca.observer.handlers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;

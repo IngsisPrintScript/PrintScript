@@ -4,7 +4,9 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
@@ -40,7 +42,7 @@ class OperatorNodeValidityHandlerTest {
     }
 
     @Test
-    void handle_whenSymbolIsPlus_shouldReturnCorrect() {
+    void handleWhenSymbolIsPlusShouldReturnCorrect() {
         LiteralNode left = new LiteralNode("1", 1, 1);
         LiteralNode right = new LiteralNode("2", 1, 2);
         BinaryOperatorNode node = new BinaryOperatorNode("+", left, right, 1, 1);
@@ -52,7 +54,7 @@ class OperatorNodeValidityHandlerTest {
     }
 
     @Test
-    void handle_whenChildrenMatchExpectedType_shouldReturnCorrect() {
+    void handleWhenChildrenMatchExpectedTypeShouldReturnCorrect() {
         // left is number -> expected NUMBER, right is number -> OK
         LiteralNode left = new LiteralNode("123", 2, 1);
         LiteralNode right = new LiteralNode("456", 2, 2);
@@ -65,7 +67,7 @@ class OperatorNodeValidityHandlerTest {
     }
 
     @Test
-    void handle_whenChildrenMismatchExpectedType_shouldReturnIncorrect() {
+    void handleWhenChildrenMismatchExpectedTypeShouldReturnIncorrect() {
         // left is number -> expected NUMBER, right is boolean -> mismatch
         LiteralNode left = new LiteralNode("123", 3, 1);
         LiteralNode right = new LiteralNode("true", 3, 2);

@@ -29,7 +29,7 @@ public class EndOfLineSeparatorTokenizerTest {
     }
 
     @Test
-    void tokenize_semicolon_returnsEol() {
+    void tokenizeSemicolonReturnsEol() {
         Result<Token> result = tokenizer.tokenize(";", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class EndOfLineSeparatorTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize(",", 1, 1);
         assertFalse(result.isCorrect());
     }

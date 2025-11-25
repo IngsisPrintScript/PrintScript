@@ -28,7 +28,7 @@ class PeekableIteratorTest {
     }
 
     @Test
-    void givenIterator_whenPeek_thenDoesNotAdvance() {
+    void givenIteratorWhenPeekThenDoesNotAdvance() {
         // when: we peek the first element
         Integer peeked = iterator.peek();
 
@@ -39,7 +39,7 @@ class PeekableIteratorTest {
     }
 
     @Test
-    void givenPeek_thenNextReturnsSame() {
+    void givenPeekThenNextReturnsSame() {
         // when
         Integer p = iterator.peek();
         Integer n = iterator.next();
@@ -49,7 +49,7 @@ class PeekableIteratorTest {
     }
 
     @Test
-    void givenPeekCalledMultipleTimes_thenSameValue() {
+    void givenPeekCalledMultipleTimesThenSameValue() {
         // when
         Integer p1 = iterator.peek();
         Integer p2 = iterator.peek();
@@ -60,7 +60,7 @@ class PeekableIteratorTest {
     }
 
     @Test
-    void givenEmptyIterator_whenHasNextFalseAndPeekThrows() {
+    void givenEmptyIteratorWhenHasNextFalseAndPeekThrows() {
         // given: an empty iterator
         Iterator<Integer> empty = Arrays.<Integer>asList().iterator();
         PeekableIterator<Integer> it = new SimplePeekableIterator<>(empty);

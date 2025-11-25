@@ -30,6 +30,28 @@ import org.junit.jupiter.api.Test;
 
 class DefaultCheckerFactoryBehaviorTest {
 
+    private static PublishersFactory okPublishersFactory() {
+        return new PublishersFactory() {
+            @Override
+            public GenericNodeEventPublisher<DeclarationKeywordNode> createLetNodePublisher() {
+                NodeEventHandler<DeclarationKeywordNode> h = n -> new CorrectResult<>("ok");
+                return new GenericNodeEventPublisher<>(List.of(h));
+            }
+
+            @Override
+            public GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher() {
+                NodeEventHandler<IfKeywordNode> h = n -> new CorrectResult<>("ok");
+                return new GenericNodeEventPublisher<>(List.of(h));
+            }
+
+            @Override
+            public GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher() {
+                NodeEventHandler<ExpressionNode> h = n -> new CorrectResult<>("ok");
+                return new GenericNodeEventPublisher<>(List.of(h));
+            }
+        };
+    }
+
     @Test
     void factoryCreatesCheckerThatDispatchesToPublishers() {
         PublishersFactory pf =
@@ -96,56 +118,8 @@ class DefaultCheckerFactoryBehaviorTest {
     void ifCheckerReturnsChildErrorWhenChildFails() {
         // publisher map contains a working If publisher so dispatch would succeed,
         // but we put a failing child in thenBody to exercise early return.
-        PublishersFactory pf =
-                new PublishersFactory() {
-                    @Override
-                    public GenericNodeEventPublisher<DeclarationKeywordNode>
-                            createLetNodePublisher() {
-                        NodeEventHandler<DeclarationKeywordNode> h = n -> new CorrectResult<>("ok");
-                        return new GenericNodeEventPublisher<>(List.of(h));
-                    }
-
-                    @Override
-                    public GenericNodeEventPublisher<IfKeywordNode>
-                            createConditionalNodePublisher() {
-                        NodeEventHandler<IfKeywordNode> h = n -> new CorrectResult<>("ok");
-                        return new GenericNodeEventPublisher<>(List.of(h));
-                    }
-
-                    @Override
-                    public GenericNodeEventPublisher<ExpressionNode>
-                            createExpressionNodePublisher() {
-                        NodeEventHandler<ExpressionNode> h = n -> new CorrectResult<>("ok");
-                        return new GenericNodeEventPublisher<>(List.of(h));
-                    }
-                };
-
         DefaultCheckerFactory f = new DefaultCheckerFactory();
-        var checker = f.createInMemoryEventBasedChecker(pf);
-
-        // Create a child node that returns an IncorrectResult when acceptChecker is called
-        class FailingChild implements Node, com.ingsis.visitors.Checkable {
-            @Override
-            public Integer line() {
-                return 0;
-            }
-
-            @Override
-            public Integer column() {
-                return 0;
-            }
-
-            @Override
-            public com.ingsis.result.Result<String> acceptVisitor(
-                    com.ingsis.visitors.Visitor visitor) {
-                return new CorrectResult<>("v");
-            }
-
-            @Override
-            public com.ingsis.result.Result<String> acceptChecker(com.ingsis.visitors.Checker c) {
-                return new IncorrectResult<>("child-failed");
-            }
-        }
+        var checker = f.createInMemoryEventBasedChecker(okPublishersFactory());
 
         Node failingChild = new FailingChild();
 
@@ -155,5 +129,27 @@ class DefaultCheckerFactoryBehaviorTest {
         Result<String> r = checker.check(ifNode);
         assertFalse(r.isCorrect());
         assertEquals("child-failed", r.error());
+    }
+
+    private static class FailingChild implements Node, com.ingsis.visitors.Checkable {
+        @Override
+        public Integer line() {
+            return 0;
+        }
+
+        @Override
+        public Integer column() {
+            return 0;
+        }
+
+        @Override
+        public com.ingsis.result.Result<String> acceptVisitor(com.ingsis.visitors.Visitor visitor) {
+            return new CorrectResult<>("v");
+        }
+
+        @Override
+        public com.ingsis.result.Result<String> acceptChecker(com.ingsis.visitors.Checker c) {
+            return new IncorrectResult<>("child-failed");
+        }
     }
 }

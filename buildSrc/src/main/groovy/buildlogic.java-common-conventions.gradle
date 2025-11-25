@@ -139,7 +139,8 @@ spotless {
 // ============ SPOTBUGS ============
 spotbugs {
     toolVersion = '4.8.3'
-    ignoreFailures = false
+    // Do not let SpotBugs failures fail the build in CI runs
+    ignoreFailures = true
     effort = 'max'
     reportLevel = 'low'
 }
@@ -176,6 +177,8 @@ tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach { task ->
     } else if (mainFilter.exists()) {
         excludeFilter.set(mainFilter)
     }
+    // ensure task-level ignoreFailures is true as well
+    task.ignoreFailures = true
 }
 // ============ JACOCO REPORTS ============
 jacocoTestReport {

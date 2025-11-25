@@ -4,7 +4,9 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.operator.TypeAssignationNode;
@@ -45,7 +47,7 @@ class TypeAssignationNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenIdentifierAlreadyDeclared_shouldReturnIncorrectResult() {
+    void handleWhenIdentifierAlreadyDeclaredShouldReturnIncorrectResult() {
         env.createVariable("x", Types.STRING);
 
         IdentifierNode id = new IdentifierNode("x", 1, 1);
@@ -59,7 +61,7 @@ class TypeAssignationNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenIdentifierNotDeclared_shouldCreateVariableAndReturnCorrectResult() {
+    void handleWhenIdentifierNotDeclaredShouldCreateVariableAndReturnCorrectResult() {
         IdentifierNode id = new IdentifierNode("y", 1, 1);
         TypeNode typeNode = new TypeNode(Types.STRING, 1, 1);
         TypeAssignationNode node = new TypeAssignationNode(id, typeNode, 1, 1);

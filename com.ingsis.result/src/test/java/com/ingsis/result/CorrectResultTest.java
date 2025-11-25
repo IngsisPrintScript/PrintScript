@@ -22,7 +22,7 @@ class CorrectResultTest {
     }
 
     @Test
-    void givenCorrectResult_whenResult_thenReturnsValueAndIsCorrect() {
+    void givenCorrectResultWhenResultThenReturnsValueAndIsCorrect() {
         // when
         String value = correct.result();
 
@@ -32,7 +32,7 @@ class CorrectResultTest {
     }
 
     @Test
-    void givenCorrectResult_whenError_thenThrowsUnsupportedOperation() {
+    void givenCorrectResultWhenErrorThenThrowsUnsupportedOperation() {
         // then
         assertThrows(UnsupportedOperationException.class, correct::error);
     }

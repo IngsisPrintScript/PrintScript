@@ -21,7 +21,7 @@ class DefaultTokensFactoryTest {
     }
 
     @Test
-    void createKeywordToken_withAndWithoutPosition() {
+    void createKeywordTokenWithAndWithoutPosition() {
         Token a = factory.createKeywordToken("if", 1, 2);
         assertEquals("KEYWORD_TOKEN", a.name());
         assertEquals("if", a.value());
@@ -36,7 +36,7 @@ class DefaultTokensFactoryTest {
     }
 
     @Test
-    void createVariousTokenTypes_haveExpectedNames() {
+    void createVariousTokenTypesHaveExpectedNames() {
         Token lit = factory.createLiteralToken("42");
         assertEquals("LITERAL_TOKEN", lit.name());
 

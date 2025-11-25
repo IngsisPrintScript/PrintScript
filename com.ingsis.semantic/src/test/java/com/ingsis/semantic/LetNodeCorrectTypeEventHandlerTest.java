@@ -4,7 +4,9 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
@@ -43,7 +45,7 @@ public class LetNodeCorrectTypeEventHandlerTest {
     }
 
     @Test
-    void handle_whenTypesMatch_shouldReturnCorrectResult() {
+    void handleWhenTypesMatchShouldReturnCorrectResult() {
         DeclarationKeywordNode node =
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(
@@ -67,7 +69,7 @@ public class LetNodeCorrectTypeEventHandlerTest {
     }
 
     @Test
-    void handle_whenTypesMismatch_shouldReturnIncorrectResult() {
+    void handleWhenTypesMismatchShouldReturnIncorrectResult() {
         DeclarationKeywordNode node =
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(

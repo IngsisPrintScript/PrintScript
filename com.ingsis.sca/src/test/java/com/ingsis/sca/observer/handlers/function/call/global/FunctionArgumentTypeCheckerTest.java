@@ -4,7 +4,8 @@
 
 package com.ingsis.sca.observer.handlers.function.call.global;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.nodes.expression.identifier.IdentifierNode;

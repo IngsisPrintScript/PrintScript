@@ -4,7 +4,11 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.CorrectResult;
@@ -75,7 +79,7 @@ public class DefaultSemanticCheckerTest {
     }
 
     @Test
-    void parse_whenCheckerReturnsCorrect_shouldReturnCorrectResult() {
+    void parseWhenCheckerReturnsCorrectShouldReturnCorrectResult() {
         Runtime runtime = DefaultRuntime.getInstance();
         List<Checkable> items = new ArrayList<>();
         TestCheckable tc = new TestCheckable(new CorrectResult<>("ok"));
@@ -114,7 +118,7 @@ public class DefaultSemanticCheckerTest {
     }
 
     @Test
-    void parse_whenCheckerReturnsIncorrect_shouldReturnIncorrectResult() {
+    void parseWhenCheckerReturnsIncorrectShouldReturnIncorrectResult() {
         Runtime runtime = DefaultRuntime.getInstance();
         List<Checkable> items = new ArrayList<>();
         TestCheckable tc = new TestCheckable(new IncorrectResult<>("bad"));
@@ -153,7 +157,7 @@ public class DefaultSemanticCheckerTest {
     }
 
     @Test
-    void iteration_flow_peek_next_and_exceptions() {
+    void iterationFlowPeekNextAndExceptions() {
         Runtime runtime = DefaultRuntime.getInstance();
         List<Checkable> items = new ArrayList<>();
         TestCheckable tc = new TestCheckable(new CorrectResult<>("ok"));

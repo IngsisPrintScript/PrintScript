@@ -26,7 +26,7 @@ class InMemoryNodeEventHandlerRegistryTest {
     }
 
     @Test
-    void whenHandlerFails_thenRegistryReturnsClonedIncorrect() {
+    void whenHandlerFailsThenRegistryReturnsClonedIncorrect() {
         NodeEventHandler<com.ingsis.nodes.Node> bad = node -> new IncorrectResult<>("bad");
         InMemoryNodeEventHandlerRegistry<com.ingsis.nodes.Node> reg =
                 new InMemoryNodeEventHandlerRegistry<>(List.of(bad), resultFactory);
@@ -56,7 +56,7 @@ class InMemoryNodeEventHandlerRegistryTest {
     }
 
     @Test
-    void whenAllHandlersPass_thenReturnsCorrect() {
+    void whenAllHandlersPassThenReturnsCorrect() {
         NodeEventHandler<com.ingsis.nodes.Node> ok = node -> new CorrectResult<>("ok");
         InMemoryNodeEventHandlerRegistry<com.ingsis.nodes.Node> reg =
                 new InMemoryNodeEventHandlerRegistry<>(List.of(ok), resultFactory);

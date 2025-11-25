@@ -4,7 +4,9 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.expression.literal.LiteralNode;
@@ -45,7 +47,7 @@ class ValueAssignationNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenVariableNotDeclared_shouldReturnIncorrectResult() {
+    void handleWhenVariableNotDeclaredShouldReturnIncorrectResult() {
         IdentifierNode id = new IdentifierNode("a", 1, 1);
         ValueAssignationNode node = new ValueAssignationNode(id, null, 1, 1);
 
@@ -56,7 +58,7 @@ class ValueAssignationNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenVariableDeclared_shouldReturnCorrectResult() {
+    void handleWhenVariableDeclaredShouldReturnCorrectResult() {
         env.createVariable("b", Types.STRING);
 
         IdentifierNode id = new IdentifierNode("b", 1, 1);
@@ -70,7 +72,7 @@ class ValueAssignationNodeEventVariableExistenceHandlerTest {
     }
 
     @Test
-    void handle_whenExpressionHasUninitializedIdentifier_shouldReturnIncorrectResult() {
+    void handleWhenExpressionHasUninitializedIdentifierShouldReturnIncorrectResult() {
         env.createVariable("b", Types.STRING);
 
         IdentifierNode exprId = new IdentifierNode("x", 1, 2);

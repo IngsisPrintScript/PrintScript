@@ -4,7 +4,9 @@
 
 package com.ingsis.runtime.environment.factories;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.Environment;

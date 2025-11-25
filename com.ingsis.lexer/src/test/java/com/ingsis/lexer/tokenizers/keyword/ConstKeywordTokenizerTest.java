@@ -29,7 +29,7 @@ public class ConstKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_const_returnsKeyword() {
+    void tokenizeConstReturnsKeyword() {
         Result<Token> result = tokenizer.tokenize("const", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class ConstKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("constant", 1, 1);
         assertFalse(result.isCorrect());
     }

@@ -29,7 +29,7 @@ public class NumberLiteralTokenizerTest {
     }
 
     @Test
-    void tokenize_number_returnsLiteral() {
+    void tokenizeNumberReturnsLiteral() {
         Result<Token> result = tokenizer.tokenize("12345", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class NumberLiteralTokenizerTest {
     }
 
     @Test
-    void tokenize_nonNumber_returnsIncorrect() {
+    void tokenizeNonNumberReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("12a45", 1, 1);
         assertFalse(result.isCorrect());
     }

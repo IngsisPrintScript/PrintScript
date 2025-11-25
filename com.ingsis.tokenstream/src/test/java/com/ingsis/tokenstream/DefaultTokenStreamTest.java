@@ -4,7 +4,11 @@
 
 package com.ingsis.tokenstream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.peekableiterator.PeekableIterator;
 import com.ingsis.result.Result;
@@ -49,7 +53,7 @@ class DefaultTokenStreamTest {
     }
 
     @Test
-    void consume_skipsSpacesAndReturnsTokens() {
+    void consumeSkipsSpacesAndReturnsTokens() {
         DefaultTokensFactory tf = new DefaultTokensFactory();
         Token space = tf.createSpaceSeparatorToken("");
         Token a = tf.createLiteralToken("a");
@@ -70,7 +74,7 @@ class DefaultTokenStreamTest {
     }
 
     @Test
-    void consume_withMismatch_returnsUnexpected() {
+    void consumeWithMismatchReturnsUnexpected() {
         DefaultTokensFactory tf = new DefaultTokensFactory();
         Token x = tf.createLiteralToken("x");
         Token expected = tf.createKeywordToken("if");
@@ -83,7 +87,7 @@ class DefaultTokenStreamTest {
     }
 
     @Test
-    void peekOffset_and_next_followBufferOrdering() {
+    void peekOffsetAndNextFollowBufferOrdering() {
         DefaultTokensFactory tf = new DefaultTokensFactory();
         Token a = tf.createLiteralToken("a");
         Token b = tf.createLiteralToken("b");
@@ -108,7 +112,7 @@ class DefaultTokenStreamTest {
     }
 
     @Test
-    void match_and_consumeAll_behavior() {
+    void matchAndConsumeAllBehavior() {
         DefaultTokensFactory tf = new DefaultTokensFactory();
         Token sep = tf.createSeparatorToken(",");
         Token x = tf.createLiteralToken("x");
@@ -130,7 +134,7 @@ class DefaultTokenStreamTest {
     }
 
     @Test
-    void cleanBuffer_resetsPointerAndClears() {
+    void cleanBufferResetsPointerAndClears() {
         DefaultTokensFactory tf = new DefaultTokensFactory();
         Token a = tf.createLiteralToken("a");
         Token b = tf.createLiteralToken("b");

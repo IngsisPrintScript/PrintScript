@@ -6,13 +6,16 @@ package com.ingsis.semantic;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.factories.HandlersFactory;
+import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +30,23 @@ public class DefaultSemanticPublisherFactoryTest {
         rt.push();
         ResultFactory resultFactory = new DefaultResultFactory();
 
-        HandlersFactory handlersFactory = new DefaultHandlersFactory(rt, resultFactory);
+        HandlerFactory handlersFactory =
+                new HandlerFactory() {
+                    @Override
+                    public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
+                        return node -> new DefaultResultFactory().createCorrectResult("ok");
+                    }
+
+                    @Override
+                    public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
+                        return node -> new DefaultResultFactory().createCorrectResult("ok");
+                    }
+
+                    @Override
+                    public NodeEventHandler<ExpressionNode> createExpressionHandler() {
+                        return node -> new DefaultResultFactory().createCorrectResult("ok");
+                    }
+                };
 
         factory = new DefaultSemanticPublisherFactory(handlersFactory);
     }
@@ -38,19 +57,19 @@ public class DefaultSemanticPublisherFactoryTest {
     }
 
     @Test
-    void createExpressionNodePublisher_shouldReturnPublisher() {
+    void createExpressionNodePublisherShouldReturnPublisher() {
         GenericNodeEventPublisher<?> publisher = factory.createExpressionNodePublisher();
         assertNotNull(publisher);
     }
 
     @Test
-    void createLetNodePublisher_shouldReturnPublisher() {
+    void createLetNodePublisherShouldReturnPublisher() {
         GenericNodeEventPublisher<?> publisher = factory.createLetNodePublisher();
         assertNotNull(publisher);
     }
 
     @Test
-    void createConditionalNodePublisher_shouldReturnPublisher() {
+    void createConditionalNodePublisherShouldReturnPublisher() {
         GenericNodeEventPublisher<?> publisher = factory.createConditionalNodePublisher();
         assertNotNull(publisher);
     }

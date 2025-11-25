@@ -8,15 +8,71 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.nodes.type.TypeNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Visitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TypeAssignationNodeTest {
 
     private TypeAssignationNode node;
+
+    private static final com.ingsis.visitors.Visitor SIMPLE_VISITOR =
+            new com.ingsis.visitors.Visitor() {
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.function.CallFunctionNode callFunctionNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.operator.BinaryOperatorNode
+                                binaryOperatorNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        TypeAssignationNode typeAssignationNode) {
+                    return new com.ingsis.result.CorrectResult<>("visited");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.operator.ValueAssignationNode
+                                valueAssignationNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.identifier.IdentifierNode identifierNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.literal.LiteralNode literalNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.type.TypeNode typeNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+            };
 
     @BeforeEach
     public void setUp() {
@@ -27,65 +83,6 @@ public class TypeAssignationNodeTest {
 
     @Test
     public void acceptVisitorDelegates() {
-        Visitor visitor =
-                new Visitor() {
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.function.CallFunctionNode
-                                    callFunctionNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.operator.BinaryOperatorNode
-                                    binaryOperatorNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(TypeAssignationNode typeAssignationNode) {
-                        return new CorrectResult<>("visited");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.operator.ValueAssignationNode
-                                    valueAssignationNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.identifier.IdentifierNode identifierNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.literal.LiteralNode literalNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(com.ingsis.nodes.type.TypeNode typeNode) {
-                        return new CorrectResult<>("ok");
-                    }
-                };
-
-        assertEquals("visited", node.acceptVisitor(visitor).result());
+        assertEquals("visited", node.acceptVisitor(SIMPLE_VISITOR).result());
     }
 }

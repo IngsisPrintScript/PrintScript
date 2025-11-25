@@ -29,7 +29,7 @@ public class ElseKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_else_returnsKeyword() {
+    void tokenizeElseReturnsKeyword() {
         Result<Token> result = tokenizer.tokenize("else", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class ElseKeywordTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("elseif", 1, 1);
         assertFalse(result.isCorrect());
     }

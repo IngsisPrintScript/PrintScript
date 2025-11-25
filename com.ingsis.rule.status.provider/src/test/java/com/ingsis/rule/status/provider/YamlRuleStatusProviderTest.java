@@ -4,7 +4,11 @@
 
 package com.ingsis.rule.status.provider;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -44,7 +48,7 @@ class YamlRuleStatusProviderTest {
     }
 
     @Test
-    void getRuleValue_returnsValueOrNull_orThrowsOnWrongType() throws Exception {
+    void getRuleValueReturnsValueOrNullOrThrowsOnWrongType() throws Exception {
         Path tmp = Files.createTempFile("rules", ".yml");
         Files.writeString(tmp, "strRule: hello\nintRule: 42\n");
 

@@ -29,7 +29,7 @@ public class StringLiteralTokenizerTest {
     }
 
     @Test
-    void tokenize_quoted_returnsUnquotedLiteral() {
+    void tokenizeQuotedReturnsUnquotedLiteral() {
         Result<Token> result = tokenizer.tokenize("\"hello\"", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class StringLiteralTokenizerTest {
     }
 
     @Test
-    void tokenize_notQuoted_returnsIncorrect() {
+    void tokenizeNotQuotedReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("hello", 1, 1);
         assertFalse(result.isCorrect());
     }

@@ -29,14 +29,14 @@ class DefaultIdentifierTypeGetterTest {
     }
 
     @Test
-    void unknownIdentifier_returnsUndefined() {
+    void unknownIdentifierReturnsUndefined() {
         IdentifierNode node = new IdentifierNode("x", 1, 1);
         DefaultIdentifierTypeGetter getter = new DefaultIdentifierTypeGetter(runtime);
         assertEquals(Types.UNDEFINED, getter.getType(node));
     }
 
     @Test
-    void declaredVariable_returnsItsType() {
+    void declaredVariableReturnsItsType() {
         // create variable in current environment
         Environment env = runtime.getCurrentEnvironment();
         env.createVariable("flag", Types.BOOLEAN, true);

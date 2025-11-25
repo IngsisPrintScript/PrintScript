@@ -27,7 +27,7 @@ public class FirstTokenizerFactoryTest {
     }
 
     @Test
-    void createTokenizer_canTokenizeLetAndOperators() {
+    void createTokenizerCanTokenizeLetAndOperators() {
         var tokenizer = factory.createTokenizer();
         Result<Token> r1 = tokenizer.tokenize("let", 1, 1);
         assertTrue(r1.isCorrect());

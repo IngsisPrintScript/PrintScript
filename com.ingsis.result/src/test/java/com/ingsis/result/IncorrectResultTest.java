@@ -22,7 +22,7 @@ class IncorrectResultTest {
     }
 
     @Test
-    void givenIncorrectResult_whenError_thenReturnsMessageAndIsNotCorrect() {
+    void givenIncorrectResultWhenErrorThenReturnsMessageAndIsNotCorrect() {
         // when
         String err = incorrect.error();
 
@@ -32,13 +32,13 @@ class IncorrectResultTest {
     }
 
     @Test
-    void givenIncorrectResult_whenResult_thenThrowsUnsupportedOperation() {
+    void givenIncorrectResultWhenResultThenThrowsUnsupportedOperation() {
         // then
         assertThrows(UnsupportedOperationException.class, incorrect::result);
     }
 
     @Test
-    void givenIncorrectResult_whenConstructedFromResult_thenCopiesError() {
+    void givenIncorrectResultWhenConstructedFromResultThenCopiesError() {
         // when: create a new IncorrectResult using existing incorrect
         IncorrectResult<String> copy = new IncorrectResult<>(incorrect);
 

@@ -4,7 +4,10 @@
 
 package com.ingsis.types;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -19,7 +22,7 @@ class TypesTest {
     }
 
     @Test
-    void checkFormat_numberAndBooleanAndNilAndString() {
+    void checkFormatNumberAndBooleanAndNilAndString() {
         assertTrue(Types.NUMBER.checkFormat("123"));
         assertTrue(Types.NUMBER.checkFormat("3.14"));
         assertFalse(Types.NUMBER.checkFormat("12a"));
@@ -37,7 +40,7 @@ class TypesTest {
     }
 
     @Test
-    void isCompatibleWithObject_usesToStringAndFormat() {
+    void isCompatibleWithObjectUsesToStringAndFormat() {
         assertTrue(Types.NUMBER.isCompatibleWith(42));
         assertTrue(Types.NUMBER.isCompatibleWith(3.5));
         assertFalse(Types.NUMBER.isCompatibleWith("abc"));
@@ -48,7 +51,7 @@ class TypesTest {
     }
 
     @Test
-    void isCompatibleWithTypes_handlesUndefined() {
+    void isCompatibleWithTypesHandlesUndefined() {
         assertTrue(Types.UNDEFINED.isCompatibleWith(Types.NUMBER));
         assertTrue(Types.NUMBER.isCompatibleWith(Types.UNDEFINED));
         assertTrue(Types.STRING.isCompatibleWith(Types.STRING));
@@ -56,7 +59,7 @@ class TypesTest {
     }
 
     @Test
-    void fromKeyword_and_allTypes_behavior() {
+    void fromKeywordAndAllTypesBehavior() {
         assertEquals(Types.NUMBER, Types.fromKeyword("Number"));
         assertEquals(Types.UNDEFINED, Types.fromKeyword("NonExisting"));
 

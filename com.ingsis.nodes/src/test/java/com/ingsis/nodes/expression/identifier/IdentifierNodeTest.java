@@ -7,18 +7,136 @@ package com.ingsis.nodes.expression.identifier;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
-import com.ingsis.visitors.Checker;
-import com.ingsis.visitors.Interpreter;
-import com.ingsis.visitors.Visitor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class IdentifierNodeTest {
 
     private IdentifierNode identifier;
+
+    private static final com.ingsis.visitors.Interpreter GOOD_INTERPRETER =
+            new com.ingsis.visitors.Interpreter() {
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<Object> interpret(
+                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                    return new com.ingsis.result.CorrectResult<>("value");
+                }
+            };
+
+    private static final com.ingsis.visitors.Interpreter BAD_INTERPRETER =
+            new com.ingsis.visitors.Interpreter() {
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> interpret(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<Object> interpret(
+                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                    return new com.ingsis.result.IncorrectResult<>("err");
+                }
+            };
+
+    private static final com.ingsis.visitors.Checker SIMPLE_CHECKER =
+            new com.ingsis.visitors.Checker() {
+                @Override
+                public com.ingsis.result.Result<String> check(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> check(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> check(
+                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                    return new com.ingsis.result.CorrectResult<>("checked");
+                }
+            };
+
+    private static final com.ingsis.visitors.Visitor SIMPLE_VISITOR =
+            new com.ingsis.visitors.Visitor() {
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.function.CallFunctionNode callFunctionNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.operator.BinaryOperatorNode
+                                binaryOperatorNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.operator.TypeAssignationNode
+                                typeAssignationNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.operator.ValueAssignationNode
+                                valueAssignationNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.identifier.IdentifierNode identifierNode) {
+                    return new com.ingsis.result.CorrectResult<>("visited");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.expression.literal.LiteralNode literalNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+
+                @Override
+                public com.ingsis.result.Result<String> visit(
+                        com.ingsis.nodes.type.TypeNode typeNode) {
+                    return new com.ingsis.result.CorrectResult<>("ok");
+                }
+            };
 
     @BeforeEach
     public void setUp() {
@@ -39,145 +157,19 @@ public class IdentifierNodeTest {
 
     @Test
     public void acceptInterpreterReturnsCorrectAndIncorrectVariants() {
-        Interpreter good =
-                new Interpreter() {
-                    @Override
-                    public Result<String> interpret(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> interpret(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<Object> interpret(
-                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                        return new CorrectResult<>("value");
-                    }
-                };
-
-        Result<String> goodResult = identifier.acceptInterpreter(good);
+        Result<String> goodResult = identifier.acceptInterpreter(GOOD_INTERPRETER);
         assertEquals("Interpreted successfully.", goodResult.result());
 
-        Interpreter bad =
-                new Interpreter() {
-                    @Override
-                    public Result<String> interpret(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> interpret(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<Object> interpret(
-                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                        return new IncorrectResult<>("err");
-                    }
-                };
-
-        Result<String> badResult = identifier.acceptInterpreter(bad);
+        Result<String> badResult = identifier.acceptInterpreter(BAD_INTERPRETER);
         assertEquals("err", badResult.error());
     }
 
     @Test
     public void acceptCheckerAndVisitorDelegate() {
-        Checker checker =
-                new Checker() {
-                    @Override
-                    public Result<String> check(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> check(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> check(
-                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                        return new CorrectResult<>("checked");
-                    }
-                };
-
-        Visitor visitor =
-                new Visitor() {
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.function.CallFunctionNode
-                                    callFunctionNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.operator.BinaryOperatorNode
-                                    binaryOperatorNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.operator.TypeAssignationNode
-                                    typeAssignationNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.operator.ValueAssignationNode
-                                    valueAssignationNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(IdentifierNode identifierNode) {
-                        return new CorrectResult<>("visited");
-                    }
-
-                    @Override
-                    public Result<String> visit(
-                            com.ingsis.nodes.expression.literal.LiteralNode literalNode) {
-                        return new CorrectResult<>("ok");
-                    }
-
-                    @Override
-                    public Result<String> visit(com.ingsis.nodes.type.TypeNode typeNode) {
-                        return new CorrectResult<>("ok");
-                    }
-                };
-
-        Result<String> checkResult = identifier.acceptChecker(checker);
+        Result<String> checkResult = identifier.acceptChecker(SIMPLE_CHECKER);
         assertEquals("checked", checkResult.result());
 
-        Result<String> visitResult = identifier.acceptVisitor(visitor);
+        Result<String> visitResult = identifier.acceptVisitor(SIMPLE_VISITOR);
         assertEquals("visited", visitResult.result());
     }
 }

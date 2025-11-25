@@ -29,7 +29,7 @@ public class GenericOperatorTokenizerTest {
     }
 
     @Test
-    void tokenize_colon_returnsOperatorToken() {
+    void tokenizeColonReturnsOperatorToken() {
         Result<Token> result = tokenizer.tokenize(":", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class GenericOperatorTokenizerTest {
     }
 
     @Test
-    void tokenize_other_returnsIncorrect() {
+    void tokenizeOtherReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize(";", 1, 1);
         assertFalse(result.isCorrect());
     }

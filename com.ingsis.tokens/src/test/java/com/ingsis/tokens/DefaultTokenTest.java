@@ -21,7 +21,7 @@ class DefaultTokenTest {
     }
 
     @Test
-    void constructFromToken_copiesFields() {
+    void constructFromTokenCopiesFields() {
         DefaultToken copy = new DefaultToken(token);
         assertEquals(token.name(), copy.name());
         assertEquals(token.value(), copy.value());
@@ -30,7 +30,7 @@ class DefaultTokenTest {
     }
 
     @Test
-    void equals_usesNameWhenOtherHasEmptyValue() {
+    void equalsUsesNameWhenOtherHasEmptyValue() {
         DefaultToken other = new DefaultToken("NAME", "", 5, 6);
         assertTrue(token.equals(other));
         // other -> token should also be true because other has empty value
@@ -38,13 +38,13 @@ class DefaultTokenTest {
     }
 
     @Test
-    void equals_falseForDifferentName() {
+    void equalsFalseForDifferentName() {
         DefaultToken other = new DefaultToken("OTHER", "value", 1, 2);
         assertFalse(token.equals(other));
     }
 
     @Test
-    void equals_falseForNonTokenObject() {
+    void equalsFalseForNonTokenObject() {
         assertFalse(token.equals("not a token"));
     }
 }

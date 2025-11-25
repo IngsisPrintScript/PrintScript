@@ -46,7 +46,7 @@ class GenericNodeEventPublisherExtraTest {
     }
 
     @Test
-    void multipleHandlers_stopAtFirstIncorrect() {
+    void multipleHandlersStopAtFirstIncorrect() {
         NodeEventHandler<com.ingsis.nodes.Node> good = n -> new CorrectResult<>("ok");
         NodeEventHandler<com.ingsis.nodes.Node> bad = n -> new IncorrectResult<>("boom");
 

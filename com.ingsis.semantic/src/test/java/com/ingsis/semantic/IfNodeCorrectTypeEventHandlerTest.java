@@ -4,7 +4,10 @@
 
 package com.ingsis.semantic;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.nodes.keyword.IfKeywordNode;
@@ -41,7 +44,7 @@ class IfNodeCorrectTypeEventHandlerTest {
     }
 
     @Test
-    void handle_whenConditionIsBooleanLiteral_shouldReturnCorrectResult() {
+    void handleWhenConditionIsBooleanLiteralShouldReturnCorrectResult() {
         LiteralNode condition = new LiteralNode("true", 1, 1);
         IfKeywordNode node = new IfKeywordNode(condition, List.of(), 1, 1);
 
@@ -53,7 +56,7 @@ class IfNodeCorrectTypeEventHandlerTest {
     }
 
     @Test
-    void handle_whenConditionIsNotBoolean_shouldReturnIncorrectResult() {
+    void handleWhenConditionIsNotBooleanShouldReturnIncorrectResult() {
         LiteralNode condition = new LiteralNode("123", 2, 2);
         IfKeywordNode node = new IfKeywordNode(condition, List.of(), 2, 2);
 

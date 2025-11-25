@@ -29,7 +29,7 @@ public class BooleanLiteralTokenizerTest {
     }
 
     @Test
-    void tokenize_true_returnsLiteral() {
+    void tokenizeTrueReturnsLiteral() {
         Result<Token> result = tokenizer.tokenize("true", 1, 1);
         assertTrue(result.isCorrect());
         Token t = result.result();
@@ -38,7 +38,7 @@ public class BooleanLiteralTokenizerTest {
     }
 
     @Test
-    void tokenize_invalid_returnsIncorrect() {
+    void tokenizeInvalidReturnsIncorrect() {
         Result<Token> result = tokenizer.tokenize("TRUE", 1, 1);
         assertFalse(result.isCorrect());
     }

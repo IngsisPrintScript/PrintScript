@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 
 public class FinalTokenizerTest {
     @Test
-    void tokenize_alwaysReturnsIncorrect() {
+    void tokenizeAlwaysReturnsIncorrect() {
         Result<Token> result = new FinalTokenizer().tokenize("any", 1, 1);
         assertFalse(result.isCorrect());
     }

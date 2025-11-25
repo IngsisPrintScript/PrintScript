@@ -30,7 +30,7 @@ public class DefaultTokenizersRegistryTest {
     }
 
     @Test
-    void tokenize_registeredMatchesFirst() {
+    void tokenizeRegisteredMatchesFirst() {
         registry.registerTokenizer(new IdentifierTokenizer(tokenFactory, resultFactory));
         Result<Token> result = registry.tokenize("abc", 1, 1);
         assertTrue(result.isCorrect());
@@ -39,7 +39,7 @@ public class DefaultTokenizersRegistryTest {
     }
 
     @Test
-    void tokenize_noRegistered_returnsFinalTokenizerIncorrect() {
+    void tokenizeNoRegisteredReturnsFinalTokenizerIncorrect() {
         Result<Token> result = registry.tokenize("@@", 1, 1);
         assertFalse(result.isCorrect());
     }

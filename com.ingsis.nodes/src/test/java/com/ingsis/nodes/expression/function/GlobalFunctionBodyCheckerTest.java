@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 public class GlobalFunctionBodyCheckerTest {
 
     @Test
-    public void acceptChecker_delegatesToChecker_andReturnsResult() {
+    public void acceptCheckerDelegatesToCheckerAndReturnsResult() {
         // given
         GlobalFunctionBody gf =
                 new GlobalFunctionBody(

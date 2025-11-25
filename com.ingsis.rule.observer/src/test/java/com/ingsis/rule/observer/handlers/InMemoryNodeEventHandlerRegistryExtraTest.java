@@ -4,7 +4,9 @@
 
 package com.ingsis.rule.observer.handlers;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.result.Result;
 import com.ingsis.result.factory.DefaultResultFactory;
@@ -44,7 +46,7 @@ class InMemoryNodeEventHandlerRegistryExtraTest {
     }
 
     @Test
-    void registerThrowsUnsupportedOperation_whenBackingListIsUnmodifiable() {
+    void registerThrowsUnsupportedOperationWhenBackingListIsUnmodifiable() {
         ResultFactory rf = new DefaultResultFactory();
         InMemoryNodeEventHandlerRegistry<com.ingsis.nodes.Node> reg =
                 new InMemoryNodeEventHandlerRegistry<>(rf);
