@@ -20,8 +20,8 @@ class PublishingConventionPlugin implements Plugin<Project> {
                     name = "GitHubPackages"
                     url = project.uri("https://maven.pkg.github.com/IngsisPrintScript/PrintScript")
                     credentials {
-                        username = System.getenv('GITHUB_ACTOR')
-                        password = System.getenv('GITHUB_TOKEN')
+                      username = System.getenv('GITHUB_ACTOR') ?: project.findProperty('gprUser')
+                      password = System.getenv('GITHUB_TOKEN') ?: project.findProperty('gprToken')
                     }
                 }
             }
