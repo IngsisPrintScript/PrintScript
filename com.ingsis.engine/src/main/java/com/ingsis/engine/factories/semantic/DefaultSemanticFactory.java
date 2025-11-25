@@ -14,7 +14,6 @@ import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 public final class DefaultSemanticFactory implements SemanticFactory {
     private final SyntacticFactory syntacticFactory;
@@ -26,9 +25,10 @@ public final class DefaultSemanticFactory implements SemanticFactory {
     }
 
     @Override
-    public SemanticChecker createCliSemanticChecker(Queue<Character> buffer, Runtime runtime) {
+    public SemanticChecker createCliSemanticChecker(String input, Runtime runtime)
+            throws IOException {
         return new DefaultSemanticChecker(
-                syntacticFactory.createCliSyntacticChecker(buffer),
+                syntacticFactory.createCliSyntacticChecker(input),
                 new DefaultCheckerFactory()
                         .createInMemoryEventBasedChecker(
                                 new DefaultSemanticPublisherFactory(
@@ -41,6 +41,17 @@ public final class DefaultSemanticFactory implements SemanticFactory {
             throws IOException {
         return new DefaultSemanticChecker(
                 syntacticFactory.createFileSyntacticChecker(filePath),
+                new DefaultCheckerFactory()
+                        .createInMemoryEventBasedChecker(
+                                new DefaultSemanticPublisherFactory(
+                                        new DefaultHandlersFactory(runtime, resultFactory))),
+                runtime);
+    }
+
+    @Override
+    public SemanticChecker createReplSemanticChecker(Runtime runtime) throws IOException {
+        return new DefaultSemanticChecker(
+                syntacticFactory.createReplSyntacticChecker(),
                 new DefaultCheckerFactory()
                         .createInMemoryEventBasedChecker(
                                 new DefaultSemanticPublisherFactory(

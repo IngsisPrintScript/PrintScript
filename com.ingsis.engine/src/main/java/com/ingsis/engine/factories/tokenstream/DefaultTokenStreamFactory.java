@@ -10,7 +10,6 @@ import com.ingsis.tokenstream.DefaultTokenStream;
 import com.ingsis.tokenstream.TokenStream;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 public class DefaultTokenStreamFactory implements TokenStreamFactory {
     private final LexerFactory lexerFactory;
@@ -22,14 +21,18 @@ public class DefaultTokenStreamFactory implements TokenStreamFactory {
     }
 
     @Override
-    public TokenStream createCliTokenStream(Queue<Character> buffer) {
+    public TokenStream createCliTokenStream(String input) throws IOException {
         return new DefaultTokenStream(
-                lexerFactory.createCliLexer(buffer, resultFactory), resultFactory);
+                lexerFactory.createCliLexer(input, resultFactory), resultFactory);
     }
 
     @Override
     public TokenStream createFileTokenStream(Path filePath) throws IOException {
         return new DefaultTokenStream(
                 lexerFactory.createFromFileLexer(filePath, resultFactory), resultFactory);
+    }
+
+    public TokenStream createReplTokenStream() throws IOException {
+        return new DefaultTokenStream(lexerFactory.createReplLexer(resultFactory), resultFactory);
     }
 }

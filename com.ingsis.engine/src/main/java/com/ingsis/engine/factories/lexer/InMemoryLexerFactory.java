@@ -14,17 +14,16 @@ import com.ingsis.runtime.Runtime;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 @SuppressFBWarnings(
         value = "EI2",
         justification = "Environment is a shared, controlled mutable dependency.")
-public final class DefaultLexerFactory implements LexerFactory {
+public final class InMemoryLexerFactory implements LexerFactory {
     private final CharStreamFactory charStreamFactory;
     private final TokenizerFactory tokenizerFactory;
     private final Runtime runtime;
 
-    public DefaultLexerFactory(
+    public InMemoryLexerFactory(
             CharStreamFactory charStreamFactory,
             TokenizerFactory tokenizerFactory,
             Runtime runtime) {
@@ -34,9 +33,10 @@ public final class DefaultLexerFactory implements LexerFactory {
     }
 
     @Override
-    public Lexer createCliLexer(Queue<Character> buffer, ResultFactory resultFactory) {
+    public Lexer createCliLexer(String input, ResultFactory resultFactory) throws IOException {
+        // Use fromString instead of inMemoryCharIterator
         return new DefaultLexer(
-                charStreamFactory.inMemoryCharIterator(buffer),
+                charStreamFactory.fromString(input),
                 tokenizerFactory.createTokenizer(),
                 new LoggerResultFactory(resultFactory, runtime));
     }
@@ -45,7 +45,15 @@ public final class DefaultLexerFactory implements LexerFactory {
     public Lexer createFromFileLexer(Path filePath, ResultFactory resultFactory)
             throws IOException {
         return new DefaultLexer(
-                charStreamFactory.fromFileCharIterator(filePath),
+                charStreamFactory.fromFile(filePath),
+                tokenizerFactory.createTokenizer(),
+                new LoggerResultFactory(resultFactory, runtime));
+    }
+
+    @Override
+    public Lexer createReplLexer(ResultFactory resultFactory) throws IOException {
+        return new DefaultLexer(
+                charStreamFactory.fromInputStream(System.in),
                 tokenizerFactory.createTokenizer(),
                 new LoggerResultFactory(resultFactory, runtime));
     }

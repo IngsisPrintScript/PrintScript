@@ -11,7 +11,6 @@ import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
 import com.ingsis.runtime.Runtime;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 public final class DefaultProgramInterpreterFactory implements ProgramInterpreterFactory {
     private final SemanticFactory semanticFactory;
@@ -24,10 +23,10 @@ public final class DefaultProgramInterpreterFactory implements ProgramInterprete
     }
 
     @Override
-    public ProgramInterpreter createCliProgramInterpreter(
-            Queue<Character> buffer, Runtime runtime) {
+    public ProgramInterpreter createCliProgramInterpreter(String input, Runtime runtime)
+            throws IOException {
         return new DefaultProgramInterpreter(
-                semanticFactory.createCliSemanticChecker(buffer, runtime),
+                semanticFactory.createCliSemanticChecker(input, runtime),
                 interpreterFactory.createDefaultInterpreter(runtime));
     }
 
@@ -36,6 +35,13 @@ public final class DefaultProgramInterpreterFactory implements ProgramInterprete
             throws IOException {
         return new DefaultProgramInterpreter(
                 semanticFactory.createFileSemanticChecker(filePath, runtime),
+                interpreterFactory.createDefaultInterpreter(runtime));
+    }
+
+    @Override
+    public ProgramInterpreter createReplProgramInterpreter(Runtime runtime) throws IOException {
+        return new DefaultProgramInterpreter(
+                semanticFactory.createReplSemanticChecker(runtime),
                 interpreterFactory.createDefaultInterpreter(runtime));
     }
 }

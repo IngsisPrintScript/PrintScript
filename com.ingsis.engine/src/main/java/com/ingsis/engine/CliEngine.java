@@ -5,11 +5,11 @@
 package com.ingsis.engine;
 
 import com.ingsis.engine.factories.charstream.CharStreamFactory;
-import com.ingsis.engine.factories.charstream.DefaultCharStreamFactory;
+import com.ingsis.engine.factories.charstream.InMemoryCharStreamFactory;
 import com.ingsis.engine.factories.formatter.InMemoryFormatterFactory;
 import com.ingsis.engine.factories.interpreter.DefaultProgramInterpreterFactory;
 import com.ingsis.engine.factories.interpreter.ProgramInterpreterFactory;
-import com.ingsis.engine.factories.lexer.DefaultLexerFactory;
+import com.ingsis.engine.factories.lexer.InMemoryLexerFactory;
 import com.ingsis.engine.factories.lexer.LexerFactory;
 import com.ingsis.engine.factories.sca.DefaultScaFactory;
 import com.ingsis.engine.factories.semantic.DefaultSemanticFactory;
@@ -52,70 +52,22 @@ import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.tokens.factories.DefaultTokensFactory;
 import com.ingsis.tokens.factories.TokenFactory;
 import com.ingsis.visitors.Checker;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.util.ArrayDeque;
-import java.util.Queue;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
-@SuppressFBWarnings(
-        value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR",
-        justification = "version is set by PicoCLI before use")
+@SuppressWarnings("FieldMayBeFinal")
 @CommandLine.Command(
         name = "cli-engine",
         mixinStandardHelpOptions = true,
         description = "Runs the interpreter with CLI input")
 public final class CliEngine implements Engine {
-
-    public static class CliEngineBuilder {
-        private String command;
-        private Path file;
-        private Path formatConfig;
-        private Version version;
-        private Boolean replMode = true;
-
-        public CliEngineBuilder command(String c) {
-            this.command = c;
-            return this;
-        }
-
-        public CliEngineBuilder file(Path f) {
-            this.file = f;
-            return this;
-        }
-
-        public CliEngineBuilder formatConfig(Path f) {
-            this.formatConfig = f;
-            return this;
-        }
-
-        public CliEngineBuilder version(Version v) {
-            this.version = v;
-            return this;
-        }
-
-        public CliEngineBuilder replMode(Boolean rm) {
-            this.replMode = rm;
-            return this;
-        }
-
-        public CliEngine build() {
-            CliEngine e = new CliEngine();
-            e.command = command;
-            e.file = file;
-            e.formatConfig = formatConfig;
-            e.version = version;
-            e.replMode = replMode;
-            return e;
-        }
-    }
 
     @Option(names = "--repl-mode", description = "Mode.", required = true)
     public Boolean replMode = true;
@@ -147,57 +99,52 @@ public final class CliEngine implements Engine {
 
     @Override
     public void run() {
-        if (command.equals("analyze")) {
-            analyzeFile(file);
-        } else if (command.equals("format")) {
-            formatFile(file);
-        } else {
-            if (file != null) {
-                runFile(file);
+        try {
+            if ("analyze".equals(command)) {
+                analyzeFile(file);
+            } else if ("format".equals(command)) {
+                formatFile(file);
             } else {
-                runREPL();
+                if (file != null) {
+                    runFile(file);
+                } else {
+                    runREPL();
+                }
             }
+        } catch (Exception e) {
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
-    private void formatFile(Path file) {
-        try {
-            System.out.println("Format file: " + file);
-            Result<String> formatResult = buildProgramFormatter(file).format();
-            IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-            if (!formatResult.isCorrect() && executionError != null) {
-                System.out.print("Error: " + executionError.error() + "\n");
-            }
-            System.out.print(formatResult.result());
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
+    private void formatFile(Path file) throws IOException {
+        System.out.println("Format file: " + file);
+        ProgramFormatter formatter = buildProgramFormatter(file);
+        Result<String> formatResult = formatter.format();
+        IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+        if (!formatResult.isCorrect() && executionError != null) {
+            System.out.print("Error: " + executionError.error() + "\n");
+        }
+        System.out.print(formatResult.result());
+    }
+
+    private void analyzeFile(Path file) throws IOException {
+        System.out.println("Analyzing file: " + file);
+        Result<String> analyzeResult = buildProgramSca(file).analyze();
+        IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+        if (!analyzeResult.isCorrect() && executionError != null) {
+            System.out.print("Error: " + executionError.error() + "\n");
+        } else {
+            System.out.print("Checks passed.");
         }
     }
 
-    private void analyzeFile(Path file) {
-        try {
-            System.out.println("Analyzing file: " + file);
-            Result<String> analyzeResult = buildProgramSca(file).analyze();
-            IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-            if (!analyzeResult.isCorrect() && executionError != null) {
-                System.out.print("Error: " + executionError.error() + "\n");
-            }
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
-        }
-        System.out.print("Checks passed.");
-    }
-
-    private void runFile(Path file) {
-        try {
-            System.out.println("Interpreting file: " + file);
-            Result<String> interpretResult = buildFileInterpreter(file).interpret();
-            IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-            if (!interpretResult.isCorrect() && executionError != null) {
-                System.out.print("Error: " + executionError.error() + "\n");
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+    private void runFile(Path file) throws IOException {
+        System.out.println("Interpreting file: " + file);
+        Result<String> interpretResult = buildFileInterpreter(file).interpret();
+        IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+        if (!interpretResult.isCorrect() && executionError != null) {
+            System.out.print("Error: " + executionError.error() + "\n");
         }
     }
 
@@ -208,7 +155,7 @@ public final class CliEngine implements Engine {
             if (replMode) System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
 
             String line;
-            while (!stopRequested) { // <-- usamos stopRequested
+            while (!stopRequested) {
                 if (replMode) System.out.print("> ");
                 line = reader.readLine();
                 if (line == null || (replMode && line.equalsIgnoreCase("exit"))) {
@@ -216,20 +163,18 @@ public final class CliEngine implements Engine {
                     break;
                 }
 
-                Queue<Character> buffer = new ArrayDeque<>();
-                line.chars().forEach(c -> buffer.add((char) c));
-
-                Result<String> interpretResult = buildReplInterpreter(buffer).interpret();
+                // Pass the line string directly to the interpreter
+                Result<String> interpretResult = buildReplInterpreter(line).interpret();
                 IncorrectResult<?> executionError =
                         DefaultRuntime.getInstance().getExecutionError();
                 if (!interpretResult.isCorrect() && executionError != null) {
-                    System.out.print("Error: " + executionError.error() + "\n");
+                    System.err.print("Error: " + executionError.error() + "\n");
                 }
             }
 
             if (replMode) System.out.println("REPL stopped.");
         } catch (IOException e) {
-            System.err.println("Error: Error in REPL: " + e.getMessage());
+            System.err.println("Error in REPL: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -237,7 +182,7 @@ public final class CliEngine implements Engine {
     private SemanticFactory createSemanticFactory() {
         ResultFactory resultFactory =
                 new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-        CharStreamFactory charStreamFactory = new DefaultCharStreamFactory();
+        CharStreamFactory charStreamFactory = new InMemoryCharStreamFactory();
         TokenFactory tokenFactory = new DefaultTokensFactory();
         TokenizerFactory tokenizerFactory;
         switch (version) {
@@ -251,7 +196,7 @@ public final class CliEngine implements Engine {
                 throw new IllegalArgumentException("Unsupported version: " + version);
         }
         LexerFactory lexerFactory =
-                new DefaultLexerFactory(
+                new InMemoryLexerFactory(
                         charStreamFactory, tokenizerFactory, DefaultRuntime.getInstance());
         TokenStreamFactory tokenStreamFactory =
                 new DefaultTokenStreamFactory(lexerFactory, resultFactory);
@@ -271,9 +216,7 @@ public final class CliEngine implements Engine {
                 new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
         InterpreterVisitorFactory interpreterVisitorFactory =
                 new DefaultInterpreterVisitorFactory(solutionStrategyFactory, resultFactory);
-        ProgramInterpreterFactory programInterpreterFactory =
-                new DefaultProgramInterpreterFactory(semanticFactory, interpreterVisitorFactory);
-        return programInterpreterFactory;
+        return new DefaultProgramInterpreterFactory(semanticFactory, interpreterVisitorFactory);
     }
 
     private EventsChecker buildScaChecker() {
@@ -297,7 +240,6 @@ public final class CliEngine implements Engine {
     }
 
     private EventsChecker buildFormatterChecker() {
-
         AtomicReference<Checker> checkerRef = new AtomicReference<>();
         Supplier<Checker> checkerSupplier = checkerRef::get;
 
@@ -306,14 +248,12 @@ public final class CliEngine implements Engine {
                         new LoggerResultFactory(
                                 new DefaultResultFactory(), DefaultRuntime.getInstance()),
                         new YamlRuleStatusProvider(formatConfig),
-                        checkerSupplier // <-- IMPORTANT
-                        );
+                        checkerSupplier);
 
         PublishersFactory publishersFactory = new InMemoryFormatterPublisherFactory(handlerFactory);
 
         Checker checker =
                 new DefaultCheckerFactory().createInMemoryEventBasedChecker(publishersFactory);
-
         checkerRef.set(checker);
 
         return (EventsChecker) checker;
@@ -328,9 +268,9 @@ public final class CliEngine implements Engine {
                         buildFormatterChecker());
     }
 
-    private ProgramInterpreter buildReplInterpreter(Queue<Character> buffer) {
+    private ProgramInterpreter buildReplInterpreter(String line) throws IOException {
         return createProgramInterpreterFactory()
-                .createCliProgramInterpreter(buffer, DefaultRuntime.getInstance());
+                .createCliProgramInterpreter(line, DefaultRuntime.getInstance());
     }
 
     private ProgramInterpreter buildFileInterpreter(Path file) throws IOException {

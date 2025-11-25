@@ -8,10 +8,12 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.semantic.SemanticChecker;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 public interface SemanticFactory {
-    SemanticChecker createCliSemanticChecker(Queue<Character> buffer, Runtime runtime);
+
+    SemanticChecker createCliSemanticChecker(String input, Runtime runtime) throws IOException;
 
     SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime) throws IOException;
+
+    SemanticChecker createReplSemanticChecker(Runtime runtime) throws IOException;
 }

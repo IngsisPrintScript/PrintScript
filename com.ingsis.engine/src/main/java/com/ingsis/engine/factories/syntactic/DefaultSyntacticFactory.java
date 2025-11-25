@@ -10,7 +10,6 @@ import com.ingsis.syntactic.SyntacticParser;
 import com.ingsis.syntactic.factories.ParserChainFactory;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 public final class DefaultSyntacticFactory implements SyntacticFactory {
     private final TokenStreamFactory tokenStreamFactory;
@@ -23,9 +22,9 @@ public final class DefaultSyntacticFactory implements SyntacticFactory {
     }
 
     @Override
-    public SyntacticParser createCliSyntacticChecker(Queue<Character> buffer) {
+    public SyntacticParser createCliSyntacticChecker(String input) throws IOException {
         return new DefaultSyntacticParser(
-                tokenStreamFactory.createCliTokenStream(buffer),
+                tokenStreamFactory.createCliTokenStream(input),
                 parserChainFactory.createDefaultChain());
     }
 
@@ -33,6 +32,13 @@ public final class DefaultSyntacticFactory implements SyntacticFactory {
     public SyntacticParser createFileSyntacticChecker(Path filePath) throws IOException {
         return new DefaultSyntacticParser(
                 tokenStreamFactory.createFileTokenStream(filePath),
+                parserChainFactory.createDefaultChain());
+    }
+
+    @Override
+    public SyntacticParser createReplSyntacticChecker() throws IOException {
+        return new DefaultSyntacticParser(
+                tokenStreamFactory.createReplTokenStream(),
                 parserChainFactory.createDefaultChain());
     }
 }

@@ -8,11 +8,14 @@ import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.runtime.Runtime;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Queue;
 
 public interface ProgramInterpreterFactory {
-    ProgramInterpreter createCliProgramInterpreter(Queue<Character> buffer, Runtime runtime);
+
+    ProgramInterpreter createCliProgramInterpreter(String input, Runtime runtime)
+            throws IOException;
 
     ProgramInterpreter createFileProgramInterpreter(Path filePath, Runtime runtime)
             throws IOException;
+
+    ProgramInterpreter createReplProgramInterpreter(Runtime runtime) throws IOException;
 }
