@@ -30,25 +30,27 @@ jobs:
       - name: Merge module coverage reports into single folder
         run: |
           mkdir -p merged-coverage
-          for dir in $(find coverage -path "*/build/jacoco/html" -type d); do
+          for dir in $(find coverage -path "*/build/custom-reports/jacoco/html" -type d); do
             module=$(echo "$dir" | sed 's#coverage/\([^/]*\)/.*#\1#')
-            echo "Copying coverage for module: $module"
+            echo "Merging coverage for module: $module"
             mkdir -p "merged-coverage/$module"
             cp -R "$dir/" "merged-coverage/$module/"
           done
 
-      - name: Add coverage links to PR summary
+      - name: Zip merged coverage
         run: |
-          echo "## Coverage Reports" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          zip -r merged-coverage.zip merged-coverage
 
-          for moduleDir in merged-coverage/*; do
-            module=$(basename "$moduleDir")
-            echo "- [$module Coverage]($moduleDir/index.html)" >> $GITHUB_STEP_SUMMARY
-          done
-
-      - name: Upload merged coverage for debugging (optional)
+      - name: Upload merged coverage artifact
         uses: actions/upload-artifact@v4
         with:
           name: merged-coverage
-          path: merged-coverage
+          path: merged-coverage.zip
+
+      - name: Add coverage info to PR summary
+        run: |
+          echo "## Coverage Reports" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "A consolidated **ZIP with all HTML coverage reports** has been generated." >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Download the artifact named \`merged-coverage\` above in the Actions UI.**" >> $GITHUB_STEP_SUMMARY
