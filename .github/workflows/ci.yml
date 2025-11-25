@@ -30,8 +30,8 @@ jobs:
       - name: Merge module coverage reports into single folder
         run: |
           mkdir -p merged-coverage
-          for dir in coverage/**/jacocoHtml; do
-            module=$(basename $(dirname $dir))
+          for dir in $(find coverage -path "*/build/jacoco/html" -type d); do
+            module=$(echo "$dir" | sed 's#coverage/\([^/]*\)/.*#\1#')
             echo "Copying coverage for module: $module"
             mkdir -p "merged-coverage/$module"
             cp -R "$dir/" "merged-coverage/$module/"
