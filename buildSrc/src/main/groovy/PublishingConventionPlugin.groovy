@@ -17,13 +17,18 @@ class PublishingConventionPlugin implements Plugin<Project> {
         project.plugins.apply('maven-publish')
 
         project.publishing {
-            publications {
-                gpr(MavenPublication) {
-                    from project.components.java
-                    artifactId = project.name.toLowerCase()
-                }
+          publications {
+            gpr(MavenPublication) {
+              from project.components.java
+              artifactId = project.name.toLowerCase()
             }
-            repositories {
+            latest(MavenPublication) {
+              from project.components.java
+              artifactId = project.name.toLowerCase()
+              version = "1.0.0-latest"
+            }
+          }
+          repositories {
                 maven {
                     name = "GitHubPackages"
                     url = project.uri("https://maven.pkg.github.com/IngsisPrintScript/PrintScript")
