@@ -69,8 +69,8 @@ import picocli.CommandLine.Option;
         description = "Runs the interpreter with CLI input")
 public final class CliEngine implements Engine {
 
-    @Option(names = "--repl-mode", description = "Mode.", required = true)
-    public Boolean replMode = true;
+    @Option(names = "--repl-mode", description = "Enable REPL mode")
+    public boolean replMode = false;
 
     @Option(names = "--action", description = "Command to execute.", required = true)
     public String command;
@@ -123,9 +123,9 @@ public final class CliEngine implements Engine {
         Result<String> formatResult = formatter.format();
         IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
         if (!formatResult.isCorrect() && executionError != null) {
-            System.out.print("Error: " + executionError.error() + "\n");
+            System.err.println("Error: " + executionError.error() + "\n");
         }
-        System.out.print(formatResult.result());
+        System.out.println(formatResult.result());
     }
 
     private void analyzeFile(Path file) throws IOException {
@@ -133,9 +133,9 @@ public final class CliEngine implements Engine {
         Result<String> analyzeResult = buildProgramSca(file).analyze();
         IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
         if (!analyzeResult.isCorrect() && executionError != null) {
-            System.out.print("Error: " + executionError.error() + "\n");
+            System.err.println("Error: " + executionError.error() + "\n");
         } else {
-            System.out.print("Checks passed.");
+            System.out.println("Checks passed.");
         }
     }
 
@@ -143,8 +143,10 @@ public final class CliEngine implements Engine {
         System.out.println("Interpreting file: " + file);
         Result<String> interpretResult = buildFileInterpreter(file).interpret();
         IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
+        System.out.println(interpretResult);
+        System.out.println(executionError);
         if (!interpretResult.isCorrect() && executionError != null) {
-            System.out.print("Error: " + executionError.error() + "\n");
+            System.err.println("Error: " + executionError.error() + "\n");
         }
     }
 

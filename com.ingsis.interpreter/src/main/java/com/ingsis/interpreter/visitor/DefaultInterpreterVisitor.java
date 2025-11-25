@@ -137,15 +137,11 @@ public final class DefaultInterpreterVisitor implements Interpreter {
         Object value = solveExpressionResult.result();
         Result<VariableEntry> getVariableEntryResult =
                 runtime.getCurrentEnvironment().readVariable(identifier);
-        if (!getVariableEntryResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(getVariableEntryResult);
-        }
-        VariableEntry variableEntry = getVariableEntryResult.result();
-        if (!variableEntry.type().isCompatibleWith(value)) {
+        if (getVariableEntryResult.isCorrect()) {
             return resultFactory.createIncorrectResult(
                     String.format(
-                            "Passed a value with unexpected type to assignation on line:%d and"
-                                    + " column:%d",
+                            "Tried to redeclarate an already declarated variable on line: %d and"
+                                    + " column: %d.",
                             declarationKeywordNode.line(), declarationKeywordNode.column()));
         }
         Result<VariableEntry> createConstResult =

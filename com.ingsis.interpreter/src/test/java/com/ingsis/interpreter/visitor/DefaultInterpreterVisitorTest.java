@@ -57,7 +57,8 @@ class DefaultInterpreterVisitorTest {
 
     @Test
     void interpretIfConditionTrueReturnsChildrenInterpreted() {
-        // condition strategy returns "true" and literal children are interpreted by the strategy
+        // condition strategy returns "true" and literal children are interpreted by the
+        // strategy
         ExpressionSolutionStrategy strat =
                 (i, e) -> {
                     if (e instanceof LiteralNode) return new CorrectResult<>("true");
@@ -199,7 +200,7 @@ class DefaultInterpreterVisitorTest {
     }
 
     @Test
-    void defineValOnUndeclaredIdentifierReturnsIncorrect() {
+    void defineValOnUndeclaredIdentifierReturnsCorrect() {
         ExpressionSolutionStrategy strat = (i, e) -> new CorrectResult<>("1");
         DefaultInterpreterVisitor visitor =
                 new DefaultInterpreterVisitor(runtime, strat, new DefaultResultFactory());
@@ -213,13 +214,13 @@ class DefaultInterpreterVisitorTest {
                 new DeclarationKeywordNode(typeAssign, valueAssign, false, 0, 0);
 
         Result<String> res = visitor.interpret(decl);
-        assertFalse(res.isCorrect());
-        assertNotNull(res.error());
+        assertTrue(res.isCorrect());
     }
 
     @Test
     void defineValCreatesVariableInLocalWhenDeclaredInFather() {
-        // prepare father environment: pop to father, create variable declaration there, then push
+        // prepare father environment: pop to father, create variable declaration there,
+        // then push
         // local
         runtime.pop();
         runtime.getCurrentEnvironment().createVariable("d", Types.NUMBER);
