@@ -9,30 +9,37 @@ import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.tokenstream.DefaultTokenStream;
 import com.ingsis.tokenstream.TokenStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
 public class DefaultTokenStreamFactory implements TokenStreamFactory {
-    private final LexerFactory lexerFactory;
-    private final ResultFactory resultFactory;
+  private final LexerFactory lexerFactory;
+  private final ResultFactory resultFactory;
 
-    public DefaultTokenStreamFactory(LexerFactory lexerFactory, ResultFactory resultFactory) {
-        this.lexerFactory = lexerFactory;
-        this.resultFactory = resultFactory;
-    }
+  public DefaultTokenStreamFactory(LexerFactory lexerFactory, ResultFactory resultFactory) {
+    this.lexerFactory = lexerFactory;
+    this.resultFactory = resultFactory;
+  }
 
-    @Override
-    public TokenStream createCliTokenStream(String input) throws IOException {
-        return new DefaultTokenStream(
-                lexerFactory.createCliLexer(input, resultFactory), resultFactory);
-    }
+  @Override
+  public TokenStream fromInputStream(InputStream in) throws IOException {
+    return new DefaultTokenStream(
+        lexerFactory.fromInputStream(in, resultFactory),
+        resultFactory);
+  }
 
-    @Override
-    public TokenStream createFileTokenStream(Path filePath) throws IOException {
-        return new DefaultTokenStream(
-                lexerFactory.createFromFileLexer(filePath, resultFactory), resultFactory);
-    }
+  @Override
+  public TokenStream fromFile(Path path) throws IOException {
+    return new DefaultTokenStream(
+        lexerFactory.fromFile(path, resultFactory),
+        resultFactory);
+  }
 
-    public TokenStream createReplTokenStream() throws IOException {
-        return new DefaultTokenStream(lexerFactory.createReplLexer(resultFactory), resultFactory);
-    }
+  @Override
+  public TokenStream fromString(CharSequence input) throws IOException {
+    return new DefaultTokenStream(
+        lexerFactory.fromString(input, resultFactory),
+        resultFactory);
+  }
+
 }

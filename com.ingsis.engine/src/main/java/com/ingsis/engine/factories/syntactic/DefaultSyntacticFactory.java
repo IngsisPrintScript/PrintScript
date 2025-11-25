@@ -9,36 +9,38 @@ import com.ingsis.syntactic.DefaultSyntacticParser;
 import com.ingsis.syntactic.SyntacticParser;
 import com.ingsis.syntactic.factories.ParserChainFactory;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
 public final class DefaultSyntacticFactory implements SyntacticFactory {
-    private final TokenStreamFactory tokenStreamFactory;
-    private final ParserChainFactory parserChainFactory;
+  private final TokenStreamFactory tokenStreamFactory;
+  private final ParserChainFactory parserChainFactory;
 
-    public DefaultSyntacticFactory(
-            TokenStreamFactory tokenStreamFactory, ParserChainFactory parserFactory) {
-        this.tokenStreamFactory = tokenStreamFactory;
-        this.parserChainFactory = parserFactory;
-    }
+  public DefaultSyntacticFactory(
+      TokenStreamFactory tokenStreamFactory, ParserChainFactory parserFactory) {
+    this.tokenStreamFactory = tokenStreamFactory;
+    this.parserChainFactory = parserFactory;
+  }
 
-    @Override
-    public SyntacticParser createCliSyntacticChecker(String input) throws IOException {
-        return new DefaultSyntacticParser(
-                tokenStreamFactory.createCliTokenStream(input),
-                parserChainFactory.createDefaultChain());
-    }
+  @Override
+  public SyntacticParser fromInputStream(InputStream in) throws IOException {
+    return new DefaultSyntacticParser(
+        tokenStreamFactory.fromInputStream(in),
+        parserChainFactory.createDefaultChain());
+  }
 
-    @Override
-    public SyntacticParser createFileSyntacticChecker(Path filePath) throws IOException {
-        return new DefaultSyntacticParser(
-                tokenStreamFactory.createFileTokenStream(filePath),
-                parserChainFactory.createDefaultChain());
-    }
+  @Override
+  public SyntacticParser fromFile(Path path) throws IOException {
+    return new DefaultSyntacticParser(
+        tokenStreamFactory.fromFile(path),
+        parserChainFactory.createDefaultChain());
+  }
 
-    @Override
-    public SyntacticParser createReplSyntacticChecker() throws IOException {
-        return new DefaultSyntacticParser(
-                tokenStreamFactory.createReplTokenStream(),
-                parserChainFactory.createDefaultChain());
-    }
+  @Override
+  public SyntacticParser fromString(CharSequence input) throws IOException {
+    return new DefaultSyntacticParser(
+        tokenStreamFactory.fromString(input),
+        parserChainFactory.createDefaultChain());
+  }
+
 }

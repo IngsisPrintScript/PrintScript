@@ -12,50 +12,47 @@ import com.ingsis.semantic.DefaultSemanticChecker;
 import com.ingsis.semantic.SemanticChecker;
 import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
+import com.ingsis.visitors.Checker;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 
 public final class DefaultSemanticFactory implements SemanticFactory {
-    private final SyntacticFactory syntacticFactory;
-    private final ResultFactory resultFactory;
+  private final SyntacticFactory syntacticFactory;
+  private final Runtime runtime;
+  private final Checker checker;
 
-    public DefaultSemanticFactory(SyntacticFactory syntacticFactory, ResultFactory resultFactory) {
-        this.syntacticFactory = syntacticFactory;
-        this.resultFactory = resultFactory;
-    }
+  public DefaultSemanticFactory(SyntacticFactory syntacticFactory, ResultFactory resultFactory, Runtime runtime) {
+    this.syntacticFactory = syntacticFactory;
+    this.runtime = runtime;
+    this.checker = new DefaultCheckerFactory().createInMemoryEventBasedChecker(
+        new DefaultSemanticPublisherFactory(
+            new DefaultHandlersFactory(runtime, resultFactory)));
 
-    @Override
-    public SemanticChecker createCliSemanticChecker(String input, Runtime runtime)
-            throws IOException {
-        return new DefaultSemanticChecker(
-                syntacticFactory.createCliSyntacticChecker(input),
-                new DefaultCheckerFactory()
-                        .createInMemoryEventBasedChecker(
-                                new DefaultSemanticPublisherFactory(
-                                        new DefaultHandlersFactory(runtime, resultFactory))),
-                runtime);
-    }
+  }
 
-    @Override
-    public SemanticChecker createFileSemanticChecker(Path filePath, Runtime runtime)
-            throws IOException {
-        return new DefaultSemanticChecker(
-                syntacticFactory.createFileSyntacticChecker(filePath),
-                new DefaultCheckerFactory()
-                        .createInMemoryEventBasedChecker(
-                                new DefaultSemanticPublisherFactory(
-                                        new DefaultHandlersFactory(runtime, resultFactory))),
-                runtime);
-    }
+  @Override
+  public SemanticChecker fromInputStream(InputStream in) throws IOException {
+    return new DefaultSemanticChecker(
+        syntacticFactory.fromInputStream(in),
+        checker,
+        runtime);
+  }
 
-    @Override
-    public SemanticChecker createReplSemanticChecker(Runtime runtime) throws IOException {
-        return new DefaultSemanticChecker(
-                syntacticFactory.createReplSyntacticChecker(),
-                new DefaultCheckerFactory()
-                        .createInMemoryEventBasedChecker(
-                                new DefaultSemanticPublisherFactory(
-                                        new DefaultHandlersFactory(runtime, resultFactory))),
-                runtime);
-    }
+  @Override
+  public SemanticChecker fromFile(Path path) throws IOException {
+    return new DefaultSemanticChecker(
+        syntacticFactory.fromFile(path),
+        checker,
+        runtime);
+  }
+
+  @Override
+  public SemanticChecker fromString(CharSequence input) throws IOException {
+    return new DefaultSemanticChecker(
+        syntacticFactory.fromString(input),
+        checker,
+        runtime);
+  }
 }

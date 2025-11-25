@@ -13,14 +13,14 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 public class DefaultScaFactory implements ScaFactory {
-    @Override
-    public ProgramSca createSca(
-            SemanticFactory semanticFactory,
-            Path filePath,
-            Runtime runtime,
-            EventsChecker eventsChecker)
-            throws IOException {
-        return new InMemoryProgramSca(
-                semanticFactory.createFileSemanticChecker(filePath, runtime), eventsChecker);
-    }
+  @Override
+  public ProgramSca fromFile(
+      SemanticFactory semanticFactory,
+      Path path,
+      Runtime runtime,
+      EventsChecker eventsChecker)
+      throws IOException {
+    return new InMemoryProgramSca(
+        semanticFactory.fromFile(path), eventsChecker);
+  }
 }
