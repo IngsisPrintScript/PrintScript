@@ -6,7 +6,6 @@ package com.ingsis.formatter.handlers.factories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.nodes.expression.identifier.IdentifierNode;
@@ -77,14 +76,20 @@ public class InMemoryFormatterHandlerFactoryTest {
 
     @Test
     public void createHandlersPartialBehaviour() {
-        // when/then: expression handler is available, declaration/conditional handlers attempt
-        // registration
+        // expression handler should be available
         var expr = factory.createExpressionHandler();
         assertNotNull(expr);
 
-        // declaration and conditional creation attempt to register into an immutable registry
-        assertThrows(UnsupportedOperationException.class, () -> factory.createDeclarationHandler());
-        assertThrows(UnsupportedOperationException.class, () -> factory.createConditionalHandler());
+        // declaration and conditional handlers should also be created successfully
+        var decl = factory.createDeclarationHandler();
+        assertNotNull(decl);
+
+        var cond = factory.createConditionalHandler();
+        assertNotNull(cond);
+
+        // optionally, verify that handlers can handle nodes
+        var literal = new LiteralNode("42", 1, 1);
+        assertTrue(expr.handle(literal).isCorrect());
     }
 
     @Test
@@ -102,11 +107,5 @@ public class InMemoryFormatterHandlerFactoryTest {
         assertTrue(r2.isCorrect());
         assertEquals("42", r1.result());
         assertEquals("x", r2.result());
-    }
-
-    @Test
-    public void declarationHandlerThrowsWhenRegistryImmutable() {
-        // when/then: constructing declaration handler registers into an immutable list and throws
-        assertThrows(UnsupportedOperationException.class, () -> factory.createDeclarationHandler());
     }
 }
