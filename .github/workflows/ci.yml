@@ -17,7 +17,7 @@ jobs:
     needs: run-ci
     runs-on: ubuntu-latest
     steps:
-      - name: Download Jacoco report
+      - name: Download Jacoco report artifact
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
@@ -25,10 +25,30 @@ jobs:
 
       - name: Print where it is
         run: |
-          echo "Jacoco report downloaded to coverage/" >> $GITHUB_STEP_SUMMARY
+          echo "Jacoco reports downloaded to coverage/" >> $GITHUB_STEP_SUMMARY
 
-      - name: Add coverage link to PR summary
+      - name: Merge module coverage reports into single folder
         run: |
-          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
+          mkdir -p merged-coverage
+          for dir in coverage/**/jacocoHtml; do
+            module=$(basename $(dirname $dir))
+            echo "Copying coverage for module: $module"
+            mkdir -p "merged-coverage/$module"
+            cp -R "$dir/" "merged-coverage/$module/"
+          done
+
+      - name: Add coverage links to PR summary
+        run: |
+          echo "## Coverage Reports" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "[View HTML Report](coverage/index.html)" >> $GITHUB_STEP_SUMMARY
+
+          for moduleDir in merged-coverage/*; do
+            module=$(basename "$moduleDir")
+            echo "- [$module Coverage]($moduleDir/index.html)" >> $GITHUB_STEP_SUMMARY
+          done
+
+      - name: Upload merged coverage for debugging (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: merged-coverage
+          path: merged-coverage
