@@ -1,4 +1,3 @@
 plugins {
-    id 'PublishingConventionPlugin'
     id 'buildlogic.java-library-conventions'
 }
