@@ -16,8 +16,8 @@ class TypesTest {
 
     @Test
     void keywordAndRegexAccessors() {
-        assertEquals("Number", Types.NUMBER.keyword());
-        assertEquals("Boolean", Types.BOOLEAN.keyword());
+        assertEquals("number", Types.NUMBER.keyword());
+        assertEquals("boolean", Types.BOOLEAN.keyword());
         assertTrue(Types.STRING.regEx().contains("\\\\")); // regex contains backslash escapes
     }
 
@@ -60,7 +60,7 @@ class TypesTest {
 
     @Test
     void fromKeywordAndAllTypesBehavior() {
-        assertEquals(Types.NUMBER, Types.fromKeyword("Number"));
+        assertEquals(Types.NUMBER, Types.fromKeyword("number"));
         assertEquals(Types.UNDEFINED, Types.fromKeyword("NonExisting"));
 
         List<Types> all = Types.allTypes();
