@@ -11,8 +11,10 @@ import com.ingsis.nodes.keyword.IfKeywordNode;
 import com.ingsis.result.IncorrectResult;
 import com.ingsis.result.Result;
 import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
 import com.ingsis.visitors.Checkable;
 import com.ingsis.visitors.Checker;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -24,6 +26,24 @@ public final class EventsChecker implements Checker {
             Supplier<Map<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>>>
                     publishersSupplier) {
         this.publishersSupplier = publishersSupplier;
+    }
+
+    public EventsChecker(PublishersFactory publishersFactory) {
+        this(
+                () -> {
+                    HashMap<Class<? extends Node>, GenericNodeEventPublisher<? extends Node>> map =
+                            new HashMap<>();
+                    map.put(
+                            DeclarationKeywordNode.class,
+                            publishersFactory.createLetNodePublisher());
+                    map.put(
+                            IfKeywordNode.class,
+                            publishersFactory.createConditionalNodePublisher());
+                    map.put(
+                            ExpressionNode.class,
+                            publishersFactory.createExpressionNodePublisher());
+                    return map;
+                });
     }
 
     @Override
