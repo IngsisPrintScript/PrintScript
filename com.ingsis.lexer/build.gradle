@@ -3,10 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation project(':com.ingsis.peekableiterator')
-    implementation project(':com.ingsis.tokens')
-    implementation project(':com.ingsis.types')
-    implementation project(':com.ingsis.metachar')
-    implementation project(':com.ingsis.result.factory')
-    implementation project(':com.ingsis.result')
+    implementation project(':com.ingsis.utils')
 }

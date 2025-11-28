@@ -1,11 +1,5 @@
-let a_b: string = "AAA";
-let b: string = "BBB";
-println(a_b);
-println(b);
-const c: string = "CCC";
-println(c);
-c= "DDD";
-println(c);
+let a_b: String = "AAA";
+let b: String = "BBB";
 if (readInput("true or false: ")) {
 println(a);
 } else {

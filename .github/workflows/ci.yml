@@ -17,40 +17,22 @@ jobs:
     needs: run-ci
     runs-on: ubuntu-latest
     steps:
-      - name: Download Jacoco report artifact
+      - name: Download Jacoco report
         uses: actions/download-artifact@v4
         with:
           name: coverage-report
+          path: |
+            build/reports/jacoco/**
+            **/build/reports/jacoco/**
+            **/build/custom-reports/jacoco/**
           path: coverage
 
       - name: Print where it is
         run: |
-          echo "Jacoco reports downloaded to coverage/" >> $GITHUB_STEP_SUMMARY
+          echo "Jacoco report downloaded to coverage/" >> $GITHUB_STEP_SUMMARY
 
-      - name: Merge module coverage reports into single folder
+      - name: Add coverage link to PR summary
         run: |
-          mkdir -p merged-coverage
-          for dir in $(find coverage -path "*/build/custom-reports/jacoco/html" -type d); do
-            module=$(echo "$dir" | sed 's#coverage/\([^/]*\)/.*#\1#')
-            echo "Merging coverage for module: $module"
-            mkdir -p "merged-coverage/$module"
-            cp -R "$dir/" "merged-coverage/$module/"
-          done
-
-      - name: Zip merged coverage
-        run: |
-          zip -r merged-coverage.zip merged-coverage
-
-      - name: Upload merged coverage artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: merged-coverage
-          path: merged-coverage.zip
-
-      - name: Add coverage info to PR summary
-        run: |
-          echo "## Coverage Reports" >> $GITHUB_STEP_SUMMARY
+          echo "## Coverage Report" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "A consolidated **ZIP with all HTML coverage reports** has been generated." >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Download the artifact named \`merged-coverage\` above in the Actions UI.**" >> $GITHUB_STEP_SUMMARY
+          echo "[View HTML Report](coverage/index.html)" >> $GITHUB_STEP_SUMMARY

@@ -7,23 +7,14 @@ application{
   }
 
 dependencies {
-    implementation project(':com.ingsis.tokenstream')
     implementation project(':com.ingsis.sca')
     implementation project(':com.ingsis.interpreter')
-    implementation project(':com.ingsis.syntactic')
-    implementation project(':com.ingsis.semantic')
+    implementation project(':com.ingsis.parser')
     implementation project(':com.ingsis.lexer')
     implementation project(':com.ingsis.charstream')
     implementation project(':com.ingsis.runtime')
-    implementation project(':com.ingsis.nodes')
-    implementation project(':com.ingsis.tokens')
-    implementation project(':com.ingsis.peekableiterator')
-    implementation project(':com.ingsis.metachar')
     implementation project(':com.ingsis.formatter')
-    implementation project(':com.ingsis.result')
-    implementation project(':com.ingsis.result.factory')
-    implementation project(':com.ingsis.rule.observer')
-    implementation project(':com.ingsis.rule.status.provider')
+    implementation project(':com.ingsis.utils')
 }
 
 // Prevent SpotBugs failures from failing the build for this module's tests

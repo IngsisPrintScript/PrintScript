@@ -52,6 +52,8 @@ interpreter/.testFiles/interpret/*
 # Ignore Gradle build output directory
 build
 
+gradle.properties
+
 ### PrintScript Files
 test.pisp
 

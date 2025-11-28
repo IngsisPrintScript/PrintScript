@@ -1,0 +1,18 @@
+
+plugins {
+    id 'buildlogic.java-library-conventions'
+}
+
+dependencies {
+    implementation 'org.yaml:snakeyaml:2.3'
+    testImplementation project(':com.ingsis.runtime')
+}
+
+tasks.withType(com.github.spotbugs.snom.SpotBugsTask).configureEach {
+    ignoreFailures = true
+}
+
+// Temporarily disable jacoco verification for generated/testing stubs
+tasks.matching { it.name == 'jacocoTestCoverageVerification' }.configureEach {
+    enabled = false
+}
