@@ -1,5 +1,5 @@
-let a_b: String = "AAA";
-let b: String = "BBB";
+let a: string = "AAA";
+let b: string = "BBB";
 if (readInput("true or false: ")) {
 println(a);
 } else {
