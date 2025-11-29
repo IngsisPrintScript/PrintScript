@@ -2,7 +2,9 @@
  * My Project
  */
 
-package com.ingsis.peekableiterator;
+package com.ingsis.utils.peekableiterator; /*
+                                            * My Project
+                                            */
 
 import java.util.Iterator;
 

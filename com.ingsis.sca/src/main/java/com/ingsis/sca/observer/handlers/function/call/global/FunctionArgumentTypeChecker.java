@@ -4,13 +4,13 @@
 
 package com.ingsis.sca.observer.handlers.function.call.global;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 
 public class FunctionArgumentTypeChecker implements NodeEventHandler<CallFunctionNode> {
     private final ResultFactory resultFactory;

@@ -2,17 +2,17 @@
  * My Project
  */
 
-package com.ingsis.syntactic.factories;
+package com.ingsis.parser.syntactic.factories;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.factories.DefaultNodeFactory;
-import com.ingsis.syntactic.parsers.DefaultParserRegistry;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.syntactic.parsers.ParserRegistry;
-import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
-import com.ingsis.syntactic.parsers.factories.ParserFactory;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
+import com.ingsis.parser.syntactic.parsers.DefaultParserRegistry;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.ParserRegistry;
+import com.ingsis.parser.syntactic.parsers.factories.DefaultParserFactory;
+import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 
 public final class DefaultParserChainFactory implements ParserChainFactory {
     private final ParserFactory parserFactory;

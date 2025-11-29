@@ -5,14 +5,14 @@
 package com.ingsis.interpreter.visitor.expression.strategies.identifier;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.entries.VariableEntry;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")

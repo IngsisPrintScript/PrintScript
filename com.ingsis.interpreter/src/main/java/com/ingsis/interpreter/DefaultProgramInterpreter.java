@@ -4,11 +4,11 @@
 
 package com.ingsis.interpreter;
 
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Interpretable;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")

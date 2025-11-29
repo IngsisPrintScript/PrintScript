@@ -6,7 +6,7 @@ package com.ingsis.runtime.environment.entries;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.types.Types;
+import com.ingsis.utils.type.types.Types;
 import org.junit.jupiter.api.Test;
 
 class DefaultVariableEntryTest {

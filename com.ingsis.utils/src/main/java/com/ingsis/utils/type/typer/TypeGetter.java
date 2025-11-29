@@ -2,10 +2,12 @@
  * My Project
  */
 
-package com.ingsis.typer;
+package com.ingsis.utils.type.typer; /*
+                                      * My Project
+                                      */
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.type.types.Types;
 
 public interface TypeGetter<T extends ExpressionNode> {
     Types getType(T expressionNode);

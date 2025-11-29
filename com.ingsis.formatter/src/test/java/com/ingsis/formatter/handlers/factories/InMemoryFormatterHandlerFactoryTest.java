@@ -8,14 +8,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.status.provider.RuleStatusProvider;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,20 +53,18 @@ public class InMemoryFormatterHandlerFactoryTest {
                 () ->
                         new Checker() {
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    IfKeywordNode ifKeywordNode) {
+                            public Result<String> check(IfKeywordNode ifKeywordNode) {
                                 return resultFactory.createCorrectResult("ok");
                             }
 
                             @Override
-                            public com.ingsis.result.Result<String> check(
+                            public Result<String> check(
                                     DeclarationKeywordNode declarationKeywordNode) {
                                 return resultFactory.createCorrectResult("ok");
                             }
 
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                            public Result<String> check(ExpressionNode expressionNode) {
                                 return resultFactory.createCorrectResult("ok");
                             }
                         };

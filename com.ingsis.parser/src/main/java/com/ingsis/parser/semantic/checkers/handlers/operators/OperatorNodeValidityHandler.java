@@ -2,22 +2,22 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.handlers.operators;
+package com.ingsis.parser.semantic.checkers.handlers.operators;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.expression.operator.OperatorNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.typer.expression.DefaultExpressionTypeGetter;
-import com.ingsis.typer.function.DefaultFunctionTypeGetter;
-import com.ingsis.typer.identifier.DefaultIdentifierTypeGetter;
-import com.ingsis.typer.literal.DefaultLiteralTypeGetter;
-import com.ingsis.types.Types;
+import com.ingsis.runtime.type.typer.expression.DefaultExpressionTypeGetter;
+import com.ingsis.runtime.type.typer.function.DefaultFunctionTypeGetter;
+import com.ingsis.runtime.type.typer.identifier.DefaultIdentifierTypeGetter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.OperatorNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.type.typer.literal.DefaultLiteralTypeGetter;
+import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")

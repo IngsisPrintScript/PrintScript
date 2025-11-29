@@ -2,18 +2,20 @@
  * My Project
  */
 
-package com.ingsis.rule.observer;
+package com.ingsis.utils.rule.observer; /*
+                                         * My Project
+                                         */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
-import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;

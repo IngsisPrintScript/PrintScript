@@ -2,22 +2,22 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.literal;
+package com.ingsis.parser.syntactic.parsers.literal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.factories.DefaultNodeFactory;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import org.junit.jupiter.api.Test;
 
 class LiteralParserTest {

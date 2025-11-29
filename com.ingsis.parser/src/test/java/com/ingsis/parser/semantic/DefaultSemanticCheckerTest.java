@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.semantic;
+package com.ingsis.parser.semantic;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -10,15 +10,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
-import com.ingsis.visitors.Interpretable;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -72,8 +76,7 @@ public class DefaultSemanticCheckerTest {
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptInterpreter(
-                com.ingsis.visitors.Interpreter interpreter) {
+        public Result<String> acceptInterpreter(Interpreter interpreter) {
             return new CorrectResult<>("ok");
         }
     }
@@ -91,27 +94,24 @@ public class DefaultSemanticCheckerTest {
                         it,
                         new Checker() {
                             @Override
-                            public Result<String> check(
-                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                            public Result<String> check(IfKeywordNode ifKeywordNode) {
                                 return new CorrectResult<>("ok");
                             }
 
                             @Override
                             public Result<String> check(
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                            declarationKeywordNode) {
+                                    DeclarationKeywordNode declarationKeywordNode) {
                                 return new CorrectResult<>("ok");
                             }
 
                             @Override
-                            public Result<String> check(
-                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                            public Result<String> check(ExpressionNode expressionNode) {
                                 return new CorrectResult<>("ok");
                             }
                         },
                         runtime);
 
-        Result<com.ingsis.visitors.Interpretable> result = checker.parse();
+        Result<com.ingsis.utils.nodes.visitors.Interpretable> result = checker.parse();
 
         assertTrue(result.isCorrect());
         assertInstanceOf(CorrectResult.class, result);
@@ -130,27 +130,24 @@ public class DefaultSemanticCheckerTest {
                         it,
                         new Checker() {
                             @Override
-                            public Result<String> check(
-                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                            public Result<String> check(IfKeywordNode ifKeywordNode) {
                                 return new IncorrectResult<>("bad");
                             }
 
                             @Override
                             public Result<String> check(
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                            declarationKeywordNode) {
+                                    DeclarationKeywordNode declarationKeywordNode) {
                                 return new IncorrectResult<>("bad");
                             }
 
                             @Override
-                            public Result<String> check(
-                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                            public Result<String> check(ExpressionNode expressionNode) {
                                 return new IncorrectResult<>("bad");
                             }
                         },
                         runtime);
 
-        Result<com.ingsis.visitors.Interpretable> result = checker.parse();
+        Result<com.ingsis.utils.nodes.visitors.Interpretable> result = checker.parse();
 
         assertFalse(result.isCorrect());
         assertInstanceOf(IncorrectResult.class, result);
@@ -169,30 +166,27 @@ public class DefaultSemanticCheckerTest {
                         it,
                         new Checker() {
                             @Override
-                            public Result<String> check(
-                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                            public Result<String> check(IfKeywordNode ifKeywordNode) {
                                 return new CorrectResult<>("ok");
                             }
 
                             @Override
                             public Result<String> check(
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                            declarationKeywordNode) {
+                                    DeclarationKeywordNode declarationKeywordNode) {
                                 return new CorrectResult<>("ok");
                             }
 
                             @Override
-                            public Result<String> check(
-                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                            public Result<String> check(ExpressionNode expressionNode) {
                                 return new CorrectResult<>("ok");
                             }
                         },
                         runtime);
 
         assertTrue(checker.hasNext());
-        com.ingsis.visitors.Interpretable p = checker.peek();
+        com.ingsis.utils.nodes.visitors.Interpretable p = checker.peek();
         assertNotNull(p);
-        com.ingsis.visitors.Interpretable n = checker.next();
+        com.ingsis.utils.nodes.visitors.Interpretable n = checker.next();
         assertNotNull(n);
         assertFalse(checker.hasNext());
         assertThrows(NoSuchElementException.class, checker::peek);

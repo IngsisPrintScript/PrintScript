@@ -2,21 +2,21 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.conditional;
+package com.ingsis.parser.syntactic.parsers.conditional;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.syntactic.factories.ParserChainFactory;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.syntactic.parsers.factories.ParserFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.parser.syntactic.factories.ParserChainFactory;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -4,9 +4,9 @@
 
 package com.ingsis.lexer.tokenizers;
 
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.tokens.Token;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
 
 public final class FinalTokenizer implements Tokenizer {
     @Override

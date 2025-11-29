@@ -4,10 +4,10 @@
 
 package com.ingsis.interpreter.visitor.expression.strategies;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 
 public final class FinalStrategy implements ExpressionSolutionStrategy {
     @Override

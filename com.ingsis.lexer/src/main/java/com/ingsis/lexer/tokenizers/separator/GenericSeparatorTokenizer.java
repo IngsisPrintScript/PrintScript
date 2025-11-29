@@ -5,10 +5,10 @@
 package com.ingsis.lexer.tokenizers.separator;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
 
 public final class GenericSeparatorTokenizer implements Tokenizer {
     private final String template;

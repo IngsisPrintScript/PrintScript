@@ -2,15 +2,15 @@
  * My Project
  */
 
-package com.ingsis.semantic;
+package com.ingsis.parser.semantic;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.parser.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

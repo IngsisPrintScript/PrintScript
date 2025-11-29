@@ -4,9 +4,9 @@
 
 package com.ingsis.runtime.environment.entries;
 
-import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.runtime.environment.Environment;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import java.util.Map;
 

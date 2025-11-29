@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.factories;
+package com.ingsis.utils.rule.observer.factories;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

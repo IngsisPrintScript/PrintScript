@@ -2,7 +2,9 @@
  * My Project
  */
 
-package com.ingsis.result;
+package com.ingsis.utils.result; /*
+                                  * My Project
+                                  */
 
 public record CorrectResult<T>(T result) implements Result<T> {
     @Override

@@ -2,14 +2,14 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.publishers.factories;
+package com.ingsis.parser.semantic.checkers.publishers.factories;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
-import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
-import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
+import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
 
 public final class DefaultSemanticPublisherFactory implements PublishersFactory {
     private final HandlerFactory handlersFactory;

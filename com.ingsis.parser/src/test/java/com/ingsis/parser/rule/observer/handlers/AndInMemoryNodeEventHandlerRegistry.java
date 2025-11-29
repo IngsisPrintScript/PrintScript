@@ -2,11 +2,13 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers;
+package com.ingsis.parser.rule.observer.handlers;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandlerRegistry;
 import java.util.ArrayList;
 import java.util.List;
 

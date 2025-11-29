@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.result;
+package com.ingsis.utils.result;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;

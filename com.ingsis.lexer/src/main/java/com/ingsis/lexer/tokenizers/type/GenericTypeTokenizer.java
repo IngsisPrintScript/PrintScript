@@ -5,11 +5,11 @@
 package com.ingsis.lexer.tokenizers.type;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.types.Types;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.type.types.Types;
 
 public final class GenericTypeTokenizer implements Tokenizer {
     private final Types type;

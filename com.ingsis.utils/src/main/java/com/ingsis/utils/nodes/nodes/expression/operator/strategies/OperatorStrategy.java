@@ -2,10 +2,12 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.operator.strategies;
+package com.ingsis.utils.nodes.nodes.expression.operator.strategies; /*
+                                                                      * My Project
+                                                                      */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.Result;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 
 public interface OperatorStrategy {

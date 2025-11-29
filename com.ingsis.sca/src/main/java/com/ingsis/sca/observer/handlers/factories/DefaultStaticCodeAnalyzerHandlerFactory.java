@@ -4,16 +4,16 @@
 
 package com.ingsis.sca.observer.handlers.factories;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.sca.observer.handlers.DeclarationHandler;
 import com.ingsis.sca.observer.handlers.FinalHandler;
 import com.ingsis.sca.observer.handlers.identifier.IdentifierPatternChecker;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
 
 public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerFactory {
     private final ResultFactory resultFactory;

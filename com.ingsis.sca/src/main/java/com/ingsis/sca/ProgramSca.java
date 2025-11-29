@@ -4,7 +4,7 @@
 
 package com.ingsis.sca;
 
-import com.ingsis.result.Result;
+import com.ingsis.utils.result.Result;
 
 public interface ProgramSca {
     public Result<String> analyze();

@@ -6,12 +6,12 @@ package com.ingsis.formatter.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

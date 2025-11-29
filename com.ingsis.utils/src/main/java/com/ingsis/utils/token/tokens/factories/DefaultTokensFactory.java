@@ -2,10 +2,12 @@
  * My Project
  */
 
-package com.ingsis.tokens.factories;
+package com.ingsis.utils.token.tokens.factories; /*
+                                                  * My Project
+                                                  */
 
-import com.ingsis.tokens.DefaultToken;
-import com.ingsis.tokens.Token;
+import com.ingsis.utils.token.tokens.DefaultToken;
+import com.ingsis.utils.token.tokens.Token;
 
 public record DefaultTokensFactory() implements TokenFactory {
     @Override

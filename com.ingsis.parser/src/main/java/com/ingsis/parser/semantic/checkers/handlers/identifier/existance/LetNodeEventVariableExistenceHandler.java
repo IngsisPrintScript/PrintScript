@@ -2,15 +2,15 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.handlers.identifier.existance;
+package com.ingsis.parser.semantic.checkers.handlers.identifier.existance;
 
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.runtime.Runtime;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")

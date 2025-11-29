@@ -5,9 +5,9 @@
 package com.ingsis.engine.factories.sca;
 
 import com.ingsis.engine.factories.semantic.SemanticFactory;
-import com.ingsis.rule.observer.EventsChecker;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.sca.ProgramSca;
+import com.ingsis.utils.rule.observer.EventsChecker;
 import java.io.IOException;
 import java.nio.file.Path;
 

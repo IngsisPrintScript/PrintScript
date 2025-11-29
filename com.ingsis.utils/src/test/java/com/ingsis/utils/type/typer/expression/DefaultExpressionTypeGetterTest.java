@@ -2,16 +2,21 @@
  * My Project
  */
 
-package com.ingsis.typer.expression;
+package com.ingsis.utils.type.typer.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
 import com.ingsis.runtime.DefaultRuntime;
-import com.ingsis.types.Types;
+import com.ingsis.runtime.type.typer.expression.DefaultExpressionTypeGetter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -81,20 +86,17 @@ class DefaultExpressionTypeGetterTest {
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptChecker(
-                    com.ingsis.visitors.Checker checker) {
+            public Result<String> acceptChecker(Checker checker) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptVisitor(
-                    com.ingsis.visitors.Visitor visitor) {
+            public Result<String> acceptVisitor(Visitor visitor) {
                 throw new UnsupportedOperationException();
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptInterpreter(
-                    com.ingsis.visitors.Interpreter interpreter) {
+            public Result<String> acceptInterpreter(Interpreter interpreter) {
                 throw new UnsupportedOperationException();
             }
 

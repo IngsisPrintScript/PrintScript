@@ -2,10 +2,12 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers;
+package com.ingsis.utils.rule.observer.handlers; /*
+                                                  * My Project
+                                                  */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.Result;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.Result;
 
 public interface NodeEventHandler<T extends Node> {
     Result<String> handle(T node);

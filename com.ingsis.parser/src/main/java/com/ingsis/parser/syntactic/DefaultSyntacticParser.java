@@ -2,13 +2,13 @@
  * My Project
  */
 
-package com.ingsis.syntactic;
+package com.ingsis.parser.syntactic;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.Result;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.tokenstream.TokenStream;
-import com.ingsis.visitors.Checkable;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;

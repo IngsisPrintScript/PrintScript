@@ -2,9 +2,11 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.operator.strategies.factories;
+package com.ingsis.utils.nodes.nodes.expression.operator.strategies.factories; /*
+                                                                                * My Project
+                                                                                */
 
-import com.ingsis.nodes.expression.operator.strategies.OperatorStrategy;
+import com.ingsis.utils.nodes.nodes.expression.operator.strategies.OperatorStrategy;
 
 public interface StrategyFactory {
     OperatorStrategy typeAssignationStrategy();

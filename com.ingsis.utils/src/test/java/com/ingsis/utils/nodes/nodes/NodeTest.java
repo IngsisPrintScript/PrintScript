@@ -2,19 +2,20 @@
  * My Project
  */
 
-package com.ingsis.nodes;
+package com.ingsis.utils.nodes.nodes;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Visitor;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class NodeTest {
 
     private Node testNode;
+    private final DefaultResultFactory resultFactory = new DefaultResultFactory();
 
     @BeforeEach
     public void setUp() {
@@ -32,7 +33,7 @@ public class NodeTest {
 
                     @Override
                     public Result<String> acceptVisitor(Visitor visitor) {
-                        return new CorrectResult<>("visited");
+                        return resultFactory.createCorrectResult("visited");
                     }
                 };
     }

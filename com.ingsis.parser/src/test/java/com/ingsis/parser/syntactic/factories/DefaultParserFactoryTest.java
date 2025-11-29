@@ -2,24 +2,24 @@
  * My Project
  */
 
-package com.ingsis.syntactic.factories;
+package com.ingsis.parser.syntactic.factories;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ingsis.nodes.factories.DefaultNodeFactory;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.syntactic.parsers.TypeParser;
-import com.ingsis.syntactic.parsers.declaration.DeclarationParser;
-import com.ingsis.syntactic.parsers.expression.LineExpressionParser;
-import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
-import com.ingsis.syntactic.parsers.function.CallFunctionParser;
-import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
-import com.ingsis.syntactic.parsers.literal.LiteralParser;
-import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
-import com.ingsis.syntactic.parsers.operators.TypeAssignationParser;
-import com.ingsis.syntactic.parsers.operators.ValueAssignationParser;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
-import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.parser.syntactic.parsers.TypeParser;
+import com.ingsis.parser.syntactic.parsers.declaration.DeclarationParser;
+import com.ingsis.parser.syntactic.parsers.expression.LineExpressionParser;
+import com.ingsis.parser.syntactic.parsers.factories.DefaultParserFactory;
+import com.ingsis.parser.syntactic.parsers.function.CallFunctionParser;
+import com.ingsis.parser.syntactic.parsers.identifier.IdentifierParser;
+import com.ingsis.parser.syntactic.parsers.literal.LiteralParser;
+import com.ingsis.parser.syntactic.parsers.operator.BinaryOperatorParser;
+import com.ingsis.parser.syntactic.parsers.operators.TypeAssignationParser;
+import com.ingsis.parser.syntactic.parsers.operators.ValueAssignationParser;
+import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import org.junit.jupiter.api.Test;
 
 class DefaultParserFactoryTest {

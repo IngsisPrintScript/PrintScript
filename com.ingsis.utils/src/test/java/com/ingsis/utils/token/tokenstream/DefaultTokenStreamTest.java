@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.tokenstream;
+package com.ingsis.utils.token.tokenstream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -145,6 +145,7 @@ class DefaultTokenStreamTest {
 
         // populate buffer via peek
         Token p = stream.peek(2);
+        assertNotNull(p); // Verificación para evitar NullPointerException
         assertEquals("c", p.value());
 
         // consume first two via next
@@ -154,6 +155,8 @@ class DefaultTokenStreamTest {
         // now clean buffer: underlying iterator has been advanced
         stream.cleanBuffer();
         assertFalse(stream.hasNext());
-        assertThrows(java.util.NoSuchElementException.class, () -> stream.next());
+        assertThrows(
+                java.util.NoSuchElementException.class,
+                stream::next); // Reemplazo de lambda con referencia de método
     }
 }

@@ -4,8 +4,8 @@
 
 package com.ingsis.charstream;
 
-import com.ingsis.metachar.MetaChar;
-import com.ingsis.peekableiterator.PeekableIterator;
+import com.ingsis.utils.metachar.MetaChar;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.NoSuchElementException;

@@ -2,12 +2,14 @@
  * My Project
  */
 
-package com.ingsis.visitors;
+package com.ingsis.utils.nodes.visitors; /*
+                                          * My Project
+                                          */
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.Result;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.result.Result;
 
 public interface Checker {
     Result<String> check(IfKeywordNode ifKeywordNode);

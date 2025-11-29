@@ -6,15 +6,19 @@ package com.ingsis.formatter.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
 import java.util.List;
 import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,14 +30,14 @@ class FormatterConditionalHandlerTest {
     private FormatterConditionalHandler handler;
 
     static class TestCheckableNode implements Node, Checkable {
-        private final com.ingsis.result.CorrectResult<String> result;
+        private final CorrectResult<String> result;
 
         TestCheckableNode(String s) {
-            this.result = new com.ingsis.result.CorrectResult<>(s);
+            this.result = new CorrectResult<>(s);
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptChecker(Checker checker) {
+        public Result<String> acceptChecker(Checker checker) {
             return result;
         }
 
@@ -48,8 +52,8 @@ class FormatterConditionalHandlerTest {
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptVisitor(com.ingsis.visitors.Visitor visitor) {
-            return new com.ingsis.result.CorrectResult<>("visited");
+        public Result<String> acceptVisitor(Visitor visitor) {
+            return new CorrectResult<>("visited");
         }
     }
 
@@ -60,21 +64,18 @@ class FormatterConditionalHandlerTest {
                 () ->
                         new Checker() {
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                            public Result<String> check(IfKeywordNode ifKeywordNode) {
                                 return resultFactory.createCorrectResult("if-block");
                             }
 
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                            declarationKeywordNode) {
+                            public Result<String> check(
+                                    DeclarationKeywordNode declarationKeywordNode) {
                                 return resultFactory.createCorrectResult("decl");
                             }
 
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                            public Result<String> check(ExpressionNode expressionNode) {
                                 return resultFactory.createCorrectResult("cond");
                             }
                         };
@@ -99,21 +100,18 @@ class FormatterConditionalHandlerTest {
                 () ->
                         new Checker() {
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                            public Result<String> check(IfKeywordNode ifKeywordNode) {
                                 return resultFactory.createIncorrectResult("bad cond");
                             }
 
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                            declarationKeywordNode) {
+                            public Result<String> check(
+                                    DeclarationKeywordNode declarationKeywordNode) {
                                 return resultFactory.createCorrectResult("ok");
                             }
 
                             @Override
-                            public com.ingsis.result.Result<String> check(
-                                    com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                            public Result<String> check(ExpressionNode expressionNode) {
                                 return resultFactory.createIncorrectResult("bad cond");
                             }
                         };

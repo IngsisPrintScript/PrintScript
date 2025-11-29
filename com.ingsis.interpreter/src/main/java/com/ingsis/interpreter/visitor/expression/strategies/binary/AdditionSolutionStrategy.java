@@ -5,13 +5,13 @@
 package com.ingsis.interpreter.visitor.expression.strategies.binary;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.typer.string.DefaultStringTypeGetter;
-import com.ingsis.types.Types;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.typer.string.DefaultStringTypeGetter;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 
 public final class AdditionSolutionStrategy implements ExpressionSolutionStrategy {

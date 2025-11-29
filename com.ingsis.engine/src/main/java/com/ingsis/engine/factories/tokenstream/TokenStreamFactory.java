@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.tokenstream;
 
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

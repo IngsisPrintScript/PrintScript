@@ -2,25 +2,25 @@
  * My Project
  */
 
-package com.ingsis.semantic;
+package com.ingsis.parser.semantic;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.parser.semantic.checkers.handlers.operators.OperatorNodeValidityHandler;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.checkers.handlers.operators.OperatorNodeValidityHandler;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.BinaryOperatorNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;

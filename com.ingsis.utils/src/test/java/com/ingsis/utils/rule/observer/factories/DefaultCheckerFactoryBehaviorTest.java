@@ -2,26 +2,28 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.factories;
+package com.ingsis.utils.rule.observer.factories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.EventsChecker;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
-import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.EventsChecker;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,7 +133,7 @@ class DefaultCheckerFactoryBehaviorTest {
         assertEquals("child-failed", r.error());
     }
 
-    private static class FailingChild implements Node, com.ingsis.visitors.Checkable {
+    private static class FailingChild implements Node, com.ingsis.utils.nodes.visitors.Checkable {
         @Override
         public Integer line() {
             return 0;
@@ -143,12 +145,12 @@ class DefaultCheckerFactoryBehaviorTest {
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptVisitor(com.ingsis.visitors.Visitor visitor) {
+        public Result<String> acceptVisitor(Visitor visitor) {
             return new CorrectResult<>("v");
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptChecker(com.ingsis.visitors.Checker c) {
+        public Result<String> acceptChecker(Checker c) {
             return new IncorrectResult<>("child-failed");
         }
     }

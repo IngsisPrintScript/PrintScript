@@ -5,19 +5,19 @@
 package com.ingsis.interpreter.visitor;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.entries.VariableEntry;
-import com.ingsis.types.Types;
-import com.ingsis.visitors.Interpretable;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
 

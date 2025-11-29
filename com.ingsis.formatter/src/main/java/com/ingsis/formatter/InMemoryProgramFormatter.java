@@ -4,12 +4,12 @@
 
 package com.ingsis.formatter;
 
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.EventsChecker;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.EventsChecker;
 
 public class InMemoryProgramFormatter implements ProgramFormatter {
     private final PeekableIterator<Interpretable> checkableStream;

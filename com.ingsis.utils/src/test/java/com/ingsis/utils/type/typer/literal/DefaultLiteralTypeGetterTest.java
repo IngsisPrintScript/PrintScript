@@ -2,12 +2,12 @@
  * My Project
  */
 
-package com.ingsis.typer.literal;
+package com.ingsis.utils.type.typer.literal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.type.types.Types;
 import org.junit.jupiter.api.Test;
 
 class DefaultLiteralTypeGetterTest {

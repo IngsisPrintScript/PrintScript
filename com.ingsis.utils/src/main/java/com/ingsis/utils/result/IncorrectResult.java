@@ -2,7 +2,9 @@
  * My Project
  */
 
-package com.ingsis.result;
+package com.ingsis.utils.result; /*
+                                  * My Project
+                                  */
 
 public record IncorrectResult<T>(String error) implements Result<T> {
     public IncorrectResult(Result<?> incorrectResult) {

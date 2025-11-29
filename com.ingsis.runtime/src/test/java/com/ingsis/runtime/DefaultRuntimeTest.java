@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.entries.DefaultFunctionEntry;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
-import com.ingsis.types.Types;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

@@ -7,15 +7,18 @@ package com.ingsis.interpreter.visitor.expression.strategies.function;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.types.Types;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
@@ -52,21 +55,17 @@ class FunctionCallSolutionStrategyTest {
         Interpreter stub =
                 new Interpreter() {
                     @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    public Result<String> interpret(IfKeywordNode ifKeywordNode) {
                         throw new AssertionError("Should not be called");
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
+                    public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
                         throw new AssertionError("Should not be called");
                     }
 
                     @Override
-                    public com.ingsis.result.Result<Object> interpret(
-                            com.ingsis.nodes.expression.ExpressionNode node) {
+                    public Result<Object> interpret(ExpressionNode node) {
                         if (node instanceof LiteralNode l)
                             return new CorrectResult<>(Double.parseDouble(l.value()));
                         return new CorrectResult<>(null);

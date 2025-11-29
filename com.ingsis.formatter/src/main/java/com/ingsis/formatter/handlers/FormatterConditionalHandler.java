@@ -4,13 +4,13 @@
 
 package com.ingsis.formatter.handlers;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import java.util.function.Supplier;
 
 public class FormatterConditionalHandler implements NodeEventHandler<IfKeywordNode> {

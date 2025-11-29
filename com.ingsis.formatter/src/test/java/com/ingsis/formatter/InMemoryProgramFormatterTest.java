@@ -7,19 +7,19 @@ package com.ingsis.formatter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.EventsChecker;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.EventsChecker;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +74,7 @@ class InMemoryProgramFormatterTest {
 
         EventsChecker checker = new EventsChecker(() -> map);
 
-        PeekableIterator<com.ingsis.visitors.Interpretable> it =
+        PeekableIterator<com.ingsis.utils.nodes.visitors.Interpretable> it =
                 new SimplePeekableIterator<>(List.of(call));
         InMemoryProgramFormatter formatter = new InMemoryProgramFormatter(it, checker);
 
@@ -101,7 +101,7 @@ class InMemoryProgramFormatterTest {
 
         EventsChecker checker = new EventsChecker(() -> map);
 
-        PeekableIterator<com.ingsis.visitors.Interpretable> it =
+        PeekableIterator<com.ingsis.utils.nodes.visitors.Interpretable> it =
                 new SimplePeekableIterator<>(List.of(a, b));
         InMemoryProgramFormatter fmt = new InMemoryProgramFormatter(it, checker);
 
@@ -131,7 +131,7 @@ class InMemoryProgramFormatterTest {
 
         EventsChecker checker = new EventsChecker(() -> map);
 
-        PeekableIterator<com.ingsis.visitors.Interpretable> it =
+        PeekableIterator<com.ingsis.utils.nodes.visitors.Interpretable> it =
                 new SimplePeekableIterator<>(List.of(a, b));
         InMemoryProgramFormatter fmt = new InMemoryProgramFormatter(it, checker);
 

@@ -2,18 +2,18 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.operator;
+package com.ingsis.parser.syntactic.parsers.operator;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class BinaryOperatorParser implements Parser<ExpressionNode> {
     private final Token OPERATOR_TEMPLATE;

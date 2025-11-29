@@ -2,15 +2,15 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression;
+package com.ingsis.utils.nodes.nodes.expression;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Checker;
-import com.ingsis.visitors.Interpreter;
-import com.ingsis.visitors.Visitor;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

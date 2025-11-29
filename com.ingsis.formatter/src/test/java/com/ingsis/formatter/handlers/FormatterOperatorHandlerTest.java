@@ -6,21 +6,22 @@ package com.ingsis.formatter.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.BinaryOperatorNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class FormatterOperatorHandlerTest {
     private ResultFactory resultFactory;
-    private Supplier<NodeEventHandler<com.ingsis.nodes.expression.ExpressionNode>> leafSupplier;
+    private Supplier<NodeEventHandler<ExpressionNode>> leafSupplier;
     private FormatterOperatorHandler handler;
 
     @BeforeEach
@@ -53,7 +54,7 @@ class FormatterOperatorHandlerTest {
     @Test
     void handleWhenLeftFailsReturnsClonedIncorrect() {
         // supplier that returns incorrect for left
-        Supplier<NodeEventHandler<com.ingsis.nodes.expression.ExpressionNode>> bad =
+        Supplier<NodeEventHandler<ExpressionNode>> bad =
                 () -> n -> resultFactory.createIncorrectResult("left fail");
         FormatterOperatorHandler badHandler = new FormatterOperatorHandler(resultFactory, bad);
         IdentifierNode left = new IdentifierNode("a", 1, 1);

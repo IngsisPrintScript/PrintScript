@@ -2,20 +2,23 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers;
+package com.ingsis.utils.rule.observer.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
 import org.junit.jupiter.api.Test;
 
 class NodeEventHandlerTest {
     @Test
     void handlerInvocationReturnsResult() {
-        NodeEventHandler<com.ingsis.nodes.Node> handler = node -> new CorrectResult<>("ok");
-        com.ingsis.nodes.Node n =
-                new com.ingsis.nodes.Node() {
+        NodeEventHandler<com.ingsis.utils.nodes.nodes.Node> handler =
+                node -> new CorrectResult<>("ok");
+        com.ingsis.utils.nodes.nodes.Node n =
+                new Node() {
                     @Override
                     public Integer line() {
                         return 0;
@@ -27,8 +30,7 @@ class NodeEventHandlerTest {
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> acceptVisitor(
-                            com.ingsis.visitors.Visitor visitor) {
+                    public Result<String> acceptVisitor(Visitor visitor) {
                         return new CorrectResult<>("v");
                     }
                 };

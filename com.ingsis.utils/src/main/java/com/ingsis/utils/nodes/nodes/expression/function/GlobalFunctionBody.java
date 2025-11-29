@@ -2,15 +2,17 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.function;
+package com.ingsis.utils.nodes.nodes.expression.function; /*
+                                                           * My Project
+                                                           */
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Checker;
-import com.ingsis.visitors.Interpreter;
-import com.ingsis.visitors.Visitor;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 import java.util.function.Function;
 

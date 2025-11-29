@@ -2,14 +2,14 @@
  * My Project
  */
 
-package com.ingsis.semantic.checkers.handlers.identifier.existance;
+package com.ingsis.parser.semantic.checkers.handlers.identifier.existance;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.runtime.Runtime;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.Collection;
 

@@ -2,16 +2,16 @@
  * My Project
  */
 
-package com.ingsis.semantic;
+package com.ingsis.parser.semantic;
 
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
-import com.ingsis.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;

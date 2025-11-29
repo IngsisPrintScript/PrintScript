@@ -2,7 +2,9 @@
  * My Project
  */
 
-package com.ingsis.types;
+package com.ingsis.utils.type.types; /*
+                                      * My Project
+                                      */
 
 import java.util.Arrays;
 import java.util.List;

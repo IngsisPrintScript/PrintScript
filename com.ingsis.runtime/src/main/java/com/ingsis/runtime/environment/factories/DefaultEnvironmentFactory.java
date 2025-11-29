@@ -4,12 +4,12 @@
 
 package com.ingsis.runtime.environment.factories;
 
-import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.DefaultEnvironment;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.GlobalEnvironment;
 import com.ingsis.runtime.environment.entries.factories.EntryFactory;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.function.GlobalFunctionBody;
+import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.nio.charset.StandardCharsets;
 import java.util.List;

@@ -8,12 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
-import com.ingsis.nodes.expression.function.GlobalFunctionBody;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.types.Types;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.function.GlobalFunctionBody;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

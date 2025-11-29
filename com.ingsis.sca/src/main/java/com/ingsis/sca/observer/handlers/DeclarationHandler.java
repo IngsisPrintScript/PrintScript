@@ -4,11 +4,11 @@
 
 package com.ingsis.sca.observer.handlers;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 
 public class DeclarationHandler implements NodeEventHandler<DeclarationKeywordNode> {
     private final NodeEventHandler<IdentifierNode> identifierChecker;

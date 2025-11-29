@@ -4,10 +4,10 @@
 
 package com.ingsis.runtime;
 
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.entries.FunctionEntry;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 
 public sealed interface Runtime permits DefaultRuntime {
     Environment getCurrentEnvironment();

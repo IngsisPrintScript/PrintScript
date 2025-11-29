@@ -2,17 +2,23 @@
  * My Project
  */
 
-package com.ingsis.rule.observer;
+package com.ingsis.utils.rule.observer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,35 +32,31 @@ class EventsCheckerTest {
         PublishersFactory pf =
                 new PublishersFactory() {
                     @Override
-                    public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                                    com.ingsis.nodes.keyword.DeclarationKeywordNode>
+                    public GenericNodeEventPublisher<DeclarationKeywordNode>
                             createLetNodePublisher() {
-                        return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+                        return new GenericNodeEventPublisher<>(
                                 List.of(
                                         (NodeEventHandler<
-                                                        com.ingsis.nodes.keyword
+                                                        com.ingsis.utils.nodes.nodes.keyword
                                                                 .DeclarationKeywordNode>)
                                                 (node -> new CorrectResult<>("ok"))));
                     }
 
                     @Override
-                    public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                                    com.ingsis.nodes.keyword.IfKeywordNode>
+                    public GenericNodeEventPublisher<IfKeywordNode>
                             createConditionalNodePublisher() {
-                        return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+                        return new GenericNodeEventPublisher<>(
                                 List.of(
-                                        (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
+                                        (NodeEventHandler<IfKeywordNode>)
                                                 (node -> new CorrectResult<>("ok"))));
                     }
 
                     @Override
-                    public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                                    com.ingsis.nodes.expression.ExpressionNode>
+                    public GenericNodeEventPublisher<ExpressionNode>
                             createExpressionNodePublisher() {
-                        return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+                        return new GenericNodeEventPublisher<>(
                                 List.of(
-                                        (NodeEventHandler<
-                                                        com.ingsis.nodes.expression.ExpressionNode>)
+                                        (NodeEventHandler<ExpressionNode>)
                                                 (node -> new CorrectResult<>("ok"))));
                     }
                 };
@@ -64,32 +66,26 @@ class EventsCheckerTest {
     private static PublishersFactory incorrectPublishersFactory() {
         return new PublishersFactory() {
             @Override
-            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode>
-                    createLetNodePublisher() {
-                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+            public GenericNodeEventPublisher<DeclarationKeywordNode> createLetNodePublisher() {
+                return new GenericNodeEventPublisher<>(
                         List.of(
-                                (NodeEventHandler<com.ingsis.nodes.keyword.DeclarationKeywordNode>)
+                                (NodeEventHandler<DeclarationKeywordNode>)
                                         (node -> new IncorrectResult<>("bad"))));
             }
 
             @Override
-            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                            com.ingsis.nodes.keyword.IfKeywordNode>
-                    createConditionalNodePublisher() {
-                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+            public GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher() {
+                return new GenericNodeEventPublisher<>(
                         List.of(
-                                (NodeEventHandler<com.ingsis.nodes.keyword.IfKeywordNode>)
+                                (NodeEventHandler<IfKeywordNode>)
                                         (node -> new IncorrectResult<>("bad"))));
             }
 
             @Override
-            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                            com.ingsis.nodes.expression.ExpressionNode>
-                    createExpressionNodePublisher() {
-                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
+            public GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher() {
+                return new GenericNodeEventPublisher<>(
                         List.of(
-                                (NodeEventHandler<com.ingsis.nodes.expression.ExpressionNode>)
+                                (NodeEventHandler<ExpressionNode>)
                                         (node -> new IncorrectResult<>("bad"))));
             }
         };
@@ -113,20 +109,17 @@ class EventsCheckerTest {
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptChecker(
-                    com.ingsis.visitors.Checker checker) {
+            public Result<String> acceptChecker(Checker checker) {
                 return checker.check(this);
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptInterpreter(
-                    com.ingsis.visitors.Interpreter interpreter) {
+            public Result<String> acceptInterpreter(Interpreter interpreter) {
                 return new CorrectResult<>("interp");
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptVisitor(
-                    com.ingsis.visitors.Visitor visitor) {
+            public Result<String> acceptVisitor(Visitor visitor) {
                 return new CorrectResult<>("visit");
             }
 
@@ -155,7 +148,9 @@ class EventsCheckerTest {
 
     @Test
     void ifNodeChildFailureShortCircuits() {
-        class CheckableNode implements com.ingsis.nodes.Node, com.ingsis.visitors.Checkable {
+        class CheckableNode
+                implements com.ingsis.utils.nodes.nodes.Node,
+                        com.ingsis.utils.nodes.visitors.Checkable {
             @Override
             public Integer line() {
                 return 1;
@@ -167,22 +162,19 @@ class EventsCheckerTest {
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptVisitor(
-                    com.ingsis.visitors.Visitor visitor) {
+            public Result<String> acceptVisitor(Visitor visitor) {
                 return new CorrectResult<>("v");
             }
 
             @Override
-            public com.ingsis.result.Result<String> acceptChecker(
-                    com.ingsis.visitors.Checker checker) {
+            public Result<String> acceptChecker(Checker checker) {
                 return new IncorrectResult<>("childErr");
             }
         }
 
         CheckableNode checkableChild = new CheckableNode();
-        com.ingsis.nodes.keyword.IfKeywordNode ifNode =
-                new com.ingsis.nodes.keyword.IfKeywordNode(
-                        simpleExpressionNode(), List.of(checkableChild), List.of(), 1, 1);
+        IfKeywordNode ifNode =
+                new IfKeywordNode(simpleExpressionNode(), List.of(checkableChild), List.of(), 1, 1);
 
         Result<String> out = checker.check(ifNode);
         assertFalse(out.isCorrect());

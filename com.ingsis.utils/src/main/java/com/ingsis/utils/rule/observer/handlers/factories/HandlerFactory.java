@@ -2,12 +2,14 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers.factories;
+package com.ingsis.utils.rule.observer.handlers.factories; /*
+                                                            * My Project
+                                                            */
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 
 public interface HandlerFactory {
     public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler();

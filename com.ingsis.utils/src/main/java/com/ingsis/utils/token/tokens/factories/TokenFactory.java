@@ -2,9 +2,11 @@
  * My Project
  */
 
-package com.ingsis.tokens.factories;
+package com.ingsis.utils.token.tokens.factories; /*
+                                                  * My Project
+                                                  */
 
-import com.ingsis.tokens.Token;
+import com.ingsis.utils.token.tokens.Token;
 
 public interface TokenFactory {
     Token createKeywordToken(String keyword, Integer line, Integer column);

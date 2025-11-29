@@ -2,15 +2,17 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.publishers;
+package com.ingsis.utils.rule.observer.publishers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -18,11 +20,12 @@ class GenericNodeEventPublisherExtraTest {
 
     @Test
     void singleHandlerConstructorReturnsCorrect() {
-        NodeEventHandler<com.ingsis.nodes.Node> h = n -> new CorrectResult<>("ok");
-        GenericNodeEventPublisher<com.ingsis.nodes.Node> pub = new GenericNodeEventPublisher<>(h);
+        NodeEventHandler<com.ingsis.utils.nodes.nodes.Node> h = n -> new CorrectResult<>("ok");
+        GenericNodeEventPublisher<com.ingsis.utils.nodes.nodes.Node> pub =
+                new GenericNodeEventPublisher<>(h);
 
-        com.ingsis.nodes.Node n =
-                new com.ingsis.nodes.Node() {
+        com.ingsis.utils.nodes.nodes.Node n =
+                new Node() {
                     @Override
                     public Integer line() {
                         return 0;
@@ -34,8 +37,7 @@ class GenericNodeEventPublisherExtraTest {
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> acceptVisitor(
-                            com.ingsis.visitors.Visitor visitor) {
+                    public Result<String> acceptVisitor(Visitor visitor) {
                         return new CorrectResult<>("v");
                     }
                 };
@@ -47,14 +49,15 @@ class GenericNodeEventPublisherExtraTest {
 
     @Test
     void multipleHandlersStopAtFirstIncorrect() {
-        NodeEventHandler<com.ingsis.nodes.Node> good = n -> new CorrectResult<>("ok");
-        NodeEventHandler<com.ingsis.nodes.Node> bad = n -> new IncorrectResult<>("boom");
+        NodeEventHandler<com.ingsis.utils.nodes.nodes.Node> good = n -> new CorrectResult<>("ok");
+        NodeEventHandler<com.ingsis.utils.nodes.nodes.Node> bad =
+                n -> new IncorrectResult<>("boom");
 
-        GenericNodeEventPublisher<com.ingsis.nodes.Node> pub =
+        GenericNodeEventPublisher<com.ingsis.utils.nodes.nodes.Node> pub =
                 new GenericNodeEventPublisher<>(List.of(good, bad));
 
-        com.ingsis.nodes.Node n =
-                new com.ingsis.nodes.Node() {
+        com.ingsis.utils.nodes.nodes.Node n =
+                new com.ingsis.utils.nodes.nodes.Node() {
                     @Override
                     public Integer line() {
                         return 0;
@@ -66,8 +69,7 @@ class GenericNodeEventPublisherExtraTest {
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> acceptVisitor(
-                            com.ingsis.visitors.Visitor visitor) {
+                    public Result<String> acceptVisitor(Visitor visitor) {
                         return new CorrectResult<>("v");
                     }
                 };

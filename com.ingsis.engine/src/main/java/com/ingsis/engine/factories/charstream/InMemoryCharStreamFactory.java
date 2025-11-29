@@ -5,8 +5,8 @@
 package com.ingsis.engine.factories.charstream;
 
 import com.ingsis.charstream.StreamCharStream;
-import com.ingsis.metachar.MetaChar;
-import com.ingsis.peekableiterator.PeekableIterator;
+import com.ingsis.utils.metachar.MetaChar;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;

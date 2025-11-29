@@ -2,18 +2,18 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.function;
+package com.ingsis.utils.nodes.nodes.expression.function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 import java.util.function.Function;
 import org.junit.jupiter.api.Test;

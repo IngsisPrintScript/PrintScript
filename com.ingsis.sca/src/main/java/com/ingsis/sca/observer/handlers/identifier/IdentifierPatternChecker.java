@@ -4,10 +4,10 @@
 
 package com.ingsis.sca.observer.handlers.identifier;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 
 public class IdentifierPatternChecker implements NodeEventHandler<IdentifierNode> {
     private final ResultFactory resultFactory;

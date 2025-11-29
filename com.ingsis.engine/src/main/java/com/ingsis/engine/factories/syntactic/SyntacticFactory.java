@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.syntactic;
 
-import com.ingsis.syntactic.SyntacticParser;
+import com.ingsis.parser.syntactic.SyntacticParser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

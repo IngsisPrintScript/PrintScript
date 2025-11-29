@@ -9,14 +9,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
 import com.ingsis.interpreter.visitor.expression.strategies.FinalStrategy;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.BinaryOperatorNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
 import org.junit.jupiter.api.Test;
 
 class AdditionSolutionStrategyTest {
@@ -34,18 +34,17 @@ class AdditionSolutionStrategyTest {
     private Interpreter createStubInterpreter() {
         return new Interpreter() {
             @Override
-            public com.ingsis.result.Result<String> interpret(IfKeywordNode ifKeywordNode) {
+            public Result<String> interpret(IfKeywordNode ifKeywordNode) {
                 throw new AssertionError("Should not be called");
             }
 
             @Override
-            public com.ingsis.result.Result<String> interpret(
-                    DeclarationKeywordNode declarationKeywordNode) {
+            public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
                 throw new AssertionError("Should not be called");
             }
 
             @Override
-            public com.ingsis.result.Result<Object> interpret(ExpressionNode node) {
+            public Result<Object> interpret(ExpressionNode node) {
                 if (node instanceof LiteralNode l) {
                     String v = l.value();
                     if (v.equals("1")) return new CorrectResult<>(1.0);

@@ -2,16 +2,18 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers;
+package com.ingsis.parser.syntactic.parsers;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import org.junit.jupiter.api.Test;
 
 class DefaultParserRegistryTest {
@@ -28,34 +30,34 @@ class DefaultParserRegistryTest {
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptVisitor(com.ingsis.visitors.Visitor visitor) {
+        public Result<String> acceptVisitor(Visitor visitor) {
             return new IncorrectResult<>("no");
         }
     }
 
     private static final class DummyStream implements TokenStream {
         @Override
-        public boolean match(com.ingsis.tokens.Token tokenTemplate) {
+        public boolean match(Token tokenTemplate) {
             return false;
         }
 
         @Override
-        public Result<com.ingsis.tokens.Token> consume() {
+        public Result<Token> consume() {
             return new IncorrectResult<>("no");
         }
 
         @Override
-        public Result<com.ingsis.tokens.Token> consume(com.ingsis.tokens.Token token) {
+        public Result<Token> consume(Token token) {
             return new IncorrectResult<>("no");
         }
 
         @Override
-        public Result<Integer> consumeAll(com.ingsis.tokens.Token token) {
+        public Result<Integer> consumeAll(Token token) {
             return new IncorrectResult<>("no");
         }
 
         @Override
-        public com.ingsis.tokens.Token peek(int offset) {
+        public Token peek(int offset) {
             return null;
         }
 
@@ -68,12 +70,12 @@ class DefaultParserRegistryTest {
         }
 
         @Override
-        public com.ingsis.tokens.Token next() {
+        public Token next() {
             return null;
         }
 
         @Override
-        public com.ingsis.tokens.Token peek() {
+        public Token peek() {
             return null;
         }
     }

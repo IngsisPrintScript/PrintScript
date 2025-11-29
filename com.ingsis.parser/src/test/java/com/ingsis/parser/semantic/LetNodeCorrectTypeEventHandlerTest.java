@@ -2,26 +2,27 @@
  * My Project
  */
 
-package com.ingsis.semantic;
+package com.ingsis.parser.semantic;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.parser.semantic.checkers.handlers.identifier.type.LetNodeCorrectTypeEventHandler;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.checkers.handlers.identifier.type.LetNodeCorrectTypeEventHandler;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.type.TypeNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.type.types.Types;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,7 +51,7 @@ public class LetNodeCorrectTypeEventHandlerTest {
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(
                                 new IdentifierNode("a", 1, 1),
-                                new com.ingsis.nodes.type.TypeNode(Types.STRING, 1, 1),
+                                new TypeNode(Types.STRING, 1, 1),
                                 1,
                                 1),
                         new ValueAssignationNode(
@@ -74,7 +75,7 @@ public class LetNodeCorrectTypeEventHandlerTest {
                 new DeclarationKeywordNode(
                         new TypeAssignationNode(
                                 new IdentifierNode("b", 1, 1),
-                                new com.ingsis.nodes.type.TypeNode(Types.NUMBER, 1, 1),
+                                new TypeNode(Types.NUMBER, 1, 1),
                                 1,
                                 1),
                         new ValueAssignationNode(

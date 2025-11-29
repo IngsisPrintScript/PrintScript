@@ -4,7 +4,7 @@
 
 package com.ingsis.runtime.environment.entries;
 
-import com.ingsis.types.Types;
+import com.ingsis.utils.type.types.Types;
 
 public record DefaultVariableEntry(Types type, Object value, Boolean isMutable)
         implements VariableEntry {

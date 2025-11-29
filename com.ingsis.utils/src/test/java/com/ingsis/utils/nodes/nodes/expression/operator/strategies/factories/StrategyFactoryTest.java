@@ -2,11 +2,11 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.operator.strategies.factories;
+package com.ingsis.utils.nodes.nodes.expression.operator.strategies.factories;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ingsis.nodes.expression.operator.strategies.OperatorStrategy;
+import com.ingsis.utils.nodes.nodes.expression.operator.strategies.OperatorStrategy;
 import org.junit.jupiter.api.Test;
 
 public class StrategyFactoryTest {

@@ -4,10 +4,10 @@
 
 package com.ingsis.lexer;
 
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
-import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
 
 public final class TestUtils {
     public static TokenFactory tokenFactory() {

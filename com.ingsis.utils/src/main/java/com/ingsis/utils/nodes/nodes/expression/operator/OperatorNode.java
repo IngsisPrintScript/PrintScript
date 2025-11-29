@@ -2,8 +2,10 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.operator;
+package com.ingsis.utils.nodes.nodes.expression.operator; /*
+                                                           * My Project
+                                                           */
 
-import com.ingsis.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
 
 public interface OperatorNode extends ExpressionNode {}

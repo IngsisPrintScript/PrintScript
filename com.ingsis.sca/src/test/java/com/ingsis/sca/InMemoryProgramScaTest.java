@@ -6,28 +6,39 @@ package com.ingsis.sca;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.rule.observer.EventsChecker;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
+import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
 import java.util.Iterator;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 
 class InMemoryProgramScaTest {
 
-    static class AlwaysCorrect implements Checkable, com.ingsis.visitors.Interpretable {
+    static class AlwaysCorrect implements Checkable, Interpretable {
         @Override
         public Result<String> acceptChecker(Checker checker) {
             return new DefaultResultFactory().createCorrectResult("ok");
         }
 
         @Override
-        public Result<String> acceptInterpreter(com.ingsis.visitors.Interpreter interpreter) {
+        public Result<String> acceptInterpreter(Interpreter interpreter) {
             return new DefaultResultFactory().createCorrectResult("ok");
         }
     }
 
-    static class AlwaysIncorrect implements Checkable, com.ingsis.visitors.Interpretable {
+    static class AlwaysIncorrect implements Checkable, Interpretable {
         private final Result r;
 
         AlwaysIncorrect(Result r) {
@@ -40,23 +51,23 @@ class InMemoryProgramScaTest {
         }
 
         @Override
-        public Result<String> acceptInterpreter(com.ingsis.visitors.Interpreter interpreter) {
+        public Result<String> acceptInterpreter(Interpreter interpreter) {
             return r;
         }
     }
 
     @Test
     void analyzeReturnsCorrectWhenAllPass() {
-        Iterator<com.ingsis.visitors.Interpretable> it =
-                java.util.List.<com.ingsis.visitors.Interpretable>of(
+        Iterator<Interpretable> it =
+                java.util.List.<com.ingsis.utils.nodes.visitors.Interpretable>of(
                                 new AlwaysCorrect(), new AlwaysCorrect())
                         .iterator();
-        com.ingsis.peekableiterator.PeekableIterator<com.ingsis.visitors.Interpretable> pk =
-                new com.ingsis.peekableiterator.PeekableIterator<>() {
-                    private final Iterator<com.ingsis.visitors.Interpretable> inner = it;
+        PeekableIterator<Interpretable> pk =
+                new PeekableIterator<>() {
+                    private final Iterator<Interpretable> inner = it;
 
                     @Override
-                    public com.ingsis.visitors.Interpretable peek() {
+                    public Interpretable peek() {
                         return inner.hasNext() ? inner.next() : null;
                     }
 
@@ -66,13 +77,12 @@ class InMemoryProgramScaTest {
                     }
 
                     @Override
-                    public com.ingsis.visitors.Interpretable next() {
+                    public Interpretable next() {
                         return inner.next();
                     }
                 };
-        InMemoryProgramSca sca =
-                new InMemoryProgramSca(pk, new com.ingsis.rule.observer.EventsChecker(pf()));
-        Result res = sca.analyze();
+        InMemoryProgramSca sca = new InMemoryProgramSca(pk, new EventsChecker(pf()));
+        Result<String> res = sca.analyze();
         assertEquals("Check passed.", res.result());
     }
 
@@ -80,18 +90,18 @@ class InMemoryProgramScaTest {
     void analyzeReturnsFirstIncorrect() {
         Result bad = new DefaultResultFactory().createIncorrectResult("bad");
         Result later = new DefaultResultFactory().createIncorrectResult("later");
-        Iterator<com.ingsis.visitors.Interpretable> it =
-                java.util.List.<com.ingsis.visitors.Interpretable>of(
+        Iterator<com.ingsis.utils.nodes.visitors.Interpretable> it =
+                java.util.List.<com.ingsis.utils.nodes.visitors.Interpretable>of(
                                 new AlwaysCorrect(),
                                 new AlwaysIncorrect(bad),
                                 new AlwaysIncorrect(later))
                         .iterator();
-        com.ingsis.peekableiterator.PeekableIterator<com.ingsis.visitors.Interpretable> pk2 =
-                new com.ingsis.peekableiterator.PeekableIterator<>() {
-                    private final Iterator<com.ingsis.visitors.Interpretable> inner = it;
+        PeekableIterator<Interpretable> pk2 =
+                new PeekableIterator<>() {
+                    private final Iterator<Interpretable> inner = it;
 
                     @Override
-                    public com.ingsis.visitors.Interpretable peek() {
+                    public Interpretable peek() {
                         return inner.hasNext() ? inner.next() : null;
                     }
 
@@ -101,48 +111,38 @@ class InMemoryProgramScaTest {
                     }
 
                     @Override
-                    public com.ingsis.visitors.Interpretable next() {
+                    public Interpretable next() {
                         return inner.next();
                     }
                 };
-        InMemoryProgramSca sca =
-                new InMemoryProgramSca(pk2, new com.ingsis.rule.observer.EventsChecker(pf()));
-        Result res = sca.analyze();
+        InMemoryProgramSca sca = new InMemoryProgramSca(pk2, new EventsChecker(pf()));
+        Result<String> res = sca.analyze();
         assertEquals("bad", res.error());
     }
 
-    private static com.ingsis.rule.observer.publishers.factories.PublishersFactory pf() {
-        return new com.ingsis.rule.observer.publishers.factories.PublishersFactory() {
+    private static PublishersFactory pf() {
+        return new PublishersFactory() {
             @Override
-            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode>
-                    createLetNodePublisher() {
-                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                        java.util.List.of(
-                                (com.ingsis.rule.observer.handlers.NodeEventHandler<
-                                                com.ingsis.nodes.keyword.DeclarationKeywordNode>)
+            public GenericNodeEventPublisher<DeclarationKeywordNode> createLetNodePublisher() {
+                return new GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<DeclarationKeywordNode>)
                                         n -> new DefaultResultFactory().createCorrectResult("ok")));
             }
 
             @Override
-            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                            com.ingsis.nodes.keyword.IfKeywordNode>
-                    createConditionalNodePublisher() {
-                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                        java.util.List.of(
-                                (com.ingsis.rule.observer.handlers.NodeEventHandler<
-                                                com.ingsis.nodes.keyword.IfKeywordNode>)
+            public GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher() {
+                return new GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<IfKeywordNode>)
                                         n -> new DefaultResultFactory().createCorrectResult("ok")));
             }
 
             @Override
-            public com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<
-                            com.ingsis.nodes.expression.ExpressionNode>
-                    createExpressionNodePublisher() {
-                return new com.ingsis.rule.observer.publishers.GenericNodeEventPublisher<>(
-                        java.util.List.of(
-                                (com.ingsis.rule.observer.handlers.NodeEventHandler<
-                                                com.ingsis.nodes.expression.ExpressionNode>)
+            public GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher() {
+                return new GenericNodeEventPublisher<>(
+                        List.of(
+                                (NodeEventHandler<ExpressionNode>)
                                         n -> new DefaultResultFactory().createCorrectResult("ok")));
             }
         };

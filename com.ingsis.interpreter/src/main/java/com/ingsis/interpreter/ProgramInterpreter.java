@@ -4,7 +4,7 @@
 
 package com.ingsis.interpreter;
 
-import com.ingsis.result.Result;
+import com.ingsis.utils.result.Result;
 
 public sealed interface ProgramInterpreter permits DefaultProgramInterpreter {
     Result<String> interpret();

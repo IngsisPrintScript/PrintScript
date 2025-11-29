@@ -2,11 +2,11 @@
  * My Project
  */
 
-package com.ingsis.typer.string;
+package com.ingsis.utils.type.typer.string;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.types.Types;
+import com.ingsis.utils.type.types.Types;
 import org.junit.jupiter.api.Test;
 
 class DefaultStringTypeGetterTest {

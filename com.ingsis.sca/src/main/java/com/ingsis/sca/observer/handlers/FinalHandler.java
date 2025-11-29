@@ -4,10 +4,10 @@
 
 package com.ingsis.sca.observer.handlers;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 
 public class FinalHandler<T extends Node> implements NodeEventHandler<T> {
     private final ResultFactory resultFactory;

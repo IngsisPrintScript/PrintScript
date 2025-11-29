@@ -5,9 +5,9 @@
 package com.ingsis.engine.factories.syntactic;
 
 import com.ingsis.engine.factories.tokenstream.TokenStreamFactory;
-import com.ingsis.syntactic.DefaultSyntacticParser;
-import com.ingsis.syntactic.SyntacticParser;
-import com.ingsis.syntactic.factories.ParserChainFactory;
+import com.ingsis.parser.syntactic.DefaultSyntacticParser;
+import com.ingsis.parser.syntactic.SyntacticParser;
+import com.ingsis.parser.syntactic.factories.ParserChainFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

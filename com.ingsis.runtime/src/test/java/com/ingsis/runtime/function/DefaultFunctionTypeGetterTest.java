@@ -2,13 +2,15 @@
  * My Project
  */
 
-package com.ingsis.typer.function;
+package com.ingsis.runtime.function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.runtime.DefaultRuntime;
-import com.ingsis.types.Types;
+import com.ingsis.runtime.type.typer.function.DefaultFunctionTypeGetter;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.type.types.Types;
 import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,9 +35,7 @@ class DefaultFunctionTypeGetterTest {
         runtime.getCurrentEnvironment().createFunction("f", Map.of(), Types.NUMBER);
 
         IdentifierNode idNode = new IdentifierNode("f", 1, 1);
-        com.ingsis.nodes.expression.function.CallFunctionNode call =
-                new com.ingsis.nodes.expression.function.CallFunctionNode(
-                        idNode, java.util.List.of(), 1, 1);
+        CallFunctionNode call = new CallFunctionNode(idNode, java.util.List.of(), 1, 1);
 
         DefaultFunctionTypeGetter getter = new DefaultFunctionTypeGetter(runtime);
         assertEquals(Types.NUMBER, getter.getType(call));

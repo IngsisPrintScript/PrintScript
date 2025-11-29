@@ -2,25 +2,25 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.factories;
+package com.ingsis.parser.syntactic.parsers.factories;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.syntactic.factories.ParserChainFactory;
-import com.ingsis.syntactic.parsers.DefaultParserRegistry;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.syntactic.parsers.ParserRegistry;
-import com.ingsis.syntactic.parsers.TypeParser;
-import com.ingsis.syntactic.parsers.conditional.ConditionalParser;
-import com.ingsis.syntactic.parsers.declaration.DeclarationParser;
-import com.ingsis.syntactic.parsers.expression.LineExpressionParser;
-import com.ingsis.syntactic.parsers.function.CallFunctionParser;
-import com.ingsis.syntactic.parsers.identifier.IdentifierParser;
-import com.ingsis.syntactic.parsers.literal.LiteralParser;
-import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
-import com.ingsis.syntactic.parsers.operators.TypeAssignationParser;
-import com.ingsis.syntactic.parsers.operators.ValueAssignationParser;
-import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.parser.syntactic.factories.ParserChainFactory;
+import com.ingsis.parser.syntactic.parsers.DefaultParserRegistry;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.ParserRegistry;
+import com.ingsis.parser.syntactic.parsers.TypeParser;
+import com.ingsis.parser.syntactic.parsers.conditional.ConditionalParser;
+import com.ingsis.parser.syntactic.parsers.declaration.DeclarationParser;
+import com.ingsis.parser.syntactic.parsers.expression.LineExpressionParser;
+import com.ingsis.parser.syntactic.parsers.function.CallFunctionParser;
+import com.ingsis.parser.syntactic.parsers.identifier.IdentifierParser;
+import com.ingsis.parser.syntactic.parsers.literal.LiteralParser;
+import com.ingsis.parser.syntactic.parsers.operator.BinaryOperatorParser;
+import com.ingsis.parser.syntactic.parsers.operators.TypeAssignationParser;
+import com.ingsis.parser.syntactic.parsers.operators.ValueAssignationParser;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
 
 public final class DefaultParserFactory implements ParserFactory {
     private final TokenFactory TOKEN_FACTORY;

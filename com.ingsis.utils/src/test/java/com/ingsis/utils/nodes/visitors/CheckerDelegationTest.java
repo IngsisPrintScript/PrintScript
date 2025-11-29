@@ -2,21 +2,23 @@
  * My Project
  */
 
-package com.ingsis.visitors;
+package com.ingsis.utils.nodes.visitors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.expression.operator.BinaryOperatorNode;
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.BinaryOperatorNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.nodes.type.TypeNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
@@ -61,10 +63,7 @@ public class CheckerDelegationTest {
     public void keywordsDelegateAcceptCheckerToCheckerMethods() {
         TypeAssignationNode t =
                 new TypeAssignationNode(
-                        new IdentifierNode("a", 1, 1),
-                        new com.ingsis.nodes.type.TypeNode(com.ingsis.types.Types.NUMBER, 1, 1),
-                        1,
-                        1);
+                        new IdentifierNode("a", 1, 1), new TypeNode(Types.NUMBER, 1, 1), 1, 1);
         ValueAssignationNode v =
                 new ValueAssignationNode(
                         new IdentifierNode("b", 1, 1), new LiteralNode("x", 1, 1), 1, 1);

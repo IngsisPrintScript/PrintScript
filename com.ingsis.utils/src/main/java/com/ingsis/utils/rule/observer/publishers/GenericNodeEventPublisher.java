@@ -2,12 +2,14 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.publishers;
+package com.ingsis.utils.rule.observer.publishers; /*
+                                                    * My Project
+                                                    */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import java.util.List;
 
 public final class GenericNodeEventPublisher<T extends Node> implements NodeEventPublisher<T> {

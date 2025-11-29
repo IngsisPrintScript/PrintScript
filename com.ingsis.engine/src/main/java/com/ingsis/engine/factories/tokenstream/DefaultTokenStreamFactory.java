@@ -5,9 +5,9 @@
 package com.ingsis.engine.factories.tokenstream;
 
 import com.ingsis.engine.factories.lexer.LexerFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokenstream.DefaultTokenStream;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

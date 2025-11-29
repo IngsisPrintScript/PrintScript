@@ -2,16 +2,18 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers;
+package com.ingsis.utils.rule.observer.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,12 +29,13 @@ class InMemoryNodeEventHandlerRegistryTest {
 
     @Test
     void whenHandlerFailsThenRegistryReturnsClonedIncorrect() {
-        NodeEventHandler<com.ingsis.nodes.Node> bad = node -> new IncorrectResult<>("bad");
-        InMemoryNodeEventHandlerRegistry<com.ingsis.nodes.Node> reg =
+        NodeEventHandler<com.ingsis.utils.nodes.nodes.Node> bad =
+                node -> new IncorrectResult<>("bad");
+        InMemoryNodeEventHandlerRegistry<com.ingsis.utils.nodes.nodes.Node> reg =
                 new InMemoryNodeEventHandlerRegistry<>(List.of(bad), resultFactory);
 
-        com.ingsis.nodes.Node n =
-                new com.ingsis.nodes.Node() {
+        com.ingsis.utils.nodes.nodes.Node n =
+                new Node() {
                     @Override
                     public Integer line() {
                         return 0;
@@ -44,8 +47,7 @@ class InMemoryNodeEventHandlerRegistryTest {
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> acceptVisitor(
-                            com.ingsis.visitors.Visitor visitor) {
+                    public Result<String> acceptVisitor(Visitor visitor) {
                         return new CorrectResult<>("v");
                     }
                 };
@@ -57,11 +59,11 @@ class InMemoryNodeEventHandlerRegistryTest {
 
     @Test
     void whenAllHandlersPassThenReturnsCorrect() {
-        NodeEventHandler<com.ingsis.nodes.Node> ok = node -> new CorrectResult<>("ok");
-        InMemoryNodeEventHandlerRegistry<com.ingsis.nodes.Node> reg =
+        NodeEventHandler<com.ingsis.utils.nodes.nodes.Node> ok = node -> new CorrectResult<>("ok");
+        InMemoryNodeEventHandlerRegistry<com.ingsis.utils.nodes.nodes.Node> reg =
                 new InMemoryNodeEventHandlerRegistry<>(List.of(ok), resultFactory);
-        com.ingsis.nodes.Node n =
-                new com.ingsis.nodes.Node() {
+        com.ingsis.utils.nodes.nodes.Node n =
+                new com.ingsis.utils.nodes.nodes.Node() {
                     @Override
                     public Integer line() {
                         return 0;
@@ -73,8 +75,7 @@ class InMemoryNodeEventHandlerRegistryTest {
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> acceptVisitor(
-                            com.ingsis.visitors.Visitor visitor) {
+                    public Result<String> acceptVisitor(Visitor visitor) {
                         return new CorrectResult<>("v");
                     }
                 };

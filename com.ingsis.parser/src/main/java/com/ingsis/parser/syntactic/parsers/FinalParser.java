@@ -2,12 +2,12 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers;
+package com.ingsis.parser.syntactic.parsers;
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class FinalParser<T extends Node> implements Parser<T> {
 

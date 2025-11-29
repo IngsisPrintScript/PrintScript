@@ -4,14 +4,14 @@
 
 package com.ingsis.runtime.environment;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.FunctionEntry;
 import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.runtime.environment.entries.factories.EntryFactory;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.HashMap;
 import java.util.List;

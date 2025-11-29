@@ -8,9 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.Result;
 import org.junit.jupiter.api.Test;
 
 class LiteralSolutionStrategyTest {
@@ -20,21 +23,17 @@ class LiteralSolutionStrategyTest {
         Interpreter dummy =
                 new Interpreter() {
                     @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
+                    public Result<String> interpret(IfKeywordNode ifKeywordNode) {
                         throw new AssertionError("Should not be called");
                     }
 
                     @Override
-                    public com.ingsis.result.Result<String> interpret(
-                            com.ingsis.nodes.keyword.DeclarationKeywordNode
-                                    declarationKeywordNode) {
+                    public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
                         throw new AssertionError("Should not be called");
                     }
 
                     @Override
-                    public com.ingsis.result.Result<Object> interpret(
-                            com.ingsis.nodes.expression.ExpressionNode expressionNode) {
+                    public Result<Object> interpret(ExpressionNode expressionNode) {
                         throw new AssertionError("Should not be called");
                     }
                 };

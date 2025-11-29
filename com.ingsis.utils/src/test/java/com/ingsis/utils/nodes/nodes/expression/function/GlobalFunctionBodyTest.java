@@ -2,11 +2,18 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.function;
+package com.ingsis.utils.nodes.nodes.expression.function;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,45 +22,39 @@ public class GlobalFunctionBodyTest {
 
     private GlobalFunctionBody body;
 
-    private static final com.ingsis.visitors.Interpreter GOOD_INTERPRETER =
-            new com.ingsis.visitors.Interpreter() {
+    private static final Interpreter GOOD_INTERPRETER =
+            new Interpreter() {
                 @Override
-                public com.ingsis.result.Result<String> interpret(
-                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> interpret(IfKeywordNode ifKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> interpret(
-                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<Object> interpret(
-                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                    return new com.ingsis.result.CorrectResult<>(new Object());
+                public Result<Object> interpret(ExpressionNode expressionNode) {
+                    return new CorrectResult<>(new Object());
                 }
             };
 
-    private static final com.ingsis.visitors.Interpreter BAD_INTERPRETER =
-            new com.ingsis.visitors.Interpreter() {
+    private static final Interpreter BAD_INTERPRETER =
+            new Interpreter() {
                 @Override
-                public com.ingsis.result.Result<String> interpret(
-                        com.ingsis.nodes.keyword.IfKeywordNode ifKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> interpret(IfKeywordNode ifKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> interpret(
-                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<Object> interpret(
-                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                    return new com.ingsis.result.IncorrectResult<>("err");
+                public Result<Object> interpret(ExpressionNode expressionNode) {
+                    return new IncorrectResult<>("err");
                 }
             };
 

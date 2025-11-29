@@ -2,17 +2,17 @@
  * My Project
  */
 
-package com.ingsis.syntactic.factories;
+package com.ingsis.parser.syntactic.factories;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
-import com.ingsis.nodes.factories.DefaultNodeFactory;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
-import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.factories.DefaultParserFactory;
+import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import org.junit.jupiter.api.Test;
 
 class DefaultParserChainFactoryTest {

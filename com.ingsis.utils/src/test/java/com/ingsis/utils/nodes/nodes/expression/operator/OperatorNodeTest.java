@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.operator;
+package com.ingsis.utils.nodes.nodes.expression.operator;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

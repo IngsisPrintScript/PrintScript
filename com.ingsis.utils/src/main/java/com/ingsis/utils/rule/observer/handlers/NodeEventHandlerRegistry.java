@@ -2,9 +2,11 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers;
+package com.ingsis.utils.rule.observer.handlers; /*
+                                                  * My Project
+                                                  */
 
-import com.ingsis.nodes.Node;
+import com.ingsis.utils.nodes.nodes.Node;
 
 public interface NodeEventHandlerRegistry<T extends Node> extends NodeEventHandler<T> {
     public void register(NodeEventHandler<T> newHandler);

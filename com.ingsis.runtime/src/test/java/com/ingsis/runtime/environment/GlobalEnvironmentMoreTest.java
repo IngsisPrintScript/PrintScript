@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
-import com.ingsis.types.Types;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;

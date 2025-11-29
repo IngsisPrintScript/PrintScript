@@ -4,11 +4,11 @@
 
 package com.ingsis.runtime.environment;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.entries.FunctionEntry;
 import com.ingsis.runtime.environment.entries.VariableEntry;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import java.util.Map;
 

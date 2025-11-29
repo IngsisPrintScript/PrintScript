@@ -12,11 +12,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
-import com.ingsis.metachar.MetaChar;
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
+import com.ingsis.utils.metachar.MetaChar;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;

@@ -2,10 +2,12 @@
  * My Project
  */
 
-package com.ingsis.rule.observer.handlers;
+package com.ingsis.utils.rule.observer.handlers; /*
+                                                  * My Project
+                                                  */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.result.factory.ResultFactory;
 import java.util.List;
 
 public class InMemoryNodeEventHandlerRegistry<T extends Node>

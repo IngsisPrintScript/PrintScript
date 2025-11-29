@@ -2,13 +2,15 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression.operator;
+package com.ingsis.utils.nodes.nodes.expression.operator; /*
+                                                           * My Project
+                                                           */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Visitor;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.Result;
 
 public record ValueAssignationNode(
         IdentifierNode identifierNode, ExpressionNode expressionNode, Integer line, Integer column)

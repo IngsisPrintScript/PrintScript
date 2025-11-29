@@ -2,7 +2,9 @@
  * My Project
  */
 
-package com.ingsis.tokens;
+package com.ingsis.utils.token.tokens; /*
+                                        * My Project
+                                        */
 
 public interface Token {
     String name();

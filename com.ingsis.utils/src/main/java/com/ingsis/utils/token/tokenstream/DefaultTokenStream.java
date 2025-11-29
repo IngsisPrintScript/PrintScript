@@ -2,15 +2,17 @@
  * My Project
  */
 
-package com.ingsis.tokenstream;
+package com.ingsis.utils.token.tokenstream; /*
+                                             * My Project
+                                             */
 
-import com.ingsis.peekableiterator.PeekableIterator;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import java.util.ArrayList;
 import java.util.List;
 

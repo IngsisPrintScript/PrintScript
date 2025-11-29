@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.rule.status.provider;
+package com.ingsis.utils.rule.status.provider;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;

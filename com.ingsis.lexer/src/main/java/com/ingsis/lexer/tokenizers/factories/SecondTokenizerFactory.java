@@ -20,9 +20,9 @@ import com.ingsis.lexer.tokenizers.separator.EndOfLineSeparatorTokenizer;
 import com.ingsis.lexer.tokenizers.separator.GenericSeparatorTokenizer;
 import com.ingsis.lexer.tokenizers.separator.SpaceSeparatorTokenizer;
 import com.ingsis.lexer.tokenizers.type.GenericTypeTokenizer;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.types.Types;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 
 public final class SecondTokenizerFactory implements TokenizerFactory {

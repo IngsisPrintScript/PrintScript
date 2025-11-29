@@ -4,13 +4,13 @@
 
 package com.ingsis.runtime.environment.entries.factories;
 
-import com.ingsis.nodes.expression.ExpressionNode;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.entries.DefaultFunctionEntry;
 import com.ingsis.runtime.environment.entries.DefaultVariableEntry;
 import com.ingsis.runtime.environment.entries.FunctionEntry;
 import com.ingsis.runtime.environment.entries.VariableEntry;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 import java.util.Map;
 

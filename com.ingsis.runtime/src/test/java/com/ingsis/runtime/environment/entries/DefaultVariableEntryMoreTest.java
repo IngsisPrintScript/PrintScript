@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.types.Types;
+import com.ingsis.utils.type.types.Types;
 import org.junit.jupiter.api.Test;
 
 class DefaultVariableEntryMoreTest {

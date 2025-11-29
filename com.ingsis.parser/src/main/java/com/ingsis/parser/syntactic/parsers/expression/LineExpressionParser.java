@@ -2,18 +2,18 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.expression;
+package com.ingsis.parser.syntactic.parsers.expression;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.syntactic.parsers.factories.ParserFactory;
-import com.ingsis.syntactic.parsers.operator.BinaryOperatorParser;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.parser.syntactic.parsers.operator.BinaryOperatorParser;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class LineExpressionParser implements Parser<ExpressionNode> {
     private final BinaryOperatorParser CORE_EXPRESSION_PARSER;

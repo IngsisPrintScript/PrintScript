@@ -2,24 +2,25 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.operator;
+package com.ingsis.parser.syntactic.parsers.operator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.factories.DefaultNodeFactory;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import org.junit.jupiter.api.Test;
 
 class BinaryOperatorParserTest {
@@ -80,8 +81,7 @@ class BinaryOperatorParserTest {
         }
     }
 
-    private static final class LeafParser
-            implements com.ingsis.syntactic.parsers.Parser<ExpressionNode> {
+    private static final class LeafParser implements Parser<ExpressionNode> {
         private final LiteralNode node;
 
         LeafParser(LiteralNode node) {
@@ -114,8 +114,8 @@ class BinaryOperatorParserTest {
         LiteralNode left = nf.createLiteralNode("1", 1, 1);
         LiteralNode right = nf.createLiteralNode("2", 1, 2);
         Token op = tf.createOperatorToken("+", 1, 5);
-        com.ingsis.syntactic.parsers.Parser<ExpressionNode> alternatingParser =
-                new com.ingsis.syntactic.parsers.Parser<ExpressionNode>() {
+        Parser<ExpressionNode> alternatingParser =
+                new Parser<ExpressionNode>() {
                     private int called = 0;
 
                     @Override

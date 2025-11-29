@@ -4,10 +4,10 @@
 
 package com.ingsis.typer.function;
 
-import com.ingsis.nodes.expression.function.CallFunctionNode;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.typer.TypeGetter;
-import com.ingsis.types.Types;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.type.typer.TypeGetter;
+import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")

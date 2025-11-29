@@ -4,8 +4,8 @@
 
 package com.ingsis.lexer.tokenizers;
 
-import com.ingsis.result.Result;
-import com.ingsis.tokens.Token;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
 import java.util.ArrayList;
 
 public final class DefaultTokenizersRegistry implements TokenizersRegistry {

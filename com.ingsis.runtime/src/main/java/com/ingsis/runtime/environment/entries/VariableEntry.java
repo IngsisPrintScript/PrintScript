@@ -4,7 +4,7 @@
 
 package com.ingsis.runtime.environment.entries;
 
-import com.ingsis.types.Types;
+import com.ingsis.utils.type.types.Types;
 
 public sealed interface VariableEntry permits DefaultVariableEntry {
     Types type();

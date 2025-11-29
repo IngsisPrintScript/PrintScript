@@ -2,13 +2,13 @@
  * My Project
  */
 
-package com.ingsis.metachar.string.builder;
+package com.ingsis.utils.metachar.string.builder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.ingsis.metachar.MetaChar;
+import com.ingsis.utils.metachar.MetaChar;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;

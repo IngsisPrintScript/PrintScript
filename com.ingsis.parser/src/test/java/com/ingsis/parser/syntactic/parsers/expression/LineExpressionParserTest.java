@@ -2,21 +2,21 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.expression;
+package com.ingsis.parser.syntactic.parsers.expression;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.factories.DefaultNodeFactory;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.syntactic.parsers.factories.DefaultParserFactory;
-import com.ingsis.syntactic.parsers.factories.ParserFactory;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.DefaultTokensFactory;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.parser.syntactic.parsers.factories.DefaultParserFactory;
+import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;

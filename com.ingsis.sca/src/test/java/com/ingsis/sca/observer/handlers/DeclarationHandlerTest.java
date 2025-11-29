@@ -7,20 +7,23 @@ package com.ingsis.sca.observer.handlers;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import org.junit.jupiter.api.Test;
 
 class DeclarationHandlerTest {
 
-    static class DummyExpression implements com.ingsis.nodes.expression.ExpressionNode {
+    static class DummyExpression implements ExpressionNode {
         @Override
-        public java.util.List<com.ingsis.nodes.expression.ExpressionNode> children() {
+        public java.util.List<ExpressionNode> children() {
             return java.util.List.of();
         }
 
@@ -45,18 +48,17 @@ class DeclarationHandlerTest {
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptChecker(com.ingsis.visitors.Checker checker) {
+        public Result<String> acceptChecker(Checker checker) {
             return new DefaultResultFactory().createCorrectResult("ok");
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptVisitor(com.ingsis.visitors.Visitor visitor) {
+        public Result<String> acceptVisitor(Visitor visitor) {
             return new DefaultResultFactory().createCorrectResult("ok");
         }
 
         @Override
-        public com.ingsis.result.Result<String> acceptInterpreter(
-                com.ingsis.visitors.Interpreter interpreter) {
+        public Result<String> acceptInterpreter(Interpreter interpreter) {
             return new DefaultResultFactory().createCorrectResult("ok");
         }
     }

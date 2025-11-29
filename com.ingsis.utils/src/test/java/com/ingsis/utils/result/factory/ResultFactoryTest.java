@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.result.factory;
+package com.ingsis.utils.result.factory;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -2,11 +2,13 @@
  * My Project
  */
 
-package com.ingsis.result.factory;
+package com.ingsis.utils.result.factory; /*
+                                          * My Project
+                                          */
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 
 public interface ResultFactory {
     <T> IncorrectResult<T> createIncorrectResult(String errorMessage);

@@ -2,12 +2,14 @@
  * My Project
  */
 
-package com.ingsis.nodes.type;
+package com.ingsis.utils.nodes.nodes.type; /*
+                                            * My Project
+                                            */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.result.Result;
-import com.ingsis.types.Types;
-import com.ingsis.visitors.Visitor;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 
 public record TypeNode(Types type, Integer line, Integer column) implements Node {
 

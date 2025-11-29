@@ -2,9 +2,9 @@
  * My Project
  */
 
-package com.ingsis.metachar.string.builder;
+package com.ingsis.utils.metachar.string.builder;
 
-import com.ingsis.metachar.MetaChar;
+import com.ingsis.utils.metachar.MetaChar;
 import java.util.ArrayList;
 import java.util.List;
 

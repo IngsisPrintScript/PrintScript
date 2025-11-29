@@ -5,14 +5,14 @@
 package com.ingsis.engine.factories.semantic;
 
 import com.ingsis.engine.factories.syntactic.SyntacticFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.factories.DefaultCheckerFactory;
+import com.ingsis.parser.semantic.DefaultSemanticChecker;
+import com.ingsis.parser.semantic.SemanticChecker;
+import com.ingsis.parser.semantic.checkers.handlers.factories.DefaultHandlersFactory;
+import com.ingsis.parser.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.semantic.DefaultSemanticChecker;
-import com.ingsis.semantic.SemanticChecker;
-import com.ingsis.semantic.checkers.handlers.factories.DefaultHandlersFactory;
-import com.ingsis.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
-import com.ingsis.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

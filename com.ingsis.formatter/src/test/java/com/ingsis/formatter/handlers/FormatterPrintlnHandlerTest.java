@@ -6,14 +6,15 @@ package com.ingsis.formatter.handlers;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.function.CallFunctionNode;
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.factory.DefaultResultFactory;
-import com.ingsis.result.factory.ResultFactory;
-import com.ingsis.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import java.util.List;
 import java.util.function.Supplier;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +22,7 @@ import org.junit.jupiter.api.Test;
 
 class FormatterPrintlnHandlerTest {
     private ResultFactory resultFactory;
-    private Supplier<NodeEventHandler<com.ingsis.nodes.expression.ExpressionNode>> supplier;
+    private Supplier<NodeEventHandler<ExpressionNode>> supplier;
     private FormatterPrintlnHandler handler;
 
     @BeforeEach
@@ -47,7 +48,7 @@ class FormatterPrintlnHandlerTest {
         CallFunctionNode call = new CallFunctionNode(id, List.of(new LiteralNode("x", 1, 2)), 1, 1);
         var r = handler.handle(call);
         if (!r.isCorrect()) {
-            if (r instanceof com.ingsis.result.IncorrectResult<?> ir) {
+            if (r instanceof IncorrectResult<?> ir) {
                 throw new AssertionError("RESULT incorrect: <" + ir.error() + ">");
             } else {
                 throw new AssertionError("RESULT not correct: " + r.getClass());

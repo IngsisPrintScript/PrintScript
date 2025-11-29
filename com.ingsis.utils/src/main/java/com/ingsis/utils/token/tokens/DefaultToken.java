@@ -2,7 +2,9 @@
  * My Project
  */
 
-package com.ingsis.tokens;
+package com.ingsis.utils.token.tokens; /*
+                                        * My Project
+                                        */
 
 public record DefaultToken(String name, String value, Integer line, Integer column)
         implements Token {

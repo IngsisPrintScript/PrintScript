@@ -4,14 +4,14 @@
 
 package com.ingsis.runtime;
 
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.entries.FunctionEntry;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
 import com.ingsis.runtime.environment.factories.DefaultEnvironmentFactory;
 import com.ingsis.runtime.environment.factories.EnvironmentFactory;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.ArrayDeque;
 import java.util.Deque;
 

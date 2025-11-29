@@ -2,11 +2,13 @@
  * My Project
  */
 
-package com.ingsis.nodes.expression;
+package com.ingsis.utils.nodes.nodes.expression; /*
+                                                  * My Project
+                                                  */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Interpretable;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Interpretable;
 import java.util.List;
 
 public interface ExpressionNode extends Node, Checkable, Interpretable {

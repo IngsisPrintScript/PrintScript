@@ -2,16 +2,16 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers;
+package com.ingsis.parser.syntactic.parsers;
 
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.type.TypeNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.nodes.nodes.type.TypeNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class TypeParser implements Parser<TypeNode> {
     private final NodeFactory NODE_FACTORY;

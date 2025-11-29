@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.ingsis.interpreter.visitor.DefaultInterpreterVisitor;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
-import com.ingsis.nodes.expression.literal.LiteralNode;
-import com.ingsis.nodes.keyword.IfKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.result.factory.DefaultResultFactory;
 import com.ingsis.runtime.DefaultRuntime;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 

@@ -2,10 +2,23 @@
  * My Project
  */
 
-package com.ingsis.nodes.keyword;
+package com.ingsis.utils.nodes.nodes.keyword;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.BinaryOperatorNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.type.TypeNode;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,116 +28,94 @@ public class IfKeywordNodeTest {
     private IfKeywordNode withElse;
     private IfKeywordNode withoutElse;
 
-    private static final com.ingsis.visitors.Checker SIMPLE_CHECKER =
-            new com.ingsis.visitors.Checker() {
+    private static final Checker SIMPLE_CHECKER =
+            new Checker() {
                 @Override
-                public com.ingsis.result.Result<String> check(IfKeywordNode ifKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> check(IfKeywordNode ifKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> check(
-                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> check(DeclarationKeywordNode declarationKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> check(
-                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> check(ExpressionNode expressionNode) {
+                    return new CorrectResult<>("ok");
                 }
             };
 
-    private static final com.ingsis.visitors.Interpreter SIMPLE_INTERPRETER =
-            new com.ingsis.visitors.Interpreter() {
+    private static final Interpreter SIMPLE_INTERPRETER =
+            new Interpreter() {
                 @Override
-                public com.ingsis.result.Result<String> interpret(IfKeywordNode ifKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> interpret(IfKeywordNode ifKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> interpret(
-                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<Object> interpret(
-                        com.ingsis.nodes.expression.ExpressionNode expressionNode) {
-                    return new com.ingsis.result.CorrectResult<>("v");
+                public Result<Object> interpret(ExpressionNode expressionNode) {
+                    return new CorrectResult<>("v");
                 }
             };
 
-    private static final com.ingsis.visitors.Visitor SIMPLE_VISITOR =
-            new com.ingsis.visitors.Visitor() {
+    private static final Visitor SIMPLE_VISITOR =
+            new Visitor() {
                 @Override
-                public com.ingsis.result.Result<String> visit(IfKeywordNode ifKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(IfKeywordNode ifKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.keyword.DeclarationKeywordNode declarationKeywordNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(DeclarationKeywordNode declarationKeywordNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.expression.function.CallFunctionNode callFunctionNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(CallFunctionNode callFunctionNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.expression.operator.BinaryOperatorNode
-                                binaryOperatorNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(BinaryOperatorNode binaryOperatorNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.expression.operator.TypeAssignationNode
-                                typeAssignationNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(TypeAssignationNode typeAssignationNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.expression.operator.ValueAssignationNode
-                                valueAssignationNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(ValueAssignationNode valueAssignationNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.expression.identifier.IdentifierNode identifierNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(IdentifierNode identifierNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.expression.literal.LiteralNode literalNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(LiteralNode literalNode) {
+                    return new CorrectResult<>("ok");
                 }
 
                 @Override
-                public com.ingsis.result.Result<String> visit(
-                        com.ingsis.nodes.type.TypeNode typeNode) {
-                    return new com.ingsis.result.CorrectResult<>("ok");
+                public Result<String> visit(TypeNode typeNode) {
+                    return new CorrectResult<>("ok");
                 }
             };
 
     @BeforeEach
     public void setUp() {
-        com.ingsis.nodes.expression.identifier.IdentifierNode cond =
-                new com.ingsis.nodes.expression.identifier.IdentifierNode("c", 1, 1);
-        withElse =
-                new IfKeywordNode(
-                        cond,
-                        List.of(),
-                        List.of(new com.ingsis.nodes.expression.literal.LiteralNode("1", 1, 2)),
-                        1,
-                        1);
+        IdentifierNode cond = new IdentifierNode("c", 1, 1);
+        withElse = new IfKeywordNode(cond, List.of(), List.of(new LiteralNode("1", 1, 2)), 1, 1);
         withoutElse = new IfKeywordNode(cond, List.of(), 1, 1);
     }
 

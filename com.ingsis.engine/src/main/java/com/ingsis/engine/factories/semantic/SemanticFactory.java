@@ -4,7 +4,7 @@
 
 package com.ingsis.engine.factories.semantic;
 
-import com.ingsis.semantic.SemanticChecker;
+import com.ingsis.parser.semantic.SemanticChecker;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

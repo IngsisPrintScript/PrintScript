@@ -8,7 +8,7 @@ import com.ingsis.engine.factories.charstream.CharStreamFactory;
 import com.ingsis.lexer.DefaultLexer;
 import com.ingsis.lexer.Lexer;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
-import com.ingsis.result.factory.ResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,14 +2,15 @@
  * My Project
  */
 
-package com.ingsis.typer.identifier;
+package com.ingsis.runtime.identifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.ingsis.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.environment.Environment;
-import com.ingsis.types.Types;
+import com.ingsis.runtime.type.typer.identifier.DefaultIdentifierTypeGetter;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.type.types.Types;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

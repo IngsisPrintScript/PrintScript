@@ -2,12 +2,12 @@
  * My Project
  */
 
-package com.ingsis.tokens.factories;
+package com.ingsis.utils.token.tokens.factories;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-import com.ingsis.tokens.Token;
+import com.ingsis.utils.token.tokens.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

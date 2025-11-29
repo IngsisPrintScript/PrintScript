@@ -2,16 +2,18 @@
  * My Project
  */
 
-package com.ingsis.nodes.keyword;
+package com.ingsis.utils.nodes.nodes.keyword; /*
+                                               * My Project
+                                               */
 
-import com.ingsis.nodes.Node;
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.result.Result;
-import com.ingsis.visitors.Checkable;
-import com.ingsis.visitors.Checker;
-import com.ingsis.visitors.Interpretable;
-import com.ingsis.visitors.Interpreter;
-import com.ingsis.visitors.Visitor;
+import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.nodes.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Visitor;
+import com.ingsis.utils.result.Result;
 import java.util.List;
 
 public record IfKeywordNode(

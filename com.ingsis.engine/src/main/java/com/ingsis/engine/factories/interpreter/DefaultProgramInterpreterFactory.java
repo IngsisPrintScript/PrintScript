@@ -9,7 +9,7 @@ import com.ingsis.interpreter.DefaultProgramInterpreter;
 import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.visitors.Interpreter;
+import com.ingsis.utils.nodes.visitors.Interpreter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;

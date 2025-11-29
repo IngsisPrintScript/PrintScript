@@ -2,23 +2,23 @@
  * My Project
  */
 
-package com.ingsis.syntactic.parsers.declaration;
+package com.ingsis.parser.syntactic.parsers.declaration;
 
-import com.ingsis.nodes.expression.ExpressionNode;
-import com.ingsis.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.nodes.expression.operator.ValueAssignationNode;
-import com.ingsis.nodes.factories.NodeFactory;
-import com.ingsis.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.result.CorrectResult;
-import com.ingsis.result.IncorrectResult;
-import com.ingsis.result.Result;
-import com.ingsis.syntactic.parsers.Parser;
-import com.ingsis.syntactic.parsers.expression.LineExpressionParser;
-import com.ingsis.syntactic.parsers.factories.ParserFactory;
-import com.ingsis.syntactic.parsers.operators.TypeAssignationParser;
-import com.ingsis.tokens.Token;
-import com.ingsis.tokens.factories.TokenFactory;
-import com.ingsis.tokenstream.TokenStream;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.expression.LineExpressionParser;
+import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
+import com.ingsis.parser.syntactic.parsers.operators.TypeAssignationParser;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
+import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
     private final Token LET_TOKEN_TEMPLATE;

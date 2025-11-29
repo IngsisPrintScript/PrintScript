@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import com.ingsis.nodes.expression.function.GlobalFunctionBody;
 import com.ingsis.runtime.environment.Environment;
 import com.ingsis.runtime.environment.entries.FunctionEntry;
 import com.ingsis.runtime.environment.entries.factories.DefaultEntryFactory;
+import com.ingsis.utils.nodes.nodes.expression.function.GlobalFunctionBody;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
