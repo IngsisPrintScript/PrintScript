@@ -55,11 +55,11 @@ public final class SubstractionSolutionStrategy implements ExpressionSolutionStr
                 result = childResult;
                 continue;
             }
-            Result<Object> divideResult = substractByNewObject(result, childResult);
-            if (!divideResult.isCorrect()) {
-                return new IncorrectResult<>(divideResult);
+            Result<Object> substractResult = substractByNewObject(result, childResult);
+            if (!substractResult.isCorrect()) {
+                return new IncorrectResult<>(substractResult);
             }
-            result = divideResult.result();
+            result = substractResult.result();
         }
         return new CorrectResult<>(result);
     }

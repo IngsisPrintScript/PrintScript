@@ -1,7 +1,3 @@
-let a: string = "AAA";
-let b: string = "BBB";
-if (readInput("true or false: ")) {
-println(a);
-} else {
-println(b);
-}
+let pi: number;
+pi = 3.14;
+println(pi / 2);

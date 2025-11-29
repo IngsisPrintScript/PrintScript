@@ -143,8 +143,6 @@ public final class CliEngine implements Engine {
         System.out.println("Interpreting file: " + file);
         Result<String> interpretResult = buildFileInterpreter(file).interpret();
         IncorrectResult<?> executionError = DefaultRuntime.getInstance().getExecutionError();
-        System.out.println(interpretResult);
-        System.out.println(executionError);
         if (!interpretResult.isCorrect() && executionError != null) {
             System.err.println("Error: " + executionError.error() + "\n");
         }

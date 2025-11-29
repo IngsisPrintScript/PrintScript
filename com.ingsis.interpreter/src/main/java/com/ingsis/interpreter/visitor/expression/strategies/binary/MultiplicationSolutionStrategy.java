@@ -55,11 +55,11 @@ public final class MultiplicationSolutionStrategy implements ExpressionSolutionS
                 result = childResult;
                 continue;
             }
-            Result<Object> divideResult = multiplyByNewObject(result, childResult);
-            if (!divideResult.isCorrect()) {
-                return new IncorrectResult<>(divideResult);
+            Result<Object> multiplyResult = multiplyByNewObject(result, childResult);
+            if (!multiplyResult.isCorrect()) {
+                return new IncorrectResult<>(multiplyResult);
             }
-            result = divideResult.result();
+            result = multiplyResult.result();
         }
         return new CorrectResult<>(result);
     }

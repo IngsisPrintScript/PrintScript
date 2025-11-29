@@ -10,10 +10,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Types {
-    NUMBER("number", "\\d+(\\.\\d+)?"),
-    BOOLEAN("boolean", "true|false"),
-    NIL("nil", "nil"),
-    UNDEFINED("undefined", "undefined"),
+    NUMBER("number", "-?\\d+(\\.\\d+)?"),
+    BOOLEAN("boolean", "\\b(?:true|false)\\b"),
+    NIL("nil", "\\bnil\\b"),
+    UNDEFINED("undefined", "\\bundefined\\b"),
     STRING("string", "([^\"\\\\]|\\\\.)*");
 
     private final String keyword;

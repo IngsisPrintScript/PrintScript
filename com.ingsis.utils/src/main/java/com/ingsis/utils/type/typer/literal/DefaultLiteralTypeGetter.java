@@ -15,7 +15,6 @@ public final class DefaultLiteralTypeGetter implements TypeGetter<LiteralNode> {
     @Override
     public Types getType(LiteralNode expressionNode) {
         String value = expressionNode.value();
-
         return new DefaultStringTypeGetter().getType(value);
     }
 }
