@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Types {
-    NUMBER("number", "\\d+(\\.\\d+)?", Number.class),
+    NUMBER("number", "(\\d+\\.\\d*|\\.\\d+|\\d+)", Number.class),
     BOOLEAN("boolean", "\\b(?:true|false)\\b", Boolean.class),
     NIL("nil", "\\bnil\\b", null),
     UNDEFINED("undefined", "\\bundefined\\b", null),
