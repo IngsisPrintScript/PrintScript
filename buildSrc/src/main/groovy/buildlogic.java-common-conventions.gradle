@@ -107,6 +107,7 @@ tasks.named('build') {
 
 // ============ CHECKSTYLE ============
 checkstyle {
+    configFile = file("${project.rootDir}/.checkstyle.xml")
     toolVersion = '10.15.0'
     ignoreFailures = false
     maxWarnings = 0

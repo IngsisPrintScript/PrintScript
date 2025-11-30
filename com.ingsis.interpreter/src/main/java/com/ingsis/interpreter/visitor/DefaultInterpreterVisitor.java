@@ -9,15 +9,12 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.nodes.nodes.Node;
 import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
-import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
-import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.List;
 
@@ -71,94 +68,26 @@ public final class DefaultInterpreterVisitor implements Interpreter {
         return resultFactory.createCorrectResult("Children interpreted correctly.");
     }
 
-    private Result<String> declareVar(TypeAssignationNode typeAssignationNode) {
-        String identifier = typeAssignationNode.identifierNode().name();
-        Types type = typeAssignationNode.typeNode().type();
+    @Override
+    public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
+        Result<Object> evaluateExpressionResult =
+                this.interpret(declarationKeywordNode.expressionNode());
+        if (!evaluateExpressionResult.isCorrect()) {
+            return resultFactory.cloneIncorrectResult(evaluateExpressionResult);
+        }
+        Object value = evaluateExpressionResult.result();
         Result<VariableEntry> declareVarResult =
-                runtime.getCurrentEnvironment().createVariable(identifier, type);
+                runtime.getCurrentEnvironment()
+                        .createVariable(
+                                declarationKeywordNode.identifierNode().name(),
+                                declarationKeywordNode.declaredType(),
+                                value,
+                                declarationKeywordNode.isMutable());
         if (!declareVarResult.isCorrect()) {
             return resultFactory.cloneIncorrectResult(declareVarResult);
         }
-        return resultFactory.createCorrectResult("Interpreted succesfully.");
-    }
 
-    private Result<String> initializeVal(ValueAssignationNode valueAssignationNode) {
-        String identifier = valueAssignationNode.identifierNode().name();
-        Result<Object> valueResult = this.interpret(valueAssignationNode.expressionNode());
-        if (!valueResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(valueResult);
-        }
-        Object value = valueResult.result();
-        Result<VariableEntry> getVariableEntryResult =
-                runtime.getCurrentEnvironment().readVariable(identifier);
-        if (!getVariableEntryResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(getVariableEntryResult);
-        }
-        VariableEntry variableEntry = getVariableEntryResult.result();
-        if (!variableEntry.type().isCompatibleWith(value)) {
-            runtime.getCurrentEnvironment().deleteVariable(identifier);
-            return resultFactory.createIncorrectResult(
-                    String.format(
-                            "User provided an unexepcted type on line:%d and column:%d",
-                            valueAssignationNode.line(), valueAssignationNode.line()));
-        }
-        Result<VariableEntry> modifyVarResult =
-                runtime.getCurrentEnvironment().updateVariable(identifier, value);
-        if (!modifyVarResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(modifyVarResult);
-        }
-        return resultFactory.createCorrectResult("Interpreted correctly.");
-    }
-
-    private Result<String> defineVar(DeclarationKeywordNode declarationKeywordNode) {
-        Result<String> typeAssignationResult =
-                declareVar(declarationKeywordNode.typeAssignationNode());
-        if (!typeAssignationResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(typeAssignationResult);
-        }
-        Result<String> valueAssignationResult =
-                initializeVal(declarationKeywordNode.valueAssignationNode());
-        if (!valueAssignationResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(valueAssignationResult);
-        }
-        return resultFactory.createCorrectResult("Interpreted correctly.");
-    }
-
-    private Result<String> defineVal(DeclarationKeywordNode declarationKeywordNode) {
-        TypeAssignationNode typeAssignationNode = declarationKeywordNode.typeAssignationNode();
-        Types type = typeAssignationNode.typeNode().type();
-        String identifier = typeAssignationNode.identifierNode().name();
-        ValueAssignationNode valueAssignationNode = declarationKeywordNode.valueAssignationNode();
-        Result<Object> solveExpressionResult =
-                this.interpret(valueAssignationNode.expressionNode());
-        if (!solveExpressionResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(solveExpressionResult);
-        }
-        Object value = solveExpressionResult.result();
-        Result<VariableEntry> getVariableEntryResult =
-                runtime.getCurrentEnvironment().readVariable(identifier);
-        if (getVariableEntryResult.isCorrect()) {
-            return resultFactory.createIncorrectResult(
-                    String.format(
-                            "Tried to redeclarate an already declarated variable on line: %d and"
-                                    + " column: %d.",
-                            declarationKeywordNode.line(), declarationKeywordNode.column()));
-        }
-        Result<VariableEntry> createConstResult =
-                runtime.getCurrentEnvironment().createVariable(identifier, type, value);
-        if (!createConstResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(createConstResult);
-        }
-        return resultFactory.createCorrectResult("Interpreted correctly.");
-    }
-
-    @Override
-    public Result<String> interpret(DeclarationKeywordNode declarationKeywordNode) {
-        if (declarationKeywordNode.isMutable()) {
-            return defineVar(declarationKeywordNode);
-        } else {
-            return defineVal(declarationKeywordNode);
-        }
+        return resultFactory.createCorrectResult("Correctly interpreted declaration.");
     }
 
     @Override

@@ -26,10 +26,11 @@ public final class LetNodeCorrectTypeEventHandler
 
     @Override
     public Result<String> handle(DeclarationKeywordNode node) {
-        Types expectedType = node.typeAssignationNode().typeNode().type();
-        Types actualType =
-                new DefaultExpressionTypeGetter(runtime)
-                        .getType(node.valueAssignationNode().expressionNode());
+        Types expectedType = node.declaredType();
+        Types actualType = new DefaultExpressionTypeGetter(runtime).getType(node.expressionNode());
+        if (actualType.equals(Types.NIL)) {
+            return resultFactory.createCorrectResult("Check passed.");
+        }
         if (!expectedType.isCompatibleWith(actualType)) {
             return resultFactory.createIncorrectResult(
                     String.format(

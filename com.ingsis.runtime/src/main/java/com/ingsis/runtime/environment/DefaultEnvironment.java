@@ -52,6 +52,17 @@ public final class DefaultEnvironment implements Environment {
     }
 
     @Override
+    public Result<VariableEntry> createVariable(
+            String identifier, Types type, Object value, Boolean isMutable) {
+        if (isVariableDeclared(identifier)) {
+            return new IncorrectResult<>("Cannot declare already created variable: " + identifier);
+        }
+        VariableEntry variableEntry = entryFactory.createVariableEntry(type, value, isMutable);
+        this.variables.put(identifier, variableEntry);
+        return new CorrectResult<>(variableEntry);
+    }
+
+    @Override
     public Result<VariableEntry> createVariable(String identifier, Types type) {
         if (isVariableDeclared(identifier)) {
             return new IncorrectResult<>("Can't create an already created variable.");
@@ -175,16 +186,6 @@ public final class DefaultEnvironment implements Environment {
     @Override
     public Map<String, VariableEntry> readAll() {
         return Map.copyOf(variables);
-    }
-
-    @Override
-    public Result<VariableEntry> createVariable(String identifier, Types type, Object value) {
-        if (isVariableDeclared(identifier)) {
-            return new IncorrectResult<>("Cannot declare already created variable: " + identifier);
-        }
-        VariableEntry variableEntry = entryFactory.createVariableEntry(type, value, false);
-        this.variables.put(identifier, variableEntry);
-        return new CorrectResult<>(variableEntry);
     }
 
     @Override

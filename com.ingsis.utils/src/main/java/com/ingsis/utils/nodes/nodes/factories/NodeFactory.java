@@ -16,6 +16,7 @@ import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
 import com.ingsis.utils.nodes.nodes.type.TypeNode;
+import com.ingsis.utils.type.types.Types;
 import java.util.List;
 
 public interface NodeFactory {
@@ -26,15 +27,11 @@ public interface NodeFactory {
             Integer line,
             Integer column);
 
-    DeclarationKeywordNode createLetNode(
-            TypeAssignationNode typeAssignationNode,
-            ValueAssignationNode valueAssignationNode,
-            Integer line,
-            Integer column);
-
-    DeclarationKeywordNode createConstNode(
-            TypeAssignationNode typeAssignationNode,
-            ValueAssignationNode valueAssignationNode,
+    DeclarationKeywordNode createDeclarationNode(
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
+            Types declaredType,
+            Boolean isMutable,
             Integer line,
             Integer column);
 

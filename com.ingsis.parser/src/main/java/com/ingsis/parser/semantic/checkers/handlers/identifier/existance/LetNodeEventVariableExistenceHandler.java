@@ -5,8 +5,6 @@
 package com.ingsis.parser.semantic.checkers.handlers.identifier.existance;
 
 import com.ingsis.runtime.Runtime;
-import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
 import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
@@ -26,25 +24,15 @@ public final class LetNodeEventVariableExistenceHandler
 
     @Override
     public Result<String> handle(DeclarationKeywordNode node) {
-        TypeAssignationNode typeAssignationNode = node.typeAssignationNode();
-
-        Result<String> checkTypeAssignationNode =
-                new TypeAssignationNodeEventVariableExistenceHandler(runtime, resultFactory)
-                        .handle(typeAssignationNode);
-
-        if (!checkTypeAssignationNode.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(checkTypeAssignationNode);
+        String identifier = node.identifierNode().name();
+        if (runtime.getCurrentEnvironment().isVariableDeclared(identifier)) {
+            return resultFactory.createIncorrectResult(
+                    String.format(
+                            "Trying to declare already declared variable: \"%s\" on line: %d and"
+                                    + " column: %d",
+                            identifier, node.line(), node.column()));
         }
-
-        ValueAssignationNode valueAssignationNode = node.valueAssignationNode();
-
-        Result<String> checkValueAssignationNode =
-                new ValueAssignationNodeEventVariableExistenceHandler(runtime, resultFactory)
-                        .handle(valueAssignationNode);
-
-        if (!checkValueAssignationNode.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(checkValueAssignationNode);
-        }
-        return resultFactory.createCorrectResult("Check passed.");
+        return new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory)
+                .handle(node.expressionNode());
     }
 }

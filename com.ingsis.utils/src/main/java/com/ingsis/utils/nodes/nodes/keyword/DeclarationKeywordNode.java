@@ -2,23 +2,23 @@
  * My Project
  */
 
-package com.ingsis.utils.nodes.nodes.keyword; /*
-                                               * My Project
-                                               */
+package com.ingsis.utils.nodes.nodes.keyword;
 
 import com.ingsis.utils.nodes.nodes.Node;
-import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
-import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
+import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
+import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.utils.nodes.visitors.Checkable;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.nodes.visitors.Visitor;
 import com.ingsis.utils.result.Result;
+import com.ingsis.utils.type.types.Types;
 
 public record DeclarationKeywordNode(
-        TypeAssignationNode typeAssignationNode,
-        ValueAssignationNode valueAssignationNode,
+        IdentifierNode identifierNode,
+        ExpressionNode expressionNode,
+        Types declaredType,
         Boolean isMutable,
         Integer line,
         Integer column)

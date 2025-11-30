@@ -38,7 +38,7 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
         } else {
             sb.append("const ");
         }
-        sb.append(node.typeAssignationNode().identifierNode().name());
+        sb.append(node.identifierNode().name());
         if (hasPreAscriptionSpace) {
             sb.append(" ");
         }
@@ -46,14 +46,13 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
         if (hasPostAscriptionSpace) {
             sb.append(" ");
         }
-        sb.append(node.typeAssignationNode().typeNode().type().name());
+        sb.append(node.declaredType().name());
         if (isAssignationSpaced) {
             sb.append(" = ");
         } else {
             sb.append("=");
         }
-        Result<String> formatExpressionResult =
-                expressionHandler.handle(node.valueAssignationNode().expressionNode());
+        Result<String> formatExpressionResult = expressionHandler.handle(node.expressionNode());
         if (!formatExpressionResult.isCorrect()) {
             return resultFactory.cloneIncorrectResult(formatExpressionResult);
         }

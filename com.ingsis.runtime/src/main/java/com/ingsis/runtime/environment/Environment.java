@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 public sealed interface Environment permits GlobalEnvironment, DefaultEnvironment {
-    Result<VariableEntry> createVariable(String identifier, Types type, Object value);
+    Result<VariableEntry> createVariable(
+            String identifier, Types type, Object value, Boolean isMutable);
 
     Result<VariableEntry> createVariable(String identifier, Types type);
 

@@ -31,23 +31,15 @@ public final class DefaultNodeFactory implements NodeFactory {
     }
 
     @Override
-    public DeclarationKeywordNode createLetNode(
-            TypeAssignationNode typeAssignationNode,
-            ValueAssignationNode valueAssignationNode,
+    public DeclarationKeywordNode createDeclarationNode(
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
+            Types declaredType,
+            Boolean isMutable,
             Integer line,
             Integer column) {
         return new DeclarationKeywordNode(
-                typeAssignationNode, valueAssignationNode, true, line, column);
-    }
-
-    @Override
-    public DeclarationKeywordNode createConstNode(
-            TypeAssignationNode typeAssignationNode,
-            ValueAssignationNode valueAssignationNode,
-            Integer line,
-            Integer column) {
-        return new DeclarationKeywordNode(
-                typeAssignationNode, valueAssignationNode, false, line, column);
+                identifierNode, expressionNode, declaredType, isMutable, line, column);
     }
 
     @Override

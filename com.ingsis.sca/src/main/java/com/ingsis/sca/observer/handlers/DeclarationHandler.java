@@ -23,12 +23,12 @@ public class DeclarationHandler implements NodeEventHandler<DeclarationKeywordNo
 
     @Override
     public Result<String> handle(DeclarationKeywordNode node) {
-        IdentifierNode identifierNode = node.valueAssignationNode().identifierNode();
+        IdentifierNode identifierNode = node.identifierNode();
         Result<String> identifierCheckResult = identifierChecker.handle(identifierNode);
         if (!identifierCheckResult.isCorrect()) {
             return identifierCheckResult;
         }
-        ExpressionNode expressionNode = node.valueAssignationNode().expressionNode();
+        ExpressionNode expressionNode = node.expressionNode();
         return expressionChecker.handle(expressionNode);
     }
 }
