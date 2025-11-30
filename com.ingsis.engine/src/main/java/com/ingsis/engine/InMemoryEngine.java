@@ -38,50 +38,45 @@ import java.io.InputStream;
 
 public class InMemoryEngine implements Engine {
 
-    @Override
-    public Result<String> interpret(InputStream inputStream) {
-        return createProgramInterpreterFactory().fromInputStream(inputStream).interpret();
-    }
+  @Override
+  public Result<String> interpret(InputStream inputStream) {
+    return createProgramInterpreterFactory().fromInputStream(inputStream).interpret();
+  }
 
-    @Override
-    public Result<String> format(InputStream inputStream) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'format'");
-    }
+  @Override
+  public Result<String> format(InputStream inputStream) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'format'");
+  }
 
-    @Override
-    public Result<String> analyze(InputStream inputStream) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'analyze'");
-    }
+  @Override
+  public Result<String> analyze(InputStream inputStream) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'analyze'");
+  }
 
-    private SemanticFactory createSemanticFactory() {
-        ResultFactory resultFactory =
-                new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-        CharStreamFactory charStreamFactory = new InMemoryCharStreamFactory();
-        TokenFactory tokenFactory = new DefaultTokensFactory();
-        TokenizerFactory tokenizerFactory = new SecondTokenizerFactory(tokenFactory, resultFactory);
-        LexerFactory lexerFactory = new InMemoryLexerFactory(charStreamFactory, tokenizerFactory);
-        TokenStreamFactory tokenStreamFactory =
-                new DefaultTokenStreamFactory(lexerFactory, resultFactory);
-        NodeFactory nodeFactory = new DefaultNodeFactory();
-        ParserChainFactory parserChainFactory =
-                new DefaultParserChainFactory(new DefaultParserFactory(tokenFactory, nodeFactory));
-        SyntacticFactory syntacticFactory =
-                new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
-        return new DefaultSemanticFactory(
-                syntacticFactory, resultFactory, DefaultRuntime.getInstance());
-    }
+  private SemanticFactory createSemanticFactory() {
+    ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
+    CharStreamFactory charStreamFactory = new InMemoryCharStreamFactory();
+    TokenFactory tokenFactory = new DefaultTokensFactory();
+    TokenizerFactory tokenizerFactory = new SecondTokenizerFactory(tokenFactory, resultFactory);
+    LexerFactory lexerFactory = new InMemoryLexerFactory(charStreamFactory, tokenizerFactory);
+    TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory, resultFactory);
+    NodeFactory nodeFactory = new DefaultNodeFactory();
+    ParserChainFactory parserChainFactory = new DefaultParserChainFactory(
+        new DefaultParserFactory(tokenFactory, nodeFactory));
+    SyntacticFactory syntacticFactory = new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
+    return new DefaultSemanticFactory(
+        syntacticFactory, resultFactory, DefaultRuntime.getInstance());
+  }
 
-    private ProgramInterpreterFactory createProgramInterpreterFactory() {
-        ResultFactory resultFactory =
-                new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-        SemanticFactory semanticFactory = createSemanticFactory();
-        SolutionStrategyFactory solutionStrategyFactory =
-                new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
-        InterpreterVisitorFactory interpreterVisitorFactory =
-                new DefaultInterpreterVisitorFactory(solutionStrategyFactory, resultFactory);
-        return new DefaultProgramInterpreterFactory(
-                semanticFactory, interpreterVisitorFactory, DefaultRuntime.getInstance());
-    }
+  private ProgramInterpreterFactory createProgramInterpreterFactory() {
+    ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
+    SemanticFactory semanticFactory = createSemanticFactory();
+    SolutionStrategyFactory solutionStrategyFactory = new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
+    InterpreterVisitorFactory interpreterVisitorFactory = new DefaultInterpreterVisitorFactory(solutionStrategyFactory,
+        resultFactory);
+    return new DefaultProgramInterpreterFactory(
+        semanticFactory, interpreterVisitorFactory, DefaultRuntime.getInstance());
+  }
 }
