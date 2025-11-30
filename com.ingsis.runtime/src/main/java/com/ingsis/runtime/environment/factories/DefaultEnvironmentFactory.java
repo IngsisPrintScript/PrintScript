@@ -21,6 +21,7 @@ import java.util.Scanner;
         justification = "Environment is a shared, controlled mutable dependency.")
 public final class DefaultEnvironmentFactory implements EnvironmentFactory {
     private final EntryFactory entryFactory;
+    private static final String PARAM_STRING = "string";
 
     public DefaultEnvironmentFactory(EntryFactory entryFactory) {
         this.entryFactory = entryFactory;
@@ -44,24 +45,24 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
     }
 
     private void addGlobalFunctions(GlobalEnvironment global) {
-        global.createFunction("println", Map.of("string", Types.STRING), Types.NIL);
+        global.createFunction("println", Map.of(PARAM_STRING, Types.STRING), Types.NIL);
         global.updateFunction(
                 "println",
                 List.of(
                         new GlobalFunctionBody(
-                                List.of("string"),
+                                List.of(PARAM_STRING),
                                 args -> {
                                     System.out.println(args[0]);
                                     return null;
                                 },
                                 null,
                                 null)));
-        global.createFunction("readInput", Map.of("string", Types.STRING), Types.UNDEFINED);
+        global.createFunction("readInput", Map.of(PARAM_STRING, Types.STRING), Types.UNDEFINED);
         global.updateFunction(
                 "readInput",
                 List.of(
                         new GlobalFunctionBody(
-                                List.of("string"),
+                                List.of(PARAM_STRING),
                                 args -> {
                                     System.out.println(args[0]);
                                     Scanner scanner =
@@ -71,12 +72,12 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 },
                                 null,
                                 null)));
-        global.createFunction("readEnv", Map.of("string", Types.STRING), Types.UNDEFINED);
+        global.createFunction("readEnv", Map.of(PARAM_STRING, Types.STRING), Types.UNDEFINED);
         global.updateFunction(
                 "readEnv",
                 List.of(
                         new GlobalFunctionBody(
-                                List.of("string"),
+                                List.of(PARAM_STRING),
                                 args -> {
                                     if (args.length == 0 || args[0] == null) return null;
                                     String varName = args[0].toString();

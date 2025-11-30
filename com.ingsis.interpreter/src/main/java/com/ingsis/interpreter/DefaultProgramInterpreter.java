@@ -4,6 +4,7 @@
 
 package com.ingsis.interpreter;
 
+import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.peekableiterator.PeekableIterator;
@@ -24,15 +25,21 @@ public final class DefaultProgramInterpreter implements ProgramInterpreter {
 
     @Override
     public Result<String> interpret() {
-        Result<String> interpretResult =
-                new IncorrectResult<>("That's not a valid PrintScript expression!");
-        while (interpretableStream.hasNext()) {
-            Interpretable interpretable = interpretableStream.next();
-            interpretResult = interpretable.acceptInterpreter(interpreter);
-            if (!interpretResult.isCorrect()) {
-                return interpretResult;
+        try {
+            Result<String> interpretResult =
+                    new IncorrectResult<>("That's not a valid PrintScript expression!");
+            DefaultRuntime.getInstance().push();
+            while (interpretableStream.hasNext()) {
+                Interpretable interpretable = interpretableStream.next();
+                interpretResult = interpretable.acceptInterpreter(interpreter);
+                if (!interpretResult.isCorrect()) {
+                    return interpretResult;
+                }
             }
+            return interpretResult;
+
+        } finally {
+            DefaultRuntime.getInstance().pop();
         }
-        return interpretResult;
     }
 }
