@@ -6,6 +6,7 @@ package com.ingsis.interpreter.visitor.expression.strategies.factories;
 
 import com.ingsis.interpreter.visitor.expression.strategies.ExpressionSolutionStrategy;
 import com.ingsis.interpreter.visitor.expression.strategies.FinalStrategy;
+import com.ingsis.interpreter.visitor.expression.strategies.NilExpressionSolutionStrategy;
 import com.ingsis.interpreter.visitor.expression.strategies.binary.AdditionSolutionStrategy;
 import com.ingsis.interpreter.visitor.expression.strategies.binary.AssignationSolutionStrategy;
 import com.ingsis.interpreter.visitor.expression.strategies.binary.DivitionSolutionStrategy;
@@ -43,7 +44,8 @@ public final class DefaultSolutionStrategyFactory implements SolutionStrategyFac
                                                                 RUNTIME,
                                                                 new LiteralSolutionStrategy(
                                                                         new IdentifierSolutionStrategy(
-                                                                                new FinalStrategy(),
+                                                                                new NilExpressionSolutionStrategy(
+                                                                                        new FinalStrategy()),
                                                                                 DefaultRuntime
                                                                                         .getInstance())))))))));
     }

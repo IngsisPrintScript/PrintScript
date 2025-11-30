@@ -10,6 +10,7 @@ import com.ingsis.utils.nodes.nodes.Node;
 import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
 import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.nil.NilExpressionNode;
 import com.ingsis.utils.nodes.nodes.expression.operator.BinaryOperatorNode;
 import com.ingsis.utils.nodes.nodes.expression.operator.TypeAssignationNode;
 import com.ingsis.utils.nodes.nodes.expression.operator.ValueAssignationNode;
@@ -80,5 +81,10 @@ public final class DefaultNodeFactory implements NodeFactory {
     @Override
     public LiteralNode createLiteralNode(String value, Integer line, Integer column) {
         return new LiteralNode(value, line, column);
+    }
+
+    @Override
+    public NilExpressionNode createNilExpressionNode() {
+        return new NilExpressionNode();
     }
 }

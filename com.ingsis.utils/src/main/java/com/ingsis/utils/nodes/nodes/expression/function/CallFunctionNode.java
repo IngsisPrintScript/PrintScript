@@ -61,11 +61,6 @@ public record CallFunctionNode(
     }
 
     @Override
-    public Boolean isTerminalNode() {
-        return true;
-    }
-
-    @Override
     public String symbol() {
         return identifierNode().name();
     }

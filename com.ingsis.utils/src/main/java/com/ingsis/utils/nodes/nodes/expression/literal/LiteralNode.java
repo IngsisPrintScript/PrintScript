@@ -33,13 +33,8 @@ public record LiteralNode(String value, Integer line, Integer column) implements
     }
 
     @Override
-    public Boolean isTerminalNode() {
-        return true;
-    }
-
-    @Override
     public String symbol() {
-        throw new UnsupportedOperationException("LiteralNode.symbol() is not supported.");
+        return value();
     }
 
     @Override

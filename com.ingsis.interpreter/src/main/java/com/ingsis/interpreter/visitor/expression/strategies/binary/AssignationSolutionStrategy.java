@@ -29,9 +29,6 @@ public final class AssignationSolutionStrategy implements ExpressionSolutionStra
     }
 
     private boolean canSolve(ExpressionNode expressionNode) {
-        if (expressionNode.isTerminalNode()) {
-            return false;
-        }
         String symbol = expressionNode.symbol();
         return symbol.equals("=");
     }
@@ -58,8 +55,12 @@ public final class AssignationSolutionStrategy implements ExpressionSolutionStra
         if (!variableEntry.type().isCompatibleWith(interpretChild.result())) {
             return new IncorrectResult<>("Value type does not matches expected type.");
         }
-        RUNTIME.getCurrentEnvironment()
-                .updateVariable(identifierNode.name(), interpretChild.result());
+        Result<VariableEntry> updateVarResult =
+                RUNTIME.getCurrentEnvironment()
+                        .updateVariable(identifierNode.name(), interpretChild.result());
+        if (!updateVarResult.isCorrect()) {
+            return new IncorrectResult<>(updateVarResult);
+        }
         return new CorrectResult<>(interpretChild.result());
     }
 }

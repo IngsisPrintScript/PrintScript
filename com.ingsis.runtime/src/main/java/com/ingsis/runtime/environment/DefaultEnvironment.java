@@ -85,7 +85,8 @@ public final class DefaultEnvironment implements Environment {
         Types type = oldVariableEntry.type();
         VariableEntry newVariableEntry =
                 entryFactory.createVariableEntry(type, value, oldVariableEntry.isMutable());
-        return new CorrectResult<>(variables().put(identifier, newVariableEntry));
+        variables().put(identifier, newVariableEntry);
+        return new CorrectResult<>(newVariableEntry);
     }
 
     @Override

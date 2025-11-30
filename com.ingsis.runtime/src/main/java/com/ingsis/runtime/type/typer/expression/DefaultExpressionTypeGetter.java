@@ -11,6 +11,7 @@ import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
 import com.ingsis.utils.nodes.nodes.expression.function.CallFunctionNode;
 import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
 import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.nodes.expression.nil.NilExpressionNode;
 import com.ingsis.utils.type.typer.TypeGetter;
 import com.ingsis.utils.type.typer.literal.DefaultLiteralTypeGetter;
 import com.ingsis.utils.type.types.Types;
@@ -31,6 +32,8 @@ public final class DefaultExpressionTypeGetter implements TypeGetter<ExpressionN
             return new DefaultLiteralTypeGetter().getType(literalNode);
         } else if (expressionNode instanceof CallFunctionNode callFunctionNode) {
             return new DefaultFunctionTypeGetter(runtime).getType(callFunctionNode);
+        } else if (expressionNode instanceof NilExpressionNode) {
+            return Types.NIL;
         } else {
             return this.getType(expressionNode.children().get(0));
         }

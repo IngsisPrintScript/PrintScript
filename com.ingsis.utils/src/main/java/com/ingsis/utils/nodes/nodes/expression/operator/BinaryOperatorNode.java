@@ -41,9 +41,4 @@ public record BinaryOperatorNode(
     public List<ExpressionNode> children() {
         return List.of(left(), right());
     }
-
-    @Override
-    public Boolean isTerminalNode() {
-        return false;
-    }
 }

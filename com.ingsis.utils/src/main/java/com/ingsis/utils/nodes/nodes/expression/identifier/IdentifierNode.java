@@ -33,13 +33,8 @@ public record IdentifierNode(String name, Integer line, Integer column) implemen
     }
 
     @Override
-    public Boolean isTerminalNode() {
-        return true;
-    }
-
-    @Override
     public String symbol() {
-        throw new UnsupportedOperationException("IdentifierNode.symbol() is not supported.");
+        return name();
     }
 
     @Override

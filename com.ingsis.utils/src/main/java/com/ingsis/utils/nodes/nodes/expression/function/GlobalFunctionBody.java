@@ -55,11 +55,6 @@ public record GlobalFunctionBody(
     }
 
     @Override
-    public Boolean isTerminalNode() {
-        return true;
-    }
-
-    @Override
     public String symbol() {
         return "";
     }

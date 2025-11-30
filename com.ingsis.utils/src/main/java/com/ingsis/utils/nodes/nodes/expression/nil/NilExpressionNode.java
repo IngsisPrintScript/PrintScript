@@ -43,25 +43,19 @@ public record NilExpressionNode() implements ExpressionNode {
     }
 
     @Override
-    public Boolean isTerminalNode() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'isTerminalNode'");
-    }
-
-    @Override
     public String symbol() {
         return Types.NIL.name();
     }
 
     @Override
     public Integer line() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'line'");
+        throw new UnsupportedOperationException(
+                "Nil expression node has no line where it was built from.");
     }
 
     @Override
     public Integer column() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'column'");
+        throw new UnsupportedOperationException(
+                "Nil expression node has no line where it was built from.");
     }
 }

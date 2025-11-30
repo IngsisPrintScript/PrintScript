@@ -11,7 +11,7 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import java.util.Collection;
+import java.util.List;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class ExpressionNodeEventVariableExistenceHandler
@@ -27,7 +27,20 @@ public final class ExpressionNodeEventVariableExistenceHandler
 
     @Override
     public Result<String> handle(ExpressionNode node) {
-        Collection<ExpressionNode> children = node.children();
+        List<ExpressionNode> children = node.children();
+
+        if (node.symbol().equals("=")) {
+            ExpressionNode identifierNode = children.get(0);
+            String identifier = identifierNode.symbol();
+            if (!runtime.getCurrentEnvironment().isVariableDeclared(identifier)) {
+                return resultFactory.createIncorrectResult(
+                        String.format(
+                                "Trying to initialize the undeclared variable: %s on line: %d and"
+                                        + " column: %d",
+                                identifier, identifierNode.line(), identifierNode.column()));
+            }
+            children = children.subList(1, children.size());
+        }
 
         if (node instanceof IdentifierNode identifierNode) {
             if (!runtime.getCurrentEnvironment().isIdentifierInitialized(identifierNode.name())) {

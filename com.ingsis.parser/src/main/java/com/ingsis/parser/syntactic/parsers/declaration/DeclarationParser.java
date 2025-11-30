@@ -23,8 +23,8 @@ import com.ingsis.utils.type.types.Types;
 public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
     private final Token LET_TOKEN_TEMPLATE;
     private final Token CONST_TOKEN_TEMPLATE;
-    private final Token VALUE_ASSIGNATION_TEMPLATE;
-    private final Token TYPE_ASSIGNATION_TEMPLATE;
+    private final Token VALUE_ASSIGNATION_OPERATOR_TEMPLATE;
+    private final Token TYPE_ASSIGNATION_OPERATOR_TEMPLATE;
     private final Token TYPE_TEMPLATE;
     private final LineExpressionParser EXPRESSION_PARSER;
     private final IdentifierParser IDENTIFIER_PARSER;
@@ -34,8 +34,8 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
             TokenFactory TOKEN_FACTORY, ParserFactory PARSER_FACTORY, NodeFactory NODE_FACTORY) {
         this.LET_TOKEN_TEMPLATE = TOKEN_FACTORY.createKeywordToken("let");
         this.CONST_TOKEN_TEMPLATE = TOKEN_FACTORY.createKeywordToken("const");
-        this.VALUE_ASSIGNATION_TEMPLATE = TOKEN_FACTORY.createOperatorToken("=");
-        this.TYPE_ASSIGNATION_TEMPLATE = TOKEN_FACTORY.createOperatorToken(":");
+        this.VALUE_ASSIGNATION_OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken("=");
+        this.TYPE_ASSIGNATION_OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken(":");
         this.TYPE_TEMPLATE = TOKEN_FACTORY.createTypeToken("");
         this.EXPRESSION_PARSER = PARSER_FACTORY.createLineExpressionParser();
         this.IDENTIFIER_PARSER = PARSER_FACTORY.createIdentifierParser();
@@ -59,36 +59,59 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
         Result<Token> consumeDeclarationKeywordResult = consumeDeclarationKeyword(stream);
         if (!consumeDeclarationKeywordResult.isCorrect())
             return new IncorrectResult<>(consumeDeclarationKeywordResult);
-
         Token declarationKeyword = consumeDeclarationKeywordResult.result();
+        Boolean isMutable = declarationKeyword.value().equals("let");
+        Integer line = declarationKeyword.line();
+        Integer column = declarationKeyword.column();
 
         Result<IdentifierNode> parseIdentifierResult = IDENTIFIER_PARSER.parse(stream);
         if (!parseIdentifierResult.isCorrect()) return new IncorrectResult<>(parseIdentifierResult);
         IdentifierNode identifierNode = parseIdentifierResult.result();
 
-        Result<Token> consumeTypeAssignationResult = stream.consume(TYPE_ASSIGNATION_TEMPLATE);
+        Result<Token> consumeTypeAssignationResult =
+                stream.consume(TYPE_ASSIGNATION_OPERATOR_TEMPLATE);
         if (!consumeTypeAssignationResult.isCorrect())
             return new IncorrectResult<>(consumeTypeAssignationResult);
 
         Result<Token> consumeTypeResult = stream.consume(TYPE_TEMPLATE);
         if (!consumeTypeResult.isCorrect()) return new IncorrectResult<>(consumeTypeResult);
         Token typeToken = consumeTypeResult.result();
-
-        Result<Token> consumeValueAssignationResult = stream.consume(VALUE_ASSIGNATION_TEMPLATE);
+        Types declaredType = Types.fromKeyword(typeToken.value());
+        Result<Token> consumeValueAssignationResult =
+                stream.consume(VALUE_ASSIGNATION_OPERATOR_TEMPLATE);
         if (!consumeValueAssignationResult.isCorrect())
-            return new IncorrectResult<>(consumeValueAssignationResult);
+            return buildResult(
+                    identifierNode,
+                    NODE_FACTORY.createNilExpressionNode(),
+                    declaredType,
+                    isMutable,
+                    line,
+                    column);
+        return parseInitialization(stream, identifierNode, declaredType, isMutable, line, column);
+    }
 
+    private Result<DeclarationKeywordNode> parseInitialization(
+            TokenStream stream,
+            IdentifierNode identifierNode,
+            Types declaredType,
+            Boolean isMutable,
+            Integer line,
+            Integer column) {
         Result<ExpressionNode> parseExpressionResult = EXPRESSION_PARSER.parse(stream);
         if (!parseExpressionResult.isCorrect()) return new IncorrectResult<>(parseExpressionResult);
         ExpressionNode expressionNode = parseExpressionResult.result();
+        return buildResult(identifierNode, expressionNode, declaredType, isMutable, line, column);
+    }
 
+    private Result<DeclarationKeywordNode> buildResult(
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
+            Types declaredType,
+            Boolean isMutable,
+            Integer line,
+            Integer column) {
         return new CorrectResult<>(
                 NODE_FACTORY.createDeclarationNode(
-                        identifierNode,
-                        expressionNode,
-                        Types.fromKeyword(typeToken.name()),
-                        declarationKeyword.value().equals("let"),
-                        declarationKeyword.line(),
-                        declarationKeyword.column()));
+                        identifierNode, expressionNode, declaredType, isMutable, line, column));
     }
 }

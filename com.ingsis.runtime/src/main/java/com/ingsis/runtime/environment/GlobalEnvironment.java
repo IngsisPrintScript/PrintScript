@@ -57,7 +57,7 @@ public final class GlobalEnvironment implements Environment {
     @Override
     public Result<VariableEntry> updateVariable(String identifier, Object value) {
         if (!isVariableDeclared(identifier)) {
-            return new IncorrectResult<>("Can't modify an uninitialized variable.");
+            return new IncorrectResult<>("Can't modify an undeclared variable.");
         }
         VariableEntry oldVariableEntry = variables.get(identifier);
         if (!oldVariableEntry.isMutable()) {
@@ -66,7 +66,8 @@ public final class GlobalEnvironment implements Environment {
         Types type = oldVariableEntry.type();
         VariableEntry newVariableEntry =
                 entryFactory.createVariableEntry(type, value, oldVariableEntry.isMutable());
-        return new CorrectResult<>(variables.put(identifier, newVariableEntry));
+        variables.put(identifier, newVariableEntry);
+        return new CorrectResult<>(newVariableEntry);
     }
 
     @Override

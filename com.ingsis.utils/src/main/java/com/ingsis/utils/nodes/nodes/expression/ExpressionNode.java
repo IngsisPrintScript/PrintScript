@@ -14,7 +14,5 @@ import java.util.List;
 public interface ExpressionNode extends Node, Checkable, Interpretable {
     List<ExpressionNode> children();
 
-    Boolean isTerminalNode();
-
     String symbol();
 }

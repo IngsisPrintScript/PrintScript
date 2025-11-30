@@ -20,9 +20,6 @@ public final class SubstractionSolutionStrategy implements ExpressionSolutionStr
     }
 
     private boolean canSolve(ExpressionNode expressionNode) {
-        if (expressionNode.isTerminalNode()) {
-            return false;
-        }
         String symbol = expressionNode.symbol();
         return symbol.equals("-");
     }

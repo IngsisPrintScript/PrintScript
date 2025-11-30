@@ -22,9 +22,6 @@ public final class AdditionSolutionStrategy implements ExpressionSolutionStrateg
     }
 
     private boolean canSolve(ExpressionNode expressionNode) {
-        if (expressionNode.isTerminalNode()) {
-            return false;
-        }
         String symbol = expressionNode.symbol();
         return symbol.equals("+");
     }
