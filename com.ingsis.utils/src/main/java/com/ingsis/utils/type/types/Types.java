@@ -10,18 +10,20 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Types {
-    NUMBER("number", "-?\\d+(\\.\\d+)?"),
-    BOOLEAN("boolean", "\\b(?:true|false)\\b"),
-    NIL("nil", "\\bnil\\b"),
-    UNDEFINED("undefined", "\\bundefined\\b"),
-    STRING("string", "([^\"\\\\]|\\\\.)*");
+    NUMBER("number", "\\d+(\\.\\d+)?", Number.class),
+    BOOLEAN("boolean", "\\b(?:true|false)\\b", Boolean.class),
+    NIL("nil", "\\bnil\\b", null),
+    UNDEFINED("undefined", "\\bundefined\\b", null),
+    STRING("string", "([^\"\\\\]|\\\\.)*", String.class);
 
     private final String keyword;
     private final String regEx;
+    private final Class<?> associatedJavaClass;
 
-    Types(String keyword, String regex) {
+    Types(String keyword, String regex, Class<?> clazz) {
         this.keyword = keyword;
         this.regEx = regex;
+        this.associatedJavaClass = clazz;
     }
 
     public String keyword() {
@@ -32,9 +34,13 @@ public enum Types {
         return regEx;
     }
 
+    public Class<?> getAssociatedJavaClass() {
+        return associatedJavaClass;
+    }
+
     public boolean isCompatibleWith(Object object) {
-        String string = object.toString();
-        return this.checkFormat(string);
+        if (this == UNDEFINED || this == NIL) return true;
+        return associatedJavaClass != null && associatedJavaClass.isInstance(object);
     }
 
     public boolean isCompatibleWith(Types other) {
