@@ -8,9 +8,7 @@ import com.ingsis.engine.factories.tokenstream.TokenStreamFactory;
 import com.ingsis.parser.syntactic.DefaultSyntacticParser;
 import com.ingsis.parser.syntactic.SyntacticParser;
 import com.ingsis.parser.syntactic.factories.ParserChainFactory;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 
 public final class DefaultSyntacticFactory implements SyntacticFactory {
     private final TokenStreamFactory tokenStreamFactory;
@@ -23,20 +21,8 @@ public final class DefaultSyntacticFactory implements SyntacticFactory {
     }
 
     @Override
-    public SyntacticParser fromInputStream(InputStream in) throws IOException {
+    public SyntacticParser fromInputStream(InputStream in) {
         return new DefaultSyntacticParser(
                 tokenStreamFactory.fromInputStream(in), parserChainFactory.createDefaultChain());
-    }
-
-    @Override
-    public SyntacticParser fromFile(Path path) throws IOException {
-        return new DefaultSyntacticParser(
-                tokenStreamFactory.fromFile(path), parserChainFactory.createDefaultChain());
-    }
-
-    @Override
-    public SyntacticParser fromString(CharSequence input) throws IOException {
-        return new DefaultSyntacticParser(
-                tokenStreamFactory.fromString(input), parserChainFactory.createDefaultChain());
     }
 }

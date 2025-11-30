@@ -8,9 +8,7 @@ import com.ingsis.engine.factories.lexer.LexerFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 
 public class DefaultTokenStreamFactory implements TokenStreamFactory {
     private final LexerFactory lexerFactory;
@@ -22,18 +20,8 @@ public class DefaultTokenStreamFactory implements TokenStreamFactory {
     }
 
     @Override
-    public TokenStream fromInputStream(InputStream in) throws IOException {
+    public TokenStream fromInputStream(InputStream in) {
         return new DefaultTokenStream(
                 lexerFactory.fromInputStream(in, resultFactory), resultFactory);
-    }
-
-    @Override
-    public TokenStream fromFile(Path path) throws IOException {
-        return new DefaultTokenStream(lexerFactory.fromFile(path, resultFactory), resultFactory);
-    }
-
-    @Override
-    public TokenStream fromString(CharSequence input) throws IOException {
-        return new DefaultTokenStream(lexerFactory.fromString(input, resultFactory), resultFactory);
     }
 }

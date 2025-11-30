@@ -10,9 +10,7 @@ import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.utils.nodes.visitors.Interpreter;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 
 public final class DefaultProgramInterpreterFactory implements ProgramInterpreterFactory {
     private final SemanticFactory semanticFactory;
@@ -27,17 +25,7 @@ public final class DefaultProgramInterpreterFactory implements ProgramInterprete
     }
 
     @Override
-    public ProgramInterpreter fromInputStream(InputStream in) throws IOException {
+    public ProgramInterpreter fromInputStream(InputStream in) {
         return new DefaultProgramInterpreter(semanticFactory.fromInputStream(in), interpreter);
-    }
-
-    @Override
-    public ProgramInterpreter fromFile(Path path) throws IOException {
-        return new DefaultProgramInterpreter(semanticFactory.fromFile(path), interpreter);
-    }
-
-    @Override
-    public ProgramInterpreter fromString(CharSequence input) throws IOException {
-        return new DefaultProgramInterpreter(semanticFactory.fromString(input), interpreter);
     }
 }

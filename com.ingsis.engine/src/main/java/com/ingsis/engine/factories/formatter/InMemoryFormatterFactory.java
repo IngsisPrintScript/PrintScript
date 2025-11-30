@@ -5,7 +5,6 @@
 package com.ingsis.engine.factories.formatter;
 
 import com.ingsis.engine.factories.semantic.SemanticFactory;
-import com.ingsis.formatter.InMemoryProgramFormatter;
 import com.ingsis.formatter.ProgramFormatter;
 import com.ingsis.runtime.Runtime;
 import com.ingsis.utils.rule.observer.EventsChecker;
@@ -21,6 +20,6 @@ public class InMemoryFormatterFactory implements FormatterFactory {
             Runtime runtime,
             EventsChecker eventsChecker)
             throws IOException {
-        return new InMemoryProgramFormatter(semanticFactory.fromFile(path), eventsChecker);
+        throw new UnsupportedOperationException("Not implemented.");
     }
 }

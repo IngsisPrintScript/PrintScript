@@ -6,7 +6,6 @@ package com.ingsis.engine.factories.sca;
 
 import com.ingsis.engine.factories.semantic.SemanticFactory;
 import com.ingsis.runtime.Runtime;
-import com.ingsis.sca.InMemoryProgramSca;
 import com.ingsis.sca.ProgramSca;
 import com.ingsis.utils.rule.observer.EventsChecker;
 import java.io.IOException;
@@ -20,6 +19,6 @@ public class DefaultScaFactory implements ScaFactory {
             Runtime runtime,
             EventsChecker eventsChecker)
             throws IOException {
-        return new InMemoryProgramSca(semanticFactory.fromFile(path), eventsChecker);
+        throw new UnsupportedOperationException("Not implemented.");
     }
 }

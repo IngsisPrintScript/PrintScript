@@ -13,9 +13,7 @@ import com.ingsis.runtime.Runtime;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
-import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 
 public final class DefaultSemanticFactory implements SemanticFactory {
     private final SyntacticFactory syntacticFactory;
@@ -34,17 +32,7 @@ public final class DefaultSemanticFactory implements SemanticFactory {
     }
 
     @Override
-    public SemanticChecker fromInputStream(InputStream in) throws IOException {
+    public SemanticChecker fromInputStream(InputStream in) {
         return new DefaultSemanticChecker(syntacticFactory.fromInputStream(in), checker, runtime);
-    }
-
-    @Override
-    public SemanticChecker fromFile(Path path) throws IOException {
-        return new DefaultSemanticChecker(syntacticFactory.fromFile(path), checker, runtime);
-    }
-
-    @Override
-    public SemanticChecker fromString(CharSequence input) throws IOException {
-        return new DefaultSemanticChecker(syntacticFactory.fromString(input), checker, runtime);
     }
 }
