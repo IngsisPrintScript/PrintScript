@@ -6,19 +6,37 @@ package com.ingsis.engine.factories.sca;
 
 import com.ingsis.engine.factories.semantic.SemanticFactory;
 import com.ingsis.runtime.Runtime;
+import com.ingsis.runtime.result.factory.LoggerResultFactory;
+import com.ingsis.sca.InMemoryProgramSca;
 import com.ingsis.sca.ProgramSca;
-import com.ingsis.utils.rule.observer.EventsChecker;
-import java.io.IOException;
-import java.nio.file.Path;
+import com.ingsis.sca.observer.handlers.factories.DefaultStaticCodeAnalyzerHandlerFactory;
+import com.ingsis.sca.observer.publishers.factories.DefaultStaticCodeAnalyzerPublisherFactory;
+import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
+import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
+import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
+import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
+
+import java.io.InputStream;
 
 public class DefaultScaFactory implements ScaFactory {
-    @Override
-    public ProgramSca fromFile(
-            SemanticFactory semanticFactory,
-            Path path,
-            Runtime runtime,
-            EventsChecker eventsChecker)
-            throws IOException {
-        throw new UnsupportedOperationException("Not implemented.");
-    }
+  private final SemanticFactory semanticFactory;
+
+  public DefaultScaFactory(SemanticFactory semanticFactory) {
+    this.semanticFactory = semanticFactory;
+  }
+
+  @Override
+  public ProgramSca fromFile(
+      InputStream in,
+      RuleStatusProvider ruleStatusProvider,
+      Runtime runtime) {
+    ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), runtime);
+    HandlerFactory handlerFactory = new DefaultStaticCodeAnalyzerHandlerFactory(resultFactory, ruleStatusProvider);
+    PublishersFactory publishersFactory = new DefaultStaticCodeAnalyzerPublisherFactory(handlerFactory);
+    Checker eventsChecker = new DefaultCheckerFactory().createInMemoryEventBasedChecker(publishersFactory);
+    return new InMemoryProgramSca(semanticFactory.fromInputStream(in), eventsChecker);
+  }
 }

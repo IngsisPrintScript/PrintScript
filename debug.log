@@ -1,0 +1,6 @@
+PARSING: com.ingsis.utils.token.tokenstream.DefaultTokenStream@73ad2d6
+PARSING EXPRESSION: com.ingsis.utils.token.tokenstream.DefaultTokenStream@73ad2d6
+PARSING BINARY STACK: [LiteralNode[value=9, line=1, column=9]]
+PARSING ARGUMENT RESULT: IncorrectResult[error=There was no parser able to handle that stream.]
+PARSING RESULT: IncorrectResult[error=There was no parser able to handle that stream.]
+NODE: NOT FORMED

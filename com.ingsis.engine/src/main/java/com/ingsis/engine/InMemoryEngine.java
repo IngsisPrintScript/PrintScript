@@ -6,10 +6,14 @@ package com.ingsis.engine;
 
 import com.ingsis.engine.factories.charstream.CharStreamFactory;
 import com.ingsis.engine.factories.charstream.InMemoryCharStreamFactory;
+import com.ingsis.engine.factories.formatter.FormatterFactory;
+import com.ingsis.engine.factories.formatter.InMemoryFormatterFactory;
 import com.ingsis.engine.factories.interpreter.DefaultProgramInterpreterFactory;
 import com.ingsis.engine.factories.interpreter.ProgramInterpreterFactory;
 import com.ingsis.engine.factories.lexer.InMemoryLexerFactory;
 import com.ingsis.engine.factories.lexer.LexerFactory;
+import com.ingsis.engine.factories.sca.DefaultScaFactory;
+import com.ingsis.engine.factories.sca.ScaFactory;
 import com.ingsis.engine.factories.semantic.DefaultSemanticFactory;
 import com.ingsis.engine.factories.semantic.SemanticFactory;
 import com.ingsis.engine.factories.syntactic.DefaultSyntacticFactory;
@@ -29,12 +33,17 @@ import com.ingsis.runtime.DefaultRuntime;
 import com.ingsis.runtime.result.factory.LoggerResultFactory;
 import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
 import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
+import com.ingsis.utils.rule.status.provider.YamlRuleStatusProvider;
 import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import java.io.InputStream;
+import java.io.Writer;
 
 public class InMemoryEngine implements Engine {
 
@@ -44,15 +53,24 @@ public class InMemoryEngine implements Engine {
   }
 
   @Override
-  public Result<String> format(InputStream inputStream) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'format'");
+  public Result<String> format(InputStream inputStream, InputStream config, Writer writer) {
+    Result<String> formatResult = createFormatterFactory()
+        .fromFile(inputStream, DefaultRuntime.getInstance(), new YamlRuleStatusProvider(config)).format();
+    if (!formatResult.isCorrect()) {
+      return formatResult;
+    }
+    try {
+      writer.write(formatResult.result());
+    } catch (Exception e) {
+      return new IncorrectResult<>(e.getMessage());
+    }
+    return new CorrectResult<String>("Formatted succesfully.");
   }
 
   @Override
-  public Result<String> analyze(InputStream inputStream) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'analyze'");
+  public Result<String> analyze(InputStream inputStream, InputStream config) {
+    RuleStatusProvider ruleStatusProvider = new YamlRuleStatusProvider(config);
+    return createScaFactory().fromFile(inputStream, ruleStatusProvider, DefaultRuntime.getInstance()).analyze();
   }
 
   private SemanticFactory createSemanticFactory() {
@@ -78,5 +96,13 @@ public class InMemoryEngine implements Engine {
         resultFactory);
     return new DefaultProgramInterpreterFactory(
         semanticFactory, interpreterVisitorFactory, DefaultRuntime.getInstance());
+  }
+
+  private ScaFactory createScaFactory() {
+    return new DefaultScaFactory(createSemanticFactory());
+  }
+
+  private FormatterFactory createFormatterFactory() {
+    return new InMemoryFormatterFactory(createSemanticFactory());
   }
 }
