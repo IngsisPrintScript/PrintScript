@@ -105,7 +105,7 @@ public final class CliEngine implements Runnable {
         InputStream input = new ByteArrayInputStream(
             buffer.toString().getBytes(StandardCharsets.UTF_8));
 
-        Result<String> result = engine.interpret(input);
+        Result<String> result = engine.interpret(input, Version.V1_1);
         IncorrectResult<?> error = DefaultRuntime.getInstance().getExecutionError();
 
         if (!result.isCorrect() && error != null) {

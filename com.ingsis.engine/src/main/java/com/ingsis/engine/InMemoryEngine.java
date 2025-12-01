@@ -20,10 +20,12 @@ import com.ingsis.engine.factories.syntactic.DefaultSyntacticFactory;
 import com.ingsis.engine.factories.syntactic.SyntacticFactory;
 import com.ingsis.engine.factories.tokenstream.DefaultTokenStreamFactory;
 import com.ingsis.engine.factories.tokenstream.TokenStreamFactory;
+import com.ingsis.engine.versions.Version;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.DefaultSolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.factory.DefaultInterpreterVisitorFactory;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
+import com.ingsis.lexer.tokenizers.factories.FirstTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
 import com.ingsis.parser.syntactic.factories.DefaultParserChainFactory;
@@ -41,19 +43,20 @@ import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.status.provider.factories.InMemoryRuleStatusProviderFactory;
 import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
+
 import java.io.InputStream;
 import java.io.Writer;
 
 public class InMemoryEngine implements Engine {
 
   @Override
-  public Result<String> interpret(InputStream inputStream) {
-    return createProgramInterpreterFactory().fromInputStream(inputStream).interpret();
+  public Result<String> interpret(InputStream inputStream, Version version) {
+    return createProgramInterpreterFactory(version).fromInputStream(inputStream).interpret();
   }
 
   @Override
-  public Result<String> format(InputStream inputStream, InputStream config, Writer writer) {
-    Result<String> formatResult = createFormatterFactory()
+  public Result<String> format(InputStream inputStream, InputStream config, Writer writer, Version version) {
+    Result<String> formatResult = createFormatterFactory(version)
         .fromFile(
             inputStream,
             DefaultRuntime.getInstance(),
@@ -71,18 +74,18 @@ public class InMemoryEngine implements Engine {
   }
 
   @Override
-  public Result<String> analyze(InputStream inputStream, InputStream config) {
-    return createScaFactory().fromFile(
+  public Result<String> analyze(InputStream inputStream, InputStream config, Version version) {
+    return createScaFactory(version).fromFile(
         inputStream,
         new InMemoryRuleStatusProviderFactory().createDefaultRuleStatusProvider(config),
         DefaultRuntime.getInstance()).analyze();
   }
 
-  private SemanticFactory createSemanticFactory() {
+  private SemanticFactory createSemanticFactory(Version version) {
     ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
     CharStreamFactory charStreamFactory = new InMemoryCharStreamFactory();
     TokenFactory tokenFactory = new DefaultTokensFactory();
-    TokenizerFactory tokenizerFactory = new SecondTokenizerFactory(tokenFactory, resultFactory);
+    TokenizerFactory tokenizerFactory = createTokenizerFactoryFromVersion(version, tokenFactory, resultFactory);
     LexerFactory lexerFactory = new InMemoryLexerFactory(charStreamFactory, tokenizerFactory);
     TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory, resultFactory);
     NodeFactory nodeFactory = new DefaultNodeFactory();
@@ -93,9 +96,17 @@ public class InMemoryEngine implements Engine {
         syntacticFactory, resultFactory, DefaultRuntime.getInstance());
   }
 
-  private ProgramInterpreterFactory createProgramInterpreterFactory() {
+  private TokenizerFactory createTokenizerFactoryFromVersion(Version version, TokenFactory tokenFactory,
+      ResultFactory resultFactory) {
+    return switch (version) {
+      case V1_0 -> new FirstTokenizerFactory(tokenFactory, resultFactory);
+      case V1_1 -> new SecondTokenizerFactory(tokenFactory, resultFactory);
+    };
+  }
+
+  private ProgramInterpreterFactory createProgramInterpreterFactory(Version version) {
     ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-    SemanticFactory semanticFactory = createSemanticFactory();
+    SemanticFactory semanticFactory = createSemanticFactory(version);
     SolutionStrategyFactory solutionStrategyFactory = new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
     InterpreterVisitorFactory interpreterVisitorFactory = new DefaultInterpreterVisitorFactory(solutionStrategyFactory,
         resultFactory);
@@ -103,11 +114,11 @@ public class InMemoryEngine implements Engine {
         semanticFactory, interpreterVisitorFactory, DefaultRuntime.getInstance());
   }
 
-  private ScaFactory createScaFactory() {
-    return new DefaultScaFactory(createSemanticFactory());
+  private ScaFactory createScaFactory(Version version) {
+    return new DefaultScaFactory(createSemanticFactory(version));
   }
 
-  private FormatterFactory createFormatterFactory() {
-    return new InMemoryFormatterFactory(createSemanticFactory());
+  private FormatterFactory createFormatterFactory(Version version) {
+    return new InMemoryFormatterFactory(createSemanticFactory(version));
   }
 }
