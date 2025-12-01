@@ -4,11 +4,15 @@
 
 package com.ingsis.sca.observer.handlers.factories;
 
+import java.util.List;
+
 import com.ingsis.sca.observer.handlers.DeclarationHandler;
 import com.ingsis.sca.observer.handlers.FinalHandler;
+import com.ingsis.sca.observer.handlers.function.call.global.FunctionArgumentTypeChecker;
 import com.ingsis.sca.observer.handlers.identifier.IdentifierPatternChecker;
 import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
 import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
 import com.ingsis.utils.nodes.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.nodes.keyword.IfKeywordNode;
 import com.ingsis.utils.result.factory.ResultFactory;
@@ -54,6 +58,21 @@ public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerFactory {
 
   @Override
   public NodeEventHandler<ExpressionNode> createExpressionHandler() {
-    return new FinalHandler<>(resultFactory);
+    NodeEventHandlerRegistry<ExpressionNode> expressionHandler = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
+    if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-println")) {
+      expressionHandler.register(
+          new FunctionArgumentTypeChecker(
+              resultFactory,
+              "println",
+              List.of(LiteralNode.class, IdentifierNode.class)));
+    }
+    if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-readInput")) {
+      expressionHandler.register(
+          new FunctionArgumentTypeChecker(
+              resultFactory,
+              "readInput",
+              List.of(LiteralNode.class, IdentifierNode.class)));
+    }
+    return expressionHandler;
   }
 }
