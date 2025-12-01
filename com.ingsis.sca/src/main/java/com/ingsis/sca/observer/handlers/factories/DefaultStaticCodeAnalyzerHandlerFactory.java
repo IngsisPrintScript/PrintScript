@@ -30,10 +30,19 @@ public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerFactory {
   @Override
   public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
     NodeEventHandlerRegistry<IdentifierNode> declarationHandler = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
-    if (ruleStatusProvider.getRuleStatus("")) {
-      declarationHandler
-          .register(new IdentifierPatternChecker(resultFactory, "^[a-z]+(?:[A-Z][a-z0-9]*)*$", "camelCase"));
-      ;
+    String format = ruleStatusProvider.getRuleValue("identifier_format", String.class);
+    if ("camel case".equals(format)) {
+      declarationHandler.register(
+          new IdentifierPatternChecker(
+              resultFactory,
+              "^[a-z]+(?:[A-Z][a-z0-9]*)*$",
+              "camelCase"));
+    } else if ("snake case".equals(format)) {
+      declarationHandler.register(
+          new IdentifierPatternChecker(
+              resultFactory,
+              "^[a-z]+(?:_[a-z0-9]+)*$",
+              "snake_case"));
     }
     return new DeclarationHandler(declarationHandler, this.createExpressionHandler());
   }

@@ -38,8 +38,7 @@ import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
-import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
-import com.ingsis.utils.rule.status.provider.YamlRuleStatusProvider;
+import com.ingsis.utils.rule.status.provider.factories.InMemoryRuleStatusProviderFactory;
 import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import java.io.InputStream;
@@ -55,7 +54,11 @@ public class InMemoryEngine implements Engine {
   @Override
   public Result<String> format(InputStream inputStream, InputStream config, Writer writer) {
     Result<String> formatResult = createFormatterFactory()
-        .fromFile(inputStream, DefaultRuntime.getInstance(), new YamlRuleStatusProvider(config)).format();
+        .fromFile(
+            inputStream,
+            DefaultRuntime.getInstance(),
+            new InMemoryRuleStatusProviderFactory().createDefaultRuleStatusProvider(config))
+        .format();
     if (!formatResult.isCorrect()) {
       return formatResult;
     }
@@ -69,8 +72,10 @@ public class InMemoryEngine implements Engine {
 
   @Override
   public Result<String> analyze(InputStream inputStream, InputStream config) {
-    RuleStatusProvider ruleStatusProvider = new YamlRuleStatusProvider(config);
-    return createScaFactory().fromFile(inputStream, ruleStatusProvider, DefaultRuntime.getInstance()).analyze();
+    return createScaFactory().fromFile(
+        inputStream,
+        new InMemoryRuleStatusProviderFactory().createDefaultRuleStatusProvider(config),
+        DefaultRuntime.getInstance()).analyze();
   }
 
   private SemanticFactory createSemanticFactory() {
