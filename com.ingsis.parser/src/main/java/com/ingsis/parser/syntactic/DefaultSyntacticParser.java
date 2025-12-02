@@ -7,26 +7,33 @@ package com.ingsis.parser.syntactic;
 import com.ingsis.parser.syntactic.parsers.Parser;
 import com.ingsis.utils.nodes.nodes.Node;
 import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.peekableiterator.PeekableIterator;
 import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import java.util.Queue;
 
 public final class DefaultSyntacticParser implements SyntacticParser {
-    private final TokenStream tokenStream;
+    private final PeekableIterator<Token> tokenIterator;
     private final Queue<Checkable> checkableBuffer;
     private final Parser<Node> parser;
+    private TokenStream tokenStream;
 
     public DefaultSyntacticParser(
-            TokenStream tokenStream, Parser<Node> parser, Queue<Checkable> checkableBuffer) {
-        this.tokenStream = tokenStream;
+            PeekableIterator<Token> tokenIterator,
+            Parser<Node> parser,
+            Queue<Checkable> checkableBuffer) {
+        this.tokenIterator = tokenIterator;
         this.checkableBuffer = new LinkedList<>(checkableBuffer);
         this.parser = parser;
+        this.tokenStream = new DefaultTokenStream();
     }
 
-    public DefaultSyntacticParser(TokenStream tokenStream, Parser<Node> parser) {
-        this(tokenStream, parser, new LinkedList<>());
+    public DefaultSyntacticParser(PeekableIterator<Token> tokenIterator, Parser<Node> parser) {
+        this(tokenIterator, parser, new LinkedList<>());
     }
 
     @Override
@@ -48,12 +55,13 @@ public final class DefaultSyntacticParser implements SyntacticParser {
             return true;
         }
 
-        Node next = computeNext();
-        if (next != null) {
-            checkableBuffer.add((Checkable) next);
+        Result<? extends Node> nextResult = computeNext();
+        if (nextResult.isCorrect()) {
+            checkableBuffer.add((Checkable) nextResult.result());
+            System.out.println("NODE: " + nextResult.result());
         }
 
-        return next != null;
+        return nextResult.isCorrect();
     }
 
     @Override
@@ -64,12 +72,23 @@ public final class DefaultSyntacticParser implements SyntacticParser {
         return checkableBuffer.poll();
     }
 
-    private Node computeNext() {
-        Result<? extends Node> parseResult = parse();
-        if (parseResult.isCorrect()) {
+    private Result<? extends Node> computeNext() {
+        Result<? extends Node> result = parse();
+        if (result.isCorrect()) {
             tokenStream.cleanBuffer();
-            return parseResult.result();
+            return result;
         }
-        return null;
+        while (tokenIterator.hasNext()) {
+            tokenStream = tokenStream.addToken(tokenIterator.next());
+            System.out.println("TOKEN STREAM: " + tokenStream.tokens());
+            System.out.println("TOKEN START STREAM POINTER: " + tokenStream.pointer());
+            result = parse();
+            System.out.println("TOKEN END STREAM POINTER: " + tokenStream.pointer());
+            if (result.isCorrect()) {
+                tokenStream.cleanBuffer();
+                return result;
+            }
+        }
+        return result;
     }
 }

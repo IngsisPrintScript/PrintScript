@@ -12,6 +12,7 @@ import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.tokens.Token;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class BinaryOperatorParser implements Parser<ExpressionNode> {
@@ -34,22 +35,15 @@ public final class BinaryOperatorParser implements Parser<ExpressionNode> {
         if (!consumeLeftChildResult.isCorrect()) {
             return new IncorrectResult<>(consumeLeftChildResult);
         }
-        ExpressionNode leftChild;
-        try {
-            leftChild = consumeLeftChildResult.result();
-        } catch (Exception e) {
-            return new IncorrectResult<>(e.getMessage());
-        }
-
+        ExpressionNode leftChild = consumeLeftChildResult.result();
         if (!stream.match(OPERATOR_TEMPLATE)) {
             return new CorrectResult<>(leftChild);
         }
-
         Token operatorToken = stream.next();
         String symbol = operatorToken.value();
 
         // parse right-hand side recursively
-        Result<? extends ExpressionNode> parseRightResult = this.parse(stream);
+        Result<? extends ExpressionNode> parseRightResult = this.parse(getSubTokenStream(stream));
         if (!parseRightResult.isCorrect()) {
             return new IncorrectResult<>(parseRightResult);
         }
@@ -63,5 +57,10 @@ public final class BinaryOperatorParser implements Parser<ExpressionNode> {
                         rightChild,
                         operatorToken.line(),
                         operatorToken.column()));
+    }
+
+    private TokenStream getSubTokenStream(TokenStream stream) {
+        return new DefaultTokenStream(
+                stream.tokens().subList(stream.pointer(), stream.tokens().size()));
     }
 }

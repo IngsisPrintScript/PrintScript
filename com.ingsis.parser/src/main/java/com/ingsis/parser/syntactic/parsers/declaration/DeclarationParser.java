@@ -17,6 +17,7 @@ import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.tokens.Token;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 import com.ingsis.utils.type.types.Types;
 
@@ -26,6 +27,7 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
     private final Token VALUE_ASSIGNATION_OPERATOR_TEMPLATE;
     private final Token TYPE_ASSIGNATION_OPERATOR_TEMPLATE;
     private final Token TYPE_TEMPLATE;
+    private final Token EOL_TEMPLATE;
     private final LineExpressionParser EXPRESSION_PARSER;
     private final IdentifierParser IDENTIFIER_PARSER;
     private final NodeFactory NODE_FACTORY;
@@ -37,6 +39,7 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
         this.VALUE_ASSIGNATION_OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken("=");
         this.TYPE_ASSIGNATION_OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken(":");
         this.TYPE_TEMPLATE = TOKEN_FACTORY.createTypeToken("");
+        this.EOL_TEMPLATE = TOKEN_FACTORY.createEndOfLineToken(";");
         this.EXPRESSION_PARSER = PARSER_FACTORY.createLineExpressionParser();
         this.IDENTIFIER_PARSER = PARSER_FACTORY.createIdentifierParser();
         this.NODE_FACTORY = NODE_FACTORY;
@@ -79,7 +82,9 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
         Types declaredType = Types.fromKeyword(typeToken.value());
         Result<Token> consumeValueAssignationResult =
                 stream.consume(VALUE_ASSIGNATION_OPERATOR_TEMPLATE);
-        if (!consumeValueAssignationResult.isCorrect())
+        System.out.println("EXPECTED = RESULT: " + consumeValueAssignationResult);
+        if (!consumeValueAssignationResult.isCorrect()
+                && stream.consume(EOL_TEMPLATE).isCorrect()) {
             return buildResult(
                     identifierNode,
                     NODE_FACTORY.createNilExpressionNode(),
@@ -87,6 +92,7 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
                     isMutable,
                     line,
                     column);
+        }
         return parseInitialization(stream, identifierNode, declaredType, isMutable, line, column);
     }
 
@@ -97,10 +103,16 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
             Boolean isMutable,
             Integer line,
             Integer column) {
-        Result<ExpressionNode> parseExpressionResult = EXPRESSION_PARSER.parse(stream);
+        Result<ExpressionNode> parseExpressionResult =
+                EXPRESSION_PARSER.parse(getExpressionSubTokenStream(stream));
         if (!parseExpressionResult.isCorrect()) return new IncorrectResult<>(parseExpressionResult);
         ExpressionNode expressionNode = parseExpressionResult.result();
         return buildResult(identifierNode, expressionNode, declaredType, isMutable, line, column);
+    }
+
+    private TokenStream getExpressionSubTokenStream(TokenStream stream) {
+        return new DefaultTokenStream(
+                stream.tokens().subList(stream.pointer(), stream.tokens().size()));
     }
 
     private Result<DeclarationKeywordNode> buildResult(

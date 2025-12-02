@@ -9,34 +9,42 @@ import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.peekableiterator.PeekableIterator;
 import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
+import java.io.IOException;
+import java.io.Writer;
 
 public class InMemoryProgramFormatter implements ProgramFormatter {
-  private final PeekableIterator<Interpretable> checkableStream;
-  private final Checker checker;
+    private final PeekableIterator<Interpretable> checkableStream;
+    private final Checker checker;
+    private final Writer writer;
 
-  public InMemoryProgramFormatter(
-      PeekableIterator<Interpretable> checkableStream, Checker eventsChecker) {
-    this.checkableStream = checkableStream;
-    this.checker = eventsChecker;
-  }
-
-  @Override
-  public Result<String> format() {
-    StringBuilder sb = new StringBuilder();
-    Result<String> finalResult;
-
-    while (checkableStream.hasNext()) {
-      Checkable next = (Checkable) checkableStream.next();
-      finalResult = next.acceptChecker(checker);
-
-      if (!finalResult.isCorrect()) {
-        return finalResult;
-      }
-
-      sb.append(finalResult.result());
+    public InMemoryProgramFormatter(
+            PeekableIterator<Interpretable> checkableStream, Checker eventsChecker, Writer writer) {
+        this.checkableStream = checkableStream;
+        this.checker = eventsChecker;
+        this.writer = writer;
     }
 
-    return new CorrectResult<>(sb.toString());
-  }
+    @Override
+    public Result<String> format() {
+        Result<String> finalResult;
+
+        while (checkableStream.hasNext()) {
+            Checkable next = (Checkable) checkableStream.next();
+            finalResult = next.acceptChecker(checker);
+
+            if (!finalResult.isCorrect()) {
+                return finalResult;
+            }
+
+            try {
+                writer.append(finalResult.result());
+            } catch (IOException exception) {
+                return new IncorrectResult<>(exception.getMessage());
+            }
+        }
+
+        return new CorrectResult<>("Formatted.");
+    }
 }

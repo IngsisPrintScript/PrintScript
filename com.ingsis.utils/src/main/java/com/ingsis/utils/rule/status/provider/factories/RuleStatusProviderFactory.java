@@ -1,9 +1,12 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.utils.rule.status.provider.factories;
 
+import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import java.io.InputStream;
 
-import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
-
 public interface RuleStatusProviderFactory {
-  RuleStatusProvider createDefaultRuleStatusProvider(InputStream inputStream);
+    RuleStatusProvider createDefaultRuleStatusProvider(InputStream inputStream);
 }

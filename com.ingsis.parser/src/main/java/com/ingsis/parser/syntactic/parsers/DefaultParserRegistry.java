@@ -33,8 +33,11 @@ public final class DefaultParserRegistry<T extends Node> implements ParserRegist
     public Result<T> parse(TokenStream stream) {
         for (Parser<? extends T> parser : parsers) {
             Result<? extends T> result = parser.parse(stream);
+            System.out.println("PARSER: " + parser + " RETURED: " + result);
             if (result.isCorrect()) {
                 return (Result<T>) result;
+            } else {
+                stream.resetPointer();
             }
         }
         return (Result<T>) nextRegistry.parse(stream);

@@ -2,7 +2,7 @@
  * My Project
  */
 
-package com.ingsis.engine.factories.interpreter;
+package com.ingsis.interpreter.factory;
 
 import com.ingsis.interpreter.ProgramInterpreter;
 import java.io.InputStream;

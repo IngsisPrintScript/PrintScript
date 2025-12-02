@@ -2,27 +2,31 @@
  * My Project
  */
 
-package com.ingsis.engine.factories.semantic;
+package com.ingsis.parser.semantic.factories;
 
-import com.ingsis.engine.factories.syntactic.SyntacticFactory;
 import com.ingsis.parser.semantic.DefaultSemanticChecker;
 import com.ingsis.parser.semantic.SemanticChecker;
 import com.ingsis.parser.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.parser.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
 import com.ingsis.runtime.Runtime;
+import com.ingsis.utils.nodes.visitors.Checkable;
 import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.peekableiterator.factories.PeekableIteratorFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
 import java.io.InputStream;
 
-public final class DefaultSemanticFactory implements SemanticFactory {
-    private final SyntacticFactory syntacticFactory;
+public final class DefaultSemanticFactory implements PeekableIteratorFactory<Interpretable> {
+    private final PeekableIteratorFactory<Checkable> checkableIteratorFactory;
     private final Runtime runtime;
     private final Checker checker;
 
     public DefaultSemanticFactory(
-            SyntacticFactory syntacticFactory, ResultFactory resultFactory, Runtime runtime) {
-        this.syntacticFactory = syntacticFactory;
+            PeekableIteratorFactory<Checkable> nodeIteratorFactory,
+            ResultFactory resultFactory,
+            Runtime runtime) {
+        this.checkableIteratorFactory = nodeIteratorFactory;
         this.runtime = runtime;
         this.checker =
                 new DefaultCheckerFactory()
@@ -33,6 +37,7 @@ public final class DefaultSemanticFactory implements SemanticFactory {
 
     @Override
     public SemanticChecker fromInputStream(InputStream in) {
-        return new DefaultSemanticChecker(syntacticFactory.fromInputStream(in), checker, runtime);
+        return new DefaultSemanticChecker(
+                checkableIteratorFactory.fromInputStream(in), checker, runtime);
     }
 }

@@ -2,34 +2,34 @@
  * My Project
  */
 
-package com.ingsis.utils.token.tokenstream; /*
-                                             * My Project
-                                             */
+package com.ingsis.utils.token.tokenstream;
 
-import com.ingsis.utils.peekableiterator.PeekableIterator;
 import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
-import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.token.tokens.Token;
 import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import java.util.ArrayList;
 import java.util.List;
 
 public final class DefaultTokenStream implements TokenStream {
-    private final PeekableIterator<Token> tokens;
-    private final List<Token> tokenBuffer;
+    private List<Token> tokenBuffer;
     private final Token SPACE_TOKEN_TEMPLATE;
-    private final ResultFactory RESULT_FACTORY;
-    private Integer pointer;
+    private int pointer;
 
-    public DefaultTokenStream(PeekableIterator<Token> tokenStream, ResultFactory resultFactory) {
-        this.tokens = tokenStream;
+    public DefaultTokenStream(List<Token> tokens, Integer pointer) {
         this.SPACE_TOKEN_TEMPLATE =
                 new DefaultTokensFactory().createSpaceSeparatorToken("", null, null);
-        this.tokenBuffer = new ArrayList<>();
-        this.pointer = 0;
-        this.RESULT_FACTORY = resultFactory;
+        this.tokenBuffer = new ArrayList<>(tokens);
+        this.pointer = pointer;
+    }
+
+    public DefaultTokenStream(List<Token> tokens) {
+        this(tokens, 0);
+    }
+
+    public DefaultTokenStream() {
+        this(new ArrayList<>());
     }
 
     @Override
@@ -38,45 +38,38 @@ public final class DefaultTokenStream implements TokenStream {
         if (pointer < tokenBuffer.size()) {
             return new CorrectResult<>(tokenBuffer.get(pointer++));
         }
-        if (tokens.hasNext()) {
-            return new CorrectResult<>(tokens.next());
-        }
+        consumeAll(SPACE_TOKEN_TEMPLATE);
         return new IncorrectResult<>("No more tokens.");
     }
 
     @Override
     public Result<Token> consume(Token tokenTemplate) {
         consumeAll(SPACE_TOKEN_TEMPLATE);
+
         if (!baseMatch(tokenTemplate)) {
-            if (!this.hasNext()) {
-                return RESULT_FACTORY.createIncorrectResult("Uncomplete tokens sequence");
+            if (!hasNext()) {
+                return new IncorrectResult<>("Uncomplete tokens sequence");
             }
-            Token peekToken = this.peek();
-            return RESULT_FACTORY.createIncorrectResult(
+            Token peekToken = peek();
+            return new IncorrectResult<>(
                     String.format(
                             "Unexpected token on line: %d and column: %d, original:%s expected:%s",
-                            peekToken.line(),
-                            peekToken.column(),
-                            peekToken.toString(),
-                            tokenTemplate.toString()));
+                            peekToken.line(), peekToken.column(), peekToken, tokenTemplate));
         }
+
         return consume();
     }
 
     @Override
-    public Result<Integer> consumeAll(Token token) {
+    public Result<Integer> consumeAll(Token tokenTemplate) {
         int count = 0;
-        while (pointer < tokenBuffer.size()) {
-            while (baseMatch(token) || baseMatch(SPACE_TOKEN_TEMPLATE)) {
-                pointer++;
-                count++;
-            }
-            return new CorrectResult<>(count);
-        }
-        while (baseMatch(token) || baseMatch(SPACE_TOKEN_TEMPLATE)) {
-            tokens.next();
+
+        while (pointer < tokenBuffer.size()
+                && (baseMatch(tokenTemplate) || baseMatch(SPACE_TOKEN_TEMPLATE))) {
+            pointer++;
             count++;
         }
+
         return new CorrectResult<>(count);
     }
 
@@ -86,11 +79,8 @@ public final class DefaultTokenStream implements TokenStream {
         return baseMatch(tokenTemplate);
     }
 
-    private boolean baseMatch(Token tokenTemplate) {
-        if (pointer < tokenBuffer.size()) {
-            return tokenBuffer.get(pointer).equals(tokenTemplate);
-        }
-        return tokens.hasNext() && tokens.peek().equals(tokenTemplate);
+    private boolean baseMatch(Token template) {
+        return pointer < tokenBuffer.size() && tokenBuffer.get(pointer).equals(template);
     }
 
     @Override
@@ -99,12 +89,22 @@ public final class DefaultTokenStream implements TokenStream {
         if (pointer < tokenBuffer.size()) {
             return tokenBuffer.get(pointer);
         }
-        return tokens.peek();
+        return null;
+    }
+
+    @Override
+    public Token peek(int offset) {
+        consumeAll(SPACE_TOKEN_TEMPLATE);
+        int index = pointer + offset;
+        if (index >= tokenBuffer.size()) {
+            return null;
+        }
+        return tokenBuffer.get(index);
     }
 
     @Override
     public boolean hasNext() {
-        return tokens.hasNext() || pointer < tokenBuffer.size();
+        return pointer < tokenBuffer.size();
     }
 
     @Override
@@ -112,25 +112,36 @@ public final class DefaultTokenStream implements TokenStream {
         if (pointer < tokenBuffer.size()) {
             return tokenBuffer.get(pointer++);
         }
-        return tokens.next();
-    }
-
-    @Override
-    public Token peek(int offset) {
-        consumeAll(SPACE_TOKEN_TEMPLATE);
-        while (offset + pointer >= tokenBuffer.size()) {
-            if (!tokens.hasNext()) {
-                return null;
-            }
-            consumeAll(SPACE_TOKEN_TEMPLATE);
-            tokenBuffer.add(tokens.next());
-        }
-        return tokenBuffer.get(pointer + offset);
+        return null;
     }
 
     @Override
     public void cleanBuffer() {
+        List<Token> remaining = new ArrayList<>(tokenBuffer.subList(pointer, tokenBuffer.size()));
+        tokenBuffer.clear();
+        tokenBuffer.addAll(remaining);
+        pointer = 0;
+    }
+
+    @Override
+    public List<Token> tokens() {
+        return new ArrayList<>(tokenBuffer);
+    }
+
+    @Override
+    public TokenStream addToken(Token token) {
+        List<Token> tokens = new ArrayList<>(this.tokens());
+        tokens.add(token);
+        return new DefaultTokenStream(tokens, pointer);
+    }
+
+    @Override
+    public Integer pointer() {
+        return pointer;
+    }
+
+    @Override
+    public void resetPointer() {
         this.pointer = 0;
-        this.tokenBuffer.clear();
     }
 }

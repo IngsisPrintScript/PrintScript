@@ -12,25 +12,24 @@ import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.Result;
 
 public class InMemoryProgramSca implements ProgramSca {
-  private final PeekableIterator<Interpretable> checkableStream;
-  private final Checker checker;
+    private final PeekableIterator<Interpretable> checkableStream;
+    private final Checker checker;
 
-  public InMemoryProgramSca(
-      PeekableIterator<Interpretable> checkableStream, Checker checker) {
-    this.checkableStream = checkableStream;
-    this.checker = checker;
-  }
-
-  @Override
-  public Result<String> analyze() {
-    while (checkableStream.hasNext()) {
-      Checkable next = (Checkable) checkableStream.next();
-      Result<String> result = next.acceptChecker(checker);
-
-      if (!result.isCorrect()) {
-        return result;
-      }
+    public InMemoryProgramSca(PeekableIterator<Interpretable> checkableStream, Checker checker) {
+        this.checkableStream = checkableStream;
+        this.checker = checker;
     }
-    return new CorrectResult<>("Check passed.");
-  }
+
+    @Override
+    public Result<String> analyze() {
+        while (checkableStream.hasNext()) {
+            Checkable next = (Checkable) checkableStream.next();
+            Result<String> result = next.acceptChecker(checker);
+
+            if (!result.isCorrect()) {
+                return result;
+            }
+        }
+        return new CorrectResult<>("Check passed.");
+    }
 }

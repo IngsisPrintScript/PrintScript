@@ -4,121 +4,148 @@
 
 package com.ingsis.engine;
 
-import com.ingsis.engine.factories.charstream.CharStreamFactory;
-import com.ingsis.engine.factories.charstream.InMemoryCharStreamFactory;
-import com.ingsis.engine.factories.formatter.FormatterFactory;
-import com.ingsis.engine.factories.formatter.InMemoryFormatterFactory;
-import com.ingsis.engine.factories.interpreter.DefaultProgramInterpreterFactory;
-import com.ingsis.engine.factories.interpreter.ProgramInterpreterFactory;
-import com.ingsis.engine.factories.lexer.InMemoryLexerFactory;
-import com.ingsis.engine.factories.lexer.LexerFactory;
-import com.ingsis.engine.factories.sca.DefaultScaFactory;
-import com.ingsis.engine.factories.sca.ScaFactory;
-import com.ingsis.engine.factories.semantic.DefaultSemanticFactory;
-import com.ingsis.engine.factories.semantic.SemanticFactory;
-import com.ingsis.engine.factories.syntactic.DefaultSyntacticFactory;
-import com.ingsis.engine.factories.syntactic.SyntacticFactory;
-import com.ingsis.engine.factories.tokenstream.DefaultTokenStreamFactory;
-import com.ingsis.engine.factories.tokenstream.TokenStreamFactory;
+import com.ingsis.charstream.factories.InMemoryCharStreamFactory;
 import com.ingsis.engine.versions.Version;
+import com.ingsis.formatter.factories.FormatterFactory;
+import com.ingsis.formatter.factories.InMemoryFormatterFactory;
+import com.ingsis.interpreter.factory.DefaultProgramInterpreterFactory;
+import com.ingsis.interpreter.factory.ProgramInterpreterFactory;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.DefaultSolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.factory.DefaultInterpreterVisitorFactory;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
+import com.ingsis.lexer.factories.InMemoryLexerFactory;
 import com.ingsis.lexer.tokenizers.factories.FirstTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
+import com.ingsis.parser.semantic.factories.DefaultSemanticFactory;
 import com.ingsis.parser.syntactic.factories.DefaultParserChainFactory;
+import com.ingsis.parser.syntactic.factories.DefaultSyntacticFactory;
 import com.ingsis.parser.syntactic.factories.ParserChainFactory;
 import com.ingsis.parser.syntactic.parsers.factories.DefaultParserFactory;
+import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
 import com.ingsis.runtime.DefaultRuntime;
+import com.ingsis.runtime.Runtime;
 import com.ingsis.runtime.result.factory.LoggerResultFactory;
+import com.ingsis.sca.factories.DefaultScaFactory;
+import com.ingsis.sca.factories.ScaFactory;
+import com.ingsis.utils.metachar.MetaChar;
 import com.ingsis.utils.nodes.nodes.factories.DefaultNodeFactory;
 import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
+import com.ingsis.utils.nodes.visitors.Checkable;
+import com.ingsis.utils.nodes.visitors.Interpretable;
+import com.ingsis.utils.peekableiterator.factories.PeekableIteratorFactory;
 import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.status.provider.factories.InMemoryRuleStatusProviderFactory;
+import com.ingsis.utils.token.tokens.Token;
 import com.ingsis.utils.token.tokens.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
-
 import java.io.InputStream;
 import java.io.Writer;
 
 public class InMemoryEngine implements Engine {
 
-  @Override
-  public Result<String> interpret(InputStream inputStream, Version version) {
-    return createProgramInterpreterFactory(version).fromInputStream(inputStream).interpret();
-  }
-
-  @Override
-  public Result<String> format(InputStream inputStream, InputStream config, Writer writer, Version version) {
-    Result<String> formatResult = createFormatterFactory(version)
-        .fromFile(
-            inputStream,
-            DefaultRuntime.getInstance(),
-            new InMemoryRuleStatusProviderFactory().createDefaultRuleStatusProvider(config))
-        .format();
-    if (!formatResult.isCorrect()) {
-      return formatResult;
+    @Override
+    public Result<String> interpret(InputStream inputStream, Version version) {
+        return createProgramInterpreterFactory(version).fromInputStream(inputStream).interpret();
     }
-    try {
-      writer.write(formatResult.result());
-    } catch (Exception e) {
-      return new IncorrectResult<>(e.getMessage());
+
+    @Override
+    public Result<String> format(
+            InputStream inputStream, InputStream config, Writer writer, Version version) {
+        Result<String> formatResult =
+                createFormatterFactory(version)
+                        .fromFile(
+                                inputStream,
+                                DefaultRuntime.getInstance(),
+                                new InMemoryRuleStatusProviderFactory()
+                                        .createDefaultRuleStatusProvider(config),
+                                writer)
+                        .format();
+        if (!formatResult.isCorrect()) {
+            return formatResult;
+        }
+        try {
+            writer.write(formatResult.result());
+        } catch (Exception e) {
+            return new IncorrectResult<>(e.getMessage());
+        }
+        return new CorrectResult<String>("Formatted succesfully.");
     }
-    return new CorrectResult<String>("Formatted succesfully.");
-  }
 
-  @Override
-  public Result<String> analyze(InputStream inputStream, InputStream config, Version version) {
-    return createScaFactory(version).fromFile(
-        inputStream,
-        new InMemoryRuleStatusProviderFactory().createDefaultRuleStatusProvider(config),
-        DefaultRuntime.getInstance()).analyze();
-  }
+    @Override
+    public Result<String> analyze(InputStream inputStream, InputStream config, Version version) {
+        return createScaFactory(version)
+                .fromFile(
+                        inputStream,
+                        new InMemoryRuleStatusProviderFactory()
+                                .createDefaultRuleStatusProvider(config),
+                        DefaultRuntime.getInstance())
+                .analyze();
+    }
 
-  private SemanticFactory createSemanticFactory(Version version) {
-    ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-    CharStreamFactory charStreamFactory = new InMemoryCharStreamFactory();
-    TokenFactory tokenFactory = new DefaultTokensFactory();
-    TokenizerFactory tokenizerFactory = createTokenizerFactoryFromVersion(version, tokenFactory, resultFactory);
-    LexerFactory lexerFactory = new InMemoryLexerFactory(charStreamFactory, tokenizerFactory);
-    TokenStreamFactory tokenStreamFactory = new DefaultTokenStreamFactory(lexerFactory, resultFactory);
-    NodeFactory nodeFactory = new DefaultNodeFactory();
-    ParserChainFactory parserChainFactory = new DefaultParserChainFactory(
-        new DefaultParserFactory(tokenFactory, nodeFactory));
-    SyntacticFactory syntacticFactory = new DefaultSyntacticFactory(tokenStreamFactory, parserChainFactory);
-    return new DefaultSemanticFactory(
-        syntacticFactory, resultFactory, DefaultRuntime.getInstance());
-  }
+    private PeekableIteratorFactory<Interpretable> createSemanticFactory(Version version) {
+        TokenFactory tokenFactory = new DefaultTokensFactory();
+        Runtime runtime = DefaultRuntime.getInstance();
+        ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), runtime);
+        PeekableIteratorFactory<MetaChar> metaCharIteratorFactory = new InMemoryCharStreamFactory();
+        PeekableIteratorFactory<Token> tokenIteratorFactory =
+                createTokenIteratorFactory(
+                        metaCharIteratorFactory, resultFactory, tokenFactory, version);
+        PeekableIteratorFactory<Checkable> cheeckableIteratorFactory =
+                createCheckableIteratorFactory(tokenIteratorFactory, tokenFactory);
+        PeekableIteratorFactory<Interpretable> interpretableFactory =
+                new DefaultSemanticFactory(cheeckableIteratorFactory, resultFactory, runtime);
+        return interpretableFactory;
+    }
 
-  private TokenizerFactory createTokenizerFactoryFromVersion(Version version, TokenFactory tokenFactory,
-      ResultFactory resultFactory) {
-    return switch (version) {
-      case V1_0 -> new FirstTokenizerFactory(tokenFactory, resultFactory);
-      case V1_1 -> new SecondTokenizerFactory(tokenFactory, resultFactory);
-    };
-  }
+    private PeekableIteratorFactory<Checkable> createCheckableIteratorFactory(
+            PeekableIteratorFactory<Token> tokenIteratorFactory, TokenFactory tokenFactory) {
+        NodeFactory nodeFactory = new DefaultNodeFactory();
+        ParserFactory parserFactory = new DefaultParserFactory(tokenFactory, nodeFactory);
+        ParserChainFactory parserChainFactory = new DefaultParserChainFactory(parserFactory);
+        return new DefaultSyntacticFactory(tokenIteratorFactory, parserChainFactory);
+    }
 
-  private ProgramInterpreterFactory createProgramInterpreterFactory(Version version) {
-    ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
-    SemanticFactory semanticFactory = createSemanticFactory(version);
-    SolutionStrategyFactory solutionStrategyFactory = new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
-    InterpreterVisitorFactory interpreterVisitorFactory = new DefaultInterpreterVisitorFactory(solutionStrategyFactory,
-        resultFactory);
-    return new DefaultProgramInterpreterFactory(
-        semanticFactory, interpreterVisitorFactory, DefaultRuntime.getInstance());
-  }
+    private PeekableIteratorFactory<Token> createTokenIteratorFactory(
+            PeekableIteratorFactory<MetaChar> metaCharIteratorFactory,
+            ResultFactory resultFactory,
+            TokenFactory tokenFactory,
+            Version version) {
+        TokenizerFactory tokenizerFactory =
+                createTokenizerFactoryFromVersion(version, tokenFactory, resultFactory);
+        return new InMemoryLexerFactory(metaCharIteratorFactory, tokenizerFactory, resultFactory);
+    }
 
-  private ScaFactory createScaFactory(Version version) {
-    return new DefaultScaFactory(createSemanticFactory(version));
-  }
+    private TokenizerFactory createTokenizerFactoryFromVersion(
+            Version version, TokenFactory tokenFactory, ResultFactory resultFactory) {
+        return switch (version) {
+            case V1_0 -> new FirstTokenizerFactory(tokenFactory, resultFactory);
+            case V1_1 -> new SecondTokenizerFactory(tokenFactory, resultFactory);
+        };
+    }
 
-  private FormatterFactory createFormatterFactory(Version version) {
-    return new InMemoryFormatterFactory(createSemanticFactory(version));
-  }
+    private ProgramInterpreterFactory createProgramInterpreterFactory(Version version) {
+        ResultFactory resultFactory =
+                new LoggerResultFactory(new DefaultResultFactory(), DefaultRuntime.getInstance());
+        PeekableIteratorFactory<Interpretable> semanticFactory = createSemanticFactory(version);
+        SolutionStrategyFactory solutionStrategyFactory =
+                new DefaultSolutionStrategyFactory(DefaultRuntime.getInstance());
+        InterpreterVisitorFactory interpreterVisitorFactory =
+                new DefaultInterpreterVisitorFactory(solutionStrategyFactory, resultFactory);
+        return new DefaultProgramInterpreterFactory(
+                semanticFactory, interpreterVisitorFactory, DefaultRuntime.getInstance());
+    }
+
+    private ScaFactory createScaFactory(Version version) {
+        return new DefaultScaFactory(createSemanticFactory(version));
+    }
+
+    private FormatterFactory createFormatterFactory(Version version) {
+        return new InMemoryFormatterFactory(createSemanticFactory(version));
+    }
 }
