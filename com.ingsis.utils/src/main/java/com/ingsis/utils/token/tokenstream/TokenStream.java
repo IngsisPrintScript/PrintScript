@@ -10,25 +10,27 @@ import com.ingsis.utils.token.tokens.Token;
 import java.util.List;
 
 public interface TokenStream extends PeekableIterator<Token> {
-    boolean match(Token tokenTemplate);
+  boolean match(Token tokenTemplate);
 
-    Result<Token> consume();
+  Result<Token> consume();
 
-    Result<Token> consume(Token token);
+  Result<Token> consume(Token token);
 
-    Result<Integer> consumeAll(Token token);
+  Result<Integer> consumeAll(Token token);
 
-    Token peek(int offset);
+  Token peek(int offset);
 
-    List<Token> tokens();
+  List<Token> tokens();
 
-    Integer pointer();
+  Integer pointer();
 
-    TokenStream addToken(Token token);
+  TokenStream addToken(Token token);
 
-    void cleanBuffer();
+  void cleanBuffer();
 
-    void resetPointer();
+  void resetPointer();
 
-    TokenStream retrieveNonConsumedStream();
+  TokenStream retrieveNonConsumedStream();
+
+  TokenStream advanceMovedTokens(TokenStream subStream);
 }

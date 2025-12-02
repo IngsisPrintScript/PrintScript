@@ -15,48 +15,46 @@ import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class BinaryOperatorParser implements Parser<ExpressionNode> {
-    private final Token OPERATOR_TEMPLATE;
-    private final Parser<ExpressionNode> LEAF_NODES_PARSER;
-    private final NodeFactory NODE_FACTORY;
+  private final Token OPERATOR_TEMPLATE;
+  private final Parser<ExpressionNode> LEAF_NODES_PARSER;
+  private final NodeFactory NODE_FACTORY;
 
-    public BinaryOperatorParser(
-            NodeFactory NODE_FACTORY,
-            TokenFactory TOKEN_FACTORY,
-            Parser<ExpressionNode> LEAF_NODES_PARSER) {
-        this.OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken("");
-        this.LEAF_NODES_PARSER = LEAF_NODES_PARSER;
-        this.NODE_FACTORY = NODE_FACTORY;
+  public BinaryOperatorParser(
+      NodeFactory NODE_FACTORY,
+      TokenFactory TOKEN_FACTORY,
+      Parser<ExpressionNode> LEAF_NODES_PARSER) {
+    this.OPERATOR_TEMPLATE = TOKEN_FACTORY.createOperatorToken("");
+    this.LEAF_NODES_PARSER = LEAF_NODES_PARSER;
+    this.NODE_FACTORY = NODE_FACTORY;
+  }
+
+  @Override
+  public Result<ExpressionNode> parse(TokenStream stream) {
+    Result<ExpressionNode> consumeLeftChildResult = LEAF_NODES_PARSER.parse(stream);
+    if (!consumeLeftChildResult.isCorrect()) {
+      return new IncorrectResult<>(consumeLeftChildResult);
+    }
+    ExpressionNode leftChild = consumeLeftChildResult.result();
+    if (!stream.match(OPERATOR_TEMPLATE)) {
+      return new CorrectResult<>(leftChild);
+    }
+    Token operatorToken = stream.next();
+    String symbol = operatorToken.value();
+
+    TokenStream subTokenStream = stream.retrieveNonConsumedStream();
+    Result<? extends ExpressionNode> parseRightResult = this.parse(subTokenStream);
+    if (!parseRightResult.isCorrect()) {
+      return new IncorrectResult<>(parseRightResult);
     }
 
-    @Override
-    public Result<ExpressionNode> parse(TokenStream stream) {
-        Result<ExpressionNode> consumeLeftChildResult = LEAF_NODES_PARSER.parse(stream);
-        if (!consumeLeftChildResult.isCorrect()) {
-            return new IncorrectResult<>(consumeLeftChildResult);
-        }
-        ExpressionNode leftChild = consumeLeftChildResult.result();
-        if (!stream.match(OPERATOR_TEMPLATE)) {
-            return new CorrectResult<>(leftChild);
-        }
-        Token operatorToken = stream.next();
-        String symbol = operatorToken.value();
-
-        TokenStream subTokenStream = stream.retrieveNonConsumedStream();
-        Result<? extends ExpressionNode> parseRightResult = this.parse(subTokenStream);
-        if (!parseRightResult.isCorrect()) {
-            return new IncorrectResult<>(parseRightResult);
-        }
-
-        ExpressionNode rightChild = parseRightResult.result();
-        for (int i = 0; i < subTokenStream.pointer(); i++) {
-            stream.next();
-        }
-        return new CorrectResult<>(
-                NODE_FACTORY.createBinaryOperatorNode(
-                        symbol,
-                        leftChild,
-                        rightChild,
-                        operatorToken.line(),
-                        operatorToken.column()));
-    }
+    ExpressionNode rightChild = parseRightResult.result();
+    stream.advanceMovedTokens(subTokenStream);
+    return new CorrectResult<>(
+        NODE_FACTORY.createBinaryOperatorNode(
+            symbol,
+            leftChild,
+            rightChild,
+            operatorToken.line(),
+            operatorToken.column()));
+  }
 }

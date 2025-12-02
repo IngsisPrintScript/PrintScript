@@ -14,103 +14,104 @@ import java.util.Map;
 
 public final class JsonRuleStatusProvider implements RuleStatusProvider {
 
-    private Map<String, Object> rulesMap;
+  private Map<String, Object> rulesMap;
 
-    public JsonRuleStatusProvider(InputStream jsonInputStream) {
-        this.rulesMap = loadJsonRules(jsonInputStream);
+  public JsonRuleStatusProvider(InputStream jsonInputStream) {
+    this.rulesMap = loadJsonRules(jsonInputStream);
+  }
+
+  public JsonRuleStatusProvider() {
+    this.rulesMap = new HashMap<>();
+  }
+
+  private Map<String, Object> loadJsonRules(InputStream jsonInputStream) {
+    try (jsonInputStream) {
+      ObjectMapper mapper = new ObjectMapper();
+      Map<String, Object> data = mapper.readValue(jsonInputStream, new TypeReference<>() {
+      });
+
+      if (data == null) {
+        throw new IllegalStateException("JSON input stream is empty or invalid");
+      }
+
+      return data;
+
+    } catch (IOException e) {
+      throw new UncheckedIOException("Could not read JSON InputStream", e);
+    }
+  }
+
+  @Override
+  public Boolean getRuleStatus(String ruleName) {
+    Object value = rulesMap.get(ruleName);
+
+    if (value == null) {
+      return false;
     }
 
-    public JsonRuleStatusProvider() {
-        this.rulesMap = new HashMap<>();
+    if (value instanceof Boolean boolValue) {
+      return boolValue;
     }
 
-    private Map<String, Object> loadJsonRules(InputStream jsonInputStream) {
-        try (jsonInputStream) {
-            ObjectMapper mapper = new ObjectMapper();
-            Map<String, Object> data = mapper.readValue(jsonInputStream, new TypeReference<>() {});
-
-            if (data == null) {
-                throw new IllegalStateException("JSON input stream is empty or invalid");
-            }
-
-            return data;
-
-        } catch (IOException e) {
-            throw new UncheckedIOException("Could not read JSON InputStream", e);
-        }
+    if (value instanceof String strValue) {
+      return Boolean.parseBoolean(strValue);
     }
 
-    @Override
-    public Boolean getRuleStatus(String ruleName) {
-        Object value = rulesMap.get(ruleName);
+    throw new IllegalStateException(
+        "Rule '"
+            + ruleName
+            + "' is not a boolean value (found "
+            + value.getClass().getSimpleName()
+            + ")");
+  }
 
-        if (value == null) {
-            return false;
-        }
+  @Override
+  @SuppressWarnings("unchecked")
+  public <T> T getRuleValue(String ruleName, Class<T> type) {
+    Object value = rulesMap.get(ruleName);
 
-        if (value instanceof Boolean boolValue) {
-            return boolValue;
-        }
-
-        if (value instanceof String strValue) {
-            return Boolean.parseBoolean(strValue);
-        }
-
-        throw new IllegalStateException(
-                "Rule '"
-                        + ruleName
-                        + "' is not a boolean value (found "
-                        + value.getClass().getSimpleName()
-                        + ")");
+    if (value == null) {
+      return null; // same behavior as YAML version
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public <T> T getRuleValue(String ruleName, Class<T> type) {
-        Object value = rulesMap.get(ruleName);
-
-        if (value == null) {
-            return null; // same behavior as YAML version
-        }
-
-        if (!type.isInstance(value)) {
-            throw new ClassCastException(
-                    "Rule '"
-                            + ruleName
-                            + "' is of type "
-                            + value.getClass().getSimpleName()
-                            + " but expected "
-                            + type.getSimpleName());
-        }
-
-        return (T) value;
+    if (!type.isInstance(value)) {
+      throw new ClassCastException(
+          "Rule '"
+              + ruleName
+              + "' is of type "
+              + value.getClass().getSimpleName()
+              + " but expected "
+              + type.getSimpleName());
     }
 
-    @Override
-    public Boolean canReadInputFormat(InputStream input) {
-        try {
-            byte[] bytes = input.readAllBytes();
+    return (T) value;
+  }
 
-            // rewind readable copy
-            input.reset();
+  @Override
+  public Boolean canReadInputFormat(InputStream input) {
+    try {
+      byte[] bytes = input.readAllBytes();
 
-            for (byte b : bytes) {
-                char c = (char) b;
-                if (!Character.isWhitespace(c)) {
-                    return c == '{' || c == '[';
-                }
-            }
+      // rewind readable copy
+      input.reset();
 
-            return false; // empty file is not JSON
-
-        } catch (IOException e) {
-            throw new UncheckedIOException("Could not inspect rule input", e);
+      for (byte b : bytes) {
+        char c = (char) b;
+        if (!Character.isWhitespace(c)) {
+          return c == '{' || c == '[';
         }
-    }
+      }
 
-    @Override
-    public void loadRules(InputStream inputStream) {
-        rulesMap.clear();
-        this.rulesMap = loadJsonRules(inputStream);
+      return false; // empty file is not JSON
+
+    } catch (IOException e) {
+      throw new UncheckedIOException("Could not inspect rule input", e);
     }
+  }
+
+  @Override
+  public void loadRules(InputStream inputStream) {
+    rulesMap.clear();
+    this.rulesMap = loadJsonRules(inputStream);
+  }
 }
