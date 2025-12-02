@@ -72,8 +72,6 @@ public final class StreamCharStream implements PeekableIterator<MetaChar> {
             currentColumn++;
         }
 
-        System.out.println(String.format("CHAR: %s", result.character()));
-
         readNextChar();
         return result;
     }

@@ -144,4 +144,11 @@ public final class DefaultTokenStream implements TokenStream {
     public void resetPointer() {
         this.pointer = 0;
     }
+
+    @Override
+    public TokenStream retrieveNonConsumedStream() {
+        List<Token> tokens = new ArrayList<>(tokens());
+        tokens = tokens.subList(pointer, tokens.size());
+        return new DefaultTokenStream(tokens);
+    }
 }

@@ -58,7 +58,6 @@ public final class DefaultSyntacticParser implements SyntacticParser {
         Result<? extends Node> nextResult = computeNext();
         if (nextResult.isCorrect()) {
             checkableBuffer.add((Checkable) nextResult.result());
-            System.out.println("NODE: " + nextResult.result());
         }
 
         return nextResult.isCorrect();
@@ -80,10 +79,7 @@ public final class DefaultSyntacticParser implements SyntacticParser {
         }
         while (tokenIterator.hasNext()) {
             tokenStream = tokenStream.addToken(tokenIterator.next());
-            System.out.println("TOKEN STREAM: " + tokenStream.tokens());
-            System.out.println("TOKEN START STREAM POINTER: " + tokenStream.pointer());
             result = parse();
-            System.out.println("TOKEN END STREAM POINTER: " + tokenStream.pointer());
             if (result.isCorrect()) {
                 tokenStream.cleanBuffer();
                 return result;

@@ -63,7 +63,6 @@ public final class DefaultLexer implements Lexer {
 
         if (computeNextResult.isCorrect()) {
             tokenBuffer.add(computeNextResult.result());
-            System.out.println("TOKEN: " + computeNextResult.result());
         }
 
         return computeNextResult.isCorrect();

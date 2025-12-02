@@ -34,19 +34,8 @@ public final class CallFunctionParser implements Parser<CallFunctionNode> {
         this.PARSER_FACTORY = parserFactory;
     }
 
-    private Boolean canParse(TokenStream stream) {
-        Token token = stream.peek(1);
-        if (token == null) {
-            return false;
-        }
-        return token.equals(LEFT_PARENTHESIS_TEMPLATE);
-    }
-
     @Override
     public Result<CallFunctionNode> parse(TokenStream stream) {
-        if (!canParse(stream)) {
-            return new IncorrectResult<>("Tried parsing not a function.");
-        }
         Result<IdentifierNode> parseIdentifierNodeResult = IDENTIFIER_PARSER.parse(stream);
         if (!parseIdentifierNodeResult.isCorrect()) {
             return new IncorrectResult<>(parseIdentifierNodeResult);
@@ -65,42 +54,42 @@ public final class CallFunctionParser implements Parser<CallFunctionNode> {
     }
 
     private Result<List<ExpressionNode>> parseFunctionCall(TokenStream stream) {
-        Result<Token> consumeLeftParenthesisResult = stream.consume(LEFT_PARENTHESIS_TEMPLATE);
-        if (!consumeLeftParenthesisResult.isCorrect()) {
-            return new IncorrectResult<>(consumeLeftParenthesisResult);
-        }
+        Result<Token> leftParen = stream.consume(LEFT_PARENTHESIS_TEMPLATE);
+        if (!leftParen.isCorrect()) return new IncorrectResult<>(leftParen);
 
-        Result<List<ExpressionNode>> parseArgumentsResult = parseArguments(stream);
-        if (!parseArgumentsResult.isCorrect()) {
-            return new IncorrectResult<>(parseArgumentsResult);
-        }
+        Result<List<ExpressionNode>> argumentsResult = parseArguments(stream);
+        if (!argumentsResult.isCorrect()) return new IncorrectResult<>(argumentsResult);
 
-        Result<Token> consumeRightParenthesisResult = stream.consume(RIGHT_PARENTHESIS_TEMPLATE);
-        if (!consumeRightParenthesisResult.isCorrect()) {
-            return new IncorrectResult<>(consumeRightParenthesisResult);
-        }
+        Result<Token> rightParen = stream.consume(RIGHT_PARENTHESIS_TEMPLATE);
+        if (!rightParen.isCorrect()) return new IncorrectResult<>(rightParen);
 
-        return parseArgumentsResult;
+        return argumentsResult;
     }
 
     private Result<List<ExpressionNode>> parseArguments(TokenStream stream) {
         List<ExpressionNode> arguments = new ArrayList<>();
-        Result<ExpressionNode> parseFirstArgument =
-                PARSER_FACTORY.createBinaryOperatorParser().parse(stream);
-        if (!parseFirstArgument.isCorrect()) {
-            return new CorrectResult<List<ExpressionNode>>(arguments);
-        }
-        ExpressionNode firstArgument = parseFirstArgument.result();
-        arguments.add(firstArgument);
+        Parser<ExpressionNode> expressionParser = PARSER_FACTORY.createBinaryOperatorParser();
 
-        while (stream.consume(COMMA_SEPARATOR_TEMPLATE).isCorrect()) {
-            Result<ExpressionNode> parseExpressionResult =
-                    PARSER_FACTORY.createBinaryOperatorParser().parse(stream);
-            if (!parseExpressionResult.isCorrect()) {
-                return new IncorrectResult<>(parseExpressionResult);
+        boolean first = true;
+        while (true) {
+            if (!first) {
+                Result<Token> commaResult = stream.consume(COMMA_SEPARATOR_TEMPLATE);
+                if (!commaResult.isCorrect()) break;
             }
-            ExpressionNode expressionNode = parseExpressionResult.result();
-            arguments.add(expressionNode);
+
+            TokenStream subTokenStream = stream.retrieveNonConsumedStream();
+            Result<ExpressionNode> parseResult = expressionParser.parse(subTokenStream);
+            if (!parseResult.isCorrect()) {
+                if (first) return new CorrectResult<>(arguments);
+                return new IncorrectResult<>(parseResult);
+            }
+
+            for (int i = 0; i < subTokenStream.pointer(); i++) {
+                stream.next();
+            }
+
+            arguments.add(parseResult.result());
+            first = false;
         }
 
         return new CorrectResult<>(arguments);

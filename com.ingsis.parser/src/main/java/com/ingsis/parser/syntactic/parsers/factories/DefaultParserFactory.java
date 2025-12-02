@@ -4,7 +4,6 @@
 
 package com.ingsis.parser.syntactic.parsers.factories;
 
-import com.ingsis.parser.syntactic.factories.ParserChainFactory;
 import com.ingsis.parser.syntactic.parsers.DefaultParserRegistry;
 import com.ingsis.parser.syntactic.parsers.Parser;
 import com.ingsis.parser.syntactic.parsers.ParserRegistry;
@@ -18,9 +17,11 @@ import com.ingsis.parser.syntactic.parsers.literal.LiteralParser;
 import com.ingsis.parser.syntactic.parsers.operator.BinaryOperatorParser;
 import com.ingsis.parser.syntactic.parsers.operators.TypeAssignationParser;
 import com.ingsis.parser.syntactic.parsers.operators.ValueAssignationParser;
+import com.ingsis.utils.nodes.nodes.Node;
 import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
 import com.ingsis.utils.nodes.nodes.factories.NodeFactory;
 import com.ingsis.utils.token.tokens.factories.TokenFactory;
+import java.util.function.Supplier;
 
 public final class DefaultParserFactory implements ParserFactory {
     private final TokenFactory TOKEN_FACTORY;
@@ -85,7 +86,7 @@ public final class DefaultParserFactory implements ParserFactory {
     }
 
     @Override
-    public ConditionalParser createConditionalParser(ParserChainFactory chainFactory) {
-        return new ConditionalParser(TOKEN_FACTORY, this, NODE_FACTORY, chainFactory);
+    public ConditionalParser createConditionalParser(Supplier<Parser<Node>> mainChainSupplier) {
+        return new ConditionalParser(TOKEN_FACTORY, this, NODE_FACTORY, mainChainSupplier);
     }
 }

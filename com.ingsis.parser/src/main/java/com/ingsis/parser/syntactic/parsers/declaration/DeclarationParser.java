@@ -82,7 +82,6 @@ public final class DeclarationParser implements Parser<DeclarationKeywordNode> {
         Types declaredType = Types.fromKeyword(typeToken.value());
         Result<Token> consumeValueAssignationResult =
                 stream.consume(VALUE_ASSIGNATION_OPERATOR_TEMPLATE);
-        System.out.println("EXPECTED = RESULT: " + consumeValueAssignationResult);
         if (!consumeValueAssignationResult.isCorrect()
                 && stream.consume(EOL_TEMPLATE).isCorrect()) {
             return buildResult(

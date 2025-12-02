@@ -29,4 +29,6 @@ public interface TokenStream extends PeekableIterator<Token> {
     void cleanBuffer();
 
     void resetPointer();
+
+    TokenStream retrieveNonConsumedStream();
 }

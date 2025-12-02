@@ -4,7 +4,6 @@
 
 package com.ingsis.parser.syntactic.parsers.conditional;
 
-import com.ingsis.parser.syntactic.factories.ParserChainFactory;
 import com.ingsis.parser.syntactic.parsers.Parser;
 import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
 import com.ingsis.utils.nodes.nodes.Node;
@@ -19,6 +18,7 @@ import com.ingsis.utils.token.tokens.factories.TokenFactory;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public final class ConditionalParser implements Parser<IfKeywordNode> {
     private final Token IF_TEMPLATE;
@@ -28,14 +28,14 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
     private final Token LEFT_BRACE_TEMPLATE;
     private final Token RIGHT_BRACE_TEMPLATE;
     private final Parser<ExpressionNode> EXPRESSION_PARSER;
-    private final ParserChainFactory CHAIN_FACTORY;
+    private final Supplier<Parser<Node>> nodeParserSupplier;
     private final NodeFactory NODE_FACTORY;
 
     public ConditionalParser(
             TokenFactory TOKEN_FACTORY,
             ParserFactory PARSER_FACTORY,
             NodeFactory nodeFactory,
-            ParserChainFactory CHAIN_FACTORY) {
+            Supplier<Parser<Node>> nodeParserSupplier) {
         this.IF_TEMPLATE = TOKEN_FACTORY.createKeywordToken("if");
         this.ELSE_TEMPLATE = TOKEN_FACTORY.createKeywordToken("else");
         this.LEFT_PARENTHESIS_TEMPLATE = TOKEN_FACTORY.createSeparatorToken("(");
@@ -43,7 +43,7 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
         this.LEFT_BRACE_TEMPLATE = TOKEN_FACTORY.createSeparatorToken("{");
         this.RIGHT_BRACE_TEMPLATE = TOKEN_FACTORY.createSeparatorToken("}");
         this.EXPRESSION_PARSER = PARSER_FACTORY.createBinaryOperatorParser();
-        this.CHAIN_FACTORY = CHAIN_FACTORY;
+        this.nodeParserSupplier = nodeParserSupplier;
         this.NODE_FACTORY = nodeFactory;
     }
 
@@ -104,7 +104,7 @@ public final class ConditionalParser implements Parser<IfKeywordNode> {
         }
         List<Node> body = new ArrayList<>();
         while (!stream.consume(RIGHT_BRACE_TEMPLATE).isCorrect()) {
-            Result<Node> parseBodyItemResult = CHAIN_FACTORY.createDefaultChain().parse(stream);
+            Result<Node> parseBodyItemResult = nodeParserSupplier.get().parse(stream);
             if (!parseBodyItemResult.isCorrect()) {
                 return new IncorrectResult<>(parseBodyItemResult);
             }
