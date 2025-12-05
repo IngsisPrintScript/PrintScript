@@ -4,7 +4,7 @@
 
 package com.ingsis.engine;
 
-import com.ingsis.charstream.factories.InMemoryCharStreamFactory;
+import com.ingsis.charstream.factories.CharStreamFactory;
 import com.ingsis.engine.versions.Version;
 import com.ingsis.formatter.factories.FormatterFactory;
 import com.ingsis.formatter.factories.InMemoryFormatterFactory;
@@ -14,13 +14,13 @@ import com.ingsis.interpreter.visitor.expression.strategies.factories.DefaultSol
 import com.ingsis.interpreter.visitor.expression.strategies.factories.SolutionStrategyFactory;
 import com.ingsis.interpreter.visitor.factory.DefaultInterpreterVisitorFactory;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
-import com.ingsis.lexer.factories.InMemoryLexerFactory;
+import com.ingsis.lexer.factories.LexerFactory;
 import com.ingsis.lexer.tokenizers.factories.FirstTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.SecondTokenizerFactory;
 import com.ingsis.lexer.tokenizers.factories.TokenizerFactory;
-import com.ingsis.parser.semantic.factories.DefaultSemanticFactory;
+import com.ingsis.parser.semantic.factories.SemanticFactory;
 import com.ingsis.parser.syntactic.factories.DefaultParserChainFactory;
-import com.ingsis.parser.syntactic.factories.DefaultSyntacticFactory;
+import com.ingsis.parser.syntactic.factories.SyntacticFactory;
 import com.ingsis.parser.syntactic.factories.ParserChainFactory;
 import com.ingsis.parser.syntactic.parsers.factories.DefaultParserFactory;
 import com.ingsis.parser.syntactic.parsers.factories.ParserFactory;
@@ -85,12 +85,12 @@ public class InMemoryEngine implements Engine {
     TokenFactory tokenFactory = new DefaultTokensFactory();
     Runtime runtime = DefaultRuntime.getInstance();
     ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), runtime);
-    PeekableIteratorFactory<MetaChar> metaCharIteratorFactory = new InMemoryCharStreamFactory();
+    PeekableIteratorFactory<MetaChar> metaCharIteratorFactory = new CharStreamFactory();
     PeekableIteratorFactory<Token> tokenIteratorFactory = createTokenIteratorFactory(
         metaCharIteratorFactory, resultFactory, tokenFactory, version);
     PeekableIteratorFactory<Checkable> cheeckableIteratorFactory = createCheckableIteratorFactory(tokenIteratorFactory,
         tokenFactory);
-    PeekableIteratorFactory<Interpretable> interpretableFactory = new DefaultSemanticFactory(cheeckableIteratorFactory,
+    PeekableIteratorFactory<Interpretable> interpretableFactory = new SemanticFactory(cheeckableIteratorFactory,
         resultFactory, runtime);
     return interpretableFactory;
   }
@@ -100,7 +100,7 @@ public class InMemoryEngine implements Engine {
     NodeFactory nodeFactory = new DefaultNodeFactory();
     ParserFactory parserFactory = new DefaultParserFactory(tokenFactory, nodeFactory);
     ParserChainFactory parserChainFactory = new DefaultParserChainFactory(parserFactory);
-    return new DefaultSyntacticFactory(tokenIteratorFactory, parserChainFactory);
+    return new SyntacticFactory(tokenIteratorFactory, parserChainFactory);
   }
 
   private PeekableIteratorFactory<Token> createTokenIteratorFactory(
@@ -109,7 +109,7 @@ public class InMemoryEngine implements Engine {
       TokenFactory tokenFactory,
       Version version) {
     TokenizerFactory tokenizerFactory = createTokenizerFactoryFromVersion(version, tokenFactory, resultFactory);
-    return new InMemoryLexerFactory(metaCharIteratorFactory, tokenizerFactory, resultFactory);
+    return new LexerFactory(metaCharIteratorFactory, tokenizerFactory, resultFactory);
   }
 
   private TokenizerFactory createTokenizerFactoryFromVersion(

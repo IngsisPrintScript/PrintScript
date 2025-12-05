@@ -4,33 +4,30 @@
 
 package com.ingsis.utils.token.tokenstream;
 
-import com.ingsis.utils.peekableiterator.PeekableIterator;
+import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.result.Result;
-import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.token.Token;
+import com.ingsis.utils.token.template.TokenTemplate;
+
 import java.util.List;
 
-public interface TokenStream extends PeekableIterator<Token> {
-  boolean match(Token tokenTemplate);
+public interface TokenStream extends SafeIterator<Token> {
+  SafeIterationResult<Token> consume(TokenTemplate tokenTemplate);
 
-  Result<Token> consume();
+  Integer consumeAll(TokenTemplate tokenTemplate);
 
-  Result<Token> consume(Token token);
-
-  Result<Integer> consumeAll(Token token);
-
-  Token peek(int offset);
+  Result<Token> peek(int offset);
 
   List<Token> tokens();
 
   Integer pointer();
 
-  TokenStream addToken(Token token);
+  TokenStream withToken(Token token);
 
-  void cleanBuffer();
+  TokenStream reset();
 
-  void resetPointer();
+  TokenStream sliceFromPointer();
 
-  TokenStream retrieveNonConsumedStream();
-
-  TokenStream advanceMovedTokens(TokenStream subStream);
+  TokenStream advanceBy(TokenStream subStream);
 }

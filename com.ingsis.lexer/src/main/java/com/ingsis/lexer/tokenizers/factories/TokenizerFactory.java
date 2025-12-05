@@ -4,8 +4,8 @@
 
 package com.ingsis.lexer.tokenizers.factories;
 
-import com.ingsis.lexer.tokenizers.Tokenizer;
+import com.ingsis.lexer.tokenizers.registry.TokenizersRegistry;
 
 public interface TokenizerFactory {
-    Tokenizer createTokenizer();
+  TokenizersRegistry createTokenizer();
 }

@@ -4,9 +4,9 @@
 
 package com.ingsis.lexer.tokenizers;
 
-import com.ingsis.utils.result.Result;
-import com.ingsis.utils.token.tokens.Token;
+import com.ingsis.utils.process.result.ProcessResult;
+import com.ingsis.utils.token.Token;
 
 public interface Tokenizer {
-    Result<Token> tokenize(String input, Integer line, Integer column);
+  ProcessResult<Token> tokenize(String input, Integer line, Integer column);
 }
