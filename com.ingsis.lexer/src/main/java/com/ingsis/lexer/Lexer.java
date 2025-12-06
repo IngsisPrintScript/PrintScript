@@ -40,8 +40,7 @@ public final class Lexer implements SafeIterator<Token> {
   }
 
   private ProcessResult<Token> process(MetaCharStringBuilder builder) {
-    // replace with real tokenization logic
-    throw new UnsupportedOperationException("Not implemented yet.");
+    return tokenizer.tokenize(builder.getString(), builder.getLine(), builder.getColumn());
   }
 
   @Override
@@ -63,13 +62,13 @@ public final class Lexer implements SafeIterator<Token> {
 
     while (true) {
       ProcessResult<Token> result = process(currentBuilder);
-      checkpoint = updateCheckpoint(checkpoint, result, currentIterator, currentBuilder);
+      checkpoint = updateCheckpoint(checkpoint, result, currentIterator);
       if (result.status() == ProcessState.INVALID) {
         return emitCheckpointOrError(checkpoint, currentBuilder);
       }
       SafeIterationResult<MetaChar> nextCharResult = currentIterator.next();
       if (!nextCharResult.isCorrect()) {
-        return emitCheckpointOrError(checkpoint, currentBuilder, nextCharResult);
+        return emitCheckpointOrError(checkpoint, nextCharResult);
       }
       currentBuilder = currentBuilder.append(nextCharResult.iterationResult());
       currentIterator = nextCharResult.nextIterator();
@@ -79,10 +78,9 @@ public final class Lexer implements SafeIterator<Token> {
   private ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> updateCheckpoint(
       ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> checkpoint,
       ProcessResult<Token> result,
-      SafeIterator<MetaChar> iterator,
-      MetaCharStringBuilder builder) {
+      SafeIterator<MetaChar> iterator) {
     if (result.status() == ProcessState.COMPLETE) {
-      return ProcessCheckpoint.INITIALIZED(iterator, builder, result.result());
+      return ProcessCheckpoint.INITIALIZED(iterator, new MetaCharStringBuilder(), result.result());
     }
     return checkpoint;
   }
@@ -103,7 +101,6 @@ public final class Lexer implements SafeIterator<Token> {
 
   private SafeIterationResult<Token> emitCheckpointOrError(
       ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> checkpoint,
-      MetaCharStringBuilder builder,
       SafeIterationResult<MetaChar> lastCharResult) {
     if (checkpoint.isUninitialized()) {
       return iterationResultFactory.cloneIncorrectResult(lastCharResult);
