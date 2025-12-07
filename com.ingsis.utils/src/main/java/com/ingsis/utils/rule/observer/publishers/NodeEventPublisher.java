@@ -2,13 +2,11 @@
  * My Project
  */
 
-package com.ingsis.utils.rule.observer.publishers; /*
-                                                    * My Project
-                                                    */
+package com.ingsis.utils.rule.observer.publishers;
 
-import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.result.Result;
 
 public interface NodeEventPublisher<T extends Node> {
-    Result<String> notify(T node);
+  Result<String> notify(T node);
 }

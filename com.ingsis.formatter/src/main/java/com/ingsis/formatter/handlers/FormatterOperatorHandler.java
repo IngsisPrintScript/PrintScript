@@ -4,8 +4,8 @@
 
 package com.ingsis.formatter.handlers;
 
-import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
-import com.ingsis.utils.nodes.nodes.expression.operator.OperatorNode;
+import com.ingsis.utils.nodes.expressions.ExpressionNode;
+import com.ingsis.utils.nodes.expressions.operator.OperatorNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;

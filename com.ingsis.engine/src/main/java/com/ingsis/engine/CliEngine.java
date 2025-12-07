@@ -5,7 +5,7 @@
 package com.ingsis.engine;
 
 import com.ingsis.engine.versions.Version;
-import com.ingsis.runtime.DefaultRuntime;
+import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import java.io.BufferedReader;
@@ -19,105 +19,109 @@ import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
 @SuppressWarnings("FieldMayBeFinal")
-@CommandLine.Command(
-        name = "cli-engine",
-        mixinStandardHelpOptions = true,
-        description = "Runs the interpreter with CLI input")
+@CommandLine.Command(name = "cli-engine", mixinStandardHelpOptions = true, description = "Runs the interpreter with CLI input")
 public final class CliEngine implements Runnable {
 
-    @Option(names = "--repl-mode", description = "Enable REPL mode")
-    public boolean replMode = false;
+  @Option(names = "--repl-mode", description = "Enable REPL mode")
+  public boolean replMode = false;
 
-    @Option(names = "--action", description = "Command to execute.", required = true)
-    public String command;
+  @Option(names = "--action", description = "Command to execute.", required = true)
+  public String command;
 
-    @Option(names = "--file", description = "Path to a PrintScript file.")
-    public Path file;
+  @Option(names = "--file", description = "Path to a PrintScript file.")
+  public Path file;
 
-    @Option(names = "--formatConfig", description = "Path to the format config file.")
-    public Path formatConfig;
+  @Option(names = "--formatConfig", description = "Path to the format config file.")
+  public Path formatConfig;
 
-    @Option(names = "--version", description = "PrintScript version to use.", required = true)
-    public Version version;
+  @Option(names = "--version", description = "PrintScript version to use.", required = true)
+  public Version version;
 
-    private volatile boolean stopRequested = false;
+  private volatile boolean stopRequested = false;
 
-    private final Engine engine = new InMemoryEngine();
+  private final Engine engine = new InMemoryEngine();
 
-    public void requestStop() {
-        stopRequested = true;
+  public void requestStop() {
+    stopRequested = true;
+  }
+
+  public CliEngine() {
+  }
+
+  public static void main(String[] args) {
+    int exitCode = new CommandLine(new CliEngine()).execute(args);
+    System.exit(exitCode);
+  }
+
+  @Override
+  public void run() {
+    try {
+      runREPL();
+    } catch (Exception e) {
+      System.err.println("Error: " + e.getMessage());
+      e.printStackTrace();
     }
+  }
 
-    public CliEngine() {}
+  private void runREPL() {
+    try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
 
-    public static void main(String[] args) {
-        int exitCode = new CommandLine(new CliEngine()).execute(args);
-        System.exit(exitCode);
-    }
+      DefaultRuntime.getInstance().push();
 
-    @Override
-    public void run() {
-        try {
-            runREPL();
-        } catch (Exception e) {
-            System.err.println("Error: " + e.getMessage());
-            e.printStackTrace();
+      if (replMode)
+        System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
+
+      StringBuilder buffer = new StringBuilder();
+      int braceCount = 0;
+
+      while (!stopRequested) {
+
+        if (replMode)
+          System.out.print(braceCount == 0 ? "> " : "... ");
+
+        String line = reader.readLine();
+
+        if (line == null)
+          break;
+        if (replMode && line.equalsIgnoreCase("exit"))
+          break;
+
+        // Add line to buffer
+        buffer.append(line).append("\n");
+
+        // Count braces
+        for (char c : line.toCharArray()) {
+          if (c == '{')
+            braceCount++;
+          if (c == '}')
+            braceCount--;
         }
-    }
 
-    private void runREPL() {
-        try (BufferedReader reader =
-                new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
+        // Not complete yet → keep reading
+        if (braceCount > 0)
+          continue;
 
-            DefaultRuntime.getInstance().push();
+        // Complete block → interpret
+        InputStream input = new ByteArrayInputStream(
+            buffer.toString().getBytes(StandardCharsets.UTF_8));
 
-            if (replMode) System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
+        Result<String> result = engine.interpret(input, Version.V1_1);
+        IncorrectResult<?> error = DefaultRuntime.getInstance().getExecutionError();
 
-            StringBuilder buffer = new StringBuilder();
-            int braceCount = 0;
-
-            while (!stopRequested) {
-
-                if (replMode) System.out.print(braceCount == 0 ? "> " : "... ");
-
-                String line = reader.readLine();
-
-                if (line == null) break;
-                if (replMode && line.equalsIgnoreCase("exit")) break;
-
-                // Add line to buffer
-                buffer.append(line).append("\n");
-
-                // Count braces
-                for (char c : line.toCharArray()) {
-                    if (c == '{') braceCount++;
-                    if (c == '}') braceCount--;
-                }
-
-                // Not complete yet → keep reading
-                if (braceCount > 0) continue;
-
-                // Complete block → interpret
-                InputStream input =
-                        new ByteArrayInputStream(
-                                buffer.toString().getBytes(StandardCharsets.UTF_8));
-
-                Result<String> result = engine.interpret(input, Version.V1_1);
-                IncorrectResult<?> error = DefaultRuntime.getInstance().getExecutionError();
-
-                if (!result.isCorrect() && error != null) {
-                    System.err.println("Error: " + error.error());
-                }
-
-                // Reset for next block
-                buffer.setLength(0);
-            }
-
-            if (replMode) System.out.println("REPL stopped.");
-
-        } catch (IOException e) {
-            System.err.println("Error in REPL: " + e.getMessage());
-            e.printStackTrace();
+        if (!result.isCorrect() && error != null) {
+          System.err.println("Error: " + error.error());
         }
+
+        // Reset for next block
+        buffer.setLength(0);
+      }
+
+      if (replMode)
+        System.out.println("REPL stopped.");
+
+    } catch (IOException e) {
+      System.err.println("Error in REPL: " + e.getMessage());
+      e.printStackTrace();
     }
+  }
 }

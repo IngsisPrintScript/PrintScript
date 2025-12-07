@@ -4,7 +4,6 @@
 
 package com.ingsis.parser.semantic;
 
-import com.ingsis.runtime.Runtime;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
@@ -15,6 +14,7 @@ import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import com.ingsis.utils.runtime.Runtime;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class SemanticChecker implements SafeIterator<Interpretable> {

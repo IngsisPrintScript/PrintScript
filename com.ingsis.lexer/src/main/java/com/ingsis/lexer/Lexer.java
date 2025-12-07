@@ -56,7 +56,7 @@ public final class Lexer implements SafeIterator<Token> {
   private SafeIterationResult<Token> lexNextToken(
       SafeIterationResult<MetaChar> iterationResult,
       MetaCharStringBuilder builder) {
-    ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
+    ProcessCheckpoint<MetaChar, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
     MetaCharStringBuilder currentBuilder = builder.append(iterationResult.iterationResult());
     SafeIterator<MetaChar> currentIterator = iterationResult.nextIterator();
 
@@ -75,18 +75,18 @@ public final class Lexer implements SafeIterator<Token> {
     }
   }
 
-  private ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> updateCheckpoint(
-      ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> checkpoint,
+  private ProcessCheckpoint<MetaChar, Token> updateCheckpoint(
+      ProcessCheckpoint<MetaChar, Token> checkpoint,
       ProcessResult<Token> result,
       SafeIterator<MetaChar> iterator) {
     if (result.status() == ProcessState.COMPLETE) {
-      return ProcessCheckpoint.INITIALIZED(iterator, new MetaCharStringBuilder(), result.result());
+      return ProcessCheckpoint.INITIALIZED(iterator, result.result());
     }
     return checkpoint;
   }
 
   private SafeIterationResult<Token> emitCheckpointOrError(
-      ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> checkpoint,
+      ProcessCheckpoint<MetaChar, Token> checkpoint,
       MetaCharStringBuilder builder) {
     if (checkpoint.isUninitialized()) {
       return iterationResultFactory.createIncorrectResult("Unable to tokenize sequence: " + builder.getString());
@@ -100,7 +100,7 @@ public final class Lexer implements SafeIterator<Token> {
   }
 
   private SafeIterationResult<Token> emitCheckpointOrError(
-      ProcessCheckpoint<MetaChar, MetaCharStringBuilder, Token> checkpoint,
+      ProcessCheckpoint<MetaChar, Token> checkpoint,
       SafeIterationResult<MetaChar> lastCharResult) {
     if (checkpoint.isUninitialized()) {
       return iterationResultFactory.cloneIncorrectResult(lastCharResult);

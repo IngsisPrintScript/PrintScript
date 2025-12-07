@@ -8,11 +8,11 @@ import com.ingsis.formatter.InMemoryProgramFormatter;
 import com.ingsis.formatter.ProgramFormatter;
 import com.ingsis.formatter.handlers.factories.InMemoryFormatterHandlerFactory;
 import com.ingsis.formatter.publishers.factories.InMemoryFormatterPublisherFactory;
-import com.ingsis.runtime.Runtime;
-import com.ingsis.runtime.result.factory.LoggerResultFactory;
+import com.ingsis.utils.runtime.Runtime;
+import com.ingsis.utils.runtime.result.factory.LoggerResultFactory;
+import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
-import com.ingsis.utils.peekableiterator.factories.PeekableIteratorFactory;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.EventsChecker;
@@ -25,10 +25,10 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
 public class InMemoryFormatterFactory implements FormatterFactory {
-  private final PeekableIteratorFactory<Interpretable> checkableIteratorFactory;
+  private final SafeIteratorFactory<Interpretable> checkableIteratorFactory;
 
   public InMemoryFormatterFactory(
-      PeekableIteratorFactory<Interpretable> checkableIteratorFactory) {
+      SafeIteratorFactory<Interpretable> checkableIteratorFactory) {
     this.checkableIteratorFactory = checkableIteratorFactory;
   }
 

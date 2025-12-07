@@ -7,8 +7,8 @@ package com.ingsis.formatter.handlers;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
-import com.ingsis.utils.nodes.nodes.expression.literal.LiteralNode;
+import com.ingsis.utils.nodes.expressions.ExpressionNode;
+import com.ingsis.utils.nodes.expressions.atomic.literal.LiteralNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
@@ -28,7 +28,7 @@ public class FormatterLiteralHandler implements NodeEventHandler<ExpressionNode>
       return resultFactory.createIncorrectResult("Incorrect handler.");
     }
     try {
-      writer.append(literalNode.value());
+      writer.append(literalNode.value().toString());
     } catch (IOException e) {
       return resultFactory.createIncorrectResult(e.getMessage());
     }

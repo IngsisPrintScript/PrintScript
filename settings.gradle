@@ -14,7 +14,6 @@ rootProject.name = 'PrintScript'
 
 include 'com.ingsis.charstream'
 include 'com.ingsis.lexer'
-include 'com.ingsis.runtime'
 include 'com.ingsis.interpreter'
 include 'com.ingsis.engine'
 include 'com.ingsis.sca'

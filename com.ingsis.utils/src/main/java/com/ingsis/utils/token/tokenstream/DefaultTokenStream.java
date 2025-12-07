@@ -78,33 +78,30 @@ public final class DefaultTokenStream implements TokenStream {
   }
 
   @Override
-  public Integer consumeAll(TokenTemplate tokenTemplate) {
-    int count = 0;
+  public TokenStream consumeAll(TokenTemplate tokenTemplate) {
     TokenStream current = this;
+
     while (true) {
       Result<Token> peekResult = current.peek(0);
 
       if (!peekResult.isCorrect()) {
-        break;
+        return current;
       }
 
       Token nextToken = peekResult.result();
 
       if (!tokenTemplate.matches(nextToken)) {
-        break;
+        return current;
       }
 
       SafeIterationResult<Token> consumed = current.consume(tokenTemplate);
 
       if (!consumed.isCorrect()) {
-        break;
+        return current;
       }
 
       current = (TokenStream) consumed.nextIterator();
-      count++;
     }
-
-    return count;
   }
 
   @Override

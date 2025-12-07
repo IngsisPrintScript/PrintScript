@@ -7,7 +7,7 @@ package com.ingsis.parser.semantic.factories;
 import com.ingsis.parser.semantic.SemanticChecker;
 import com.ingsis.parser.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.parser.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
-import com.ingsis.runtime.Runtime;
+import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;

@@ -6,7 +6,7 @@ package com.ingsis.interpreter.factory;
 
 import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
-import com.ingsis.runtime.Runtime;
+import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;

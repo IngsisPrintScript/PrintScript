@@ -15,7 +15,7 @@ import java.util.List;
 public interface TokenStream extends SafeIterator<Token> {
   SafeIterationResult<Token> consume(TokenTemplate tokenTemplate);
 
-  Integer consumeAll(TokenTemplate tokenTemplate);
+  TokenStream consumeAll(TokenTemplate tokenTemplate);
 
   Result<Token> peek(int offset);
 

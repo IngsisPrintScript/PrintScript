@@ -1,0 +1,23 @@
+package com.ingsis.utils.runtime.environment.entries;
+
+import com.ingsis.utils.nodes.expressions.ExpressionNode;
+import com.ingsis.utils.runtime.environment.Environment;
+
+/*
+ * My Project
+ */
+
+import com.ingsis.utils.type.types.Types;
+import java.util.List;
+import java.util.Map;
+
+public interface FunctionEntry {
+
+  Types returnType();
+
+  Map<String, Types> arguments();
+
+  List<ExpressionNode> body();
+
+  Environment closure();
+}

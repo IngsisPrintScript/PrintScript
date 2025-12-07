@@ -39,17 +39,27 @@ public final class ProcessResult<R> {
   }
 
   public ProcessResult<R> comparePriority(ProcessResult<R> other) {
+    int thisRank = stateRank(this);
+    int otherRank = stateRank(other);
 
-    if (this.isComplete() && !other.isComplete())
+    if (thisRank > otherRank)
       return this;
-    if (!this.isComplete() && other.isComplete())
+    if (thisRank < otherRank)
       return other;
 
-    if (!this.isComplete() && !other.isComplete()) {
-      return this;
+    if (this.isComplete() || this.isPrefix()) {
+      return this.priority < other.priority ? this : other;
     }
 
-    return this.priority < other.priority ? this : other;
+    return this;
+  }
+
+  private int stateRank(ProcessResult<R> result) {
+    if (result.isComplete())
+      return 3;
+    if (result.isPrefix())
+      return 2;
+    return 1;
   }
 
   public boolean isComplete() {

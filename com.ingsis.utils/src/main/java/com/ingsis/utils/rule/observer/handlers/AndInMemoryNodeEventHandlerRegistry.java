@@ -2,11 +2,9 @@
  * My Project
  */
 
-package com.ingsis.utils.rule.observer.handlers; /*
-                                                  * My Project
-                                                  */
+package com.ingsis.utils.rule.observer.handlers;
 
-import com.ingsis.utils.nodes.nodes.Node;
+import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 

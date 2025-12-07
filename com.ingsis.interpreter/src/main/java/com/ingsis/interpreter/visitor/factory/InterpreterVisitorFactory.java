@@ -4,9 +4,9 @@
 
 package com.ingsis.interpreter.visitor.factory;
 
-import com.ingsis.runtime.Runtime;
+import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 
 public interface InterpreterVisitorFactory {
-    Interpreter createDefaultInterpreter(Runtime runtime);
+  Interpreter createDefaultInterpreter(Runtime runtime);
 }

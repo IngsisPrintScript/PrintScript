@@ -7,8 +7,8 @@ package com.ingsis.formatter.handlers;
 import java.io.IOException;
 import java.io.Writer;
 
-import com.ingsis.utils.nodes.nodes.expression.ExpressionNode;
-import com.ingsis.utils.nodes.nodes.expression.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.expressions.ExpressionNode;
+import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;

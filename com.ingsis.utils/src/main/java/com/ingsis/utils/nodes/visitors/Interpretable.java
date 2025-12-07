@@ -2,12 +2,10 @@
  * My Project
  */
 
-package com.ingsis.utils.nodes.visitors; /*
-                                          * My Project
-                                          */
+package com.ingsis.utils.nodes.visitors;
 
 import com.ingsis.utils.result.Result;
 
 public interface Interpretable {
-    Result<String> acceptInterpreter(Interpreter interpreter);
+  Result<String> acceptInterpreter(Interpreter interpreter);
 }

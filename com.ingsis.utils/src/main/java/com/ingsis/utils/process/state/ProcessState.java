@@ -15,5 +15,9 @@ public enum ProcessState {
   /**
    * The current accumulated characters are invalid for this token.
    */
-  INVALID
+  INVALID;
+
+  public Boolean isValid() {
+    return !this.equals(INVALID);
+  }
 }
