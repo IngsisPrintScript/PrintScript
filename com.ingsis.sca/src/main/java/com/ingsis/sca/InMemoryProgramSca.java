@@ -24,14 +24,15 @@ public class InMemoryProgramSca implements ProgramSca {
     @Override
     public Result<String> analyze() {
         SafeIterationResult<Interpretable> result = checkableStream.next();
+        Result<String> checkResult = new CorrectResult<String>("Checks passed.");
         while (result.isCorrect()) {
             Interpretable interpretable = result.iterationResult();
-            Result<String> checkResult = ((Checkable) interpretable).acceptChecker(checker);
+            checkResult = ((Checkable) interpretable).acceptChecker(checker);
             if (!checkResult.isCorrect()) {
                 return checkResult;
             }
             result = result.nextIterator().next();
         }
-        return new CorrectResult<String>("All checks passed.");
+        return checkResult;
     }
 }

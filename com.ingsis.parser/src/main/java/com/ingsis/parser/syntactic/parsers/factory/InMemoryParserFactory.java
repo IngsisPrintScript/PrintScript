@@ -4,6 +4,7 @@
 
 package com.ingsis.parser.syntactic.parsers.factory;
 
+import com.ingsis.parser.syntactic.parsers.CallFunctionParser;
 import com.ingsis.parser.syntactic.parsers.ConditionalParser;
 import com.ingsis.parser.syntactic.parsers.DeclarationParser;
 import com.ingsis.parser.syntactic.parsers.IdentifierParser;
@@ -105,9 +106,16 @@ public class InMemoryParserFactory implements ParserFactory {
 
     @Override
     public Parser<ExpressionNode> callFunctionParser(
+            Parser<ExpressionNode> identifierParser,
             Supplier<Parser<ExpressionNode>> leafParserSupplier) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'callFunctionParser'");
+        return new CallFunctionParser(
+                tokenTemplateFactory.separator(TokenType.LPAREN.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.COMMA.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.RPAREN.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                identifierParser,
+                leafParserSupplier,
+                this.nodeFactory);
     }
 
     @Override

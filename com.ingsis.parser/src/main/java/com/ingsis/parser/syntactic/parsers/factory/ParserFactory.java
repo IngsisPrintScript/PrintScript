@@ -18,7 +18,9 @@ public interface ParserFactory {
 
     Parser<ExpressionNode> operatorParser(Supplier<Parser<ExpressionNode>> leafParserSupplier);
 
-    Parser<ExpressionNode> callFunctionParser(Supplier<Parser<ExpressionNode>> leafParserSupplier);
+    Parser<ExpressionNode> callFunctionParser(
+            Parser<ExpressionNode> identifierParser,
+            Supplier<Parser<ExpressionNode>> leafParserSupplier);
 
     Parser<ExpressionNode> numberLiteralParser();
 

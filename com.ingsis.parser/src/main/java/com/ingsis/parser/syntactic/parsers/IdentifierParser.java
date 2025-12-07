@@ -16,27 +16,27 @@ import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public class IdentifierParser implements Parser<ExpressionNode> {
-    private final TokenTemplate identifierTemplate;
-    private final NodeFactory nodeFactory;
+  private final TokenTemplate identifierTemplate;
+  private final NodeFactory nodeFactory;
 
-    public IdentifierParser(TokenTemplateFactory tokenTemplateFactory, NodeFactory nodeFactory) {
-        this.identifierTemplate = tokenTemplateFactory.identifier();
-        this.nodeFactory = nodeFactory;
-    }
+  public IdentifierParser(TokenTemplateFactory tokenTemplateFactory, NodeFactory nodeFactory) {
+    this.identifierTemplate = tokenTemplateFactory.identifier();
+    this.nodeFactory = nodeFactory;
+  }
 
-    @Override
-    public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
-        SafeIterationResult<Token> consumeIdentifierResult = stream.consume(identifierTemplate);
-        if (!consumeIdentifierResult.isCorrect()) {
-            return ProcessCheckpoint.UNINITIALIZED();
-        }
-        return ProcessCheckpoint.INITIALIZED(
-                consumeIdentifierResult.nextIterator(),
-                ProcessResult.COMPLETE(
-                        nodeFactory.createIdentifierNode(
-                                consumeIdentifierResult.iterationResult().value(),
-                                consumeIdentifierResult.iterationResult().line(),
-                                consumeIdentifierResult.iterationResult().column()),
-                        NodePriority.IDENTIFIER.priority()));
+  @Override
+  public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+    SafeIterationResult<Token> consumeIdentifierResult = stream.consume(identifierTemplate);
+    if (!consumeIdentifierResult.isCorrect()) {
+      return ProcessCheckpoint.UNINITIALIZED();
     }
+    return ProcessCheckpoint.INITIALIZED(
+        consumeIdentifierResult.nextIterator(),
+        ProcessResult.COMPLETE(
+            nodeFactory.createIdentifierNode(
+                consumeIdentifierResult.iterationResult().value(),
+                consumeIdentifierResult.iterationResult().line(),
+                consumeIdentifierResult.iterationResult().column()),
+            NodePriority.IDENTIFIER.priority()));
+  }
 }
