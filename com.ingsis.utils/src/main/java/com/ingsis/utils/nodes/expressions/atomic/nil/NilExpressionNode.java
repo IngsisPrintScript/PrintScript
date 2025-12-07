@@ -15,45 +15,45 @@ import java.util.List;
 
 public record NilExpressionNode() implements ExpressionNode {
 
-  @Override
-  public Result<String> acceptChecker(Checker checker) {
-    return checker.check(this);
-  }
-
-  @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    Result<Object> interpretResult = interpreter.interpret(this);
-    if (interpretResult.isCorrect()) {
-      return new CorrectResult<String>("Interpreted correctly.");
-    } else {
-      return new IncorrectResult<>(interpretResult);
+    @Override
+    public Result<String> acceptChecker(Checker checker) {
+        return checker.check(this);
     }
-  }
 
-  @Override
-  public List<ExpressionNode> children() {
-    return List.of();
-  }
+    @Override
+    public Result<String> acceptInterpreter(Interpreter interpreter) {
+        Result<Object> interpretResult = interpreter.interpret(this);
+        if (interpretResult.isCorrect()) {
+            return new CorrectResult<String>("Interpreted correctly.");
+        } else {
+            return new IncorrectResult<>(interpretResult);
+        }
+    }
 
-  @Override
-  public String symbol() {
-    return Types.NIL.name();
-  }
+    @Override
+    public List<ExpressionNode> children() {
+        return List.of();
+    }
 
-  @Override
-  public Integer line() {
-    throw new UnsupportedOperationException(
-        "Nil expression node has no line where it was built from.");
-  }
+    @Override
+    public String symbol() {
+        return Types.NIL.name();
+    }
 
-  @Override
-  public Integer column() {
-    throw new UnsupportedOperationException(
-        "Nil expression node has no line where it was built from.");
-  }
+    @Override
+    public Integer line() {
+        throw new UnsupportedOperationException(
+                "Nil expression node has no line where it was built from.");
+    }
 
-  @Override
-  public Result<Object> solve() {
-    return new CorrectResult<>(null);
-  }
+    @Override
+    public Integer column() {
+        throw new UnsupportedOperationException(
+                "Nil expression node has no line where it was built from.");
+    }
+
+    @Override
+    public Result<Object> solve() {
+        return new CorrectResult<>(null);
+    }
 }

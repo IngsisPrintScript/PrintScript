@@ -1,9 +1,8 @@
-package com.ingsis.utils.runtime.environment.entries;
-
 /*
  * My Project
  */
 
+package com.ingsis.utils.runtime.environment.entries;
 
 import com.ingsis.utils.type.types.Types;
 

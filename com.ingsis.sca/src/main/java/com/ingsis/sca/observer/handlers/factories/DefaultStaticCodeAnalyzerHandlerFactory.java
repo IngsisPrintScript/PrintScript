@@ -22,53 +22,55 @@ import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import java.util.List;
 
 public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerFactory {
-  private final ResultFactory resultFactory;
-  private final RuleStatusProvider ruleStatusProvider;
+    private final ResultFactory resultFactory;
+    private final RuleStatusProvider ruleStatusProvider;
 
-  public DefaultStaticCodeAnalyzerHandlerFactory(
-      ResultFactory resultFactory, RuleStatusProvider ruleStatusProvider) {
-    this.resultFactory = resultFactory;
-    this.ruleStatusProvider = ruleStatusProvider;
-  }
-
-  @Override
-  public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
-    NodeEventHandlerRegistry<IdentifierNode> declarationHandler = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
-    String format = ruleStatusProvider.getRuleValue("identifier_format", String.class);
-    if ("camel case".equals(format)) {
-      declarationHandler.register(
-          new IdentifierPatternChecker(
-              resultFactory, "^[a-z]+(?:[A-Z][a-z0-9]*)*$", "camelCase"));
-    } else if ("snake case".equals(format)) {
-      declarationHandler.register(
-          new IdentifierPatternChecker(
-              resultFactory, "^[a-z]+(?:_[a-z0-9]+)*$", "snake_case"));
+    public DefaultStaticCodeAnalyzerHandlerFactory(
+            ResultFactory resultFactory, RuleStatusProvider ruleStatusProvider) {
+        this.resultFactory = resultFactory;
+        this.ruleStatusProvider = ruleStatusProvider;
     }
-    return new DeclarationHandler(declarationHandler, this.createExpressionHandler());
-  }
 
-  @Override
-  public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
-    return new FinalHandler<>(resultFactory);
-  }
+    @Override
+    public NodeEventHandler<DeclarationKeywordNode> createDeclarationHandler() {
+        NodeEventHandlerRegistry<IdentifierNode> declarationHandler =
+                new InMemoryNodeEventHandlerRegistry<>(resultFactory);
+        String format = ruleStatusProvider.getRuleValue("identifier_format", String.class);
+        if ("camel case".equals(format)) {
+            declarationHandler.register(
+                    new IdentifierPatternChecker(
+                            resultFactory, "^[a-z]+(?:[A-Z][a-z0-9]*)*$", "camelCase"));
+        } else if ("snake case".equals(format)) {
+            declarationHandler.register(
+                    new IdentifierPatternChecker(
+                            resultFactory, "^[a-z]+(?:_[a-z0-9]+)*$", "snake_case"));
+        }
+        return new DeclarationHandler(declarationHandler, this.createExpressionHandler());
+    }
 
-  @Override
-  public NodeEventHandler<ExpressionNode> createExpressionHandler() {
-    NodeEventHandlerRegistry<ExpressionNode> expressionHandler = new InMemoryNodeEventHandlerRegistry<>(resultFactory);
-    if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-println")) {
-      expressionHandler.register(
-          new FunctionArgumentTypeChecker(
-              resultFactory,
-              "println",
-              List.of(LiteralNode.class, IdentifierNode.class)));
+    @Override
+    public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
+        return new FinalHandler<>(resultFactory);
     }
-    if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-readInput")) {
-      expressionHandler.register(
-          new FunctionArgumentTypeChecker(
-              resultFactory,
-              "readInput",
-              List.of(LiteralNode.class, IdentifierNode.class)));
+
+    @Override
+    public NodeEventHandler<ExpressionNode> createExpressionHandler() {
+        NodeEventHandlerRegistry<ExpressionNode> expressionHandler =
+                new InMemoryNodeEventHandlerRegistry<>(resultFactory);
+        if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-println")) {
+            expressionHandler.register(
+                    new FunctionArgumentTypeChecker(
+                            resultFactory,
+                            "println",
+                            List.of(LiteralNode.class, IdentifierNode.class)));
+        }
+        if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-readInput")) {
+            expressionHandler.register(
+                    new FunctionArgumentTypeChecker(
+                            resultFactory,
+                            "readInput",
+                            List.of(LiteralNode.class, IdentifierNode.class)));
+        }
+        return expressionHandler;
     }
-    return expressionHandler;
-  }
 }

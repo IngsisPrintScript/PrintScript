@@ -1,6 +1,8 @@
-package com.ingsis.parser.syntactic.parsers.literals;
+/*
+ * My Project
+ */
 
-import java.math.BigDecimal;
+package com.ingsis.parser.syntactic.parsers.literals;
 
 import com.ingsis.parser.syntactic.NodePriority;
 import com.ingsis.parser.syntactic.parsers.Parser;
@@ -13,30 +15,30 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.template.TokenTemplate;
 import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.tokenstream.TokenStream;
+import java.math.BigDecimal;
 
 public class NumberLiteralParser implements Parser<ExpressionNode> {
-  private final TokenTemplate numberLiteralTemplate;
-  private final NodeFactory nodeFactory;
+    private final TokenTemplate numberLiteralTemplate;
+    private final NodeFactory nodeFactory;
 
-  public NumberLiteralParser(TokenTemplateFactory tokenTemplateFactory, NodeFactory nodeFactory) {
-    this.numberLiteralTemplate = tokenTemplateFactory.numberLiteral();
-    this.nodeFactory = nodeFactory;
-  }
-
-  @Override
-  public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
-    SafeIterationResult<Token> consumeLiteralResult = stream.consume(numberLiteralTemplate);
-    if (!consumeLiteralResult.isCorrect()) {
-      return ProcessCheckpoint.UNINITIALIZED();
+    public NumberLiteralParser(TokenTemplateFactory tokenTemplateFactory, NodeFactory nodeFactory) {
+        this.numberLiteralTemplate = tokenTemplateFactory.numberLiteral();
+        this.nodeFactory = nodeFactory;
     }
-    return ProcessCheckpoint.INITIALIZED(
-        consumeLiteralResult.nextIterator(),
-        ProcessResult.COMPLETE(
-            nodeFactory.createNumberLiteralNode(
-                new BigDecimal(consumeLiteralResult.iterationResult().value()),
-                consumeLiteralResult.iterationResult().line(),
-                consumeLiteralResult.iterationResult().column()),
-            NodePriority.LITERAL.priority()));
-  }
 
+    @Override
+    public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        SafeIterationResult<Token> consumeLiteralResult = stream.consume(numberLiteralTemplate);
+        if (!consumeLiteralResult.isCorrect()) {
+            return ProcessCheckpoint.UNINITIALIZED();
+        }
+        return ProcessCheckpoint.INITIALIZED(
+                consumeLiteralResult.nextIterator(),
+                ProcessResult.COMPLETE(
+                        nodeFactory.createNumberLiteralNode(
+                                new BigDecimal(consumeLiteralResult.iterationResult().value()),
+                                consumeLiteralResult.iterationResult().line(),
+                                consumeLiteralResult.iterationResult().column()),
+                        NodePriority.LITERAL.priority()));
+    }
 }

@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.utils.token.template.factories;
 
 import com.ingsis.utils.result.Result;
@@ -5,19 +9,19 @@ import com.ingsis.utils.token.template.TokenTemplate;
 
 public interface TokenTemplateFactory {
 
-  TokenTemplate numberLiteral();
+    TokenTemplate numberLiteral();
 
-  TokenTemplate stringLiteral();
+    TokenTemplate stringLiteral();
 
-  TokenTemplate booleanLiteral();
+    TokenTemplate booleanLiteral();
 
-  TokenTemplate identifier();
+    TokenTemplate identifier();
 
-  Result<TokenTemplate> keyword(String keyword);
+    Result<TokenTemplate> keyword(String keyword);
 
-  Result<TokenTemplate> type(String keyword);
+    Result<TokenTemplate> type(String keyword);
 
-  Result<TokenTemplate> operator(String symbol);
+    Result<TokenTemplate> operator(String symbol);
 
-  Result<TokenTemplate> separator(String symbol);
+    Result<TokenTemplate> separator(String symbol);
 }

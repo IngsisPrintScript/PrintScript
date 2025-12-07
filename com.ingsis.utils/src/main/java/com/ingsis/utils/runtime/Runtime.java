@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.utils.runtime;
 
 /*
@@ -10,15 +14,15 @@ import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 
 public sealed interface Runtime permits DefaultRuntime {
-  Environment getCurrentEnvironment();
+    Environment getCurrentEnvironment();
 
-  Result<Environment> push();
+    Result<Environment> push();
 
-  Result<Environment> pushClosure(FunctionEntry functionEntry);
+    Result<Environment> pushClosure(FunctionEntry functionEntry);
 
-  Result<Environment> pop();
+    Result<Environment> pop();
 
-  void setExecutionError(IncorrectResult<?> result);
+    void setExecutionError(IncorrectResult<?> result);
 
-  IncorrectResult<?> getExecutionError();
+    IncorrectResult<?> getExecutionError();
 }

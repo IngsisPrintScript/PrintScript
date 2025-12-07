@@ -7,13 +7,12 @@ package com.ingsis.utils.nodes.expressions;
 import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.result.Result;
-
 import java.util.List;
 
 public interface ExpressionNode extends Node, Interpretable {
-  List<ExpressionNode> children();
+    List<ExpressionNode> children();
 
-  Result<Object> solve();
+    Result<Object> solve();
 
-  String symbol();
+    String symbol();
 }

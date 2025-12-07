@@ -10,9 +10,9 @@ import com.ingsis.utils.nodes.keyword.IfKeywordNode;
 import com.ingsis.utils.rule.observer.publishers.GenericNodeEventPublisher;
 
 public interface PublishersFactory {
-  GenericNodeEventPublisher<DeclarationKeywordNode> createLetNodePublisher();
+    GenericNodeEventPublisher<DeclarationKeywordNode> createLetNodePublisher();
 
-  GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher();
+    GenericNodeEventPublisher<IfKeywordNode> createConditionalNodePublisher();
 
-  GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher();
+    GenericNodeEventPublisher<ExpressionNode> createExpressionNodePublisher();
 }

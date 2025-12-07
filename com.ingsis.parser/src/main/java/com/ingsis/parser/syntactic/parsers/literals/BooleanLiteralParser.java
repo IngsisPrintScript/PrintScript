@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.parser.syntactic.parsers.literals;
 
 import com.ingsis.parser.syntactic.NodePriority;
@@ -13,28 +17,29 @@ import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public class BooleanLiteralParser implements Parser<ExpressionNode> {
-  private final TokenTemplate booleanLiteralTemplate;
-  private final NodeFactory nodeFactory;
+    private final TokenTemplate booleanLiteralTemplate;
+    private final NodeFactory nodeFactory;
 
-  public BooleanLiteralParser(TokenTemplateFactory tokenTemplateFactory, NodeFactory nodeFactory) {
-    this.booleanLiteralTemplate = tokenTemplateFactory.booleanLiteral();
-    this.nodeFactory = nodeFactory;
-  }
-
-  @Override
-  public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
-    SafeIterationResult<Token> consumeLiteralResult = stream.consume(booleanLiteralTemplate);
-    if (!consumeLiteralResult.isCorrect()) {
-      return ProcessCheckpoint.UNINITIALIZED();
+    public BooleanLiteralParser(
+            TokenTemplateFactory tokenTemplateFactory, NodeFactory nodeFactory) {
+        this.booleanLiteralTemplate = tokenTemplateFactory.booleanLiteral();
+        this.nodeFactory = nodeFactory;
     }
-    return ProcessCheckpoint.INITIALIZED(
-        consumeLiteralResult.nextIterator(),
-        ProcessResult.COMPLETE(
-            nodeFactory.createBooleanLiteralNode(
-                Boolean.parseBoolean(consumeLiteralResult.iterationResult().value()),
-                consumeLiteralResult.iterationResult().line(),
-                consumeLiteralResult.iterationResult().column()),
-            NodePriority.IDENTIFIER.priority()));
-  }
 
+    @Override
+    public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        SafeIterationResult<Token> consumeLiteralResult = stream.consume(booleanLiteralTemplate);
+        if (!consumeLiteralResult.isCorrect()) {
+            return ProcessCheckpoint.UNINITIALIZED();
+        }
+        return ProcessCheckpoint.INITIALIZED(
+                consumeLiteralResult.nextIterator(),
+                ProcessResult.COMPLETE(
+                        nodeFactory.createBooleanLiteralNode(
+                                Boolean.parseBoolean(
+                                        consumeLiteralResult.iterationResult().value()),
+                                consumeLiteralResult.iterationResult().line(),
+                                consumeLiteralResult.iterationResult().column()),
+                        NodePriority.IDENTIFIER.priority()));
+    }
 }

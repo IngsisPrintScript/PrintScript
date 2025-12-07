@@ -1,7 +1,3 @@
-/*
- * My Project
- */
-
 package com.ingsis.runtime.environment;
 
 import com.ingsis.runtime.environment.entries.FunctionEntry;

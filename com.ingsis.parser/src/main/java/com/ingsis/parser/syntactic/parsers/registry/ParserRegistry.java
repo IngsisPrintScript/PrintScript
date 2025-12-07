@@ -8,5 +8,5 @@ import com.ingsis.parser.syntactic.parsers.Parser;
 import com.ingsis.utils.nodes.Node;
 
 public interface ParserRegistry<T extends Node> extends Parser<T> {
-  ParserRegistry<T> registerParser(Parser<T> parser);
+    ParserRegistry<T> registerParser(Parser<T> parser);
 }

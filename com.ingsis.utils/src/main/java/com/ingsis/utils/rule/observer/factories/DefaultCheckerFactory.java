@@ -10,7 +10,7 @@ import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
 
 public class DefaultCheckerFactory implements CheckerFactory {
 
-  public Checker createInMemoryEventBasedChecker(PublishersFactory publishersFactory) {
-    return new EventsChecker(publishersFactory);
-  }
+    public Checker createInMemoryEventBasedChecker(PublishersFactory publishersFactory) {
+        return new EventsChecker(publishersFactory);
+    }
 }

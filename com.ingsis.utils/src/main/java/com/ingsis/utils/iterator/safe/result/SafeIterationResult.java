@@ -1,14 +1,18 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.utils.iterator.safe.result;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
 
 public sealed interface SafeIterationResult<T>
-    permits CorrectIterationResult, IncorrectIterationResult {
-  Boolean isCorrect();
+        permits CorrectIterationResult, IncorrectIterationResult {
+    Boolean isCorrect();
 
-  SafeIterator<T> nextIterator();
+    SafeIterator<T> nextIterator();
 
-  T iterationResult();
+    T iterationResult();
 
-  String error();
+    String error();
 }

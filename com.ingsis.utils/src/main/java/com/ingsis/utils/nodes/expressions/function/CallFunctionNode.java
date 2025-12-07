@@ -11,55 +11,54 @@ import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public record CallFunctionNode(
-    IdentifierNode identifierNode,
-    List<ExpressionNode> argumentNodes,
-    Integer line,
-    Integer column)
-    implements ExpressionNode {
+        IdentifierNode identifierNode,
+        List<ExpressionNode> argumentNodes,
+        Integer line,
+        Integer column)
+        implements ExpressionNode {
 
-  public CallFunctionNode {
-    argumentNodes = List.copyOf(argumentNodes);
-  }
-
-  @Override
-  public List<ExpressionNode> argumentNodes() {
-    return List.copyOf(argumentNodes);
-  }
-
-  @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    Result<Object> interpretResult = interpreter.interpret(this);
-    if (!interpretResult.isCorrect()) {
-      return new IncorrectResult<>(interpretResult);
+    public CallFunctionNode {
+        argumentNodes = List.copyOf(argumentNodes);
     }
-    return new CorrectResult<>("Interpreted successfully.");
-  }
 
-  @Override
-  public Result<String> acceptChecker(Checker checker) {
-    return checker.check(this);
-  }
+    @Override
+    public List<ExpressionNode> argumentNodes() {
+        return List.copyOf(argumentNodes);
+    }
 
-  @Override
-  public List<ExpressionNode> children() {
-    List<ExpressionNode> children = new ArrayList<>();
-    children.add(identifierNode);
-    children.addAll(argumentNodes);
-    return children;
-  }
+    @Override
+    public Result<String> acceptInterpreter(Interpreter interpreter) {
+        Result<Object> interpretResult = interpreter.interpret(this);
+        if (!interpretResult.isCorrect()) {
+            return new IncorrectResult<>(interpretResult);
+        }
+        return new CorrectResult<>("Interpreted successfully.");
+    }
 
-  @Override
-  public String symbol() {
-    return identifierNode().name();
-  }
+    @Override
+    public Result<String> acceptChecker(Checker checker) {
+        return checker.check(this);
+    }
 
-  @Override
-  public Result<Object> solve() {
-    return new CorrectResult<>(null);
-  }
+    @Override
+    public List<ExpressionNode> children() {
+        List<ExpressionNode> children = new ArrayList<>();
+        children.add(identifierNode);
+        children.addAll(argumentNodes);
+        return children;
+    }
+
+    @Override
+    public String symbol() {
+        return identifierNode().name();
+    }
+
+    @Override
+    public Result<Object> solve() {
+        return new CorrectResult<>(null);
+    }
 }

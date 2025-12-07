@@ -9,5 +9,5 @@ import com.ingsis.utils.result.Result;
 import java.util.List;
 
 public interface ExpressionStrategy {
-  Result<Object> solve(List<ExpressionNode> arguments);
+    Result<Object> solve(List<ExpressionNode> arguments);
 }

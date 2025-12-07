@@ -12,46 +12,46 @@ import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import java.util.List;
 
 public class FunctionArgumentTypeChecker implements NodeEventHandler<ExpressionNode> {
-  private final ResultFactory resultFactory;
-  private final String functionExpectedName;
-  private final List<Class<? extends ExpressionNode>> allowedArgumentTypes;
+    private final ResultFactory resultFactory;
+    private final String functionExpectedName;
+    private final List<Class<? extends ExpressionNode>> allowedArgumentTypes;
 
-  public FunctionArgumentTypeChecker(
-      ResultFactory resultFactory,
-      String functionExpectedName,
-      List<Class<? extends ExpressionNode>> allowedArgumentTypes) {
-    this.resultFactory = resultFactory;
-    this.functionExpectedName = functionExpectedName;
-    this.allowedArgumentTypes = allowedArgumentTypes;
-  }
-
-  @Override
-  public Result<String> handle(ExpressionNode node) {
-    if (!(node instanceof CallFunctionNode callFunctionNode)) {
-      return resultFactory.createCorrectResult("Check does not apply to that node.");
+    public FunctionArgumentTypeChecker(
+            ResultFactory resultFactory,
+            String functionExpectedName,
+            List<Class<? extends ExpressionNode>> allowedArgumentTypes) {
+        this.resultFactory = resultFactory;
+        this.functionExpectedName = functionExpectedName;
+        this.allowedArgumentTypes = allowedArgumentTypes;
     }
 
-    String functionActualName = callFunctionNode.identifierNode().name();
+    @Override
+    public Result<String> handle(ExpressionNode node) {
+        if (!(node instanceof CallFunctionNode callFunctionNode)) {
+            return resultFactory.createCorrectResult("Check does not apply to that node.");
+        }
 
-    if (!functionActualName.equals(functionExpectedName)) {
-      return resultFactory.createCorrectResult("Check passed.");
+        String functionActualName = callFunctionNode.identifierNode().name();
+
+        if (!functionActualName.equals(functionExpectedName)) {
+            return resultFactory.createCorrectResult("Check passed.");
+        }
+
+        List<ExpressionNode> arguments = callFunctionNode.argumentNodes();
+
+        for (ExpressionNode argument : arguments) {
+            if (!allowedArgumentTypes.contains(argument.getClass())) {
+                return resultFactory.createIncorrectResult(
+                        String.format(
+                                "%s function does not accept argument number: %d type: %s"
+                                        + "on line: %d and columnd: %d",
+                                functionExpectedName,
+                                arguments.indexOf(argument),
+                                argument.getClass().toString(),
+                                argument.line(),
+                                argument.column()));
+            }
+        }
+        return resultFactory.createCorrectResult("Check passed.");
     }
-
-    List<ExpressionNode> arguments = callFunctionNode.argumentNodes();
-
-    for (ExpressionNode argument : arguments) {
-      if (!allowedArgumentTypes.contains(argument.getClass())) {
-        return resultFactory.createIncorrectResult(
-            String.format(
-                "%s function does not accept argument number: %d type: %s"
-                    + "on line: %d and columnd: %d",
-                functionExpectedName,
-                arguments.indexOf(argument),
-                argument.getClass().toString(),
-                argument.line(),
-                argument.column()));
-      }
-    }
-    return resultFactory.createCorrectResult("Check passed.");
-  }
 }

@@ -8,5 +8,5 @@ import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.result.Result;
 
 public interface NodeEventPublisher<T extends Node> {
-  Result<String> notify(T node);
+    Result<String> notify(T node);
 }

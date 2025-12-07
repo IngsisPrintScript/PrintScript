@@ -11,5 +11,5 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public interface Parser<T extends Node> {
-  ProcessCheckpoint<Token, ProcessResult<T>> parse(TokenStream stream);
+    ProcessCheckpoint<Token, ProcessResult<T>> parse(TokenStream stream);
 }

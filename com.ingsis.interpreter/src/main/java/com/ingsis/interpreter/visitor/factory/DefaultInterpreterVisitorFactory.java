@@ -10,15 +10,14 @@ import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.runtime.Runtime;
 
 public final class DefaultInterpreterVisitorFactory implements InterpreterVisitorFactory {
-  private final ResultFactory resultFactory;
+    private final ResultFactory resultFactory;
 
-  public DefaultInterpreterVisitorFactory(
-      ResultFactory resultFactory) {
-    this.resultFactory = resultFactory;
-  }
+    public DefaultInterpreterVisitorFactory(ResultFactory resultFactory) {
+        this.resultFactory = resultFactory;
+    }
 
-  @Override
-  public Interpreter createDefaultInterpreter(Runtime runtime) {
-    return new DefaultInterpreterVisitor(runtime, resultFactory);
-  }
+    @Override
+    public Interpreter createDefaultInterpreter(Runtime runtime) {
+        return new DefaultInterpreterVisitor(runtime, resultFactory);
+    }
 }

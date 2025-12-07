@@ -7,11 +7,11 @@ package com.ingsis.utils.token;
 import com.ingsis.utils.token.type.TokenType;
 
 public interface Token {
-  TokenType type();
+    TokenType type();
 
-  Integer line();
+    Integer line();
 
-  Integer column();
+    Integer column();
 
-  String value();
+    String value();
 }

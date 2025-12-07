@@ -12,17 +12,13 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.type.TokenType;
 
 public final class DefaultTokensFactory implements TokenFactory {
-  @Override
-  public Result<Token> createToken(String value, Integer line, Integer column) {
-    Result<TokenType> getTypeResult = TokenType.fromString(value);
-    if (!getTypeResult.isCorrect()) {
-      return new IncorrectResult<>("There is no token type for input: " + value);
+    @Override
+    public Result<Token> createToken(String value, Integer line, Integer column) {
+        Result<TokenType> getTypeResult = TokenType.fromString(value);
+        if (!getTypeResult.isCorrect()) {
+            return new IncorrectResult<>("There is no token type for input: " + value);
+        }
+        return new CorrectResult<Token>(
+                new DefaultToken(getTypeResult.result(), value, line, column));
     }
-    return new CorrectResult<Token>(
-        new DefaultToken(
-            getTypeResult.result(),
-            value,
-            line,
-            column));
-  }
 }

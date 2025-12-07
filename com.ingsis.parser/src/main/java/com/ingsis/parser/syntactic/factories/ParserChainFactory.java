@@ -9,7 +9,7 @@ import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 
 public interface ParserChainFactory {
-  Parser<Node> createDefaultChain();
+    Parser<Node> createDefaultChain();
 
-  Parser<ExpressionNode> createExpressionChain();
+    Parser<ExpressionNode> createExpressionChain();
 }

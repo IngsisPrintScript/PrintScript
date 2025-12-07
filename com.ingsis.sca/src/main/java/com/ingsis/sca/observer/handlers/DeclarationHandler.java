@@ -11,24 +11,24 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 
 public class DeclarationHandler implements NodeEventHandler<DeclarationKeywordNode> {
-  private final NodeEventHandler<IdentifierNode> identifierChecker;
-  private final NodeEventHandler<ExpressionNode> expressionChecker;
+    private final NodeEventHandler<IdentifierNode> identifierChecker;
+    private final NodeEventHandler<ExpressionNode> expressionChecker;
 
-  public DeclarationHandler(
-      NodeEventHandler<IdentifierNode> identifierChecker,
-      NodeEventHandler<ExpressionNode> expressionChecker) {
-    this.identifierChecker = identifierChecker;
-    this.expressionChecker = expressionChecker;
-  }
-
-  @Override
-  public Result<String> handle(DeclarationKeywordNode node) {
-    IdentifierNode identifierNode = node.identifierNode();
-    Result<String> identifierCheckResult = identifierChecker.handle(identifierNode);
-    if (!identifierCheckResult.isCorrect()) {
-      return identifierCheckResult;
+    public DeclarationHandler(
+            NodeEventHandler<IdentifierNode> identifierChecker,
+            NodeEventHandler<ExpressionNode> expressionChecker) {
+        this.identifierChecker = identifierChecker;
+        this.expressionChecker = expressionChecker;
     }
-    ExpressionNode expressionNode = node.expressionNode();
-    return expressionChecker.handle(expressionNode);
-  }
+
+    @Override
+    public Result<String> handle(DeclarationKeywordNode node) {
+        IdentifierNode identifierNode = node.identifierNode();
+        Result<String> identifierCheckResult = identifierChecker.handle(identifierNode);
+        if (!identifierCheckResult.isCorrect()) {
+            return identifierCheckResult;
+        }
+        ExpressionNode expressionNode = node.expressionNode();
+        return expressionChecker.handle(expressionNode);
+    }
 }

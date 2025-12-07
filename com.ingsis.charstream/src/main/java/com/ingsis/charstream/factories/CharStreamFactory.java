@@ -12,14 +12,14 @@ import com.ingsis.utils.metachar.MetaChar;
 import java.io.InputStream;
 
 public final class CharStreamFactory implements SafeIteratorFactory<MetaChar> {
-  private final IterationResultFactory iterationResultFactory;
+    private final IterationResultFactory iterationResultFactory;
 
-  public CharStreamFactory(IterationResultFactory iterationResultFactory) {
-    this.iterationResultFactory = iterationResultFactory;
-  }
+    public CharStreamFactory(IterationResultFactory iterationResultFactory) {
+        this.iterationResultFactory = iterationResultFactory;
+    }
 
-  @Override
-  public SafeIterator<MetaChar> fromInputStream(InputStream in) {
-    return new CharStream(in, iterationResultFactory);
-  }
+    @Override
+    public SafeIterator<MetaChar> fromInputStream(InputStream in) {
+        return new CharStream(in, iterationResultFactory);
+    }
 }

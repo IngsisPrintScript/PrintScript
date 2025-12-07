@@ -14,21 +14,21 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.type.types.Types;
 
 public record DeclarationKeywordNode(
-    IdentifierNode identifierNode,
-    ExpressionNode expressionNode,
-    Types declaredType,
-    Boolean isMutable,
-    Integer line,
-    Integer column)
-    implements Node, Interpretable {
+        IdentifierNode identifierNode,
+        ExpressionNode expressionNode,
+        Types declaredType,
+        Boolean isMutable,
+        Integer line,
+        Integer column)
+        implements Node, Interpretable {
 
-  @Override
-  public Result<String> acceptChecker(Checker checker) {
-    return checker.check(this);
-  }
+    @Override
+    public Result<String> acceptChecker(Checker checker) {
+        return checker.check(this);
+    }
 
-  @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    return interpreter.interpret(this);
-  }
+    @Override
+    public Result<String> acceptInterpreter(Interpreter interpreter) {
+        return interpreter.interpret(this);
+    }
 }
