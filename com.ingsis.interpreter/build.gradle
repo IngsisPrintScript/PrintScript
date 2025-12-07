@@ -3,6 +3,5 @@ plugins {
 }
 
 dependencies {
-    implementation project(':com.ingsis.runtime')
     implementation project(':com.ingsis.utils')
 }

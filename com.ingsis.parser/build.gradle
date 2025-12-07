@@ -4,7 +4,6 @@ plugins {
 }
 
 dependencies {
-    implementation project(':com.ingsis.runtime')
     implementation project(':com.ingsis.utils')
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.mockito:mockito-core:5.12.0'
