@@ -14,7 +14,7 @@ public enum TokenType {
     // ===== Identifiers & Literals =====
     IDENTIFIER(null, "[a-zA-Z_][a-zA-Z0-9_]*", null),
     NUMBER_LITERAL(null, Types.NUMBER.regEx(), "\\d+\\.?"),
-    STRING_LITERAL(null, Types.STRING.regEx(), "\"(?:\\\\.|[^\\\\\"])*\""),
+    STRING_LITERAL(null, Types.STRING.regEx(), "\"(?:\\\\.|[^\\\\\"]*)?"),
     BOOLEAN_LITERAL(null, Types.BOOLEAN.regEx(), "t|f|tr|fa|tru|fals"),
 
     // ===== Keywords =====

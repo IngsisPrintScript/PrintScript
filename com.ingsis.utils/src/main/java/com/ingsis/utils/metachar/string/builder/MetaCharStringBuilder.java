@@ -28,6 +28,10 @@ public class MetaCharStringBuilder {
         this(List.of());
     }
 
+    public List<MetaChar> chars() {
+        return List.copyOf(charStream);
+    }
+
     public Integer getLine() {
         return this.line;
     }
