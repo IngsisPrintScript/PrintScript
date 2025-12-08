@@ -2,7 +2,7 @@ name: CD
 
 on:
   push:
-    branches: [main]
+    branches: [main, fixes]
   workflow_dispatch:
 
 jobs:
@@ -32,15 +32,20 @@ jobs:
       - name: Determine Version
         id: version
         run: |
-          # Extract version from gradle.properties or use git tag
-          VERSION=$(./gradlew properties -q | grep "version:" | awk '{print $2}')
+          # If triggered by a tag, use the tag (strip refs/tags/). Otherwise fall back to gradle.properties or a default.
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION="${GITHUB_REF#refs/tags/}"
+          else
+            VERSION=$(./gradlew -q properties --no-daemon | grep "^version:" | awk '{print $2}')
+            VERSION=${VERSION:-1.0.0}
+          fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Run Full Validation
-        run: ./gradlew build
+        run: ./gradlew build -Pversion=${{ steps.version.outputs.VERSION }}
 
       - name: Publish to GitHub Packages
-        run: ./gradlew publish
+        run: ./gradlew publish -Pversion=${{ steps.version.outputs.VERSION }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

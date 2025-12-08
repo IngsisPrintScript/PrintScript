@@ -25,7 +25,7 @@ jobs:
             build/reports/jacoco/**
             **/build/reports/jacoco/**
             **/build/custom-reports/jacoco/**
-          path: coverage
+          # path: coverage
 
       - name: Print where it is
         run: |
