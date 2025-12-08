@@ -33,21 +33,15 @@ public final class TokenizerFactoryV1_1 implements TokenizerFactory {
         registry =
                 registry.registerTokenizer(
                         new ExactMatchTokenizer(
-                                TokenType.CONST.lexeme(),
-                                this.tokenFactory,
-                                TokenCategory.KEYWORD.priority()));
+                                TokenType.CONST, TokenCategory.KEYWORD, this.tokenFactory));
         registry =
                 registry.registerTokenizer(
                         new ExactMatchTokenizer(
-                                TokenType.IF.lexeme(),
-                                this.tokenFactory,
-                                TokenCategory.KEYWORD.priority()));
+                                TokenType.IF, TokenCategory.KEYWORD, this.tokenFactory));
         registry =
                 registry.registerTokenizer(
                         new ExactMatchTokenizer(
-                                TokenType.ELSE.lexeme(),
-                                this.tokenFactory,
-                                TokenCategory.KEYWORD.priority()));
+                                TokenType.ELSE, TokenCategory.KEYWORD, this.tokenFactory));
         return registry;
     }
 
@@ -55,9 +49,7 @@ public final class TokenizerFactoryV1_1 implements TokenizerFactory {
         registry =
                 registry.registerTokenizer(
                         new ExactMatchTokenizer(
-                                TokenType.BOOLEAN.lexeme(),
-                                this.tokenFactory,
-                                TokenCategory.TYPE.priority()));
+                                TokenType.BOOLEAN, TokenCategory.TYPE, this.tokenFactory));
         return registry;
     }
 
@@ -65,9 +57,9 @@ public final class TokenizerFactoryV1_1 implements TokenizerFactory {
         registry =
                 registry.registerTokenizer(
                         new PatternMatchTokenizer(
-                                TokenType.BOOLEAN_LITERAL.pattern(),
-                                this.tokenFactory,
-                                TokenCategory.BOOLEAN_LITERAL.priority()));
+                                TokenType.BOOLEAN_LITERAL,
+                                TokenCategory.BOOLEAN_LITERAL,
+                                this.tokenFactory));
         return registry;
     }
 }

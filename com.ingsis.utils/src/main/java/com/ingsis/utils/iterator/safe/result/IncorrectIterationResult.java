@@ -32,6 +32,11 @@ public final class IncorrectIterationResult<T> implements SafeIterationResult<T>
     }
 
     @Override
+    public String toString() {
+        return "ERROR: " + error();
+    }
+
+    @Override
     public T iterationResult() {
         throw new UnsupportedOperationException("Incorrect result has no iteration result.");
     }

@@ -14,6 +14,7 @@ import com.ingsis.utils.runtime.environment.entries.factories.EntryFactory;
 import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -121,7 +122,7 @@ public final class DefaultEnvironment implements Environment {
 
     @Override
     public Result<FunctionEntry> createFunction(
-            String identifier, Map<String, Types> arguments, Types returnType) {
+            String identifier, LinkedHashMap<String, Types> arguments, Types returnType) {
         if (isFunctionDeclared(identifier)) {
             return new IncorrectResult<>("Function is already declared.");
         }

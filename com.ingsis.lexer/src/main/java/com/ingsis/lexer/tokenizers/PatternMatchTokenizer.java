@@ -4,35 +4,34 @@
 
 package com.ingsis.lexer.tokenizers;
 
+import com.ingsis.lexer.tokenizers.categories.TokenCategory;
 import com.ingsis.utils.process.result.ProcessResult;
-import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.TokenFactory;
+import com.ingsis.utils.token.type.TokenType;
 
 public class PatternMatchTokenizer implements Tokenizer {
-  private final String pattern;
-  private final TokenFactory tokenFactory;
-  private final Integer priority;
+    private final TokenType type;
+    private final TokenCategory category;
+    private final TokenFactory tokenFactory;
 
-  public PatternMatchTokenizer(String pattern, TokenFactory tokenFactory, Integer priority) {
-    this.pattern = pattern;
-    this.tokenFactory = tokenFactory;
-    this.priority = priority;
-  }
-
-  private Boolean canTokenize(String input) {
-    return input.matches(pattern);
-  }
-
-  @Override
-  public ProcessResult<Token> tokenize(String input, Integer line, Integer column) {
-    if (!canTokenize(input)) {
-      return ProcessResult.INVALID();
+    public PatternMatchTokenizer(
+            TokenType type, TokenCategory category, TokenFactory tokenFactory) {
+        this.type = type;
+        this.category = category;
+        this.tokenFactory = tokenFactory;
     }
-    Result<Token> createTokenResult = tokenFactory.createToken(input, line, column);
-    if (!createTokenResult.isCorrect()) {
-      return ProcessResult.INVALID();
+
+    private Boolean canTokenize(String input) {
+        return input.matches(type.pattern());
     }
-    return ProcessResult.COMPLETE(createTokenResult.result(), priority);
-  }
+
+    @Override
+    public ProcessResult<Token> tokenize(String input, Integer line, Integer column) {
+        if (!canTokenize(input)) {
+            return ProcessResult.INVALID();
+        }
+        Token token = tokenFactory.createKnownToken(type, input, line, column);
+        return ProcessResult.COMPLETE(token, category.priority());
+    }
 }

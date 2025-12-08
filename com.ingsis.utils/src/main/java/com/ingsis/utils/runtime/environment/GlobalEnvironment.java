@@ -13,6 +13,7 @@ import com.ingsis.utils.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.runtime.environment.entries.factories.EntryFactory;
 import com.ingsis.utils.type.types.Types;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,7 +97,7 @@ public final class GlobalEnvironment implements Environment {
 
     @Override
     public Result<FunctionEntry> createFunction(
-            String identifier, Map<String, Types> arguments, Types returnType) {
+            String identifier, LinkedHashMap<String, Types> arguments, Types returnType) {
         if (isFunctionDeclared(identifier)) {
             return new IncorrectResult<>("Function is already declared.");
         }

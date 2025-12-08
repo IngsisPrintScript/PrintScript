@@ -11,8 +11,8 @@ import com.ingsis.utils.runtime.environment.entries.DefaultVariableEntry;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.type.types.Types;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public final class DefaultEntryFactory implements EntryFactory {
     @Override
@@ -23,7 +23,7 @@ public final class DefaultEntryFactory implements EntryFactory {
     @Override
     public FunctionEntry createFunctionEntry(
             Types returnType,
-            Map<String, Types> arguments,
+            LinkedHashMap<String, Types> arguments,
             List<ExpressionNode> body,
             Environment closure) {
         return new DefaultFunctionEntry(returnType, arguments, body, closure);

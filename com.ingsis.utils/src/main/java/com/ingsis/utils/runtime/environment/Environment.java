@@ -9,6 +9,7 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.type.types.Types;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -31,7 +32,7 @@ public sealed interface Environment permits GlobalEnvironment, DefaultEnvironmen
     Boolean isVariableInitialized(String identifier);
 
     Result<FunctionEntry> createFunction(
-            String identifier, Map<String, Types> arguments, Types returnType);
+            String identifier, LinkedHashMap<String, Types> arguments, Types returnType);
 
     Result<FunctionEntry> readFunction(String identifier);
 

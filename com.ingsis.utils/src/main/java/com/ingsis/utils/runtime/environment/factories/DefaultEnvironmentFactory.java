@@ -12,6 +12,7 @@ import com.ingsis.utils.runtime.environment.entries.factories.EntryFactory;
 import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -45,7 +46,8 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
     }
 
     private void addGlobalFunctions(GlobalEnvironment global) {
-        global.createFunction("println", Map.of(PARAM_STRING, Types.STRING), Types.NIL);
+        global.createFunction(
+                "println", new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)), Types.NIL);
         global.updateFunction(
                 "println",
                 List.of(
@@ -57,7 +59,10 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 },
                                 null,
                                 null)));
-        global.createFunction("readInput", Map.of(PARAM_STRING, Types.STRING), Types.UNDEFINED);
+        global.createFunction(
+                "readInput",
+                new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
+                Types.UNDEFINED);
         global.updateFunction(
                 "readInput",
                 List.of(
@@ -72,7 +77,10 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 },
                                 null,
                                 null)));
-        global.createFunction("readEnv", Map.of(PARAM_STRING, Types.STRING), Types.UNDEFINED);
+        global.createFunction(
+                "readEnv",
+                new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
+                Types.UNDEFINED);
         global.updateFunction(
                 "readEnv",
                 List.of(

@@ -4,44 +4,40 @@
 
 package com.ingsis.lexer.tokenizers;
 
+import com.ingsis.lexer.tokenizers.categories.TokenCategory;
 import com.ingsis.utils.process.result.ProcessResult;
-import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.TokenFactory;
+import com.ingsis.utils.token.type.TokenType;
 
 public class PrefixAwarePatternTokenizer implements Tokenizer {
-    private final String pattern;
-    private final String prefixPattern;
+    TokenType type;
+    TokenCategory category;
     private final TokenFactory tokenFactory;
-    private final Integer priority;
 
     public PrefixAwarePatternTokenizer(
-            String pattern, String prefixPattern, TokenFactory tokenFactory, Integer priority) {
-        this.pattern = pattern;
-        this.prefixPattern = prefixPattern;
+            TokenType type, TokenCategory category, TokenFactory tokenFactory) {
+        this.type = type;
         this.tokenFactory = tokenFactory;
-        this.priority = priority;
+        this.category = category;
     }
 
     private Boolean matchesPattern(String input) {
-        return input.matches(pattern);
+        return input.matches(type.pattern());
     }
 
     private Boolean matchesPrefixPattern(String input) {
-        return input.matches(prefixPattern);
+        return input.matches(type.prefixPattern());
     }
 
     @Override
     public ProcessResult<Token> tokenize(String input, Integer line, Integer column) {
         if (matchesPattern(input)) {
-            Result<Token> createTokenResult = tokenFactory.createToken(input, line, column);
-            if (!createTokenResult.isCorrect()) {
-                return ProcessResult.INVALID();
-            }
-            return ProcessResult.COMPLETE(createTokenResult.result(), priority);
+            Token token = tokenFactory.createKnownToken(type, input, line, column);
+            return ProcessResult.COMPLETE(token, category.priority());
 
         } else if (matchesPrefixPattern(input)) {
-            return ProcessResult.PREFIX(priority);
+            return ProcessResult.PREFIX(category.priority());
         }
         return ProcessResult.INVALID();
     }

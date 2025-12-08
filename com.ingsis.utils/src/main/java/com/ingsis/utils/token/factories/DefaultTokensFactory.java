@@ -21,4 +21,9 @@ public final class DefaultTokensFactory implements TokenFactory {
         return new CorrectResult<Token>(
                 new DefaultToken(getTypeResult.result(), value, line, column));
     }
+
+    @Override
+    public Token createKnownToken(TokenType type, String lexeme, Integer line, Integer column) {
+        return new DefaultToken(type, lexeme, line, column);
+    }
 }

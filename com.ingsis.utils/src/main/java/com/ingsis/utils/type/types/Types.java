@@ -12,7 +12,7 @@ public enum Types {
     BOOLEAN("boolean", "\\b(?:true|false)\\b", Boolean.class),
     NIL("nil", "\\bnil\\b", null),
     UNDEFINED("undefined", "\\bundefined\\b", null),
-    STRING("string", "([^\"\\\\]|\\\\.)*", String.class);
+    STRING("string", "\"(?:[^\\\\\"]|\\\\.)*\"", String.class);
 
     private final String keyword;
     private final String regEx;

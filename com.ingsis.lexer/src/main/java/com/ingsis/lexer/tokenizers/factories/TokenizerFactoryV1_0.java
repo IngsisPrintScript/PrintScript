@@ -36,9 +36,7 @@ public final class TokenizerFactoryV1_0 implements TokenizerFactory {
         registry =
                 registry.registerTokenizer(
                         new ExactMatchTokenizer(
-                                TokenType.LET.lexeme(),
-                                this.tokenFactory,
-                                TokenCategory.KEYWORD.priority()));
+                                TokenType.LET, TokenCategory.KEYWORD, this.tokenFactory));
         return registry;
     }
 
@@ -47,9 +45,7 @@ public final class TokenizerFactoryV1_0 implements TokenizerFactory {
             registry =
                     registry.registerTokenizer(
                             new ExactMatchTokenizer(
-                                    operatorType.lexeme(),
-                                    this.tokenFactory,
-                                    TokenCategory.OPERATOR.priority()));
+                                    operatorType, TokenCategory.OPERATOR, this.tokenFactory));
         }
         return registry;
     }
@@ -59,9 +55,7 @@ public final class TokenizerFactoryV1_0 implements TokenizerFactory {
             registry =
                     registry.registerTokenizer(
                             new ExactMatchTokenizer(
-                                    separatorsType.lexeme(),
-                                    this.tokenFactory,
-                                    TokenCategory.SEPARATOR.priority()));
+                                    separatorsType, TokenCategory.SEPARATOR, this.tokenFactory));
         }
         return registry;
     }
@@ -70,10 +64,7 @@ public final class TokenizerFactoryV1_0 implements TokenizerFactory {
         for (TokenType type : TokenType.TYPES) {
             registry =
                     registry.registerTokenizer(
-                            new ExactMatchTokenizer(
-                                    type.lexeme(),
-                                    this.tokenFactory,
-                                    TokenCategory.TYPE.priority()));
+                            new ExactMatchTokenizer(type, TokenCategory.TYPE, this.tokenFactory));
         }
         return registry;
     }
@@ -82,17 +73,15 @@ public final class TokenizerFactoryV1_0 implements TokenizerFactory {
         registry =
                 registry.registerTokenizer(
                         new PrefixAwarePatternTokenizer(
-                                TokenType.STRING_LITERAL.pattern(),
-                                TokenType.STRING_LITERAL.prefixPattern(),
-                                this.tokenFactory,
-                                TokenCategory.STRING_LITERAL.priority()));
+                                TokenType.STRING_LITERAL,
+                                TokenCategory.STRING_LITERAL,
+                                this.tokenFactory));
         registry =
                 registry.registerTokenizer(
                         new PrefixAwarePatternTokenizer(
-                                TokenType.NUMBER_LITERAL.pattern(),
-                                TokenType.NUMBER_LITERAL.prefixPattern(),
-                                this.tokenFactory,
-                                TokenCategory.NUMBER_LITERAL.priority()));
+                                TokenType.NUMBER_LITERAL,
+                                TokenCategory.NUMBER_LITERAL,
+                                this.tokenFactory));
         return registry;
     }
 
@@ -100,9 +89,7 @@ public final class TokenizerFactoryV1_0 implements TokenizerFactory {
         registry =
                 registry.registerTokenizer(
                         new PatternMatchTokenizer(
-                                TokenType.IDENTIFIER.pattern(),
-                                this.tokenFactory,
-                                TokenCategory.IDENTIFIER.priority()));
+                                TokenType.IDENTIFIER, TokenCategory.IDENTIFIER, this.tokenFactory));
         return registry;
     }
 }

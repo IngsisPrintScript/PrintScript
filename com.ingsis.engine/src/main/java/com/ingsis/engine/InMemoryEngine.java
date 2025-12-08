@@ -34,6 +34,7 @@ import com.ingsis.utils.nodes.factories.NodeFactory;
 import com.ingsis.utils.nodes.visitors.Checkable;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.result.CorrectResult;
+import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
@@ -69,11 +70,13 @@ public class InMemoryEngine implements Engine {
     public Result<String> interpret(InputStream inputStream, Version version) {
         SafeIterationResult<String> result =
                 createProgramInterpreterFactory(version).fromInputStream(inputStream).next();
+        System.out.print(result.error());
         while (result.isCorrect()) {
             result = result.nextIterator().next();
-        }
-        if (!result.isCorrect()) {
-            return resultFactory.createIncorrectResult(result.error());
+            System.out.print(result.toString());
+            if (!result.isCorrect()) {
+                return new IncorrectResult<>(result.error());
+            }
         }
         return resultFactory.createCorrectResult("Interpreted succesfully.");
     }

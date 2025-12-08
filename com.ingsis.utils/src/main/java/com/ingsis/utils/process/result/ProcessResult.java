@@ -43,13 +43,16 @@ public final class ProcessResult<R> {
     }
 
     public ProcessResult<R> comparePriority(ProcessResult<R> other) {
+        if (this.isInvalid()) return other;
+        if (other.isInvalid()) return this;
+
         int thisRank = stateRank(this);
         int otherRank = stateRank(other);
+        if (thisRank != otherRank) {
+            return thisRank > otherRank ? this : other;
+        }
 
-        if (thisRank > otherRank) return this;
-        if (thisRank < otherRank) return other;
-
-        if (this.isComplete() || this.isPrefix()) {
+        if (this.priority != other.priority) {
             return this.priority < other.priority ? this : other;
         }
 
@@ -72,5 +75,17 @@ public final class ProcessResult<R> {
 
     public boolean isInvalid() {
         return this.status == ProcessState.INVALID;
+    }
+
+    @Override
+    public String toString() {
+        return "ProcessResult["
+                + "status="
+                + status
+                + ", result="
+                + result
+                + ", priority="
+                + priority
+                + ']';
     }
 }
