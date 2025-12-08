@@ -12,7 +12,10 @@ import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.visitors.Checkable;
 import com.ingsis.utils.process.checkpoint.ProcessCheckpoint;
 import com.ingsis.utils.process.result.ProcessResult;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.token.Token;
+import com.ingsis.utils.token.factories.DefaultTokensFactory;
+import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public final class SyntacticParser implements SafeIterator<Checkable> {
@@ -34,79 +37,68 @@ public final class SyntacticParser implements SafeIterator<Checkable> {
 
     @Override
     public SafeIterationResult<Checkable> next() {
-        SafeIterationResult<Token> iterateResult = tokenIterator.next();
-        if (!iterateResult.isCorrect()) {
-            return iterationResultFactory.cloneIncorrectResult(iterateResult);
-        }
-
-        SafeIterator<Token> currentIterator = iterateResult.nextIterator();
-        TokenStream currentStream = tokenStream.withToken(iterateResult.iterationResult());
-        ProcessCheckpoint<Token, Checkable> checkpoint = ProcessCheckpoint.UNINITIALIZED();
-
-        return obtainMaximalMunch(currentStream, currentIterator, checkpoint);
+        return maximalMunchOf(tokenStream, tokenIterator);
     }
 
-    private SafeIterationResult<Checkable> obtainMaximalMunch(
-            TokenStream currentStream,
-            SafeIterator<Token> currentIterator,
-            ProcessCheckpoint<Token, Checkable> checkpoint) {
-
+    private SafeIterationResult<Checkable> maximalMunchOf(
+            TokenStream stream, SafeIterator<Token> iterator) {
+        ProcessCheckpoint<Token, ProcessResult<Node>> checkpoint =
+                ProcessCheckpoint.UNINITIALIZED();
         while (true) {
-            ProcessCheckpoint<Token, ProcessResult<Node>> result = process(currentStream);
-            if (result.isInitialized()) {
-                switch (result.result().status()) {
-                    case COMPLETE ->
-                            checkpoint =
-                                    ProcessCheckpoint.INITIALIZED(
-                                            currentIterator, (Checkable) result.result().result());
-                    case INVALID -> {
-                        return manageInvalidCheckpoint(checkpoint, currentStream);
-                    }
-                    case PREFIX -> {}
+            if (stream.tokens().isEmpty()) {
+                SafeIterationResult<Token> iterationResult = iterator.next();
+                if (!iterationResult.isCorrect()) {
+                    return iterationResultFactory.cloneIncorrectResult(iterationResult);
                 }
+                stream = stream.withToken(iterationResult.iterationResult());
+                iterator = iterationResult.nextIterator();
             }
 
-            SafeIterationResult<Token> nextTokenResult = currentIterator.next();
-
-            if (!nextTokenResult.isCorrect()) {
-                return handleEndOfStream(checkpoint, nextTokenResult);
+            ProcessCheckpoint<Token, ProcessResult<Node>> processCheckpoint = process(stream);
+            if (processCheckpoint.isUninitialized()) {
+                if (checkpoint.isUninitialized()) {
+                    return iterationResultFactory.createIncorrectResult("Error parsing");
+                }
+                return iterationResultFactory.createCorrectResult(
+                        checkpoint.result().result(),
+                        new SyntacticParser(
+                                checkpoint.iterator(),
+                                this.parser,
+                                new DefaultTokenStream(
+                                        new DefaultTokensFactory(),
+                                        iterationResultFactory,
+                                        new DefaultResultFactory()),
+                                this.iterationResultFactory));
             }
 
-            currentStream = currentStream.withToken(nextTokenResult.iterationResult());
-            currentIterator = nextTokenResult.nextIterator();
-        }
-    }
-
-    private SafeIterationResult<Checkable> handleEndOfStream(
-            ProcessCheckpoint<Token, Checkable> checkpoint,
-            SafeIterationResult<Token> nextTokenResult) {
-
-        if (checkpoint.isUninitialized()) {
-            return iterationResultFactory.cloneIncorrectResult(nextTokenResult);
-        } else {
-            return iterationResultFactory.createCorrectResult(
-                    checkpoint.result(),
-                    new SyntacticParser(
-                            checkpoint.iterator(),
-                            parser,
-                            this.tokenStream,
-                            iterationResultFactory));
-        }
-    }
-
-    private SafeIterationResult<Checkable> manageInvalidCheckpoint(
-            ProcessCheckpoint<Token, Checkable> checkpoint, TokenStream currentStream) {
-        if (checkpoint.isUninitialized()) {
-            return iterationResultFactory.createIncorrectResult(
-                    "Cannot build a node with token stream: " + currentStream.tokens());
-        } else {
-            return iterationResultFactory.createCorrectResult(
-                    checkpoint.result(),
-                    new SyntacticParser(
-                            checkpoint.iterator(),
-                            parser,
-                            this.tokenStream,
-                            iterationResultFactory));
+            switch (processCheckpoint.result().status()) {
+                case COMPLETE -> {
+                    checkpoint = processCheckpoint;
+                }
+                case INVALID -> {
+                    if (checkpoint.isUninitialized()) {
+                        return iterationResultFactory.createIncorrectResult(
+                                "Unable to parse that stream");
+                    }
+                    return iterationResultFactory.createCorrectResult(
+                            checkpoint.result().result(),
+                            new SyntacticParser(
+                                    checkpoint.iterator(),
+                                    this.parser,
+                                    new DefaultTokenStream(
+                                            new DefaultTokensFactory(),
+                                            iterationResultFactory,
+                                            new DefaultResultFactory()),
+                                    this.iterationResultFactory));
+                }
+                case PREFIX -> {}
+            }
+            SafeIterationResult<Token> getNextToken = iterator.next();
+            if (!getNextToken.isCorrect()) {
+                return iterationResultFactory.createIncorrectResult("TEST");
+            }
+            stream = stream.withToken(getNextToken.iterationResult());
+            iterator = getNextToken.nextIterator();
         }
     }
 

@@ -38,7 +38,7 @@ public final class ProcessCheckpoint<S, R> {
         return this == UNINITIALIZED_SINGLETON;
     }
 
-    public boolean isInitialized() {
+    public Boolean isInitialized() {
         return !isUninitialized();
     }
 }

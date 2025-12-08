@@ -91,15 +91,46 @@ public enum TokenType {
     }
 
     public static Result<TokenType> fromString(String input) {
+
+        TokenType bestMatch = null;
+        int bestScore = -1;
+
         for (TokenType t : values()) {
+
+            // Highest priority: exact lexeme
             if (t.lexeme() != null && t.lexeme().equals(input)) {
-                return new CorrectResult<>(t);
-            } else if (t.regexPattern != null && input.matches(t.regexPattern)) {
-                return new CorrectResult<>(t);
-            } else if (t.prefixPattern != null && input.matches(t.prefixPattern)) {
-                return new CorrectResult<>(t);
+                int score = 1000; // unbeatable
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = t;
+                }
+                continue;
+            }
+
+            // Full regex match
+            if (t.regexPattern != null && input.matches(t.regexPattern)) {
+                int score = 500 + t.regexPattern.length(); // prefer more specific regex
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = t;
+                }
+                continue;
+            }
+
+            // Prefix regex match
+            if (t.prefixPattern != null && input.matches(t.prefixPattern)) {
+                int score = 100 + t.prefixPattern.length();
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMatch = t;
+                }
             }
         }
+
+        if (bestMatch != null) {
+            return new CorrectResult<>(bestMatch);
+        }
+
         return new IncorrectResult<>("No token type for string: " + input);
     }
 

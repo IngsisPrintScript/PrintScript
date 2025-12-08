@@ -42,26 +42,24 @@ public final class Lexer implements SafeIterator<Token> {
 
     @Override
     public SafeIterationResult<Token> next() {
-        SafeIterationResult<Token> result = lexNextToken();
-        System.out.println("LEXER RESULT: " + result);
+        SafeIterationResult<Token> result = maximalMunchOf(metaCharStringBuilder, charIterator);
+        System.out.println(result);
         return result;
     }
 
-    private SafeIterationResult<Token> lexNextToken() {
-        MetaCharStringBuilder builder = metaCharStringBuilder;
+    private SafeIterationResult<Token> maximalMunchOf(
+            MetaCharStringBuilder builder, SafeIterator<MetaChar> currentIterator) {
         ProcessCheckpoint<MetaChar, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
-        SafeIterator<MetaChar> currentIterator = charIterator;
         while (true) {
             if (builder.getString().isEmpty()) {
-                SafeIterationResult<MetaChar> getNextMetachar = currentIterator.next();
-                if (!getNextMetachar.isCorrect()) {
-                    return iterationResultFactory.cloneIncorrectResult(getNextMetachar);
+                SafeIterationResult<MetaChar> iterationResult = currentIterator.next();
+                if (!iterationResult.isCorrect()) {
+                    return iterationResultFactory.cloneIncorrectResult(iterationResult);
                 }
-                builder = builder.append(getNextMetachar.iterationResult());
-                currentIterator = getNextMetachar.nextIterator();
+                builder = builder.append(iterationResult.iterationResult());
+                currentIterator = iterationResult.nextIterator();
             }
 
-            System.out.println("TOKENIZING: " + "\"" + builder.getString() + "\"");
             ProcessResult<Token> processBuilder = process(builder);
             switch (processBuilder.status()) {
                 case COMPLETE ->

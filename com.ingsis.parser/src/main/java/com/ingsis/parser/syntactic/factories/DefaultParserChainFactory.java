@@ -40,15 +40,15 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
     public Parser<ExpressionNode> createExpressionChain() {
         AtomicReference<Parser<ExpressionNode>> registryRef = new AtomicReference<>();
         ParserRegistry<ExpressionNode> registry = new DefaultParserRegistry<>();
-        registry = registry.registerParser(parserFactory.operatorParser(() -> registryRef.get()));
-        registry =
-                registry.registerParser(
-                        parserFactory.callFunctionParser(
-                                parserFactory.identifierParser(), () -> registryRef.get()));
         registry = registry.registerParser(parserFactory.numberLiteralParser());
         registry = registry.registerParser(parserFactory.stringLiteralParser());
         registry = registry.registerParser(parserFactory.booleanLiteralParser());
         registry = registry.registerParser(parserFactory.identifierParser());
+        registry =
+                registry.registerParser(
+                        parserFactory.callFunctionParser(
+                                parserFactory.identifierParser(), () -> registryRef.get()));
+        registry = registry.registerParser(parserFactory.operatorParser(() -> registryRef.get()));
         registryRef.set(registry);
         return registry;
     }
