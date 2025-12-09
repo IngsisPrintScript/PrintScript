@@ -47,8 +47,7 @@ public final class DefaultParserRegistry<T extends Node> implements ParserRegist
     public ProcessCheckpoint<Token, ProcessResult<T>> parse(TokenStream stream) {
         ProcessCheckpoint<Token, ProcessResult<T>> best = ProcessCheckpoint.UNINITIALIZED();
         for (Parser<T> parser : parsers) {
-            ProcessCheckpoint<Token, ProcessResult<T>> candidate =
-                    parser.parse(stream);
+            ProcessCheckpoint<Token, ProcessResult<T>> candidate = parser.parse(stream);
             if (best.isUninitialized() && candidate.isInitialized()) {
                 best = (ProcessCheckpoint<Token, ProcessResult<T>>) candidate;
                 continue;

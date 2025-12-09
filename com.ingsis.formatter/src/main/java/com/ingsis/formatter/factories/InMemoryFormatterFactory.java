@@ -13,7 +13,6 @@ import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
-import com.ingsis.utils.rule.observer.EventsChecker;
 import com.ingsis.utils.rule.observer.JustNodeEventsChecker;
 import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;

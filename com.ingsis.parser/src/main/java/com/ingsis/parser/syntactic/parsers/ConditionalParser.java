@@ -182,7 +182,6 @@ public class ConditionalParser implements Parser<Node> {
                 new DefaultResultFactory());
     }
 
-
     private ProcessCheckpoint<Token, ProcessResult<List<Node>>> parseBlock(TokenStream stream) {
         SafeIterationResult<Token> lBraceResult = stream.consume(lBraceTemplate);
         if (!lBraceResult.isCorrect()) {

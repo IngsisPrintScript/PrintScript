@@ -74,7 +74,8 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
         NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry =
                 new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
         handlerRegistry.register(
-                new FormatterConditionalHandler(eventsCheckerSupplier,
+                new FormatterConditionalHandler(
+                        eventsCheckerSupplier,
                         ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
                         ruleStatusProvider.getRuleStatus("if-brace-same-line"),
                         ruleStatusProvider.getRuleStatus("if-brace-below-line"),
