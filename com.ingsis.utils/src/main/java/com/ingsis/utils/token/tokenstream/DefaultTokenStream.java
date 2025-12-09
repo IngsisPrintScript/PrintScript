@@ -155,7 +155,7 @@ public final class DefaultTokenStream implements TokenStream {
   @Override
   public TokenStream reset() {
     return new DefaultTokenStream(
-        this.tokens(),
+        new ArrayList<>(),
         this.noiseTokens,
         0,
         this.tokenFactory,
