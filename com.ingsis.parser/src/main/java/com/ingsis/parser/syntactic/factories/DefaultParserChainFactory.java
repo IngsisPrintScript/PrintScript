@@ -52,6 +52,10 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
         registry = registry.registerParser(parserFactory.identifierParser());
         registry =
                 registry.registerParser(
+                        parserFactory.assignationParser(
+                                parserFactory.identifierParser(), registry));
+        registry =
+                registry.registerParser(
                         parserFactory.callFunctionParser(
                                 parserFactory.identifierParser(), () -> registryRef.get()));
         registry =

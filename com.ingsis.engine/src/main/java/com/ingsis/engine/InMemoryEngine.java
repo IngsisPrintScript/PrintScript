@@ -70,8 +70,8 @@ public class InMemoryEngine implements Engine {
     public Result<String> interpret(InputStream inputStream, Version version) {
         SafeIterationResult<String> result =
                 createProgramInterpreterFactory(version).fromInputStream(inputStream).next();
-        if (!result.isCorrect()){
-            return  new IncorrectResult<>(result.error());
+        if (!result.isCorrect()) {
+            return new IncorrectResult<>(result.error());
         }
         while (result.isCorrect()) {
             result = result.nextIterator().next();

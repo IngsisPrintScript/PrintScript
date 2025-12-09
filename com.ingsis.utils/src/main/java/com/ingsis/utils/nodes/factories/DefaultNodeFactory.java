@@ -5,6 +5,7 @@
 package com.ingsis.utils.nodes.factories;
 
 import com.ingsis.utils.nodes.Node;
+import com.ingsis.utils.nodes.expressions.AssignationNode;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
 import com.ingsis.utils.nodes.expressions.atomic.literal.BooleanLiteralNode;
@@ -86,5 +87,14 @@ public final class DefaultNodeFactory implements NodeFactory {
             Integer line,
             Integer column) {
         return new CallFunctionNode(identifierNode, argumentNodes, line, column);
+    }
+
+    @Override
+    public AssignationNode createAssignationNode(
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
+            Integer line,
+            Integer column) {
+        return new AssignationNode(identifierNode, expressionNode, line, column);
     }
 }

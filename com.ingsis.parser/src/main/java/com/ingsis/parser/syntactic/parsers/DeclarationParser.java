@@ -5,6 +5,7 @@
 package com.ingsis.parser.syntactic.parsers;
 
 import com.ingsis.parser.syntactic.NodePriority;
+import com.ingsis.utils.iterator.safe.result.DefaultIterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
@@ -12,11 +13,20 @@ import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
 import com.ingsis.utils.nodes.factories.NodeFactory;
 import com.ingsis.utils.process.checkpoint.ProcessCheckpoint;
 import com.ingsis.utils.process.result.ProcessResult;
+import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.token.Token;
+import com.ingsis.utils.token.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.template.TokenTemplate;
+import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
+import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
+import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
+import com.ingsis.utils.token.type.TokenType;
 import com.ingsis.utils.type.types.Types;
+
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 public class DeclarationParser implements Parser<Node> {
     private final List<TokenTemplate> declarationTemplates;
@@ -113,7 +123,7 @@ public class DeclarationParser implements Parser<Node> {
 
         SafeIterationResult<Token> consumeSemiColon = stream.consume(semicolonTemplate);
         if (consumeSemiColon.isCorrect()) {
-            stream = (TokenStream) consumeSemiColon.nextIterator();
+            stream = ((TokenStream) consumeSemiColon.nextIterator()).consumeNoise();
             return ProcessCheckpoint.INITIALIZED(
                     stream,
                     ProcessResult.COMPLETE(
@@ -133,23 +143,38 @@ public class DeclarationParser implements Parser<Node> {
                     stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
         }
 
+        // move past '='
         stream = (TokenStream) consumeEquals.nextIterator();
         stream = stream.consumeNoise();
 
+        // -----------------------------------------
+        // NEW: slice only the expression before ';'
+        // -----------------------------------------
+        TokenStream exprSlice = sliceExpression(stream);
+        if (exprSlice == null) {
+            return ProcessCheckpoint.INITIALIZED(
+                    stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
+        }
+        TokenStream cleanExpr = cleanNoise(exprSlice);
+
+        // parse ONLY the sliced expression
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> processExpressionResult =
-                expressionParser.parse(stream.sliceFromPointer());
+                expressionParser.parse(cleanExpr);
+
         if (processExpressionResult.isUninitialized()) {
             return ProcessCheckpoint.INITIALIZED(
                     stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
-        } else if (!processExpressionResult.result().isComplete()) {
+        }
+        if (!processExpressionResult.result().isComplete()) {
             return ProcessCheckpoint.INITIALIZED(
-                    processExpressionResult.iterator(),
+                    exprSlice,
                     ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
         }
+
         ExpressionNode expressionNode = processExpressionResult.result().result();
 
-        stream = (TokenStream) processExpressionResult.iterator();
-        stream = stream.consumeNoise();
+        // advance the main stream by the slice size
+        stream = stream.advanceBy(exprSlice.consumeAll()).consumeNoise();
 
         SafeIterationResult<Token> consumeFinalSemiColon = stream.consume(semicolonTemplate);
         if (!consumeFinalSemiColon.isCorrect()) {
@@ -172,4 +197,74 @@ public class DeclarationParser implements Parser<Node> {
                                 declarationToken.column()),
                         NodePriority.STATEMENT.priority()));
     }
+
+    private TokenStream sliceExpression(TokenStream stream) {
+        int depth = 0;
+        int offset = 0;
+
+        TokenStream cleanStart = stream.consumeNoise();
+
+        while (true) {
+            var peek = cleanStart.peek(offset);
+            if (!peek.isCorrect()) {
+                return null; // malformed: never found ';'
+            }
+
+            Token t = peek.result();
+
+            // Track parentheses
+            if (t.value().equals("(")) {
+                depth++;
+            } else if (t.value().equals(")")) {
+                if (depth > 0) depth--;
+            }
+            // Stop at first ';' at depth 0
+            else if (semicolonTemplate.matches(t) && depth == 0) {
+                break;
+            }
+
+            offset++;
+        }
+
+        // Extract the FULL token list exactly as-is
+        List<Token> slice =
+                cleanStart.tokens().subList(cleanStart.pointer(), cleanStart.pointer() + offset);
+
+        // Return a REWOUND stream for the slice
+        return new DefaultTokenStream(
+                slice,
+                List.of(),
+                0,
+                new DefaultTokensFactory(),
+                new DefaultIterationResultFactory(),
+                new DefaultResultFactory()
+        );
+    }
+
+
+    private TokenStream cleanNoise(TokenStream stream) {
+        TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
+        List<TokenTemplate> noise = List.of(
+                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),
+                tokenTemplateFactory
+                        .separator(TokenType.CRETURN.lexeme())
+                        .result());
+
+        List<Token> cleanTokens = stream.tokens().stream()
+                .filter(t -> noise.stream().noneMatch(nt -> nt.matches(t)))
+                .toList();
+
+        return new DefaultTokenStream(
+                cleanTokens,
+                List.of(), // remove noise config completely
+                0,
+                new DefaultTokensFactory(),
+                new DefaultIterationResultFactory(),
+                new DefaultResultFactory()
+        );
+    }
+
+
 }

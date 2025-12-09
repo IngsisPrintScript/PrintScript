@@ -43,7 +43,7 @@ public record IdentifierNode(String name, Integer line, Integer column) implemen
     @Override
     public Result<Object> solve() {
         Result<VariableEntry> getVariableEntry =
-                DefaultRuntime.getInstance().getCurrentEnvironment().deleteVariable(name());
+                DefaultRuntime.getInstance().getCurrentEnvironment().readVariable(name());
         if (!getVariableEntry.isCorrect()) {
             return new IncorrectResult<>(getVariableEntry);
         }

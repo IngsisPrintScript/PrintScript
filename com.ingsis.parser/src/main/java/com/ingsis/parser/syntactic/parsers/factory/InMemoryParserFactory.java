@@ -4,12 +4,7 @@
 
 package com.ingsis.parser.syntactic.parsers.factory;
 
-import com.ingsis.parser.syntactic.parsers.CallFunctionParser;
-import com.ingsis.parser.syntactic.parsers.ConditionalParser;
-import com.ingsis.parser.syntactic.parsers.DeclarationParser;
-import com.ingsis.parser.syntactic.parsers.IdentifierParser;
-import com.ingsis.parser.syntactic.parsers.LineExpressionParser;
-import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.*;
 import com.ingsis.parser.syntactic.parsers.literals.BooleanLiteralParser;
 import com.ingsis.parser.syntactic.parsers.literals.NumberLiteralParser;
 import com.ingsis.parser.syntactic.parsers.literals.StringLiteralParser;
@@ -116,6 +111,16 @@ public class InMemoryParserFactory implements ParserFactory {
                 tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
                 identifierParser,
                 leafParserSupplier,
+                this.nodeFactory);
+    }
+
+    @Override
+    public Parser<ExpressionNode> assignationParser(
+            Parser<ExpressionNode> identifierParser, Parser<ExpressionNode> expressionNodeParser) {
+        return new AssignationParser(
+                tokenTemplateFactory.operator(TokenType.EQUAL.lexeme()).result(),
+                identifierParser,
+                expressionNodeParser,
                 this.nodeFactory);
     }
 

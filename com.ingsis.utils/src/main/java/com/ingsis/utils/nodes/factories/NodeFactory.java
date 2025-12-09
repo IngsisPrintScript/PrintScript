@@ -5,6 +5,7 @@
 package com.ingsis.utils.nodes.factories;
 
 import com.ingsis.utils.nodes.Node;
+import com.ingsis.utils.nodes.expressions.AssignationNode;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
 import com.ingsis.utils.nodes.expressions.atomic.literal.BooleanLiteralNode;
@@ -42,6 +43,12 @@ public interface NodeFactory {
     CallFunctionNode createCallFunctionNode(
             IdentifierNode identifierNode,
             List<ExpressionNode> arguments,
+            Integer line,
+            Integer column);
+
+    AssignationNode createAssignationNode(
+            IdentifierNode identifierNode,
+            ExpressionNode expressionNode,
             Integer line,
             Integer column);
 

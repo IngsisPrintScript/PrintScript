@@ -24,6 +24,9 @@ public interface ParserFactory {
             Parser<ExpressionNode> identifierParser,
             Supplier<Parser<ExpressionNode>> leafParserSupplier);
 
+    Parser<ExpressionNode> assignationParser(
+            Parser<ExpressionNode> identifierParser, Parser<ExpressionNode> expressionNodeParser);
+
     Parser<ExpressionNode> numberLiteralParser();
 
     Parser<ExpressionNode> stringLiteralParser();

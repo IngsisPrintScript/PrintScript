@@ -12,12 +12,11 @@ import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.DefaultRuntime;
+import com.ingsis.utils.runtime.environment.entries.DefaultVariableEntry;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.type.types.Types;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
 public record CallFunctionNode(
         IdentifierNode identifierNode,
@@ -72,7 +71,7 @@ public record CallFunctionNode(
             return new IncorrectResult<>(getFunction);
         }
         FunctionEntry functionEntry = getFunction.result();
-        DefaultRuntime.getInstance().pushClosure(functionEntry);
+        Map<String, VariableEntry> varmap = new HashMap<>();
 
         try {
             LinkedHashMap<String, Types> paramTypes = functionEntry.arguments();
@@ -87,10 +86,20 @@ public record CallFunctionNode(
                 }
                 Object argumentValue = argResult.result();
 
+                varmap.put(paramName, new DefaultVariableEntry(paramType, argumentValue, false));
+            }
+
+            DefaultRuntime.getInstance().pushClosure(functionEntry);
+
+            for (Map.Entry<String, VariableEntry> entry : varmap.entrySet()) {
                 Result<VariableEntry> created =
                         DefaultRuntime.getInstance()
                                 .getCurrentEnvironment()
-                                .createVariable(paramName, paramType, argumentValue, false);
+                                .createVariable(
+                                        entry.getKey(),
+                                        entry.getValue().type(),
+                                        entry.getValue().value(),
+                                        false);
 
                 if (!created.isCorrect()) {
                     return new IncorrectResult<>(created);

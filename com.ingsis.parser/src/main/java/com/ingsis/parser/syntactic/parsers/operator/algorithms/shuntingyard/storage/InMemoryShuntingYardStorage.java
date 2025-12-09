@@ -159,7 +159,7 @@ public class InMemoryShuntingYardStorage implements ShuntingYardStorage {
     @Override
     public Queue<Token> postFixOrderedValues() {
         Queue<Token> resultQueue = new ArrayDeque<>(valuesQueue);
-        while (!operatorsStack.isEmpty()){
+        while (!operatorsStack.isEmpty()) {
             resultQueue.add(operatorsStack.pop());
         }
         return resultQueue;

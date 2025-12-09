@@ -158,7 +158,6 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
         return ProcessCheckpoint.INITIALIZED(stream, ProcessResult.COMPLETE(arguments, priority));
     }
 
-
     private TokenStream sliceArgument(TokenStream stream) {
         int depth = 0;
         int offset = 0;
@@ -189,9 +188,6 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
                 0,
                 new DefaultTokensFactory(),
                 new DefaultIterationResultFactory(),
-                new DefaultResultFactory()
-        );
+                new DefaultResultFactory());
     }
-
-
 }

@@ -57,6 +57,7 @@ public final class CliEngine implements Runnable {
 
     @Override
     public void run() {
+        DefaultRuntime.getInstance().push();
         try {
             runREPL();
         } catch (Exception e) {
@@ -68,8 +69,6 @@ public final class CliEngine implements Runnable {
     private void runREPL() {
         try (BufferedReader reader =
                 new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8))) {
-
-            DefaultRuntime.getInstance().push();
 
             if (replMode) System.out.println("Welcome to PrintScript REPL! Type 'exit' to quit.");
 
