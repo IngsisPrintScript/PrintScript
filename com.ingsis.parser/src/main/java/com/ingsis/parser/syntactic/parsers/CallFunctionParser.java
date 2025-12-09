@@ -21,7 +21,6 @@ import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 import com.ingsis.utils.token.type.TokenType;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
