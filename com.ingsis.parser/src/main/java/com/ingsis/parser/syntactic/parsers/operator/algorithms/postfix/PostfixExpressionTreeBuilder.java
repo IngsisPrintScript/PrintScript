@@ -80,6 +80,7 @@ public class PostfixExpressionTreeBuilder implements PostfixToAstBuilder {
                     return ProcessCheckpoint.UNINITIALIZED();
                 }
                 expressionStack = newStackResult.result();
+                tokenStream = (TokenStream) tokenStream.next().nextIterator();
             } else {
                 ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> leafResult =
                         leafExpressionNodesParser.parse(tokenStream);

@@ -31,4 +31,6 @@ public interface TokenStream extends SafeIterator<Token> {
     TokenStream sliceFromPointer();
 
     TokenStream advanceBy(TokenStream subStream);
+
+    TokenStream consumeAll();
 }

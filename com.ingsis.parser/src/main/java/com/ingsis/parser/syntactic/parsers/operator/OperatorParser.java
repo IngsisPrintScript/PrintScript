@@ -44,7 +44,7 @@ public final class OperatorParser implements Parser<ExpressionNode> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
         return ProcessCheckpoint.INITIALIZED(
-                getExpressionResult.iterator(),
+                stream.consumeAll(),
                 ProcessResult.COMPLETE(
                         getExpressionResult.result(), NodePriority.OPERATOR.priority()));
     }

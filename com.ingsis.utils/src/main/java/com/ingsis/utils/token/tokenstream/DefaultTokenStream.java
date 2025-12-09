@@ -191,4 +191,15 @@ public final class DefaultTokenStream implements TokenStream {
                 this.iterationResultFactory,
                 this.resultFactory);
     }
+
+    @Override
+    public TokenStream consumeAll() {
+        return new DefaultTokenStream(
+                this.tokenBuffer,
+                this.noiseTokens,
+                this.tokens().size(),
+                this.tokenFactory,
+                this.iterationResultFactory,
+                this.resultFactory);
+    }
 }
