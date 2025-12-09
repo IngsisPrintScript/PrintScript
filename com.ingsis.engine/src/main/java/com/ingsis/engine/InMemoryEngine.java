@@ -46,7 +46,10 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.factories.TokenFactory;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
+
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.Writer;
 
 public class InMemoryEngine implements Engine {
@@ -84,7 +87,8 @@ public class InMemoryEngine implements Engine {
 
     @Override
     public Result<String> format(
-            InputStream inputStream, InputStream config, Writer writer, Version version) {
+            InputStream inputStream, InputStream config, Writer externalWriter, Version version) {
+        StringWriter internalWriter = new StringWriter();
         Result<String> formatResult =
                 createFormatterFactory(version)
                         .fromFile(
@@ -92,13 +96,23 @@ public class InMemoryEngine implements Engine {
                                 DefaultRuntime.getInstance(),
                                 new InMemoryRuleStatusProviderFactory()
                                         .createDefaultRuleStatusProvider(config),
-                                writer)
+                                internalWriter)
                         .format();
+
         if (!formatResult.isCorrect()) {
             return formatResult;
         }
-        return new CorrectResult<String>("Formatted succesfully.");
+        String output = formatResult.result();
+        try {
+            externalWriter.write(output);
+        } catch (IOException e) {
+            return new IncorrectResult<>(e.getMessage());
+        }
+
+        return new CorrectResult<>("Formatted successfully.");
     }
+
+
 
     @Override
     public Result<String> analyze(InputStream inputStream, InputStream config, Version version) {

@@ -20,6 +20,7 @@ import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.runtime.result.factory.LoggerResultFactory;
 import java.io.InputStream;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -36,7 +37,7 @@ public class InMemoryFormatterFactory implements FormatterFactory {
             InputStream inputStream,
             Runtime runtime,
             RuleStatusProvider ruleStatusProvider,
-            Writer writer) {
+            StringWriter writer) {
         ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), runtime);
         AtomicReference<Checker> checkerRef = new AtomicReference<>();
         Supplier<Checker> checkerSupplier = checkerRef::get;

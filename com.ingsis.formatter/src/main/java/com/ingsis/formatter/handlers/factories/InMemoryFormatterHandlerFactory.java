@@ -22,7 +22,9 @@ import com.ingsis.utils.rule.observer.handlers.NodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.OrInMemoryNodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
+import com.ingsis.utils.token.template.TokenTemplate;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
+import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.type.TokenType;
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
@@ -78,6 +80,7 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
 
     @Override
     public NodeEventHandler<ExpressionNode> createExpressionHandler() {
+        TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
         AtomicReference<NodeEventHandler<ExpressionNode>> ref = new AtomicReference<>();
 
         Supplier<NodeEventHandler<ExpressionNode>> self = ref::get;
@@ -88,20 +91,24 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
         registry.register(new FormatterLiteralHandler(resultFactory, writer));
         registry.register(new FormatterIdentifierHandler(resultFactory, writer));
 
+        FormatterFunctionCallHandler baseFunctionHandler = new FormatterFunctionCallHandler(
+                self,
+                ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
+                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
+                resultFactory,
+                writer);
+
         registry.register(
                 new FormatterSpecialFunctionCallHandler(
                         ruleStatusProvider.getRuleValue("line-breaks-after-println", Integer.class),
                         "println",
                         ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
                         self,
+                        baseFunctionHandler,
                         resultFactory,
                         writer));
-        registry.register(
-                new FormatterFunctionCallHandler(
-                        self,
-                        ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
-                        resultFactory,
-                        writer));
+        registry.register(baseFunctionHandler);
         registry.register(new FormatterOperatorHandler(resultFactory, self, writer));
         ref.set(registry);
 

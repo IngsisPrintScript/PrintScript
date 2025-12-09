@@ -18,6 +18,7 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
     private final String functionName;
     private final Boolean singleSpaceSeparation;
     private final Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier;
+    private final FormatterFunctionCallHandler baseFunctionParser;
     private final ResultFactory resultFactory;
     private final Writer writer;
 
@@ -26,6 +27,7 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
             String functionName,
             Boolean singleSpaceSeparation,
             Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier,
+            FormatterFunctionCallHandler baseFunctionParser,
             ResultFactory resultFactory,
             Writer writer) {
         Integer temp = amountOfLinesBeforeCall;
@@ -36,6 +38,7 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
         this.functionName = functionName;
         this.singleSpaceSeparation = singleSpaceSeparation;
         this.expressionHandlerSupplier = expressionHandlerSupplier;
+        this.baseFunctionParser = baseFunctionParser;
         this.resultFactory = resultFactory;
         this.writer = writer;
     }
@@ -45,20 +48,14 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
         if (!(node instanceof CallFunctionNode callFunctionNode)) {
             return resultFactory.createIncorrectResult("Incorrect handler.");
         }
-        Result<String> baseFunctionFormatterHandleResult =
-                new FormatterFunctionCallHandler(
-                                expressionHandlerSupplier,
-                                singleSpaceSeparation,
-                                resultFactory,
-                                writer)
-                        .handle(node);
+        Result<String> baseFunctionFormatterHandleResult = baseFunctionParser.handle(node);
         if (!baseFunctionFormatterHandleResult.isCorrect()) {
             return resultFactory.cloneIncorrectResult(baseFunctionFormatterHandleResult);
         }
         try {
             String functionIdentifier = callFunctionNode.identifierNode().name();
             if (functionIdentifier.equals(functionName)) {
-                for (int i = 0; i < amountOfLinesBeforeCall; i++) {
+                for (int i = 0; i < amountOfLinesBeforeCall+1; i++) {
                     writer.append("\n");
                 }
             } else {
