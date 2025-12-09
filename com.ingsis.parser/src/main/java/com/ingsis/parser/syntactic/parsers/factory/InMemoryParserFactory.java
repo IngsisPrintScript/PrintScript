@@ -8,6 +8,7 @@ import com.ingsis.parser.syntactic.parsers.CallFunctionParser;
 import com.ingsis.parser.syntactic.parsers.ConditionalParser;
 import com.ingsis.parser.syntactic.parsers.DeclarationParser;
 import com.ingsis.parser.syntactic.parsers.IdentifierParser;
+import com.ingsis.parser.syntactic.parsers.LineExpressionParser;
 import com.ingsis.parser.syntactic.parsers.Parser;
 import com.ingsis.parser.syntactic.parsers.literals.BooleanLiteralParser;
 import com.ingsis.parser.syntactic.parsers.literals.NumberLiteralParser;
@@ -136,5 +137,13 @@ public class InMemoryParserFactory implements ParserFactory {
     @Override
     public Parser<ExpressionNode> identifierParser() {
         return new IdentifierParser(this.tokenTemplateFactory, this.nodeFactory);
+    }
+
+    @Override
+    public Parser<Node> lineExpressionParser(Parser<ExpressionNode> expressionParser) {
+        return new LineExpressionParser(
+                tokenTemplateFactory.separator(TokenType.SEMICOLON.lexeme()).result(),
+                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                expressionParser);
     }
 }

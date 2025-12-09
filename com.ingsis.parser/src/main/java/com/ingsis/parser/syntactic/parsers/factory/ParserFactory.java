@@ -16,6 +16,8 @@ public interface ParserFactory {
     Parser<Node> declarationParser(
             Parser<ExpressionNode> identifierParser, Parser<ExpressionNode> expressionParser);
 
+    Parser<Node> lineExpressionParser(Parser<ExpressionNode> expressionParser);
+
     Parser<ExpressionNode> operatorParser(Supplier<Parser<ExpressionNode>> leafParserSupplier);
 
     Parser<ExpressionNode> callFunctionParser(

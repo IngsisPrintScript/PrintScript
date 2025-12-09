@@ -6,6 +6,7 @@ package com.ingsis.parser.syntactic.parsers;
 
 import com.ingsis.parser.syntactic.NodePriority;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
+import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.process.checkpoint.ProcessCheckpoint;
 import com.ingsis.utils.process.result.ProcessResult;
@@ -13,7 +14,7 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.template.TokenTemplate;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 
-public class LineExpressionParser implements Parser<ExpressionNode> {
+public class LineExpressionParser implements Parser<Node> {
     private final TokenTemplate semicolonTemplate;
     private final TokenTemplate spaceTemplate;
     private final Parser<ExpressionNode> expressionParser;
@@ -28,14 +29,17 @@ public class LineExpressionParser implements Parser<ExpressionNode> {
     }
 
     @Override
-    public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+    public ProcessCheckpoint<Token, ProcessResult<Node>> parse(TokenStream stream) {
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> processExpressionResult =
                 expressionParser.parse(stream);
         if (processExpressionResult.isUninitialized()) {
             return ProcessCheckpoint.UNINITIALIZED();
         } else if (!processExpressionResult.result().isComplete()) {
             return ProcessCheckpoint.INITIALIZED(
-                    processExpressionResult.iterator(), processExpressionResult.result());
+                    processExpressionResult.iterator(),
+                    ProcessResult.COMPLETE(
+                            (Node) (processExpressionResult.result().result()),
+                            NodePriority.EXPRESSION.priority()));
         }
         ExpressionNode expressionNode = processExpressionResult.result().result();
 

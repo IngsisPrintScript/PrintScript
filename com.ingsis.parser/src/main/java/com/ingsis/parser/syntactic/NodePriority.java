@@ -5,19 +5,19 @@
 package com.ingsis.parser.syntactic;
 
 public enum NodePriority {
-    // ===== Atomic Expression Nodes =====
-    LITERAL(0),
-    IDENTIFIER(1),
+    // ===== Top-level Statement Nodes =====
+    STATEMENT(0),
+
+    // ===== Generic Nodes =====
+    EXPRESSION(1),
 
     // ===== Structured Expression Nodes =====
     CALL_FUNCTION(2),
     OPERATOR(3),
 
-    // ===== Generic Nodes =====
-    EXPRESSION(4),
-
-    // ===== Top-level Statement Nodes =====
-    STATEMENT(5);
+    // ===== Atomic Expression Nodes =====
+    LITERAL(4),
+    IDENTIFIER(5);
 
     private final int priority;
 
