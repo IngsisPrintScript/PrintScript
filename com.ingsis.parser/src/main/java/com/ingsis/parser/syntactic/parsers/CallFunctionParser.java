@@ -48,6 +48,7 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> identifierResult =
                 identifierParser.parse(stream);
         if (identifierResult.isUninitialized()) {
@@ -83,6 +84,7 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
                         nodeFactory.createCallFunctionNode(
                                 identifierNode,
                                 argumentsResult.result().result(),
+                                originalStream,
                                 identifierNode.line(),
                                 identifierNode.column()),
                         NodePriority.CALL_FUNCTION.priority()));

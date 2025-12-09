@@ -33,13 +33,14 @@ public final class OperatorParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         stream = stream.consumeNoise();
         Result<Queue<Token>> getTokensQueueResult = shuntingYardTransformer.transform(stream);
         if (!getTokensQueueResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }
         ProcessCheckpoint<Token, ExpressionNode> getExpressionResult =
-                postfixToAstBuilder.build(leafParserSupplier.get(), getTokensQueueResult.result());
+                postfixToAstBuilder.build(leafParserSupplier.get(), getTokensQueueResult.result(), originalStream);
         if (getExpressionResult.isUninitialized()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }

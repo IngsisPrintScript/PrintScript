@@ -45,7 +45,6 @@ public class FormatterOperatorHandler implements NodeEventHandler<ExpressionNode
             if (!rightFormatResult.isCorrect()) {
                 return resultFactory.cloneIncorrectResult(rightFormatResult);
             }
-            writer.append(rightFormatResult.result());
         } catch (IOException e) {
             return resultFactory.createIncorrectResult(e.getMessage());
         }

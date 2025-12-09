@@ -27,6 +27,7 @@ public class StringLiteralParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         SafeIterationResult<Token> consumeLiteralResult = stream.consume(stringLiteralTemplate);
         if (!consumeLiteralResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
@@ -39,6 +40,7 @@ public class StringLiteralParser implements Parser<ExpressionNode> {
                 ProcessResult.COMPLETE(
                         nodeFactory.createStringLiteralNode(
                                 inner,
+                                originalStream,
                                 consumeLiteralResult.iterationResult().line(),
                                 consumeLiteralResult.iterationResult().column()),
                         NodePriority.IDENTIFIER.priority()));

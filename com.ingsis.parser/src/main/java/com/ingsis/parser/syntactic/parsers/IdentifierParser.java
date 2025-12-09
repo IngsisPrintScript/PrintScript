@@ -26,6 +26,7 @@ public class IdentifierParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         SafeIterationResult<Token> consumeIdentifierResult = stream.consume(identifierTemplate);
         if (!consumeIdentifierResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
@@ -36,6 +37,7 @@ public class IdentifierParser implements Parser<ExpressionNode> {
                 ProcessResult.COMPLETE(
                         nodeFactory.createIdentifierNode(
                                 consumeIdentifierResult.iterationResult().value(),
+                                originalStream,
                                 consumeIdentifierResult.iterationResult().line(),
                                 consumeIdentifierResult.iterationResult().column()),
                         NodePriority.IDENTIFIER.priority()));

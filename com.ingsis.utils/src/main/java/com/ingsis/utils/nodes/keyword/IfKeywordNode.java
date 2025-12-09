@@ -10,12 +10,15 @@ import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokenstream.TokenStream;
+
 import java.util.List;
 
 public record IfKeywordNode(
         ExpressionNode condition,
         List<Node> thenBody,
         List<Node> elseBody,
+        TokenStream stream,
         Integer line,
         Integer column)
         implements Node, Interpretable {
@@ -26,8 +29,8 @@ public record IfKeywordNode(
     }
 
     public IfKeywordNode(
-            ExpressionNode condition, List<Node> thenBody, Integer line, Integer column) {
-        this(condition, thenBody, List.of(), line, column);
+            ExpressionNode condition, List<Node> thenBody, TokenStream stream, Integer line, Integer column) {
+        this(condition, thenBody, List.of(), stream, line, column);
     }
 
     @Override

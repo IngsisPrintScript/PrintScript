@@ -12,10 +12,12 @@ import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;
+import com.ingsis.utils.token.tokenstream.TokenStream;
+
 import java.util.List;
 
 public record AssignationNode(
-        IdentifierNode identifierNode, ExpressionNode expressionNode, Integer line, Integer column)
+        IdentifierNode identifierNode, TokenStream stream, ExpressionNode expressionNode, Integer line, Integer column)
         implements ExpressionNode {
     @Override
     public List<ExpressionNode> children() {

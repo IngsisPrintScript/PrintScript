@@ -15,12 +15,14 @@ import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.runtime.environment.entries.DefaultVariableEntry;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import com.ingsis.utils.type.types.Types;
 import java.util.*;
 
 public record CallFunctionNode(
         IdentifierNode identifierNode,
         List<ExpressionNode> argumentNodes,
+        TokenStream stream,
         Integer line,
         Integer column)
         implements ExpressionNode {

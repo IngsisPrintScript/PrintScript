@@ -57,6 +57,7 @@ public class ConditionalParser implements Parser<Node> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<Node>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         // 'if' keyword
         SafeIterationResult<Token> ifResult = stream.consume(ifTemplate);
         if (!ifResult.isCorrect()) {
@@ -126,7 +127,7 @@ public class ConditionalParser implements Parser<Node> {
                 stream,
                 ProcessResult.COMPLETE(
                         nodeFactory.createConditionalNode(
-                                condition, thenBody, elseBody, ifToken.line(), ifToken.column()),
+                                condition, thenBody, elseBody, originalStream, ifToken.line(), ifToken.column()),
                         NodePriority.STATEMENT.priority()));
     }
 

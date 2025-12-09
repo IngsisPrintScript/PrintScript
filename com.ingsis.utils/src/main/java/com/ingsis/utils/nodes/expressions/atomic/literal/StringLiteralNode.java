@@ -10,9 +10,11 @@ import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokenstream.TokenStream;
+
 import java.util.List;
 
-public record StringLiteralNode(String value, Integer line, Integer column) implements LiteralNode {
+public record StringLiteralNode(String value, TokenStream stream, Integer line, Integer column) implements LiteralNode {
 
     @Override
     public Result<String> acceptChecker(Checker checker) {

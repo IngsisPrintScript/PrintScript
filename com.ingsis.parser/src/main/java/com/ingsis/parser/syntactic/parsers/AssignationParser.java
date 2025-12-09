@@ -34,6 +34,7 @@ public class AssignationParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> identifierResult =
                 identifierParser.parse(stream);
         if (identifierResult.isUninitialized()) {
@@ -75,6 +76,7 @@ public class AssignationParser implements Parser<ExpressionNode> {
                         nodeFactory.createAssignationNode(
                                 identifierNode,
                                 parseExpression.result().result(),
+                                originalStream,
                                 identifierNode.line(),
                                 identifierNode.column()),
                         NodePriority.EXPRESSION.priority()));

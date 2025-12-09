@@ -22,6 +22,9 @@ import com.ingsis.utils.rule.observer.handlers.NodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.OrInMemoryNodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
+import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
+import com.ingsis.utils.token.type.TokenType;
+
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -53,10 +56,13 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
                                 "enforce-spacing-before-colon-in-declaration"),
                         ruleStatusProvider.getRuleStatus(
                                 "enforce-spacing-after-colon-in-declaration"),
-                        !ruleStatusProvider.getRuleStatus("enforce-no-spacing-around-equals"),
+                        ruleStatusProvider.getRuleStatus("enforce-no-spacing-around-equals"),
+                        ruleStatusProvider.getRuleStatus("enforce-spacing-around-equals"),
+                        ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
                         this.createExpressionHandler(),
                         resultFactory,
-                        writer));
+                        writer,
+                        new DefaultTokenTemplateFactory().separator(TokenType.SPACE.lexeme()).result()));
         return handlerRegistry;
     }
 

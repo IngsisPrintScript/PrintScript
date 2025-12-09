@@ -28,6 +28,7 @@ public class NumberLiteralParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream = stream;
         SafeIterationResult<Token> consumeLiteralResult = stream.consume(numberLiteralTemplate);
         if (!consumeLiteralResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
@@ -38,6 +39,7 @@ public class NumberLiteralParser implements Parser<ExpressionNode> {
                 ProcessResult.COMPLETE(
                         nodeFactory.createNumberLiteralNode(
                                 new BigDecimal(consumeLiteralResult.iterationResult().value()),
+                                originalStream,
                                 consumeLiteralResult.iterationResult().line(),
                                 consumeLiteralResult.iterationResult().column()),
                         NodePriority.LITERAL.priority()));

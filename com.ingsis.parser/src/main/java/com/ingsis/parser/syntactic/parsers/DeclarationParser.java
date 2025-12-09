@@ -60,7 +60,7 @@ public class DeclarationParser implements Parser<Node> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<Node>> parse(TokenStream stream) {
-
+        TokenStream originalStream = stream;
         SafeIterationResult<Token> consumeDeclaration = null;
         for (TokenTemplate declarationTemplate : declarationTemplates) {
             consumeDeclaration = stream.consume(declarationTemplate);
@@ -132,6 +132,7 @@ public class DeclarationParser implements Parser<Node> {
                                     nodeFactory.createNilExpressionNode(),
                                     declaredType,
                                     declarationToken.value().equals("let"),
+                                    originalStream,
                                     declarationToken.line(),
                                     declarationToken.column()),
                             NodePriority.STATEMENT.priority()));
@@ -193,6 +194,7 @@ public class DeclarationParser implements Parser<Node> {
                                 expressionNode,
                                 declaredType,
                                 declarationToken.value().equals("let"),
+                                originalStream,
                                 declarationToken.line(),
                                 declarationToken.column()),
                         NodePriority.STATEMENT.priority()));

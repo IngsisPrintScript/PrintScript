@@ -10,6 +10,7 @@ import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import com.ingsis.utils.type.types.Types;
 import java.util.List;
 
@@ -38,6 +39,11 @@ public record NilExpressionNode() implements ExpressionNode {
     @Override
     public String symbol() {
         return Types.NIL.name();
+    }
+
+    @Override
+    public TokenStream stream() {
+        return null;
     }
 
     @Override

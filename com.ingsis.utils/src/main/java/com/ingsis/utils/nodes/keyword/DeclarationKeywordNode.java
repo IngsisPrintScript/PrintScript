@@ -11,6 +11,7 @@ import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.Result;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import com.ingsis.utils.type.types.Types;
 
 public record DeclarationKeywordNode(
@@ -18,6 +19,7 @@ public record DeclarationKeywordNode(
         ExpressionNode expressionNode,
         Types declaredType,
         Boolean isMutable,
+        TokenStream stream,
         Integer line,
         Integer column)
         implements Node, Interpretable {

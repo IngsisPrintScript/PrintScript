@@ -28,6 +28,7 @@ public class BooleanLiteralParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
+        TokenStream originalStream= stream;
         SafeIterationResult<Token> consumeLiteralResult = stream.consume(booleanLiteralTemplate);
         if (!consumeLiteralResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
@@ -39,6 +40,7 @@ public class BooleanLiteralParser implements Parser<ExpressionNode> {
                         nodeFactory.createBooleanLiteralNode(
                                 Boolean.parseBoolean(
                                         consumeLiteralResult.iterationResult().value()),
+                                originalStream,
                                 consumeLiteralResult.iterationResult().line(),
                                 consumeLiteralResult.iterationResult().column()),
                         NodePriority.IDENTIFIER.priority()));
