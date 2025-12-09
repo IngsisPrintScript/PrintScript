@@ -76,6 +76,9 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
         handlerRegistry.register(
                 new FormatterConditionalHandler(eventsCheckerSupplier,
                         ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
+                        ruleStatusProvider.getRuleStatus("if-brace-same-line"),
+                        ruleStatusProvider.getRuleStatus("if-brace-below-line"),
+                        ruleStatusProvider.getRuleValue("indent-inside-if", Integer.class),
                         tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
                         tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
                         tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),

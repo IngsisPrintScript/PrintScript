@@ -45,7 +45,6 @@ public final class DefaultParserRegistry<T extends Node> implements ParserRegist
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<T>> parse(TokenStream stream) {
-        stream = stream.consumeNoise();
         ProcessCheckpoint<Token, ProcessResult<T>> best = ProcessCheckpoint.UNINITIALIZED();
         for (Parser<T> parser : parsers) {
             ProcessCheckpoint<Token, ProcessResult<T>> candidate =

@@ -22,6 +22,10 @@ import java.util.function.Supplier;
 public class FormatterConditionalHandler implements NodeEventHandler<IfKeywordNode> {
     private final Supplier<Checker> eventsCheckerSupplier;
     private final Boolean enforceSingleSeparation;
+    private final Boolean ifBraceSameLine;
+    private final Boolean ifNotSameLine;
+    private final Integer indentation;
+    private final Integer depth;
     private final TokenTemplate space;
     private final TokenTemplate newLine;
     private final TokenTemplate tab;
@@ -31,6 +35,10 @@ public class FormatterConditionalHandler implements NodeEventHandler<IfKeywordNo
     public FormatterConditionalHandler(
             Supplier<Checker> eventsCheckerSupplier,
             Boolean enforceSingleSeparation,
+            Boolean ifBraceSameLine,
+            Boolean ifNotBraceSameLine,
+            Integer indentation,
+            Integer depth,
             TokenTemplate space,
             TokenTemplate newLine,
             TokenTemplate tab,
@@ -38,6 +46,34 @@ public class FormatterConditionalHandler implements NodeEventHandler<IfKeywordNo
             Writer writer) {
         this.eventsCheckerSupplier = eventsCheckerSupplier;
         this.enforceSingleSeparation = enforceSingleSeparation;
+        this.ifBraceSameLine = ifBraceSameLine;
+        this.ifNotSameLine = ifNotBraceSameLine;
+        this.indentation = indentation;
+        this.depth = depth;
+        this.space = space;
+        this.newLine = newLine;
+        this.tab = tab;
+        this.resultFactory = resultFactory;
+        this.writer = writer;
+    }
+
+    public FormatterConditionalHandler(
+            Supplier<Checker> eventsCheckerSupplier,
+            Boolean enforceSingleSeparation,
+            Boolean ifBraceSameLine,
+            Boolean ifNotBraceSameLine,
+            Integer indentation,
+            TokenTemplate space,
+            TokenTemplate newLine,
+            TokenTemplate tab,
+            ResultFactory resultFactory,
+            Writer writer) {
+        this.eventsCheckerSupplier = eventsCheckerSupplier;
+        this.enforceSingleSeparation = enforceSingleSeparation;
+        this.ifBraceSameLine = ifBraceSameLine;
+        this.ifNotSameLine = ifNotBraceSameLine;
+        this.indentation = indentation;
+        this.depth = 1;
         this.space = space;
         this.newLine = newLine;
         this.tab = tab;
@@ -62,34 +98,131 @@ public class FormatterConditionalHandler implements NodeEventHandler<IfKeywordNo
             }
             writer.append(")");
             stream = (TokenStream) stream.next().nextIterator();
-            stream = consumeSpacesWithEnforcement(stream);
-            writer.append("{");
+            if (ifNotSameLine){
+                writer.append("\n");
+                stream = consumeBlankCharsWithoutWriting(stream);
+            } else {
+                writer.append(" ");
+                stream = consumeBlankCharsWithoutWriting(stream);
+            }
+            writer.append("{\n");
             stream = (TokenStream) stream.next().nextIterator();
-            stream = consumeSpacesWithEnforcement(stream);
+            stream = consumeNewLineWithoutWriting(stream);
             for (Node thenChild : node.thenBody()) {
-                Result<String> formatChildResult =
-                        ((Checkable) thenChild).acceptChecker(eventsCheckerSupplier.get());
-                if (!formatChildResult.isCorrect()) {
-                    return resultFactory.cloneIncorrectResult(formatChildResult);
+                if (thenChild instanceof  IfKeywordNode ifKeywordNode){
+                    if (indentation == null){
+                        stream = consumeSpacesWithWriting(stream);
+                    } else {
+                        for (int i = 0; i < indentation; i++) {
+                            writer.append(" ");
+                            stream = consumeSpaceWithoutWriting(stream);
+                        }
+                    }
+                    new FormatterConditionalHandler(
+                            eventsCheckerSupplier,
+                            enforceSingleSeparation,
+                            ifBraceSameLine,
+                            ifNotSameLine,
+                            indentation * (depth + 1),
+                            depth + 1,
+                            space,
+                            newLine,
+                            tab,
+                            resultFactory,
+                            writer
+                    ).handle(ifKeywordNode);
+                    stream = stream.advanceBy(ifKeywordNode.stream().consumeAll());
+                    continue;
+                } else {
+                    if (indentation == null){
+                        stream = consumeSpacesWithWriting(stream);
+                    } else {
+                        for (int i = 0; i < indentation; i++) {
+                            writer.append(" ");
+                            stream = consumeSpaceWithoutWriting(stream);
+                        }
+                    }
+                    Result<String> formatChildResult =
+                            ((Checkable) thenChild).acceptChecker(eventsCheckerSupplier.get());
+                    if (!formatChildResult.isCorrect()) {
+                        return resultFactory.cloneIncorrectResult(formatChildResult);
+                    }
+                    stream=stream.advanceBy(thenChild.stream().consumeAll());
+                    stream = consumeSpacesWithEnforcement(stream);
                 }
-                stream=stream.advanceBy(thenChild.stream().consumeAll());
-                stream = consumeSpacesWithEnforcement(stream);
             }
             for (Node elseChild : node.elseBody()) {
+                if (indentation == null){
+                    stream = consumeSpacesWithWriting(stream);
+                } else {
+                    for (int i = 0; i < indentation; i++) {
+                        writer.append(" ");
+                        stream = consumeSpaceWithoutWriting(stream);
+                    }
+                }
                 Result<String> formatChildResult =
                         ((Checkable) elseChild).acceptChecker(eventsCheckerSupplier.get());
                 if (!formatChildResult.isCorrect()) {
                     return resultFactory.cloneIncorrectResult(formatChildResult);
                 }
-                stream = stream.advanceBy(elseChild.stream().consumeAll());
+                stream=stream.advanceBy(elseChild.stream().consumeAll());
                 stream = consumeSpacesWithEnforcement(stream);
             }
-            writer.append("}");
+            if (indentation == null){
+                stream = consumeSpacesWithWriting(stream);
+            } else {
+                if (depth!=1) {
+                    for (int i = 0; i < indentation/2; i++) {
+                        writer.append(" ");
+                        stream = consumeSpaceWithoutWriting(stream);
+                    }
+
+                }
+            }
+            writer.append("}\n");
             stream = consumeSpacesWithEnforcement(stream);
             return resultFactory.createCorrectResult("Formatted.");
         } catch (IOException e){
             return  resultFactory.createIncorrectResult(e.getMessage());
         }
+    }
+
+    private TokenStream consumeNewLineWithWriting(TokenStream stream) throws IOException{
+        while (stream.consume(newLine).isCorrect()) {
+            writer.append("\n");
+            stream = (TokenStream) stream.next().nextIterator();
+        }
+        return stream;
+    }
+
+    private TokenStream consumeNewLineWithoutWriting(TokenStream stream) {
+        while (stream.consume(newLine).isCorrect() || stream.consume(newLine).isCorrect() || stream.consume(tab).isCorrect()) {
+            stream = (TokenStream) stream.next().nextIterator();
+        }
+        return stream;
+    }
+
+
+    private TokenStream consumeSpaceWithoutWriting(TokenStream stream) {
+        while (stream.consume(space).isCorrect()) {
+            stream = (TokenStream) stream.next().nextIterator();
+        }
+        return stream;
+    }
+
+    private TokenStream consumeBlankCharsWithoutWriting(TokenStream stream) {
+        while (stream.consume(space).isCorrect() || stream.consume(newLine).isCorrect() || stream.consume(tab).isCorrect()) {
+            stream = (TokenStream) stream.next().nextIterator();
+        }
+        return stream;
+    }
+
+    private TokenStream consumeSpacesWithWriting(TokenStream stream) throws IOException {
+        while (stream.consume(space).isCorrect()) {
+            writer.append(" ");
+            stream = (TokenStream) stream.next().nextIterator();
+        }
+        return stream;
     }
 
     private TokenStream consumeSpacesWithEnforcement(TokenStream stream) throws IOException {
@@ -103,14 +236,6 @@ public class FormatterConditionalHandler implements NodeEventHandler<IfKeywordNo
                 writer.append(" ");
                 stream = (TokenStream) stream.next().nextIterator();
             }
-        }
-        while (stream.consume(newLine).isCorrect()){
-            writer.append("\n");
-            stream = (TokenStream) stream.next().nextIterator();
-        }
-        while (stream.consume(tab).isCorrect()){
-            writer.append("\t");
-            stream = (TokenStream) stream.next().nextIterator();
         }
         return stream;
     }

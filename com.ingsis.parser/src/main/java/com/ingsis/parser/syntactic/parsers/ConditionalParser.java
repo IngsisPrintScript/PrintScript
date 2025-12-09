@@ -189,6 +189,7 @@ public class ConditionalParser implements Parser<Node> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
         stream = ((TokenStream) lBraceResult.nextIterator()).consumeNoise();
+        stream = stream.consumeNoise();
 
         List<Node> body = new ArrayList<>();
         while (!stream.consume(rBraceTemplate).isCorrect()) {
