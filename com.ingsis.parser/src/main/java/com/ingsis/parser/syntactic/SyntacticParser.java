@@ -89,7 +89,7 @@ public final class SyntacticParser implements SafeIterator<Checkable> {
                 ProcessCheckpoint<Token, ProcessResult<Node>> result = process(stream);
                 if (result.isUninitialized()) {
                     if (checkpoint.isUninitialized()) {
-                        return iterationResultFactory.cloneIncorrectResult(getNextToken);
+                        return iterationResultFactory.createIncorrectResult("Unable to parse");
                     }
                     return iterationResultFactory.createCorrectResult(
                             checkpoint.result().result(),
@@ -112,7 +112,7 @@ public final class SyntacticParser implements SafeIterator<Checkable> {
                     }
                     case PREFIX, INVALID -> {
                         if (checkpoint.isUninitialized()) {
-                            return iterationResultFactory.cloneIncorrectResult(getNextToken);
+                            return iterationResultFactory.createIncorrectResult("Unable to parse");
                         }
                         return iterationResultFactory.createCorrectResult(
                                 checkpoint.result().result(),
