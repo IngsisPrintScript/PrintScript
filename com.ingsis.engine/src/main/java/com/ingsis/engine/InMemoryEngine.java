@@ -1,7 +1,3 @@
-/*
- * My Project
- */
-
 package com.ingsis.engine;
 
 import com.ingsis.charstream.factories.CharStreamFactory;
@@ -23,6 +19,7 @@ import com.ingsis.parser.syntactic.parsers.factory.InMemoryParserFactory;
 import com.ingsis.parser.syntactic.parsers.factory.ParserFactory;
 import com.ingsis.sca.factories.DefaultScaFactory;
 import com.ingsis.sca.factories.ScaFactory;
+import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.iterator.safe.result.DefaultIterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
@@ -68,13 +65,21 @@ public class InMemoryEngine implements Engine {
 
     @Override
     public Result<String> interpret(InputStream inputStream, Version version) {
-        SafeIterationResult<String> result =
-                createProgramInterpreterFactory(version).fromInputStream(inputStream).next();
+        SafeIteratorFactory<String> programFactory = createProgramInterpreterFactory(version);
+        SafeIterator<String> iterator = programFactory.fromInputStream(inputStream);
+
+        SafeIterationResult<String> result = iterator.next();
         if (!result.isCorrect()) {
-            return new IncorrectResult<>(result.error());
+            if (!"EOL".equals(result.error())) {
+                return new IncorrectResult<>(result.error());
+            }
+            return resultFactory.createCorrectResult("Interpreted succesfully.");
         }
+
         while (result.isCorrect()) {
-            result = result.nextIterator().next();
+            SafeIterator<String> nextIterator = result.nextIterator();
+            result = nextIterator.next();
+
             if (!result.isCorrect() && !result.error().equals("EOL")) {
                 return new IncorrectResult<>(result.error());
             }
@@ -97,7 +102,7 @@ public class InMemoryEngine implements Engine {
         if (!formatResult.isCorrect()) {
             return formatResult;
         }
-        return new CorrectResult<String>("Formatted succesfully.");
+        return new CorrectResult<>("Formatted succesfully.");
     }
 
     @Override
@@ -111,7 +116,8 @@ public class InMemoryEngine implements Engine {
                 .analyze();
     }
 
-    private SafeIteratorFactory<Interpretable> createSemanticFactory(Version version) {
+
+    public SafeIteratorFactory<Interpretable> createSemanticFactory(Version version) {
         TokenFactory tokenFactory = new DefaultTokensFactory();
         Runtime runtime = DefaultRuntime.getInstance();
         SafeIteratorFactory<MetaChar> metaCharIteratorFactory =
@@ -119,12 +125,10 @@ public class InMemoryEngine implements Engine {
         SafeIteratorFactory<Token> tokenIteratorFactory =
                 createTokenIteratorFactory(
                         metaCharIteratorFactory, resultFactory, tokenFactory, version);
-        SafeIteratorFactory<Checkable> cheeckableIteratorFactory =
+        SafeIteratorFactory<Checkable> checkableIteratorFactory =
                 createCheckableIteratorFactory(tokenIteratorFactory, tokenFactory);
-        SafeIteratorFactory<Interpretable> interpretableFactory =
-                new SemanticFactory(
-                        cheeckableIteratorFactory, resultFactory, runtime, iterationResultFactory);
-        return interpretableFactory;
+        return new SemanticFactory(
+                checkableIteratorFactory, resultFactory, runtime, iterationResultFactory);
     }
 
     private SafeIteratorFactory<Checkable> createCheckableIteratorFactory(
