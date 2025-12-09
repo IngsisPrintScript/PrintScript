@@ -16,8 +16,12 @@ import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.template.TokenTemplate;
+import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
+import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
+import com.ingsis.utils.token.type.TokenType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -120,7 +124,7 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
 
             // Parse using ONLY the sliced substream
             ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> argumentResult =
-                    expressionParserSupplier.get().parse(argumentSlice);
+                    expressionParserSupplier.get().parse(cleanNoise(argumentSlice));
 
             if (argumentResult.isUninitialized()) {
                 return ProcessCheckpoint.UNINITIALIZED();
@@ -135,7 +139,7 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
             // ---------------------------
             // NEW: advance main stream by slice
             // ---------------------------
-            stream = stream.advanceBy((TokenStream) argumentResult.iterator()).consumeNoise();
+            stream = stream.advanceBy(argumentSlice.consumeAll()).consumeNoise();
 
             // Try comma
             SafeIterationResult<Token> commaResult = stream.consume(comma);
@@ -187,6 +191,29 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
         return new DefaultTokenStream(
                 stream.tokens().subList(stream.pointer(), stream.pointer() + offset),
                 List.of(),
+                0,
+                new DefaultTokensFactory(),
+                new DefaultIterationResultFactory(),
+                new DefaultResultFactory());
+    }
+
+    private TokenStream cleanNoise(TokenStream stream) {
+        TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
+        List<TokenTemplate> noise =
+                List.of(
+                        tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.CRETURN.lexeme()).result());
+
+        List<Token> cleanTokens =
+                stream.tokens().stream()
+                        .filter(t -> noise.stream().noneMatch(nt -> nt.matches(t)))
+                        .toList();
+
+        return new DefaultTokenStream(
+                cleanTokens,
+                List.of(), // remove noise config completely
                 0,
                 new DefaultTokensFactory(),
                 new DefaultIterationResultFactory(),
