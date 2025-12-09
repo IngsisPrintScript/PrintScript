@@ -21,7 +21,6 @@ import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.runtime.result.factory.LoggerResultFactory;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 

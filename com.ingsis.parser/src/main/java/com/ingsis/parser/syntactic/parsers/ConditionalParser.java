@@ -146,7 +146,7 @@ public class ConditionalParser implements Parser<Node> {
         List<Node> body = new ArrayList<>();
         while (!stream.consume(rBraceTemplate).isCorrect()) {
             ProcessCheckpoint<Token, ProcessResult<Node>> statementCheckpoint =
-                    statementParserSupplier.get().parse(stream.sliceFromPointer());
+                    statementParserSupplier.get().parse(stream);
             if (statementCheckpoint.isUninitialized()) {
                 return ProcessCheckpoint.INITIALIZED(
                         stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
@@ -164,7 +164,7 @@ public class ConditionalParser implements Parser<Node> {
                     stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
         }
 
-        stream = stream.consumeNoise();
+        stream = ((TokenStream) rBraceResult.nextIterator()).consumeNoise();
         return ProcessCheckpoint.INITIALIZED(
                 stream, ProcessResult.COMPLETE(body, NodePriority.STATEMENT.priority()));
     }

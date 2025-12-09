@@ -22,7 +22,6 @@ import com.ingsis.utils.rule.observer.handlers.NodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.OrInMemoryNodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
-import com.ingsis.utils.token.template.TokenTemplate;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
 import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.type.TokenType;
@@ -91,13 +90,14 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
         registry.register(new FormatterLiteralHandler(resultFactory, writer));
         registry.register(new FormatterIdentifierHandler(resultFactory, writer));
 
-        FormatterFunctionCallHandler baseFunctionHandler = new FormatterFunctionCallHandler(
-                self,
-                ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
-                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
-                tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
-                resultFactory,
-                writer);
+        FormatterFunctionCallHandler baseFunctionHandler =
+                new FormatterFunctionCallHandler(
+                        self,
+                        ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
+                        tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
+                        resultFactory,
+                        writer);
 
         registry.register(
                 new FormatterSpecialFunctionCallHandler(

@@ -46,7 +46,6 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.factories.TokenFactory;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -111,8 +110,6 @@ public class InMemoryEngine implements Engine {
 
         return new CorrectResult<>("Formatted successfully.");
     }
-
-
 
     @Override
     public Result<String> analyze(InputStream inputStream, InputStream config, Version version) {

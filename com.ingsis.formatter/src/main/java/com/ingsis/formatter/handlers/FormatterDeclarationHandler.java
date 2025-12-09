@@ -86,7 +86,7 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
             }
             writer.append(";");
             SafeIterationResult<Token> getNewLineStream = stream.next();
-            if (getNewLineStream.isCorrect()){
+            if (getNewLineStream.isCorrect()) {
                 writer.append("\n");
             }
         } catch (IOException e) {

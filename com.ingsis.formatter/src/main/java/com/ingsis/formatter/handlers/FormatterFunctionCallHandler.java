@@ -65,7 +65,8 @@ public class FormatterFunctionCallHandler implements NodeEventHandler<Expression
         return resultFactory.createCorrectResult("Format correct.");
     }
 
-    private Result<String> formatArguments(CallFunctionNode node, TokenStream stream) throws IOException {
+    private Result<String> formatArguments(CallFunctionNode node, TokenStream stream)
+            throws IOException {
         boolean needsComa = false;
         for (ExpressionNode child : node.children().subList(1, node.children().size())) {
             if (needsComa) {
@@ -73,7 +74,7 @@ public class FormatterFunctionCallHandler implements NodeEventHandler<Expression
                 writer.append(",");
                 stream = consumeSpacesWithEnforcement(stream);
             }
-            if (child instanceof StringLiteralNode){
+            if (child instanceof StringLiteralNode) {
                 writer.append("\"");
                 Result<String> formatChildResult = expressionHandlerSupplier.get().handle(child);
                 if (!formatChildResult.isCorrect()) {
@@ -82,15 +83,15 @@ public class FormatterFunctionCallHandler implements NodeEventHandler<Expression
                 needsComa = true;
                 writer.append("\"");
             } else {
-            Result<String> formatChildResult = expressionHandlerSupplier.get().handle(child);
-            if (!formatChildResult.isCorrect()) {
-                return resultFactory.cloneIncorrectResult(formatChildResult);
-            }
-            needsComa = true;
+                Result<String> formatChildResult = expressionHandlerSupplier.get().handle(child);
+                if (!formatChildResult.isCorrect()) {
+                    return resultFactory.cloneIncorrectResult(formatChildResult);
+                }
+                needsComa = true;
             }
         }
         SafeIterationResult<Token> consumeNewLine = stream.consume(newLine);
-        if (consumeNewLine.isCorrect()){
+        if (consumeNewLine.isCorrect()) {
             writer.append("\n");
         }
         return resultFactory.createCorrectResult("Arguments formatted correctly.");

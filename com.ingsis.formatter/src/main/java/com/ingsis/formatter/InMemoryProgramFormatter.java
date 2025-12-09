@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.formatter;
 
 import com.ingsis.interpreter.visitor.DefaultInterpreterVisitor;
@@ -11,7 +15,6 @@ import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.runtime.DefaultRuntime;
-
 import java.io.StringWriter;
 
 public class InMemoryProgramFormatter implements ProgramFormatter {
@@ -37,7 +40,7 @@ public class InMemoryProgramFormatter implements ProgramFormatter {
             while (result.isCorrect()) {
                 if (result.iterationResult() instanceof DeclarationKeywordNode decl) {
                     new DefaultInterpreterVisitor(
-                            DefaultRuntime.getInstance(), new DefaultResultFactory())
+                                    DefaultRuntime.getInstance(), new DefaultResultFactory())
                             .interpret(decl);
                 }
 

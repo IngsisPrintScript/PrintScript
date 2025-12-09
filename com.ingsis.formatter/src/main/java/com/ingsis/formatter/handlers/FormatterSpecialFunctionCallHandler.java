@@ -55,7 +55,7 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
         try {
             String functionIdentifier = callFunctionNode.identifierNode().name();
             if (functionIdentifier.equals(functionName)) {
-                for (int i = 0; i < amountOfLinesBeforeCall+1; i++) {
+                for (int i = 0; i < amountOfLinesBeforeCall + 1; i++) {
                     writer.append("\n");
                 }
             } else {
