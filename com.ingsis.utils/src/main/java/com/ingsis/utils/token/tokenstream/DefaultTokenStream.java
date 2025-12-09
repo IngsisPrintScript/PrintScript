@@ -51,8 +51,8 @@ public final class DefaultTokenStream implements TokenStream {
 
     @Override
     public SafeIterationResult<Token> next() {
-        if (pointer >= tokenBuffer.size()) {
-            return iterationResultFactory.createIncorrectResult("There are no more tokens");
+        if (pointer >= tokenBuffer.size() - 1) {
+            return iterationResultFactory.createIncorrectResult("EOL");
         }
         return iterationResultFactory.createCorrectResult(
                 tokenBuffer.get(pointer),

@@ -72,8 +72,7 @@ public class InMemoryEngine implements Engine {
                 createProgramInterpreterFactory(version).fromInputStream(inputStream).next();
         while (result.isCorrect()) {
             result = result.nextIterator().next();
-            System.out.print(result.toString());
-            if (!result.isCorrect()) {
+            if (!result.isCorrect() || !result.error().equals("EOL")) {
                 return new IncorrectResult<>(result.error());
             }
         }
