@@ -133,6 +133,8 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
             }
         } while (true);
 
+        stream = consumeNoise(stream);
+
         return ProcessCheckpoint.INITIALIZED(stream, ProcessResult.COMPLETE(arguments, priority));
     }
 

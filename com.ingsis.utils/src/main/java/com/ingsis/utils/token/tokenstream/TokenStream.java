@@ -12,21 +12,23 @@ import com.ingsis.utils.token.template.TokenTemplate;
 import java.util.List;
 
 public interface TokenStream extends SafeIterator<Token> {
-    SafeIterationResult<Token> consume(TokenTemplate tokenTemplate);
+  SafeIterationResult<Token> consume(TokenTemplate tokenTemplate);
 
-    TokenStream consumeAll(TokenTemplate tokenTemplate);
+  TokenStream consumeAll(TokenTemplate tokenTemplate);
 
-    Result<Token> peek(int offset);
+  TokenStream consumeNoise();
 
-    List<Token> tokens();
+  Result<Token> peek(int offset);
 
-    Integer pointer();
+  List<Token> tokens();
 
-    TokenStream withToken(Token token);
+  Integer pointer();
 
-    TokenStream reset();
+  TokenStream withToken(Token token);
 
-    TokenStream sliceFromPointer();
+  TokenStream reset();
 
-    TokenStream advanceBy(TokenStream subStream);
+  TokenStream sliceFromPointer();
+
+  TokenStream advanceBy(TokenStream subStream);
 }
