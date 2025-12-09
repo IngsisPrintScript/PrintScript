@@ -70,10 +70,17 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
 
     @Override
     public NodeEventHandler<IfKeywordNode> createConditionalHandler() {
+        TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
         NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry =
                 new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
         handlerRegistry.register(
-                new FormatterConditionalHandler(eventsCheckerSupplier, resultFactory));
+                new FormatterConditionalHandler(eventsCheckerSupplier,
+                        ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
+                        tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),
+                        resultFactory,
+                        writer));
         return handlerRegistry;
     }
 
