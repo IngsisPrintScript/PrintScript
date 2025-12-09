@@ -32,8 +32,8 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
         registry =
                 registry.registerParser(
                         parserFactory.conditionalParser(expressionParser, () -> registryRef.get()));
-        registryRef.set(registry);
         registry = registry.registerParser(parserFactory.lineExpressionParser(expressionParser));
+        registryRef.set(registry);
         return registry;
     }
 

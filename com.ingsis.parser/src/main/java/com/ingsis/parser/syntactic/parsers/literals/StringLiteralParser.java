@@ -32,11 +32,13 @@ public class StringLiteralParser implements Parser<ExpressionNode> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
         stream = ((TokenStream) consumeLiteralResult.nextIterator()).consumeNoise();
+        String raw = consumeLiteralResult.iterationResult().value();
+        String inner = raw.substring(1, raw.length() - 1);
         return ProcessCheckpoint.INITIALIZED(
-                consumeLiteralResult.nextIterator(),
+                stream,
                 ProcessResult.COMPLETE(
                         nodeFactory.createStringLiteralNode(
-                                consumeLiteralResult.iterationResult().value(),
+                                inner,
                                 consumeLiteralResult.iterationResult().line(),
                                 consumeLiteralResult.iterationResult().column()),
                         NodePriority.IDENTIFIER.priority()));
