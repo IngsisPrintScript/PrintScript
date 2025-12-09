@@ -139,7 +139,7 @@ public class DeclarationParser implements Parser<Node> {
         stream = consumeNoice(stream);
 
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> processExpressionResult =
-                expressionParser.parse(stream);
+                expressionParser.parse(stream.sliceFromPointer());
         if (processExpressionResult.isUninitialized()) {
             return ProcessCheckpoint.INITIALIZED(
                     stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));

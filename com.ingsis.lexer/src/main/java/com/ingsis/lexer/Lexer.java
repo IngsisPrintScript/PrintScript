@@ -42,9 +42,7 @@ public final class Lexer implements SafeIterator<Token> {
 
     @Override
     public SafeIterationResult<Token> next() {
-        SafeIterationResult<Token> result = maximalMunchOf(metaCharStringBuilder, charIterator);
-        System.out.println(result);
-        return result;
+        return maximalMunchOf(metaCharStringBuilder, charIterator);
     }
 
     private SafeIterationResult<Token> maximalMunchOf(

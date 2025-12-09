@@ -95,7 +95,53 @@ public final class SyntacticParser implements SafeIterator<Checkable> {
             }
             SafeIterationResult<Token> getNextToken = iterator.next();
             if (!getNextToken.isCorrect()) {
-                return iterationResultFactory.createIncorrectResult("TEST");
+                ProcessCheckpoint<Token, ProcessResult<Node>> result = process(stream);
+                if (result.isUninitialized()) {
+                    if (checkpoint.isUninitialized()) {
+                        return iterationResultFactory.createIncorrectResult("Error parsing");
+                    }
+                    return iterationResultFactory.createCorrectResult(
+                            checkpoint.result().result(),
+                            new SyntacticParser(
+                                    checkpoint.iterator(),
+                                    this.parser,
+                                    new DefaultTokenStream(
+                                            new DefaultTokensFactory(),
+                                            iterationResultFactory,
+                                            new DefaultResultFactory()),
+                                    this.iterationResultFactory));
+                }
+
+                switch (result.result().status()) {
+                    case COMPLETE -> {
+                        return iterationResultFactory.createCorrectResult(
+                                result.result().result(),
+                                new SyntacticParser(
+                                        result.iterator(),
+                                        this.parser,
+                                        new DefaultTokenStream(
+                                                new DefaultTokensFactory(),
+                                                iterationResultFactory,
+                                                new DefaultResultFactory()),
+                                        this.iterationResultFactory));
+                    }
+                    case PREFIX, INVALID -> {
+                        if (checkpoint.isUninitialized()) {
+                            return iterationResultFactory.createIncorrectResult(
+                                    "Unable to parse that stream");
+                        }
+                        return iterationResultFactory.createCorrectResult(
+                                checkpoint.result().result(),
+                                new SyntacticParser(
+                                        checkpoint.iterator(),
+                                        this.parser,
+                                        new DefaultTokenStream(
+                                                new DefaultTokensFactory(),
+                                                iterationResultFactory,
+                                                new DefaultResultFactory()),
+                                        this.iterationResultFactory));
+                    }
+                }
             }
             stream = stream.withToken(getNextToken.iterationResult());
             iterator = getNextToken.nextIterator();

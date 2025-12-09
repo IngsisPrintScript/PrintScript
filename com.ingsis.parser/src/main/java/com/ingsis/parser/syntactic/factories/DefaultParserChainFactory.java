@@ -39,6 +39,11 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
     @Override
     public Parser<ExpressionNode> createExpressionChain() {
         AtomicReference<Parser<ExpressionNode>> registryRef = new AtomicReference<>();
+        AtomicReference<Parser<ExpressionNode>> leafRegistryRef = new AtomicReference<>();
+
+        Parser<ExpressionNode> leafParser = createLeafExpressionChain();
+        leafRegistryRef.set(leafParser);
+
         ParserRegistry<ExpressionNode> registry = new DefaultParserRegistry<>();
         registry = registry.registerParser(parserFactory.numberLiteralParser());
         registry = registry.registerParser(parserFactory.stringLiteralParser());
@@ -48,8 +53,25 @@ public final class DefaultParserChainFactory implements ParserChainFactory {
                 registry.registerParser(
                         parserFactory.callFunctionParser(
                                 parserFactory.identifierParser(), () -> registryRef.get()));
-        registry = registry.registerParser(parserFactory.operatorParser(() -> registryRef.get()));
+        registry =
+                registry.registerParser(parserFactory.operatorParser(() -> leafRegistryRef.get()));
         registryRef.set(registry);
         return registry;
+    }
+
+    private Parser<ExpressionNode> createLeafExpressionChain() {
+        AtomicReference<Parser<ExpressionNode>> leafRegistryRef = new AtomicReference<>();
+        ParserRegistry<ExpressionNode> leafRegistry = new DefaultParserRegistry<>();
+        leafRegistry = leafRegistry.registerParser(parserFactory.numberLiteralParser());
+        leafRegistry = leafRegistry.registerParser(parserFactory.stringLiteralParser());
+        leafRegistry = leafRegistry.registerParser(parserFactory.booleanLiteralParser());
+        leafRegistry = leafRegistry.registerParser(parserFactory.identifierParser());
+        leafRegistry =
+                leafRegistry.registerParser(
+                        parserFactory.callFunctionParser(
+                                parserFactory.identifierParser(), () -> leafRegistryRef.get()));
+        // NO incluimos operatorParser aquí para evitar recursión infinita
+        leafRegistryRef.set(leafRegistry);
+        return leafRegistry;
     }
 }
