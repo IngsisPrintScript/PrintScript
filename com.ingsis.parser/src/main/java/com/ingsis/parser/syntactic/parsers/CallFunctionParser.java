@@ -22,7 +22,6 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
     private final TokenTemplate lParen;
     private final TokenTemplate comma;
     private final TokenTemplate rParen;
-    private final TokenTemplate space;
     private final Parser<ExpressionNode> identifierParser;
     private final Supplier<Parser<ExpressionNode>> expressionParserSupplier;
     private final NodeFactory nodeFactory;
@@ -38,7 +37,6 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
         this.lParen = lParen;
         this.comma = comma;
         this.rParen = rParen;
-        this.space = space;
         this.identifierParser = identifierParser;
         this.expressionParserSupplier = expressionParserSupplier;
         this.nodeFactory = nodeFactory;
@@ -59,7 +57,7 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
 
-        stream = consumeNoise((TokenStream) identifierResult.iterator());
+        stream = ((TokenStream) identifierResult.iterator()).consumeNoise();
 
         ProcessCheckpoint<Token, ProcessResult<List<ExpressionNode>>> argumentsResult =
                 parseArguments(stream);
@@ -73,7 +71,7 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
                     ProcessResult.PREFIX(NodePriority.CALL_FUNCTION.priority()));
         }
 
-        stream = consumeNoise((TokenStream) argumentsResult.iterator());
+        stream = ((TokenStream) argumentsResult.iterator()).consumeNoise();
 
         return ProcessCheckpoint.INITIALIZED(
                 stream,
@@ -92,14 +90,14 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
         if (!lParenCheck.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }
-        stream = consumeNoise((TokenStream) lParenCheck.nextIterator());
+        stream = ((TokenStream) lParenCheck.nextIterator()).consumeNoise();
 
         List<ExpressionNode> arguments = new ArrayList<>();
         int priority = NodePriority.CALL_FUNCTION.priority();
 
         SafeIterationResult<Token> rParenCheck = stream.consume(rParen);
         if (rParenCheck.isCorrect()) {
-            stream = consumeNoise((TokenStream) rParenCheck.nextIterator());
+            stream = ((TokenStream) rParenCheck.nextIterator()).consumeNoise();
             return ProcessCheckpoint.INITIALIZED(
                     stream, ProcessResult.COMPLETE(arguments, priority));
         }
@@ -116,29 +114,25 @@ public class CallFunctionParser implements Parser<ExpressionNode> {
             }
 
             arguments.add(argumentResult.result().result());
-            stream = consumeNoise((TokenStream) argumentResult.iterator());
+            stream = ((TokenStream) argumentResult.iterator()).consumeNoise();
 
-            stream = consumeNoise(stream);
+            stream = (stream).consumeNoise();
 
             SafeIterationResult<Token> commaResult = stream.consume(comma);
             if (commaResult.isCorrect()) {
-                stream = consumeNoise((TokenStream) commaResult.nextIterator());
+                stream = ((TokenStream) commaResult.nextIterator()).consumeNoise();
             } else {
                 rParenCheck = stream.consume(rParen);
                 if (!rParenCheck.isCorrect()) {
                     return ProcessCheckpoint.INITIALIZED(stream, ProcessResult.PREFIX(priority));
                 }
-                stream = consumeNoise((TokenStream) rParenCheck.nextIterator());
+                stream = ((TokenStream) rParenCheck.nextIterator()).consumeNoise();
                 break;
             }
         } while (true);
 
-        stream = consumeNoise(stream);
+        stream = stream.consumeNoise();
 
         return ProcessCheckpoint.INITIALIZED(stream, ProcessResult.COMPLETE(arguments, priority));
-    }
-
-    private TokenStream consumeNoise(TokenStream stream) {
-        return stream.consumeAll(space);
     }
 }

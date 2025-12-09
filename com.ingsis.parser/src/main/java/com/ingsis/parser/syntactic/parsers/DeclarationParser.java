@@ -20,7 +20,6 @@ import java.util.List;
 
 public class DeclarationParser implements Parser<Node> {
     private final List<TokenTemplate> declarationTemplates;
-    private final TokenTemplate spaceTemplate;
     private final TokenTemplate colonTemplate;
     private final List<TokenTemplate> typeTemplates;
     private final TokenTemplate equalsTemplate;
@@ -40,7 +39,6 @@ public class DeclarationParser implements Parser<Node> {
             Parser<ExpressionNode> expressionParser,
             NodeFactory nodeFactory) {
         this.declarationTemplates = declarationTemplates;
-        this.spaceTemplate = spaceTemplate;
         this.typeTemplates = typeTemplates;
         this.colonTemplate = colonTemplate;
         this.equalsTemplate = equalsTemplate;
@@ -66,7 +64,7 @@ public class DeclarationParser implements Parser<Node> {
         Token declarationToken = consumeDeclaration.iterationResult();
 
         stream = (TokenStream) consumeDeclaration.nextIterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> processIdentifierResult =
                 identifierParser.parse(stream);
@@ -86,7 +84,7 @@ public class DeclarationParser implements Parser<Node> {
         }
 
         stream = (TokenStream) processIdentifierResult.iterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         SafeIterationResult<Token> consumeTypeAssignationOperator = stream.consume(colonTemplate);
         if (!consumeTypeAssignationOperator.isCorrect()) {
@@ -95,7 +93,7 @@ public class DeclarationParser implements Parser<Node> {
         }
 
         stream = (TokenStream) consumeTypeAssignationOperator.nextIterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         SafeIterationResult<Token> consumeType = null;
         for (TokenTemplate typeTemplate : typeTemplates) {
@@ -111,7 +109,7 @@ public class DeclarationParser implements Parser<Node> {
         Types declaredType = Types.fromKeyword(consumeType.iterationResult().value());
 
         stream = (TokenStream) consumeType.nextIterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         SafeIterationResult<Token> consumeSemiColon = stream.consume(semicolonTemplate);
         if (consumeSemiColon.isCorrect()) {
@@ -136,7 +134,7 @@ public class DeclarationParser implements Parser<Node> {
         }
 
         stream = (TokenStream) consumeEquals.nextIterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> processExpressionResult =
                 expressionParser.parse(stream.sliceFromPointer());
@@ -151,7 +149,7 @@ public class DeclarationParser implements Parser<Node> {
         ExpressionNode expressionNode = processExpressionResult.result().result();
 
         stream = (TokenStream) processExpressionResult.iterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         SafeIterationResult<Token> consumeFinalSemiColon = stream.consume(semicolonTemplate);
         if (!consumeFinalSemiColon.isCorrect()) {
@@ -160,7 +158,7 @@ public class DeclarationParser implements Parser<Node> {
         }
 
         stream = (TokenStream) consumeFinalSemiColon.nextIterator();
-        stream = consumeNoice(stream);
+        stream = stream.consumeNoise();
 
         return ProcessCheckpoint.INITIALIZED(
                 stream,
@@ -173,9 +171,5 @@ public class DeclarationParser implements Parser<Node> {
                                 declarationToken.line(),
                                 declarationToken.column()),
                         NodePriority.STATEMENT.priority()));
-    }
-
-    private TokenStream consumeNoice(TokenStream stream) {
-        return stream.consumeAll(spaceTemplate);
     }
 }

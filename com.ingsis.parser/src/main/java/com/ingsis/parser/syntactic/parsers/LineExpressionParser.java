@@ -16,7 +16,6 @@ import com.ingsis.utils.token.tokenstream.TokenStream;
 
 public class LineExpressionParser implements Parser<Node> {
     private final TokenTemplate semicolonTemplate;
-    private final TokenTemplate spaceTemplate;
     private final Parser<ExpressionNode> expressionParser;
 
     public LineExpressionParser(
@@ -24,7 +23,6 @@ public class LineExpressionParser implements Parser<Node> {
             TokenTemplate spaceTemplate,
             Parser<ExpressionNode> expressionParser) {
         this.semicolonTemplate = semicolonTemplate;
-        this.spaceTemplate = spaceTemplate;
         this.expressionParser = expressionParser;
     }
 
@@ -44,7 +42,7 @@ public class LineExpressionParser implements Parser<Node> {
         ExpressionNode expressionNode = processExpressionResult.result().result();
 
         stream = (TokenStream) processExpressionResult.iterator();
-        stream = consumeNoise(stream);
+        stream = stream.consumeNoise();
 
         SafeIterationResult<Token> consumeSemicolonResult = stream.consume(semicolonTemplate);
         if (!consumeSemicolonResult.isCorrect()) {
@@ -53,13 +51,9 @@ public class LineExpressionParser implements Parser<Node> {
         }
 
         stream = (TokenStream) consumeSemicolonResult.nextIterator();
-        stream = consumeNoise(stream);
+        stream = stream.consumeNoise();
 
         return ProcessCheckpoint.INITIALIZED(
                 stream, ProcessResult.COMPLETE(expressionNode, NodePriority.EXPRESSION.priority()));
-    }
-
-    private TokenStream consumeNoise(TokenStream stream) {
-        return stream.consumeAll(spaceTemplate);
     }
 }

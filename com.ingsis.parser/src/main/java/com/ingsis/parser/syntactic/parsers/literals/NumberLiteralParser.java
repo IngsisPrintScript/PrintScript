@@ -32,8 +32,9 @@ public class NumberLiteralParser implements Parser<ExpressionNode> {
         if (!consumeLiteralResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }
+        stream = ((TokenStream) consumeLiteralResult.nextIterator()).consumeNoise();
         return ProcessCheckpoint.INITIALIZED(
-                consumeLiteralResult.nextIterator(),
+                stream,
                 ProcessResult.COMPLETE(
                         nodeFactory.createNumberLiteralNode(
                                 new BigDecimal(consumeLiteralResult.iterationResult().value()),
