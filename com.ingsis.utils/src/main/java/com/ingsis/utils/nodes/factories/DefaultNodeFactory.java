@@ -48,7 +48,8 @@ public final class DefaultNodeFactory implements NodeFactory {
     }
 
     @Override
-    public IdentifierNode createIdentifierNode(String name, TokenStream stream, Integer line, Integer column) {
+    public IdentifierNode createIdentifierNode(
+            String name, TokenStream stream, Integer line, Integer column) {
         return new IdentifierNode(name, stream, line, column);
     }
 
@@ -59,7 +60,8 @@ public final class DefaultNodeFactory implements NodeFactory {
     }
 
     @Override
-    public StringLiteralNode createStringLiteralNode(String value, TokenStream stream, Integer line, Integer column) {
+    public StringLiteralNode createStringLiteralNode(
+            String value, TokenStream stream, Integer line, Integer column) {
         return new StringLiteralNode(value, stream, line, column);
     }
 

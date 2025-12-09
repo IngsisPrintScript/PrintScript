@@ -11,12 +11,11 @@ import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.tokenstream.TokenStream;
-
 import java.math.BigDecimal;
 import java.util.List;
 
-public final record NumberLiteralNode(BigDecimal value, TokenStream  stream,  Integer line, Integer column)
-        implements LiteralNode {
+public final record NumberLiteralNode(
+        BigDecimal value, TokenStream stream, Integer line, Integer column) implements LiteralNode {
 
     @Override
     public List<ExpressionNode> children() {

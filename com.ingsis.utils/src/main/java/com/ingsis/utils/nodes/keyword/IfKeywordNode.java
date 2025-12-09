@@ -11,7 +11,6 @@ import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.tokenstream.TokenStream;
-
 import java.util.List;
 
 public record IfKeywordNode(
@@ -29,7 +28,11 @@ public record IfKeywordNode(
     }
 
     public IfKeywordNode(
-            ExpressionNode condition, List<Node> thenBody, TokenStream stream, Integer line, Integer column) {
+            ExpressionNode condition,
+            List<Node> thenBody,
+            TokenStream stream,
+            Integer line,
+            Integer column) {
         this(condition, thenBody, List.of(), stream, line, column);
     }
 

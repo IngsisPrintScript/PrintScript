@@ -48,12 +48,16 @@ public class PostfixExpressionTreeBuilder implements PostfixToAstBuilder {
 
     @Override
     public ProcessCheckpoint<Token, ExpressionNode> build(
-            Parser<ExpressionNode> leafExpressionNodesParser, Queue<Token> postfixTokens, TokenStream originalStream) {
+            Parser<ExpressionNode> leafExpressionNodesParser,
+            Queue<Token> postfixTokens,
+            TokenStream originalStream) {
         return parsePostFix(leafExpressionNodesParser, postfixTokens, originalStream);
     }
 
     private ProcessCheckpoint<Token, ExpressionNode> parsePostFix(
-            Parser<ExpressionNode> leafExpressionNodesParser, Queue<Token> postfixTokens, TokenStream originalStream) {
+            Parser<ExpressionNode> leafExpressionNodesParser,
+            Queue<Token> postfixTokens,
+            TokenStream originalStream) {
         Deque<ExpressionNode> expressionStack = new ArrayDeque<>();
         TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
         TokenStream tokenStream =
@@ -106,7 +110,8 @@ public class PostfixExpressionTreeBuilder implements PostfixToAstBuilder {
     }
 
     private Result<Deque<ExpressionNode>> generateOperatorNode(
-            OperatorType operatorType, Deque<ExpressionNode> expressionNodes,
+            OperatorType operatorType,
+            Deque<ExpressionNode> expressionNodes,
             TokenStream originalStream) {
         Deque<ExpressionNode> newStack = new ArrayDeque<>(expressionNodes);
         List<ExpressionNode> children = new ArrayList<>();
@@ -115,7 +120,11 @@ public class PostfixExpressionTreeBuilder implements PostfixToAstBuilder {
         }
         OperatorNode operatorNode =
                 nodeFactory.createOperatorNode(
-                        operatorType, children, originalStream, children.get(0).line(), children.get(0).column());
+                        operatorType,
+                        children,
+                        originalStream,
+                        children.get(0).line(),
+                        children.get(0).column());
         newStack.push(operatorNode);
         return new CorrectResult<>(newStack);
     }

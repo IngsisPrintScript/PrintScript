@@ -16,6 +16,7 @@ import java.util.function.Supplier;
 public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<ExpressionNode> {
     private final Integer amountOfLinesBeforeCall;
     private final String functionName;
+    private final Boolean singleSpaceSeparation;
     private final Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier;
     private final ResultFactory resultFactory;
     private final Writer writer;
@@ -23,11 +24,17 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
     public FormatterSpecialFunctionCallHandler(
             Integer amountOfLinesBeforeCall,
             String functionName,
+            Boolean singleSpaceSeparation,
             Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier,
             ResultFactory resultFactory,
             Writer writer) {
-        this.amountOfLinesBeforeCall = amountOfLinesBeforeCall;
+        Integer temp = amountOfLinesBeforeCall;
+        if (temp == null) {
+            temp = 0;
+        }
+        this.amountOfLinesBeforeCall = temp;
         this.functionName = functionName;
+        this.singleSpaceSeparation = singleSpaceSeparation;
         this.expressionHandlerSupplier = expressionHandlerSupplier;
         this.resultFactory = resultFactory;
         this.writer = writer;
@@ -39,7 +46,11 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
             return resultFactory.createIncorrectResult("Incorrect handler.");
         }
         Result<String> baseFunctionFormatterHandleResult =
-                new FormatterFunctionCallHandler(expressionHandlerSupplier, resultFactory, writer)
+                new FormatterFunctionCallHandler(
+                                expressionHandlerSupplier,
+                                singleSpaceSeparation,
+                                resultFactory,
+                                writer)
                         .handle(node);
         if (!baseFunctionFormatterHandleResult.isCorrect()) {
             return resultFactory.cloneIncorrectResult(baseFunctionFormatterHandleResult);

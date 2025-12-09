@@ -40,12 +40,14 @@ public interface NodeFactory {
             Integer line,
             Integer column);
 
-    IdentifierNode createIdentifierNode(String name, TokenStream stream, Integer line, Integer column);
+    IdentifierNode createIdentifierNode(
+            String name, TokenStream stream, Integer line, Integer column);
 
     NumberLiteralNode createNumberLiteralNode(
             BigDecimal value, TokenStream stream, Integer line, Integer column);
 
-    StringLiteralNode createStringLiteralNode(String value, TokenStream stream, Integer line, Integer column);
+    StringLiteralNode createStringLiteralNode(
+            String value, TokenStream stream, Integer line, Integer column);
 
     BooleanLiteralNode createBooleanLiteralNode(
             Boolean value, TokenStream stream, Integer line, Integer column);

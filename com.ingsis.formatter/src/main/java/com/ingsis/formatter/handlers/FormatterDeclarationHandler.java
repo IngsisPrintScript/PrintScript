@@ -57,29 +57,30 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
                 writer.append("const");
             }
             stream = (TokenStream) stream.next().nextIterator();
-            if (enforceSingleSeparation){
+            if (enforceSingleSeparation) {
                 writer.append(" ");
-                while (stream.consume(space).isCorrect()){
+                while (stream.consume(space).isCorrect()) {
                     stream = (TokenStream) stream.next().nextIterator();
                 }
             } else {
-                while (stream.consume(space).isCorrect()){
+                while (stream.consume(space).isCorrect()) {
                     writer.append(" ");
                     stream = (TokenStream) stream.next().nextIterator();
                 }
-            }writer.append(node.identifierNode().name());
+            }
+            writer.append(node.identifierNode().name());
             stream = (TokenStream) stream.next().nextIterator();
             if (hasPreAscriptionSpace) {
                 writer.append(" ");
                 stream = stream.consumeAll(space);
             } else {
-                if (enforceSingleSeparation){
+                if (enforceSingleSeparation) {
                     writer.append(" ");
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         stream = (TokenStream) stream.next().nextIterator();
                     }
                 } else {
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         writer.append(" ");
                         stream = (TokenStream) stream.next().nextIterator();
                     }
@@ -91,13 +92,13 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
                 writer.append(" ");
                 stream = stream.consumeAll(space);
             } else {
-                if (enforceSingleSeparation){
+                if (enforceSingleSeparation) {
                     writer.append(" ");
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         stream = (TokenStream) stream.next().nextIterator();
                     }
                 } else {
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         writer.append(" ");
                         stream = (TokenStream) stream.next().nextIterator();
                     }
@@ -105,13 +106,13 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
             }
             stream = (TokenStream) stream.next().nextIterator();
             writer.append(node.declaredType().keyword());
-            if (isAssignationUnspaced){
-                while (stream.consume(space).isCorrect()){
+            if (isAssignationUnspaced) {
+                while (stream.consume(space).isCorrect()) {
                     stream = (TokenStream) stream.next().nextIterator();
                 }
                 writer.append("=");
                 stream = (TokenStream) stream.next().nextIterator();
-                while (stream.consume(space).isCorrect()){
+                while (stream.consume(space).isCorrect()) {
                     stream = (TokenStream) stream.next().nextIterator();
                 }
             } else if (isAssignationSpaced) {
@@ -120,26 +121,26 @@ public class FormatterDeclarationHandler implements NodeEventHandler<Declaration
                 stream = (TokenStream) stream.next().nextIterator();
                 stream = stream.consumeAll(space);
             } else {
-                if (enforceSingleSeparation){
+                if (enforceSingleSeparation) {
                     writer.append(" ");
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         stream = (TokenStream) stream.next().nextIterator();
                     }
                 } else {
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         writer.append(" ");
                         stream = (TokenStream) stream.next().nextIterator();
                     }
                 }
                 writer.append("=");
                 stream = (TokenStream) stream.next().nextIterator();
-                if (enforceSingleSeparation){
+                if (enforceSingleSeparation) {
                     writer.append(" ");
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         stream = (TokenStream) stream.next().nextIterator();
                     }
                 } else {
-                    while (stream.consume(space).isCorrect()){
+                    while (stream.consume(space).isCorrect()) {
                         writer.append(" ");
                         stream = (TokenStream) stream.next().nextIterator();
                     }

@@ -23,10 +23,7 @@ import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
 import com.ingsis.utils.token.type.TokenType;
 import com.ingsis.utils.type.types.Types;
-
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 public class DeclarationParser implements Parser<Node> {
     private final List<TokenTemplate> declarationTemplates;
@@ -168,8 +165,7 @@ public class DeclarationParser implements Parser<Node> {
         }
         if (!processExpressionResult.result().isComplete()) {
             return ProcessCheckpoint.INITIALIZED(
-                    exprSlice,
-                    ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
+                    exprSlice, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
         }
 
         ExpressionNode expressionNode = processExpressionResult.result().result();
@@ -239,24 +235,22 @@ public class DeclarationParser implements Parser<Node> {
                 0,
                 new DefaultTokensFactory(),
                 new DefaultIterationResultFactory(),
-                new DefaultResultFactory()
-        );
+                new DefaultResultFactory());
     }
-
 
     private TokenStream cleanNoise(TokenStream stream) {
         TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
-        List<TokenTemplate> noise = List.of(
-                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
-                tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
-                tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),
-                tokenTemplateFactory
-                        .separator(TokenType.CRETURN.lexeme())
-                        .result());
+        List<TokenTemplate> noise =
+                List.of(
+                        tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),
+                        tokenTemplateFactory.separator(TokenType.CRETURN.lexeme()).result());
 
-        List<Token> cleanTokens = stream.tokens().stream()
-                .filter(t -> noise.stream().noneMatch(nt -> nt.matches(t)))
-                .toList();
+        List<Token> cleanTokens =
+                stream.tokens().stream()
+                        .filter(t -> noise.stream().noneMatch(nt -> nt.matches(t)))
+                        .toList();
 
         return new DefaultTokenStream(
                 cleanTokens,
@@ -264,9 +258,6 @@ public class DeclarationParser implements Parser<Node> {
                 0,
                 new DefaultTokensFactory(),
                 new DefaultIterationResultFactory(),
-                new DefaultResultFactory()
-        );
+                new DefaultResultFactory());
     }
-
-
 }

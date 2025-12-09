@@ -13,7 +13,6 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.token.tokenstream.TokenStream;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;

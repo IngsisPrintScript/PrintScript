@@ -24,7 +24,6 @@ import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
 import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
 import com.ingsis.utils.token.type.TokenType;
-
 import java.io.Writer;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -62,7 +61,9 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
                         this.createExpressionHandler(),
                         resultFactory,
                         writer,
-                        new DefaultTokenTemplateFactory().separator(TokenType.SPACE.lexeme()).result()));
+                        new DefaultTokenTemplateFactory()
+                                .separator(TokenType.SPACE.lexeme())
+                                .result()));
         return handlerRegistry;
     }
 
@@ -87,15 +88,21 @@ public class InMemoryFormatterHandlerFactory implements HandlerFactory {
         registry.register(new FormatterLiteralHandler(resultFactory, writer));
         registry.register(new FormatterIdentifierHandler(resultFactory, writer));
 
-        registry.register(new FormatterOperatorHandler(resultFactory, self, writer));
         registry.register(
                 new FormatterSpecialFunctionCallHandler(
                         ruleStatusProvider.getRuleValue("line-breaks-after-println", Integer.class),
                         "println",
+                        ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
                         self,
                         resultFactory,
                         writer));
-        registry.register(new FormatterFunctionCallHandler(self, resultFactory, writer));
+        registry.register(
+                new FormatterFunctionCallHandler(
+                        self,
+                        ruleStatusProvider.getRuleStatus("mandatory-single-space-separation"),
+                        resultFactory,
+                        writer));
+        registry.register(new FormatterOperatorHandler(resultFactory, self, writer));
         ref.set(registry);
 
         return registry;

@@ -40,7 +40,8 @@ public final class OperatorParser implements Parser<ExpressionNode> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
         ProcessCheckpoint<Token, ExpressionNode> getExpressionResult =
-                postfixToAstBuilder.build(leafParserSupplier.get(), getTokensQueueResult.result(), originalStream);
+                postfixToAstBuilder.build(
+                        leafParserSupplier.get(), getTokensQueueResult.result(), originalStream);
         if (getExpressionResult.isUninitialized()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }

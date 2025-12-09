@@ -11,11 +11,14 @@ import com.ingsis.utils.result.CorrectResult;
 import com.ingsis.utils.result.IncorrectResult;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.token.tokenstream.TokenStream;
-
 import java.util.List;
 
 public record OperatorNode(
-        OperatorType operatorType, List<ExpressionNode> children, TokenStream stream, Integer line, Integer column)
+        OperatorType operatorType,
+        List<ExpressionNode> children,
+        TokenStream stream,
+        Integer line,
+        Integer column)
         implements ExpressionNode {
 
     @Override

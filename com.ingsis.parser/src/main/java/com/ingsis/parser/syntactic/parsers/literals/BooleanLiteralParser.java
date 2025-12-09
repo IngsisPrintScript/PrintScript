@@ -28,7 +28,7 @@ public class BooleanLiteralParser implements Parser<ExpressionNode> {
 
     @Override
     public ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parse(TokenStream stream) {
-        TokenStream originalStream= stream;
+        TokenStream originalStream = stream;
         SafeIterationResult<Token> consumeLiteralResult = stream.consume(booleanLiteralTemplate);
         if (!consumeLiteralResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();

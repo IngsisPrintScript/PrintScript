@@ -9,21 +9,25 @@ import com.ingsis.utils.nodes.expressions.function.CallFunctionNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
+import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.function.Supplier;
 
 public class FormatterFunctionCallHandler implements NodeEventHandler<ExpressionNode> {
     private final Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier;
+    private final Boolean singleSpaceSeparation;
     private final ResultFactory resultFactory;
     private final Writer writer;
 
     public FormatterFunctionCallHandler(
             Supplier<NodeEventHandler<ExpressionNode>> expressionHandlerSupplier,
+            Boolean singleSpaceSeparation,
             ResultFactory resultFactory,
             Writer writer) {
         this.expressionHandlerSupplier = expressionHandlerSupplier;
         this.resultFactory = resultFactory;
+        this.singleSpaceSeparation = singleSpaceSeparation;
         this.writer = writer;
     }
 
@@ -32,6 +36,7 @@ public class FormatterFunctionCallHandler implements NodeEventHandler<Expression
         if (!(node instanceof CallFunctionNode callFunctionNode)) {
             return resultFactory.createIncorrectResult("Incorrect handler.");
         }
+        TokenStream stream = node.stream();
         try {
             writer.append(callFunctionNode.symbol());
             writer.append("( ");
@@ -40,25 +45,29 @@ public class FormatterFunctionCallHandler implements NodeEventHandler<Expression
                 return resultFactory.cloneIncorrectResult(parseExpressionResult);
             }
             writer.append(" )");
-            writer.append(" ;");
+            writer.append(";");
 
         } catch (IOException e) {
             return resultFactory.createIncorrectResult(e.getMessage());
         }
-        return resultFactory.createCorrectResult("Formatt correct.");
+        return resultFactory.createCorrectResult("Format correct.");
     }
 
     private Result<String> formatArguments(CallFunctionNode node) {
-        for (ExpressionNode child : node.children()) {
+        boolean needsComa = false;
+        for (ExpressionNode child : node.children().subList(1, node.children().size())) {
+            if (needsComa) {
+                try {
+                    writer.append(",");
+                } catch (Exception e) {
+                    return resultFactory.createIncorrectResult(e.getMessage());
+                }
+            }
             Result<String> formatChildResult = expressionHandlerSupplier.get().handle(child);
             if (!formatChildResult.isCorrect()) {
                 return resultFactory.cloneIncorrectResult(formatChildResult);
             }
-            try {
-                writer.append(",");
-            } catch (Exception e) {
-                return resultFactory.createIncorrectResult(e.getMessage());
-            }
+            needsComa = true;
         }
         return resultFactory.createCorrectResult("Arguments formatted correctly.");
     }

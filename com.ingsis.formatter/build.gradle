@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     implementation project(':com.ingsis.utils')
+    implementation project(':com.ingsis.interpreter')
 }

@@ -127,7 +127,12 @@ public class ConditionalParser implements Parser<Node> {
                 stream,
                 ProcessResult.COMPLETE(
                         nodeFactory.createConditionalNode(
-                                condition, thenBody, elseBody, originalStream, ifToken.line(), ifToken.column()),
+                                condition,
+                                thenBody,
+                                elseBody,
+                                originalStream,
+                                ifToken.line(),
+                                ifToken.column()),
                         NodePriority.STATEMENT.priority()));
     }
 
