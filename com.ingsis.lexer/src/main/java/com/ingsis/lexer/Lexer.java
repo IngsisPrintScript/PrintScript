@@ -15,123 +15,52 @@ import com.ingsis.utils.process.result.ProcessResult;
 import com.ingsis.utils.token.Token;
 
 public final class Lexer implements SafeIterator<Token> {
-    private final SafeIterator<MetaChar> charIterator;
-    private final Tokenizer tokenizer;
-    private final MetaCharStringBuilder metaCharStringBuilder;
-    private final IterationResultFactory iterationResultFactory;
+  private final SafeIterator<MetaChar> charIterator;
+  private final Tokenizer tokenizer;
+  private final IterationResultFactory iterationResultFactory;
 
-    public Lexer(
-            SafeIterator<MetaChar> charIterator,
-            Tokenizer tokenizer,
-            MetaCharStringBuilder metaCharStringBuilder,
-            IterationResultFactory iterationResultFactory) {
+  public Lexer(
+      SafeIterator<MetaChar> charIterator,
+      Tokenizer tokenizer,
+      IterationResultFactory iterationResultFactory) {
 
-        this.charIterator = charIterator;
-        this.tokenizer = tokenizer;
-        this.metaCharStringBuilder = metaCharStringBuilder;
-        this.iterationResultFactory = iterationResultFactory;
+    this.charIterator = charIterator;
+    this.tokenizer = tokenizer;
+    this.iterationResultFactory = iterationResultFactory;
+  }
+
+  @Override
+  public SafeIterationResult<Token> next() {
+    SafeIterationResult<MetaChar> iterationResult = charIterator.next();
+    ProcessCheckpoint<MetaChar, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
+    MetaCharStringBuilder sb = new MetaCharStringBuilder();
+    while (iterationResult.isCorrect()) {
+      sb = sb.append(iterationResult.iterationResult());
+      ProcessResult<Token> processResult = process(sb);
+      switch (processResult.status()) {
+        case COMPLETE:
+          checkpoint = ProcessCheckpoint.INITIALIZED(iterationResult.nextIterator(), processResult.result());
+          break;
+        case INVALID:
+          return processCheckpoint(checkpoint);
+        case PREFIX:
+          break;
+      }
+      iterationResult = iterationResult.nextIterator().next();
     }
+    return processCheckpoint(checkpoint);
+  }
 
-    public Lexer(
-            SafeIterator<MetaChar> charIterator,
-            Tokenizer tokenizer,
-            IterationResultFactory iterationResultFactory) {
-
-        this(charIterator, tokenizer, new MetaCharStringBuilder(), iterationResultFactory);
+  private SafeIterationResult<Token> processCheckpoint(ProcessCheckpoint<MetaChar, Token> checkpoint) {
+    if (checkpoint.isInitialized()) {
+      return iterationResultFactory.createCorrectResult(
+          checkpoint.result(),
+          new Lexer(checkpoint.iterator(), tokenizer, iterationResultFactory));
     }
+    return iterationResultFactory.createIncorrectResult("Error lexing");
+  }
 
-    @Override
-    public SafeIterationResult<Token> next() {
-        return maximalMunchOf(metaCharStringBuilder, charIterator);
-    }
-
-    private SafeIterationResult<Token> maximalMunchOf(
-            MetaCharStringBuilder builder, SafeIterator<MetaChar> currentIterator) {
-        ProcessCheckpoint<MetaChar, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
-        while (true) {
-            if (builder.getString().isEmpty()) {
-                SafeIterationResult<MetaChar> iterationResult = currentIterator.next();
-                if (!iterationResult.isCorrect()) {
-                    return iterationResultFactory.cloneIncorrectResult(iterationResult);
-                }
-                builder = builder.append(iterationResult.iterationResult());
-                currentIterator = iterationResult.nextIterator();
-            }
-
-            ProcessResult<Token> processBuilder = process(builder);
-            switch (processBuilder.status()) {
-                case COMPLETE ->
-                        checkpoint =
-                                ProcessCheckpoint.INITIALIZED(
-                                        currentIterator, processBuilder.result());
-                case INVALID -> {
-                    if (checkpoint.isUninitialized()) {
-                        return iterationResultFactory.createIncorrectResult(
-                                "Cannot tokenize: " + "\"" + builder.getString() + "\"");
-                    }
-                    return iterationResultFactory.createCorrectResult(
-                            checkpoint.result(),
-                            new Lexer(
-                                    checkpoint.iterator(),
-                                    this.tokenizer,
-                                    new MetaCharStringBuilder(),
-                                    this.iterationResultFactory));
-                }
-                case PREFIX -> {}
-            }
-
-            SafeIterationResult<MetaChar> getNextMetachar = currentIterator.next();
-            if (!getNextMetachar.isCorrect()) {
-                processBuilder = process(builder);
-                return switch (processBuilder.status()) {
-                    case COMPLETE ->
-                            iterationResultFactory.createCorrectResult(
-                                    processBuilder.result(),
-                                    new Lexer(
-                                            currentIterator,
-                                            this.tokenizer,
-                                            this.iterationResultFactory));
-                    case PREFIX, INVALID ->
-                            iterationResultFactory.cloneIncorrectResult(getNextMetachar);
-                };
-            }
-            builder = builder.append(getNextMetachar.iterationResult());
-            currentIterator = getNextMetachar.nextIterator();
-        }
-    }
-
-    private ProcessResult<Token> process(MetaCharStringBuilder builder) {
-        return tokenizer.tokenize(builder.getString(), builder.getLine(), builder.getColumn());
-    }
-
-    public String toPrettyString() {
-        StringBuilder sb = new StringBuilder();
-
-        sb.append("Lexer {\n");
-
-        sb.append("  buffer: \"").append(metaCharStringBuilder.getString()).append("\"\n");
-
-        sb.append("  bufferChars: ");
-        sb.append(metaCharStringBuilder.chars());
-        sb.append("\n");
-
-        sb.append("  bufferSize: ").append(metaCharStringBuilder.chars().size()).append("\n");
-
-        sb.append("  charIterator: ").append(charIterator.getClass().getSimpleName()).append("\n");
-
-        sb.append("  tokenizer: ").append(tokenizer.getClass().getSimpleName()).append("\n");
-
-        sb.append("  iterationResultFactory: ")
-                .append(iterationResultFactory.getClass().getSimpleName())
-                .append("\n");
-
-        sb.append("}");
-
-        return sb.toString();
-    }
-
-    @Override
-    public String toString() {
-        return toPrettyString();
-    }
+  private ProcessResult<Token> process(MetaCharStringBuilder builder) {
+    return tokenizer.tokenize(builder.getString(), builder.getLine(), builder.getColumn());
+  }
 }
