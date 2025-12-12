@@ -78,6 +78,26 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 },
                                 null,
                                 null)));
+        global.createFunction("readNumber", new LinkedHashMap<>(), Types.NUMBER);
+        global.updateFunction(
+                "readNumber",
+                List.of(
+                        new GlobalFunctionBody(
+                                List.of(),
+                                args -> {
+                                    Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+                                    String value = scanner.nextLine();
+                                    try {
+                                        return Double.parseDouble(value);
+                                    } catch (NumberFormatException e) {
+                                        return 0.0;
+                                    }
+                                },
+                                null,
+                                null
+                        )
+                )
+        );
         global.createFunction(
                 "readEnv",
                 new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
