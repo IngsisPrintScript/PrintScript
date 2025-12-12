@@ -73,7 +73,8 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 },
                                 null,
                                 null)));
-        global.createFunction("readEnv", new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)), Types.STRING);
+        global.createFunction(
+                "readEnv", new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)), Types.STRING);
         global.updateFunction(
                 "readEnv",
                 List.of(
