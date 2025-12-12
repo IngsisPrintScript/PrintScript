@@ -5,6 +5,7 @@
 package com.ingsis.utils.runtime.environment.factories;
 
 import com.ingsis.utils.nodes.expressions.function.GlobalFunctionBody;
+import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.runtime.environment.DefaultEnvironment;
 import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.GlobalEnvironment;
@@ -47,7 +48,10 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
 
     private void addGlobalFunctions(GlobalEnvironment global) {
         global.createFunction(
-                "println", new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)), Types.NIL);
+                "println",
+                new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
+                Types.NIL
+        );
         global.updateFunction(
                 "println",
                 List.of(
@@ -61,37 +65,37 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 null)));
         global.createFunction(
                 "readInput",
-                new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
-                Types.UNDEFINED);
+                new LinkedHashMap<>(),
+                Types.STRING
+        );
+
         global.updateFunction(
                 "readInput",
                 List.of(
                         new GlobalFunctionBody(
-                                List.of(PARAM_STRING),
+                                List.of(),
                                 args -> {
-                                    System.out.println(args[0]);
                                     Scanner scanner =
                                             new Scanner(System.in, StandardCharsets.UTF_8);
-                                    Object input = scanner.nextLine();
-                                    return input;
+                                    return scanner.nextLine();
                                 },
                                 null,
                                 null)));
         global.createFunction(
                 "readEnv",
                 new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
-                Types.UNDEFINED);
+                Types.STRING
+        );
         global.updateFunction(
                 "readEnv",
                 List.of(
                         new GlobalFunctionBody(
                                 List.of(PARAM_STRING),
                                 args -> {
-                                    if (args.length == 0 || args[0] == null) return null;
+                                    if (args.length == 0 || args[0] == null) return "";
                                     String varName = args[0].toString();
                                     String env = System.getenv(varName);
-                                    if (env == null) return "";
-                                    return env;
+                                    return env == null ? "" : env;
                                 },
                                 null,
                                 null)));
