@@ -31,7 +31,6 @@ public class ConditionalParser implements Parser<Node> {
     private final TokenTemplate rParenTemplate;
     private final TokenTemplate lBraceTemplate;
     private final TokenTemplate rBraceTemplate;
-    private final TokenTemplate spaceTemplate;
 
     private final Parser<ExpressionNode> conditionParser;
     private final Supplier<Parser<Node>> statementParserSupplier;
@@ -44,7 +43,6 @@ public class ConditionalParser implements Parser<Node> {
             TokenTemplate rParenTemplate,
             TokenTemplate lBraceTemplate,
             TokenTemplate rBraceTemplate,
-            TokenTemplate spaceTemplate,
             Parser<ExpressionNode> conditionParser,
             Supplier<Parser<Node>> statementParserSupplier,
             NodeFactory nodeFactory) {
@@ -55,7 +53,6 @@ public class ConditionalParser implements Parser<Node> {
         this.rParenTemplate = rParenTemplate;
         this.lBraceTemplate = lBraceTemplate;
         this.rBraceTemplate = rBraceTemplate;
-        this.spaceTemplate = spaceTemplate;
         this.conditionParser = conditionParser;
         this.statementParserSupplier = statementParserSupplier;
         this.nodeFactory = nodeFactory;
@@ -69,7 +66,7 @@ public class ConditionalParser implements Parser<Node> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
         Token ifToken = ifResult.iterationResult();
-        stream = ((TokenStream) ifResult.nextIterator()).consumeNoise();
+        stream = ((TokenStream) ifResult.nextIterator());
 
         SafeIterationResult<Token> lParenResult = stream.consume(lParenTemplate);
         if (!lParenResult.isCorrect()) {
@@ -80,7 +77,7 @@ public class ConditionalParser implements Parser<Node> {
             return initialized(stream, prefixStatement());
         }
 
-        stream = ((TokenStream) lParenResult.nextIterator()).consumeNoise();
+        stream = ((TokenStream) lParenResult.nextIterator());
 
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> conditionCheckpoint =
                 conditionParser.parse(slicedCondition);
@@ -99,7 +96,7 @@ public class ConditionalParser implements Parser<Node> {
         if (!rParenResult.isCorrect()) {
             return initialized(stream, prefixStatement());
         }
-        stream = ((TokenStream) rParenResult.nextIterator()).consumeNoise();
+        stream = ((TokenStream) rParenResult.nextIterator());
 
         ProcessCheckpoint<Token, ProcessResult<List<Node>>> thenBlockResult = parseBlock(stream);
         if (thenBlockResult.isUninitialized()) {
@@ -109,12 +106,12 @@ public class ConditionalParser implements Parser<Node> {
                     stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
         }
         List<Node> thenBody = thenBlockResult.result().result();
-        stream = ((TokenStream) thenBlockResult.iterator()).consumeNoise();
+        stream = ((TokenStream) thenBlockResult.iterator());
 
         SafeIterationResult<Token> elseResult = stream.consume(elseTemplate);
         List<Node> elseBody = new ArrayList<>();
         if (elseResult.isCorrect()) {
-            stream = ((TokenStream) elseResult.nextIterator()).consumeNoise();
+            stream = ((TokenStream) elseResult.nextIterator());
 
             ProcessCheckpoint<Token, ProcessResult<List<Node>>> elseBlockResult =
                     parseBlock(stream);
@@ -125,7 +122,7 @@ public class ConditionalParser implements Parser<Node> {
                         stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
             }
             elseBody = elseBlockResult.result().result();
-            stream = ((TokenStream) elseBlockResult.iterator()).consumeNoise();
+            stream = ((TokenStream) elseBlockResult.iterator());
         }
 
         return ProcessCheckpoint.INITIALIZED(
@@ -142,7 +139,7 @@ public class ConditionalParser implements Parser<Node> {
     }
 
     private TokenStream sliceParenthesizedInner(TokenStream stream) {
-        TokenStream cleanStart = stream.consumeNoise();
+        TokenStream cleanStart = stream;
 
         var first = cleanStart.peek(0);
         if (!first.isCorrect() || !first.result().value().equals("(")) return null;
@@ -175,7 +172,6 @@ public class ConditionalParser implements Parser<Node> {
 
         return new DefaultTokenStream(
                 slice,
-                List.of(),
                 0,
                 new DefaultTokensFactory(),
                 new DefaultIterationResultFactory(),
@@ -187,8 +183,7 @@ public class ConditionalParser implements Parser<Node> {
         if (!lBraceResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }
-        stream = ((TokenStream) lBraceResult.nextIterator()).consumeNoise();
-        stream = stream.consumeNoise();
+        stream = ((TokenStream) lBraceResult.nextIterator());
 
         List<Node> body = new ArrayList<>();
         while (!stream.consume(rBraceTemplate).isCorrect()) {
@@ -202,7 +197,7 @@ public class ConditionalParser implements Parser<Node> {
                         stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
             }
             body.add(statementCheckpoint.result().result());
-            stream = ((TokenStream) statementCheckpoint.iterator()).consumeNoise();
+            stream = ((TokenStream) statementCheckpoint.iterator());
         }
 
         SafeIterationResult<Token> rBraceResult = stream.consume(rBraceTemplate);
@@ -211,7 +206,7 @@ public class ConditionalParser implements Parser<Node> {
                     stream, ProcessResult.PREFIX(NodePriority.STATEMENT.priority()));
         }
 
-        stream = ((TokenStream) rBraceResult.nextIterator()).consumeNoise();
+        stream = ((TokenStream) rBraceResult.nextIterator());
         return ProcessCheckpoint.INITIALIZED(
                 stream, ProcessResult.COMPLETE(body, NodePriority.STATEMENT.priority()));
     }

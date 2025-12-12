@@ -18,11 +18,8 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.TokenFactory;
-import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
-import com.ingsis.utils.token.template.factories.TokenTemplateFactory;
 import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.token.tokenstream.TokenStream;
-import com.ingsis.utils.token.type.TokenType;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -59,17 +56,9 @@ public class PostfixExpressionTreeBuilder implements PostfixToAstBuilder {
             Queue<Token> postfixTokens,
             TokenStream originalStream) {
         Deque<ExpressionNode> expressionStack = new ArrayDeque<>();
-        TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
         TokenStream tokenStream =
                 new DefaultTokenStream(
                         List.copyOf(postfixTokens),
-                        List.of(
-                                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
-                                tokenTemplateFactory.separator(TokenType.NEWLINE.lexeme()).result(),
-                                tokenTemplateFactory.separator(TokenType.TAB.lexeme()).result(),
-                                tokenTemplateFactory
-                                        .separator(TokenType.CRETURN.lexeme())
-                                        .result()),
                         tokenFactory,
                         iterationResultFactory,
                         resultFactory);

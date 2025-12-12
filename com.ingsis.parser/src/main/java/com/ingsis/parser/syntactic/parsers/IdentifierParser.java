@@ -31,7 +31,7 @@ public class IdentifierParser implements Parser<ExpressionNode> {
         if (!consumeIdentifierResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }
-        stream = ((TokenStream) consumeIdentifierResult.nextIterator()).consumeNoise();
+        stream = ((TokenStream) consumeIdentifierResult.nextIterator());
         return ProcessCheckpoint.INITIALIZED(
                 stream,
                 ProcessResult.COMPLETE(

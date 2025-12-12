@@ -48,7 +48,7 @@ public class AssignationParser implements Parser<ExpressionNode> {
             return ProcessCheckpoint.UNINITIALIZED();
         }
 
-        stream = ((TokenStream) identifierResult.iterator()).consumeNoise();
+        stream = ((TokenStream) identifierResult.iterator());
 
         SafeIterationResult<Token> consumeSpace = stream.consume(equals);
         if (!consumeSpace.isCorrect()) {
@@ -56,7 +56,7 @@ public class AssignationParser implements Parser<ExpressionNode> {
                     stream, ProcessResult.PREFIX(NodePriority.EXPRESSION.priority()));
         }
 
-        stream = ((TokenStream) consumeSpace.nextIterator()).consumeNoise();
+        stream = ((TokenStream) consumeSpace.nextIterator());
 
         ProcessCheckpoint<Token, ProcessResult<ExpressionNode>> parseExpression =
                 expressionParser.parse(stream);
@@ -68,7 +68,7 @@ public class AssignationParser implements Parser<ExpressionNode> {
                     stream, ProcessResult.PREFIX(NodePriority.IDENTIFIER.priority()));
         }
 
-        stream = ((TokenStream) parseExpression.iterator()).consumeNoise();
+        stream = ((TokenStream) parseExpression.iterator());
 
         return ProcessCheckpoint.INITIALIZED(
                 stream,

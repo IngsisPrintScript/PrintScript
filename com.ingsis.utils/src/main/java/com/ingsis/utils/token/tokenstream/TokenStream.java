@@ -16,8 +16,6 @@ public interface TokenStream extends SafeIterator<Token> {
 
     TokenStream consumeAll(TokenTemplate tokenTemplate);
 
-    TokenStream consumeNoise();
-
     Result<Token> peek(int offset);
 
     List<Token> tokens();

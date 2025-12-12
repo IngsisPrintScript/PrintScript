@@ -19,9 +19,7 @@ public class LineExpressionParser implements Parser<Node> {
     private final Parser<ExpressionNode> expressionParser;
 
     public LineExpressionParser(
-            TokenTemplate semicolonTemplate,
-            TokenTemplate spaceTemplate,
-            Parser<ExpressionNode> expressionParser) {
+            TokenTemplate semicolonTemplate, Parser<ExpressionNode> expressionParser) {
         this.semicolonTemplate = semicolonTemplate;
         this.expressionParser = expressionParser;
     }
@@ -42,7 +40,6 @@ public class LineExpressionParser implements Parser<Node> {
         ExpressionNode expressionNode = processExpressionResult.result().result();
 
         stream = (TokenStream) processExpressionResult.iterator();
-        stream = stream.consumeNoise();
 
         SafeIterationResult<Token> consumeSemicolonResult = stream.consume(semicolonTemplate);
         if (!consumeSemicolonResult.isCorrect()) {
@@ -51,7 +48,6 @@ public class LineExpressionParser implements Parser<Node> {
         }
 
         stream = (TokenStream) consumeSemicolonResult.nextIterator();
-        stream = stream.consumeNoise();
 
         return ProcessCheckpoint.INITIALIZED(
                 stream, ProcessResult.COMPLETE(expressionNode, NodePriority.EXPRESSION.priority()));

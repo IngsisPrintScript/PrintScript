@@ -56,7 +56,6 @@ public class InMemoryParserFactory implements ParserFactory {
                 tokenTemplateFactory.separator(TokenType.RPAREN.lexeme()).result(),
                 tokenTemplateFactory.separator(TokenType.LBRACE.lexeme()).result(),
                 tokenTemplateFactory.separator(TokenType.RBRACE.lexeme()).result(),
-                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
                 conditionParser,
                 programParser,
                 this.nodeFactory);
@@ -69,7 +68,6 @@ public class InMemoryParserFactory implements ParserFactory {
                 List.of(
                         tokenTemplateFactory.keyword(TokenType.LET.lexeme()).result(),
                         tokenTemplateFactory.keyword(TokenType.CONST.lexeme()).result()),
-                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
                 tokenTemplateFactory.separator(TokenType.COLON.lexeme()).result(),
                 List.of(
                         tokenTemplateFactory.type(TokenType.STRING.lexeme()).result(),
@@ -108,7 +106,6 @@ public class InMemoryParserFactory implements ParserFactory {
                 tokenTemplateFactory.separator(TokenType.LPAREN.lexeme()).result(),
                 tokenTemplateFactory.separator(TokenType.COMMA.lexeme()).result(),
                 tokenTemplateFactory.separator(TokenType.RPAREN.lexeme()).result(),
-                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
                 identifierParser,
                 leafParserSupplier,
                 this.nodeFactory);
@@ -148,7 +145,6 @@ public class InMemoryParserFactory implements ParserFactory {
     public Parser<Node> lineExpressionParser(Parser<ExpressionNode> expressionParser) {
         return new LineExpressionParser(
                 tokenTemplateFactory.separator(TokenType.SEMICOLON.lexeme()).result(),
-                tokenTemplateFactory.separator(TokenType.SPACE.lexeme()).result(),
                 expressionParser);
     }
 }

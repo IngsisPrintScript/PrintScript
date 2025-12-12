@@ -4,9 +4,6 @@
 
 package com.ingsis.lexer;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.ingsis.lexer.tokenizers.Tokenizer;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
@@ -16,6 +13,8 @@ import com.ingsis.utils.metachar.string.builder.MetaCharStringBuilder;
 import com.ingsis.utils.process.checkpoint.ProcessCheckpoint;
 import com.ingsis.utils.process.result.ProcessResult;
 import com.ingsis.utils.token.Token;
+import java.util.ArrayList;
+import java.util.List;
 
 public final class Lexer implements SafeIterator<Token> {
   private final SafeIterator<MetaChar> charIterator;
@@ -36,6 +35,11 @@ public final class Lexer implements SafeIterator<Token> {
 
   @Override
   public SafeIterationResult<Token> next() {
+    SafeIterationResult<Token> result = maximalMunchOf();
+    return result;
+  }
+
+  private SafeIterationResult<Token> maximalMunchOf() {
     SafeIterationResult<MetaChar> iterationResult = charIterator.next();
     ProcessCheckpoint<MetaChar, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
     MetaCharStringBuilder sb = new MetaCharStringBuilder();
@@ -48,6 +52,7 @@ public final class Lexer implements SafeIterator<Token> {
         case COMPLETE:
           trailingTrivia.add(processTralingToken.result());
           sb = new MetaCharStringBuilder();
+          iterationResult = iterationResult.nextIterator().next();
           continue;
         case PREFIX, INVALID:
           break;
@@ -56,7 +61,9 @@ public final class Lexer implements SafeIterator<Token> {
       ProcessResult<Token> processResult = process(sb, trailingTrivia);
       switch (processResult.status()) {
         case COMPLETE:
-          checkpoint = ProcessCheckpoint.INITIALIZED(iterationResult.nextIterator(), processResult.result());
+          trailingTrivia = new ArrayList<>();
+          checkpoint = ProcessCheckpoint.INITIALIZED(
+              iterationResult.nextIterator(), processResult.result());
           break;
         case INVALID:
           return processCheckpoint(checkpoint);
@@ -68,7 +75,8 @@ public final class Lexer implements SafeIterator<Token> {
     return processCheckpoint(checkpoint);
   }
 
-  private SafeIterationResult<Token> processCheckpoint(ProcessCheckpoint<MetaChar, Token> checkpoint) {
+  private SafeIterationResult<Token> processCheckpoint(
+      ProcessCheckpoint<MetaChar, Token> checkpoint) {
     if (checkpoint.isInitialized()) {
       return iterationResultFactory.createCorrectResult(
           checkpoint.result(),
@@ -82,10 +90,13 @@ public final class Lexer implements SafeIterator<Token> {
   }
 
   private ProcessResult<Token> processTrivia(MetaCharStringBuilder builder) {
-    return triviaTokenizer.tokenize(builder.getString(), List.of(), builder.getLine(), builder.getColumn());
+    return triviaTokenizer.tokenize(
+        builder.getString(), List.of(), builder.getLine(), builder.getColumn());
   }
 
-  private ProcessResult<Token> process(MetaCharStringBuilder builder, List<Token> trailingTrivia) {
-    return tokenizer.tokenize(builder.getString(), trailingTrivia, builder.getLine(), builder.getColumn());
+  private ProcessResult<Token> process(
+      MetaCharStringBuilder builder, List<Token> trailingTrivia) {
+    return tokenizer.tokenize(
+        builder.getString(), trailingTrivia, builder.getLine(), builder.getColumn());
   }
 }

@@ -33,7 +33,7 @@ public class BooleanLiteralParser implements Parser<ExpressionNode> {
         if (!consumeLiteralResult.isCorrect()) {
             return ProcessCheckpoint.UNINITIALIZED();
         }
-        stream = ((TokenStream) consumeLiteralResult.nextIterator()).consumeNoise();
+        stream = ((TokenStream) consumeLiteralResult.nextIterator());
         return ProcessCheckpoint.INITIALIZED(
                 stream,
                 ProcessResult.COMPLETE(

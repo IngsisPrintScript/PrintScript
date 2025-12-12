@@ -16,7 +16,6 @@ import java.util.List;
 
 public final class DefaultTokenStream implements TokenStream {
     private final List<Token> tokenBuffer;
-    private final List<TokenTemplate> noiseTokens;
     private final TokenFactory tokenFactory;
     private final int pointer;
     private final IterationResultFactory iterationResultFactory;
@@ -24,13 +23,11 @@ public final class DefaultTokenStream implements TokenStream {
 
     public DefaultTokenStream(
             List<Token> tokens,
-            List<TokenTemplate> noiseTokens,
             int pointer,
             TokenFactory tokenFactory,
             IterationResultFactory iterationResultFactory,
             ResultFactory resultFactory) {
         this.tokenFactory = tokenFactory;
-        this.noiseTokens = List.copyOf(noiseTokens);
         this.tokenBuffer = List.copyOf(tokens);
         this.pointer = pointer;
         this.iterationResultFactory = iterationResultFactory;
@@ -39,19 +36,17 @@ public final class DefaultTokenStream implements TokenStream {
 
     public DefaultTokenStream(
             List<Token> tokens,
-            List<TokenTemplate> noiseTokens,
             TokenFactory tokenFactory,
             IterationResultFactory iterationResultFactory,
             ResultFactory resultFactory) {
-        this(tokens, noiseTokens, 0, tokenFactory, iterationResultFactory, resultFactory);
+        this(tokens, 0, tokenFactory, iterationResultFactory, resultFactory);
     }
 
     public DefaultTokenStream(
-            List<TokenTemplate> noiseTokens,
             TokenFactory tokenFactory,
             IterationResultFactory iterationResultFactory,
             ResultFactory resultFactory) {
-        this(new ArrayList<>(), noiseTokens, tokenFactory, iterationResultFactory, resultFactory);
+        this(new ArrayList<>(), tokenFactory, iterationResultFactory, resultFactory);
     }
 
     @Override
@@ -63,7 +58,6 @@ public final class DefaultTokenStream implements TokenStream {
                 tokenBuffer.get(pointer),
                 new DefaultTokenStream(
                         this.tokenBuffer,
-                        this.noiseTokens,
                         pointer + 1,
                         this.tokenFactory,
                         this.iterationResultFactory,
@@ -112,15 +106,6 @@ public final class DefaultTokenStream implements TokenStream {
     }
 
     @Override
-    public TokenStream consumeNoise() {
-        TokenStream newTokenStream = this;
-        for (TokenTemplate tokenTemplate : noiseTokens) {
-            newTokenStream = newTokenStream.consumeAll(tokenTemplate);
-        }
-        return newTokenStream;
-    }
-
-    @Override
     public Result<Token> peek(int offset) {
         int index = pointer + offset;
         if (index < 0 || index >= tokenBuffer.size()) {
@@ -145,7 +130,6 @@ public final class DefaultTokenStream implements TokenStream {
         newTokens.add(token);
         return new DefaultTokenStream(
                 newTokens,
-                this.noiseTokens,
                 this.pointer,
                 this.tokenFactory,
                 this.iterationResultFactory,
@@ -156,7 +140,6 @@ public final class DefaultTokenStream implements TokenStream {
     public TokenStream reset() {
         return new DefaultTokenStream(
                 new ArrayList<>(),
-                this.noiseTokens,
                 0,
                 this.tokenFactory,
                 this.iterationResultFactory,
@@ -167,7 +150,6 @@ public final class DefaultTokenStream implements TokenStream {
     public TokenStream sliceFromPointer() {
         return new DefaultTokenStream(
                 this.tokens().subList(pointer, this.tokens().size()),
-                this.noiseTokens,
                 0,
                 this.tokenFactory,
                 this.iterationResultFactory,
@@ -185,7 +167,6 @@ public final class DefaultTokenStream implements TokenStream {
 
         return new DefaultTokenStream(
                 this.tokenBuffer,
-                this.noiseTokens,
                 newPointer,
                 this.tokenFactory,
                 this.iterationResultFactory,
@@ -196,7 +177,6 @@ public final class DefaultTokenStream implements TokenStream {
     public TokenStream consumeAll() {
         return new DefaultTokenStream(
                 this.tokenBuffer,
-                this.noiseTokens,
                 this.tokens().size(),
                 this.tokenFactory,
                 this.iterationResultFactory,
