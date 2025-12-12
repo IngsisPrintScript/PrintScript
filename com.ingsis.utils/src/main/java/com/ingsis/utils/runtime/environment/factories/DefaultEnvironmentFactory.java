@@ -5,6 +5,7 @@
 package com.ingsis.utils.runtime.environment.factories;
 
 import com.ingsis.utils.nodes.expressions.function.GlobalFunctionBody;
+import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.runtime.environment.DefaultEnvironment;
 import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.GlobalEnvironment;
@@ -54,7 +55,9 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                         new GlobalFunctionBody(
                                 List.of(PARAM_STRING),
                                 args -> {
-                                    System.out.println(args[0]);
+                                    DefaultRuntime.getInstance()
+                                            .getEmitter()
+                                            .print(args[0] == null ? "null" : args[0].toString());
                                     return null;
                                 },
                                 null,
