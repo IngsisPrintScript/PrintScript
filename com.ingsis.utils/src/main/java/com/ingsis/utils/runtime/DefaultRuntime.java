@@ -16,15 +16,17 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public final class DefaultRuntime implements Runtime {
+
     private final Deque<Environment> environments;
     private PrintEmitter emitter;
     private IncorrectResult<?> executionError;
+
     private static final EnvironmentFactory ENVIRONMENT_FACTORY =
             new DefaultEnvironmentFactory(new DefaultEntryFactory());
 
     private DefaultRuntime() {
-        environments = new ArrayDeque<>();
-        environments.push(ENVIRONMENT_FACTORY.createGlobalEnvironment());
+        this.environments = new ArrayDeque<>();
+        this.environments.push(ENVIRONMENT_FACTORY.createGlobalEnvironment());
         this.emitter = System.out::println;
     }
 
@@ -82,6 +84,6 @@ public final class DefaultRuntime implements Runtime {
 
     @Override
     public void setEmitter(PrintEmitter emitter) {
-        this.emitter = emitter;
+        this.emitter = (emitter != null) ? emitter : value -> {};
     }
 }

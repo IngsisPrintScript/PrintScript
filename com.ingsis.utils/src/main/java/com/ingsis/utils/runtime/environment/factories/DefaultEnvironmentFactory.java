@@ -57,12 +57,14 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 args -> {
                                     DefaultRuntime.getInstance()
                                             .getEmitter()
-                                            .print(args[0] == null ? "null" : args[0].toString());
+                                            .print(
+                                                    (args[0] == null ? "null" : args[0].toString())
+                                                            + "\n");
                                     return null;
                                 },
                                 null,
                                 null)));
-        global.createFunction("readInput", new LinkedHashMap<>(), Types.STRING);
+        global.createFunction("readInput", new LinkedHashMap<>(), Types.UNDEFINED);
 
         global.updateFunction(
                 "readInput",
@@ -77,7 +79,9 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 null,
                                 null)));
         global.createFunction(
-                "readEnv", new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)), Types.STRING);
+                "readEnv",
+                new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
+                Types.UNDEFINED);
         global.updateFunction(
                 "readEnv",
                 List.of(
