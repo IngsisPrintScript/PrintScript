@@ -4,6 +4,7 @@
 
 package com.ingsis.parser.semantic.factories;
 
+import com.ingsis.parser.semantic.LoggerSemanticChecker;
 import com.ingsis.parser.semantic.SemanticChecker;
 import com.ingsis.parser.semantic.checkers.handlers.factories.DefaultHandlersFactory;
 import com.ingsis.parser.semantic.checkers.publishers.factories.DefaultSemanticPublisherFactory;
@@ -46,5 +47,20 @@ public final class SemanticFactory implements SafeIteratorFactory<Interpretable>
                 checker,
                 runtime,
                 iterationResultFactory);
+    }
+
+    @Override
+    public SafeIterator<Interpretable> fromInputStreamLogger(InputStream in, String debugPath) {
+        try {
+            return new LoggerSemanticChecker(
+                    new SemanticChecker(
+                            checkableIteratorFactory.fromInputStreamLogger(in, debugPath),
+                            checker,
+                            runtime,
+                            iterationResultFactory),
+                    debugPath);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }

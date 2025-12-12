@@ -4,6 +4,7 @@
 
 package com.ingsis.interpreter.factory;
 
+import com.ingsis.interpreter.LoggerProgramInterpreter;
 import com.ingsis.interpreter.ProgramInterpreter;
 import com.ingsis.interpreter.visitor.factory.InterpreterVisitorFactory;
 import com.ingsis.utils.iterator.safe.SafeIterator;
@@ -35,5 +36,19 @@ public final class InterpreterFactory implements SafeIteratorFactory<String> {
                 interpretableIteratorFactory.fromInputStream(in),
                 interpreter,
                 iterationResultFactory);
+    }
+
+    @Override
+    public SafeIterator<String> fromInputStreamLogger(InputStream in, String debugPath) {
+        try {
+            return new LoggerProgramInterpreter(
+                    new ProgramInterpreter(
+                            interpretableIteratorFactory.fromInputStreamLogger(in, debugPath),
+                            interpreter,
+                            iterationResultFactory),
+                    debugPath);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 }

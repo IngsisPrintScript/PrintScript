@@ -2,11 +2,11 @@
  * My Project
  */
 
-package com.ingsis.charstream;
+package com.ingsis.parser.syntactic;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
-import com.ingsis.utils.metachar.MetaChar;
+import com.ingsis.utils.nodes.visitors.Checkable;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,40 +16,39 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
+public class LogerSyntacticParser implements SafeIterator<Checkable>, Logger {
 
-    private final SafeIterator<MetaChar> delegate;
+    private final SafeIterator<Checkable> delegate;
     private final PrintWriter logWriter;
     private final String loggerName;
 
-    private long charCount = 0;
+    private long nodeCount = 0;
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    // Constructor
-    public LoggerCharStream(SafeIterator<MetaChar> charStream, String logFilePath)
+    public LogerSyntacticParser(SafeIterator<Checkable> parser, String logFilePath)
             throws IOException {
-        this.delegate = Objects.requireNonNull(charStream);
-        this.loggerName = "LoggerCharStream[" + Integer.toHexString(charStream.hashCode()) + "]";
+        this.delegate = Objects.requireNonNull(parser);
+        this.loggerName = "LogerSyntacticParser[" + Integer.toHexString(parser.hashCode()) + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
 
-        log(Level.INFO, "=== LoggerCharStream STARTED ===");
-        log(Level.INFO, "Logging every consumed character with position and representation");
+        log(Level.INFO, "=== SYNTACTIC PARSER TRACE STARTED ===");
+        log(Level.INFO, "Logging every parsed node as it is produced");
     }
 
     // ──────────────────────────────
-    // SafeIterator<MetaChar> method
+    // SafeIterator<Checkable> method
     // ──────────────────────────────
     @Override
-    public SafeIterationResult<MetaChar> next() {
-        SafeIterationResult<MetaChar> result = delegate.next();
+    public SafeIterationResult<Checkable> next() {
+        SafeIterationResult<Checkable> result = delegate.next();
 
         if (result.isCorrect()) {
-            MetaChar mc = result.iterationResult();
-            charCount++;
-            logCharacter(charCount, mc);
+            Checkable node = result.iterationResult();
+            nodeCount++;
+            logParsedNode(nodeCount, node);
         } else {
-            log(Level.INFO, "End of input stream reached (no more characters)");
+            log(Level.WARNING, "Parsing failed with error: " + result.error());
         }
 
         return result;
@@ -65,12 +64,12 @@ public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
 
     @Override
     public boolean isLoggable(Level level) {
-        return true; // Always log when using LoggerCharStream — it's for tracing!
+        return true; // Always log during tracing
     }
 
     @Override
     public void log(Level level, ResourceBundle bundle, String msg, Throwable thrown) {
-        log(level, (thrown != null ? msg + " :: " + thrown : msg));
+        log(level, thrown != null ? msg + " → " + thrown : msg);
     }
 
     @Override
@@ -80,44 +79,58 @@ public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
     }
 
     // ──────────────────────────────
-    // Internal logging to file with timestamp
+    // Internal file logger with timestamp
     // ──────────────────────────────
     @Override
     public void log(Level level, String message) {
         String timestamp = LocalDateTime.now().format(DTF);
-        String line = String.format("[%s] %-6s %s%n", timestamp, level.name(), message);
+        String line = String.format("[%s] %-7s %s%n", timestamp, level.name(), message);
         logWriter.write(line);
         logWriter.flush();
     }
 
     // ──────────────────────────────
-    // Pretty-print each MetaChar
+    // Pretty print each Checkable node
     // ──────────────────────────────
-    private void logCharacter(long index, MetaChar mc) {
-        char c = mc.character();
-        String repr;
+    private void logParsedNode(long index, Checkable node) {
+        String typeName = node.getClass().getSimpleName();
+        String ruleName = getRuleName(node); // Try to extract meaningful name
 
-        if (c == '\n') repr = "\\n (newline)";
-        else if (c == '\r') repr = "\\r (carriage return)";
-        else if (c == '\t') repr = "\\t (tab)";
-        else if (c == ' ') repr = "' ' (space)";
-        else if (c == 0) repr = "<NUL>";
-        else if (c == 65535 || c == Character.MIN_VALUE) repr = "<EOF>";
-        else if (Character.isISOControl(c)) repr = String.format("<%04X> (control)", (int) c);
-        else repr = String.format("'%c'", c);
+        String details = node.toString();
+        if (details.length() > 120) {
+            details = details.substring(0, 117) + "...";
+        }
 
         log(
                 Level.INFO,
                 String.format(
-                        "Char [%5d]  Pos: (line=%3d, col=%2d)  Codepoint: U+%04X  →  %s",
-                        index, mc.line(), mc.column(), (int) c, repr));
+                        "Node [%3d]  %-20s  →  %s  |  %s", index, ruleName, typeName, details));
+    }
+
+    // Try to extract a human-readable rule name from the node
+    private String getRuleName(Checkable node) {
+        // Common patterns — adjust to your actual AST node classes
+        String className = node.getClass().getSimpleName();
+
+        if (className.endsWith("Node")
+                || className.endsWith("Expr")
+                || className.endsWith("Stmt")) {
+            return className
+                    .replaceAll("Node$", "")
+                    .replaceAll("Expr$", "")
+                    .replaceAll("Stmt$", "");
+        }
+        if (className.contains("Binary") || className.contains("Unary")) {
+            return className;
+        }
+        return className;
     }
 
     // ──────────────────────────────
     // Clean shutdown
     // ──────────────────────────────
     public void close() {
-        log(Level.INFO, "=== LoggerCharStream CLOSED === Total characters consumed: " + charCount);
+        log(Level.INFO, "=== SYNTACTIC PARSER TRACE ENDED === Total nodes parsed: " + nodeCount);
         logWriter.close();
     }
 }

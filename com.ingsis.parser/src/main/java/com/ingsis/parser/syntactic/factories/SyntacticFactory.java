@@ -4,6 +4,7 @@
 
 package com.ingsis.parser.syntactic.factories;
 
+import com.ingsis.parser.syntactic.LogerSyntacticParser;
 import com.ingsis.parser.syntactic.SyntacticParser;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
@@ -42,5 +43,21 @@ public final class SyntacticFactory implements SafeIteratorFactory<Checkable> {
                 parserChainFactory.createDefaultChain(),
                 new DefaultTokenStream(tokenFactory, iterationResultFactory, resultFactory),
                 iterationResultFactory);
+    }
+
+    @Override
+    public SafeIterator<Checkable> fromInputStreamLogger(InputStream in, String debugPath) {
+        try {
+            return new LogerSyntacticParser(
+                    new SyntacticParser(
+                            tokenIteratorFactory.fromInputStreamLogger(in, debugPath),
+                            parserChainFactory.createDefaultChain(),
+                            new DefaultTokenStream(
+                                    tokenFactory, iterationResultFactory, resultFactory),
+                            iterationResultFactory),
+                    debugPath);
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
     }
 }

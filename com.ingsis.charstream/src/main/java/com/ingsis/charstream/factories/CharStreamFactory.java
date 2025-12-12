@@ -5,6 +5,7 @@
 package com.ingsis.charstream.factories;
 
 import com.ingsis.charstream.CharStream;
+import com.ingsis.charstream.LoggerCharStream;
 import com.ingsis.charstream.source.CharSource;
 import com.ingsis.charstream.source.MappedCharSource;
 import com.ingsis.charstream.source.MemoryCharSource;
@@ -43,6 +44,15 @@ public final class CharStreamFactory implements SafeIteratorFactory<MetaChar> {
 
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    @Override
+    public SafeIterator<MetaChar> fromInputStreamLogger(InputStream in, String debugPath) {
+        try {
+            return new LoggerCharStream(fromInputStream(in), debugPath);
+        } catch (Exception exception) {
+            throw new RuntimeException();
         }
     }
 }

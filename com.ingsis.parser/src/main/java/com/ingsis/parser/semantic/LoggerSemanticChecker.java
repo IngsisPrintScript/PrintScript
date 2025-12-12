@@ -2,11 +2,11 @@
  * My Project
  */
 
-package com.ingsis.charstream;
+package com.ingsis.parser.semantic;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
-import com.ingsis.utils.metachar.MetaChar;
+import com.ingsis.utils.nodes.visitors.Interpretable;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -16,40 +16,43 @@ import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
+public class LoggerSemanticChecker implements SafeIterator<Interpretable>, Logger {
 
-    private final SafeIterator<MetaChar> delegate;
+    private final SafeIterator<Interpretable> delegate;
     private final PrintWriter logWriter;
     private final String loggerName;
 
-    private long charCount = 0;
+    private long nodeCount = 0;
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    // Constructor
-    public LoggerCharStream(SafeIterator<MetaChar> charStream, String logFilePath)
+    public LoggerSemanticChecker(SafeIterator<Interpretable> checker, String logFilePath)
             throws IOException {
-        this.delegate = Objects.requireNonNull(charStream);
-        this.loggerName = "LoggerCharStream[" + Integer.toHexString(charStream.hashCode()) + "]";
+        this.delegate = Objects.requireNonNull(checker);
+        this.loggerName = "LoggerSemanticChecker[" + Integer.toHexString(checker.hashCode()) + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
 
-        log(Level.INFO, "=== LoggerCharStream STARTED ===");
-        log(Level.INFO, "Logging every consumed character with position and representation");
+        log(Level.INFO, "=== SEMANTIC CHECKER TRACE STARTED ===");
+        log(Level.INFO, "Logging every semantically processed node");
     }
 
     // ──────────────────────────────
-    // SafeIterator<MetaChar> method
+    // SafeIterator<Interpretable> method
     // ──────────────────────────────
     @Override
-    public SafeIterationResult<MetaChar> next() {
-        SafeIterationResult<MetaChar> result = delegate.next();
+    public SafeIterationResult<Interpretable> next() {
+        SafeIterationResult<Interpretable> result = delegate.next();
 
         if (result.isCorrect()) {
-            MetaChar mc = result.iterationResult();
-            charCount++;
-            logCharacter(charCount, mc);
+            Interpretable node = result.iterationResult();
+            nodeCount++;
+            log(
+                    Level.INFO,
+                    String.format(
+                            "SemanticNode [%3d]  Type: %-20s  →  %s",
+                            nodeCount, getNodeTypeName(node), safeToString(node)));
         } else {
-            log(Level.INFO, "End of input stream reached (no more characters)");
+            log(Level.ERROR, "Semantic error detected: " + result.error());
         }
 
         return result;
@@ -65,12 +68,12 @@ public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
 
     @Override
     public boolean isLoggable(Level level) {
-        return true; // Always log when using LoggerCharStream — it's for tracing!
+        return true; // Always log during semantic tracing
     }
 
     @Override
     public void log(Level level, ResourceBundle bundle, String msg, Throwable thrown) {
-        log(level, (thrown != null ? msg + " :: " + thrown : msg));
+        log(level, thrown != null ? msg + " → " + thrown : msg);
     }
 
     @Override
@@ -80,44 +83,41 @@ public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
     }
 
     // ──────────────────────────────
-    // Internal logging to file with timestamp
+    // PUBLIC + @Override log method (your requirement)
     // ──────────────────────────────
     @Override
     public void log(Level level, String message) {
         String timestamp = LocalDateTime.now().format(DTF);
-        String line = String.format("[%s] %-6s %s%n", timestamp, level.name(), message);
+        String line = String.format("[%s] %-7s %s%n", timestamp, level.name(), message);
         logWriter.write(line);
         logWriter.flush();
     }
 
     // ──────────────────────────────
-    // Pretty-print each MetaChar
+    // Helper: safe toString + node type
     // ──────────────────────────────
-    private void logCharacter(long index, MetaChar mc) {
-        char c = mc.character();
-        String repr;
+    private String getNodeTypeName(Interpretable node) {
+        String name = node.getClass().getSimpleName();
+        if (name.endsWith("Node") || name.endsWith("Expr") || name.endsWith("Decl")) {
+            return name.replaceAll("Node$", "").replaceAll("Expr$", "").replaceAll("Decl$", "");
+        }
+        return name;
+    }
 
-        if (c == '\n') repr = "\\n (newline)";
-        else if (c == '\r') repr = "\\r (carriage return)";
-        else if (c == '\t') repr = "\\t (tab)";
-        else if (c == ' ') repr = "' ' (space)";
-        else if (c == 0) repr = "<NUL>";
-        else if (c == 65535 || c == Character.MIN_VALUE) repr = "<EOF>";
-        else if (Character.isISOControl(c)) repr = String.format("<%04X> (control)", (int) c);
-        else repr = String.format("'%c'", c);
-
-        log(
-                Level.INFO,
-                String.format(
-                        "Char [%5d]  Pos: (line=%3d, col=%2d)  Codepoint: U+%04X  →  %s",
-                        index, mc.line(), mc.column(), (int) c, repr));
+    private String safeToString(Object obj) {
+        if (obj == null) return "<null>";
+        String s = obj.toString();
+        if (s.length() > 150) {
+            s = s.substring(0, 147) + "...";
+        }
+        return s.replace("\n", "⏎").replace("\r", "").replace("\t", "→");
     }
 
     // ──────────────────────────────
     // Clean shutdown
     // ──────────────────────────────
     public void close() {
-        log(Level.INFO, "=== LoggerCharStream CLOSED === Total characters consumed: " + charCount);
+        log(Level.INFO, "=== SEMANTIC CHECKER TRACE ENDED === Total nodes processed: " + nodeCount);
         logWriter.close();
     }
 }
