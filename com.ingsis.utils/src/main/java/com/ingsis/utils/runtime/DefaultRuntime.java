@@ -26,7 +26,6 @@ public final class DefaultRuntime implements Runtime {
         environments = new ArrayDeque<>();
         environments.push(ENVIRONMENT_FACTORY.createGlobalEnvironment());
         this.emitter = System.out::println;
-
     }
 
     private static class Holder {
@@ -75,6 +74,7 @@ public final class DefaultRuntime implements Runtime {
     public IncorrectResult<?> getExecutionError() {
         return this.executionError;
     }
+
     @Override
     public PrintEmitter getEmitter() {
         return emitter;

@@ -17,12 +17,16 @@ public interface Runtime {
     Environment getCurrentEnvironment();
 
     Result<Environment> push();
+
     Result<Environment> pushClosure(FunctionEntry functionEntry);
+
     Result<Environment> pop();
 
     PrintEmitter getEmitter();
+
     void setEmitter(PrintEmitter emitter);
 
     void setExecutionError(IncorrectResult<?> result);
+
     IncorrectResult<?> getExecutionError();
 }
