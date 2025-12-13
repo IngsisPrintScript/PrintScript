@@ -32,7 +32,7 @@ public final class CharStream implements SafeIterator<MetaChar> {
 
     @Override
     public SafeIterationResult<MetaChar> next() {
-        int raw = -1;
+        int raw;
         try {
             raw = source.charAt(index);
         } catch (Exception e) {
@@ -40,23 +40,19 @@ public final class CharStream implements SafeIterator<MetaChar> {
         }
 
         if (raw == -1) {
-            return factory.createIncorrectResult("No more chars");
+            return factory.createIncorrectResult("EOL");
         }
 
         char c = (char) raw;
-
         int newLine = line;
         int newColumn = column;
 
-        if (c == '\n') {
-            newLine++;
-            newColumn = 1;
-        } else {
-            newColumn++;
-        }
+        if (c == '\n') { newLine++; newColumn = 1; }
+        else { newColumn++; }
 
         return factory.createCorrectResult(
                 new MetaChar(c, line, column),
-                new CharStream(source, index + 1, newLine, newColumn, factory));
+                new CharStream(source, index + 1, newLine, newColumn, factory)
+        );
     }
 }

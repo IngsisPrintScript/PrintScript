@@ -57,9 +57,7 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 args -> {
                                     DefaultRuntime.getInstance()
                                             .getEmitter()
-                                            .print(
-                                                    (args[0] == null ? "null" : args[0].toString())
-                                                            + "\n");
+                                            .print(args[0] == null ? "null" : args[0].toString());
                                     return null;
                                 },
                                 null,
