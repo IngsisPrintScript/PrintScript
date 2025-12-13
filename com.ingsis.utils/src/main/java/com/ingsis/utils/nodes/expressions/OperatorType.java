@@ -4,6 +4,7 @@
 
 package com.ingsis.utils.nodes.expressions;
 
+import com.ingsis.utils.nodes.expressions.strategies.AssignationStrategy;
 import com.ingsis.utils.nodes.expressions.strategies.BinaryAddition;
 import com.ingsis.utils.nodes.expressions.strategies.BinaryDivision;
 import com.ingsis.utils.nodes.expressions.strategies.BinaryMultiplication;
@@ -15,6 +16,7 @@ import com.ingsis.utils.result.Result;
 
 public enum OperatorType {
     // Binary operators
+    ASSIGNATION("=", 02, 01, new AssignationStrategy()),
     PLUS("+", 12, 11, new BinaryAddition()),
     MINUS("-", 12, 11, new BinarySubtraction()),
     STAR("*", 22, 21, new BinaryMultiplication()),
