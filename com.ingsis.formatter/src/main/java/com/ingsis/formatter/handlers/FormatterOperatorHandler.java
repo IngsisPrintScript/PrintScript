@@ -5,11 +5,9 @@
 package com.ingsis.formatter.handlers;
 
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
-import com.ingsis.utils.nodes.expressions.operator.OperatorNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.function.Supplier;
 
@@ -29,25 +27,7 @@ public class FormatterOperatorHandler implements NodeEventHandler<ExpressionNode
 
     @Override
     public Result<String> handle(ExpressionNode node) {
-        if (!(node instanceof OperatorNode operatorNode)) {
-            return resultFactory.createIncorrectResult("Incorrect handler.");
-        }
-        Result<String> leftFormatResult = leafHandlerSupplier.get().handle(node.children().get(0));
-        if (!leftFormatResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(leftFormatResult);
-        }
-        try {
-            writer.append(" ");
-            writer.append(operatorNode.symbol());
-            writer.append(" ");
-            Result<String> rightFormatResult =
-                    leafHandlerSupplier.get().handle(node.children().get(1));
-            if (!rightFormatResult.isCorrect()) {
-                return resultFactory.cloneIncorrectResult(rightFormatResult);
-            }
-        } catch (IOException e) {
-            return resultFactory.createIncorrectResult(e.getMessage());
-        }
-        return resultFactory.createCorrectResult("Formatt passed.");
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'handle'");
     }
 }

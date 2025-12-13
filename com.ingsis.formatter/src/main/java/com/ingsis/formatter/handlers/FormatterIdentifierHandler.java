@@ -5,11 +5,9 @@
 package com.ingsis.formatter.handlers;
 
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
-import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
-import java.io.IOException;
 import java.io.Writer;
 
 public class FormatterIdentifierHandler implements NodeEventHandler<ExpressionNode> {
@@ -23,14 +21,7 @@ public class FormatterIdentifierHandler implements NodeEventHandler<ExpressionNo
 
     @Override
     public Result<String> handle(ExpressionNode node) {
-        if (!(node instanceof IdentifierNode identifierNode)) {
-            return resultFactory.createIncorrectResult("Incorrect handler.");
-        }
-        try {
-            writer.write(identifierNode.name());
-        } catch (IOException e) {
-            resultFactory.createIncorrectResult(e.getMessage());
-        }
-        return resultFactory.createCorrectResult("Formatt passed.");
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'handle'");
     }
 }

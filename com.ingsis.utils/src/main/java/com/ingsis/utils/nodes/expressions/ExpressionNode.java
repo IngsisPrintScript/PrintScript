@@ -9,7 +9,14 @@ import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.result.Result;
 import java.util.List;
 
-public interface ExpressionNode extends Node, Interpretable {
+public sealed interface ExpressionNode extends Node, Interpretable
+        permits LiteralNode,
+                IdentifierNode,
+                CallFunctionNode,
+                OperatorNode,
+                NilExpressionNode,
+                GlobalFunctionBody {
+
     List<ExpressionNode> children();
 
     Result<Object> solve();

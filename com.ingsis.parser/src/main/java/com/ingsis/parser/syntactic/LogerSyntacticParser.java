@@ -5,6 +5,7 @@
 package com.ingsis.parser.syntactic;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.nodes.visitors.Checkable;
 import java.io.FileWriter;
@@ -21,19 +22,32 @@ public class LogerSyntacticParser implements SafeIterator<Checkable>, Logger {
     private final SafeIterator<Checkable> delegate;
     private final PrintWriter logWriter;
     private final String loggerName;
+    private final IterationResultFactory iterationResultFactory;
 
     private long nodeCount = 0;
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    public LogerSyntacticParser(SafeIterator<Checkable> parser, String logFilePath)
+    public LogerSyntacticParser(
+            SafeIterator<Checkable> parser,
+            String logFilePath,
+            IterationResultFactory iterationResultFactory)
             throws IOException {
         this.delegate = Objects.requireNonNull(parser);
         this.loggerName = "LogerSyntacticParser[" + Integer.toHexString(parser.hashCode()) + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
+        this.iterationResultFactory = iterationResultFactory;
+    }
 
-        log(Level.INFO, "=== SYNTACTIC PARSER TRACE STARTED ===");
-        log(Level.INFO, "Logging every parsed node as it is produced");
+    public LogerSyntacticParser(
+            SafeIterator<Checkable> parser,
+            PrintWriter logWriter,
+            String loggerName,
+            IterationResultFactory iterationResultFactory) {
+        this.delegate = Objects.requireNonNull(parser);
+        this.logWriter = logWriter;
+        this.loggerName = loggerName;
+        this.iterationResultFactory = iterationResultFactory;
     }
 
     // ──────────────────────────────
@@ -47,10 +61,16 @@ public class LogerSyntacticParser implements SafeIterator<Checkable>, Logger {
             Checkable node = result.iterationResult();
             nodeCount++;
             logParsedNode(nodeCount, node);
-        } else {
-            log(Level.WARNING, "Parsing failed with error: " + result.error());
+            return iterationResultFactory.createCorrectResult(
+                    result.iterationResult(),
+                    new LogerSyntacticParser(
+                            result.nextIterator(),
+                            this.logWriter,
+                            this.loggerName,
+                            this.iterationResultFactory));
         }
 
+        log(Level.WARNING, "Parsing failed with error: " + result.error());
         return result;
     }
 

@@ -58,7 +58,8 @@ public final class SemanticFactory implements SafeIteratorFactory<Interpretable>
                             checker,
                             runtime,
                             iterationResultFactory),
-                    debugPath);
+                    debugPath,
+                    iterationResultFactory);
         } catch (Exception e) {
             throw new RuntimeException();
         }

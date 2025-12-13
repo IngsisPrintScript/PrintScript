@@ -5,6 +5,7 @@
 package com.ingsis.lexer;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.token.Token;
 import java.io.FileWriter;
@@ -13,7 +14,6 @@ import java.io.PrintWriter;
 import java.lang.System.Logger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class LoggerLexer implements SafeIterator<Token>, Logger {
@@ -21,18 +21,33 @@ public class LoggerLexer implements SafeIterator<Token>, Logger {
     private final SafeIterator<Token> baseLexer;
     private final PrintWriter logWriter;
     private final String loggerName;
+    private IterationResultFactory iterationResultFactory;
 
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
     private int tokenCount = 0;
 
-    public LoggerLexer(SafeIterator<Token> baseLexer, String logFilePath) throws IOException {
-        this.baseLexer = Objects.requireNonNull(baseLexer);
+    public LoggerLexer(
+            SafeIterator<Token> baseLexer,
+            String logFilePath,
+            IterationResultFactory iterationResultFactory)
+            throws IOException {
+        this.baseLexer = baseLexer;
         this.loggerName = "LoggerLexer[" + baseLexer.hashCode() + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
+        this.iterationResultFactory = iterationResultFactory;
+    }
 
-        logHeader();
+    public LoggerLexer(
+            SafeIterator<Token> baseLexer,
+            PrintWriter logWriter,
+            String loggerName,
+            IterationResultFactory iterationResultFactory) {
+        this.baseLexer = baseLexer;
+        this.loggerName = loggerName;
+        this.logWriter = logWriter;
+        this.iterationResultFactory = iterationResultFactory;
     }
 
     // ========================
@@ -47,10 +62,16 @@ public class LoggerLexer implements SafeIterator<Token>, Logger {
             Token token = result.iterationResult();
             tokenCount++;
             logToken(tokenCount, token);
-        } else {
-            log(Level.INFO, "End of token stream reached (no more tokens)");
+            return iterationResultFactory.createCorrectResult(
+                    result.iterationResult(),
+                    new LoggerLexer(
+                            result.nextIterator(),
+                            this.logWriter,
+                            this.loggerName,
+                            this.iterationResultFactory));
         }
 
+        log(Level.INFO, "End of token stream reached (no more tokens)");
         return result;
     }
 
@@ -102,12 +123,6 @@ public class LoggerLexer implements SafeIterator<Token>, Logger {
         log(
                 Level.INFO,
                 String.format("Token [%3d]  Type: %-12s  Text: %s", index, token.type(), escaped));
-    }
-
-    private void logHeader() {
-        log(Level.INFO, "=== LoggerLexer STARTED ===");
-        log(Level.INFO, "Logging tokens as they are consumed (pull-based lexer trace)");
-        log(Level.INFO, "Logger name: " + getName());
     }
 
     // ========================

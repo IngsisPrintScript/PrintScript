@@ -4,7 +4,7 @@
 
 package com.ingsis.utils.typer.identifier;
 
-import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.expressions.IdentifierNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.runtime.environment.entries.VariableEntry;

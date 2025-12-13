@@ -4,8 +4,9 @@
 
 package com.ingsis.lexer.tokenizers.registry;
 
+import com.ingsis.lexer.TokenizeResult;
 import com.ingsis.lexer.tokenizers.Tokenizer;
-import com.ingsis.utils.process.result.ProcessResult;
+import com.ingsis.utils.metachar.string.builder.MetaCharStringBuilder;
 import com.ingsis.utils.token.Token;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +23,12 @@ public final class DefaultTokenizersRegistry implements TokenizersRegistry {
     }
 
     @Override
-    public ProcessResult<Token> tokenize(
-            String input, List<Token> trailingTrivia, Integer line, Integer column) {
-        ProcessResult<Token> bestResult = ProcessResult.INVALID();
+    public TokenizeResult tokenize(MetaCharStringBuilder sb, List<Token> trailingTrivia) {
+        TokenizeResult result = new TokenizeResult.INVALID();
         for (Tokenizer tokenizer : tokenizers) {
-            ProcessResult<Token> tempResult =
-                    tokenizer.tokenize(input, trailingTrivia, line, column);
-            switch (tempResult.status()) {
-                case COMPLETE, PREFIX -> bestResult = tempResult.comparePriority(bestResult);
-                case INVALID -> {}
-            }
+            result = result.comparePriority(tokenizer.tokenize(sb, trailingTrivia));
         }
-        return bestResult;
+        return result;
     }
 
     @Override

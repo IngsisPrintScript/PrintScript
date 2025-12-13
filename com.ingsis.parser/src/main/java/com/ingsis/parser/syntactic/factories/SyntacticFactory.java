@@ -6,6 +6,7 @@ package com.ingsis.parser.syntactic.factories;
 
 import com.ingsis.parser.syntactic.LogerSyntacticParser;
 import com.ingsis.parser.syntactic.SyntacticParser;
+import com.ingsis.parser.syntactic.tokenstream.DefaultTokenStream;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
@@ -13,7 +14,6 @@ import com.ingsis.utils.nodes.visitors.Checkable;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.TokenFactory;
-import com.ingsis.utils.token.tokenstream.DefaultTokenStream;
 import java.io.InputStream;
 
 public final class SyntacticFactory implements SafeIteratorFactory<Checkable> {
@@ -55,7 +55,8 @@ public final class SyntacticFactory implements SafeIteratorFactory<Checkable> {
                             new DefaultTokenStream(
                                     tokenFactory, iterationResultFactory, resultFactory),
                             iterationResultFactory),
-                    debugPath);
+                    debugPath,
+                    iterationResultFactory);
         } catch (Exception exception) {
             throw new RuntimeException();
         }

@@ -5,6 +5,7 @@
 package com.ingsis.parser.semantic;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import java.io.FileWriter;
@@ -21,19 +22,32 @@ public class LoggerSemanticChecker implements SafeIterator<Interpretable>, Logge
     private final SafeIterator<Interpretable> delegate;
     private final PrintWriter logWriter;
     private final String loggerName;
+    private final IterationResultFactory iterationResultFactory;
 
     private long nodeCount = 0;
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    public LoggerSemanticChecker(SafeIterator<Interpretable> checker, String logFilePath)
+    public LoggerSemanticChecker(
+            SafeIterator<Interpretable> checker,
+            String logFilePath,
+            IterationResultFactory iterationResultFactory)
             throws IOException {
         this.delegate = Objects.requireNonNull(checker);
         this.loggerName = "LoggerSemanticChecker[" + Integer.toHexString(checker.hashCode()) + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
+        this.iterationResultFactory = iterationResultFactory;
+    }
 
-        log(Level.INFO, "=== SEMANTIC CHECKER TRACE STARTED ===");
-        log(Level.INFO, "Logging every semantically processed node");
+    public LoggerSemanticChecker(
+            SafeIterator<Interpretable> checker,
+            PrintWriter logWriter,
+            String loggerName,
+            IterationResultFactory iterationResultFactory) {
+        this.delegate = Objects.requireNonNull(checker);
+        this.logWriter = logWriter;
+        this.loggerName = loggerName;
+        this.iterationResultFactory = iterationResultFactory;
     }
 
     // ──────────────────────────────
@@ -51,10 +65,16 @@ public class LoggerSemanticChecker implements SafeIterator<Interpretable>, Logge
                     String.format(
                             "SemanticNode [%3d]  Type: %-20s  →  %s",
                             nodeCount, getNodeTypeName(node), safeToString(node)));
-        } else {
-            log(Level.ERROR, "Semantic error detected: " + result.error());
+            return iterationResultFactory.createCorrectResult(
+                    result.iterationResult(),
+                    new LoggerSemanticChecker(
+                            result.nextIterator(),
+                            this.logWriter,
+                            this.loggerName,
+                            this.iterationResultFactory));
         }
 
+        log(Level.ERROR, "Semantic error detected: " + result.error());
         return result;
     }
 

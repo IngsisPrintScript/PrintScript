@@ -4,8 +4,9 @@
 
 package com.ingsis.lexer.tokenizers;
 
+import com.ingsis.lexer.TokenizeResult;
 import com.ingsis.lexer.tokenizers.categories.TokenCategory;
-import com.ingsis.utils.process.result.ProcessResult;
+import com.ingsis.utils.metachar.string.builder.MetaCharStringBuilder;
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.TokenFactory;
 import com.ingsis.utils.token.type.TokenType;
@@ -27,13 +28,13 @@ public class ExactMatchTokenizer implements Tokenizer {
     }
 
     @Override
-    public ProcessResult<Token> tokenize(
-            String input, List<Token> trailingTrivia, Integer line, Integer column) {
-        if (!canTokenize(input)) {
-            return ProcessResult.INVALID();
+    public TokenizeResult tokenize(MetaCharStringBuilder sb, List<Token> trailingTrivia) {
+        if (!canTokenize(sb.getString())) {
+            return new TokenizeResult.INVALID();
         }
-        return ProcessResult.COMPLETE(
-                tokenFactory.createKnownToken(type, input, trailingTrivia, line, column),
+        return new TokenizeResult.COMPLETE(
+                tokenFactory.createKnownToken(
+                        type, sb.getString(), trailingTrivia, sb.getLine(), sb.getColumn()),
                 category.priority());
     }
 }

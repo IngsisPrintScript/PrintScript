@@ -4,17 +4,16 @@
 
 package com.ingsis.parser.syntactic.parsers.factory;
 
-import com.ingsis.parser.syntactic.parsers.*;
-import com.ingsis.parser.syntactic.parsers.literals.BooleanLiteralParser;
-import com.ingsis.parser.syntactic.parsers.literals.NumberLiteralParser;
-import com.ingsis.parser.syntactic.parsers.literals.StringLiteralParser;
-import com.ingsis.parser.syntactic.parsers.operator.OperatorParser;
-import com.ingsis.parser.syntactic.parsers.operator.algorithms.postfix.PostfixExpressionTreeBuilder;
-import com.ingsis.parser.syntactic.parsers.operator.algorithms.postfix.PostfixToAstBuilder;
-import com.ingsis.parser.syntactic.parsers.operator.algorithms.shuntingyard.DefaultShuntingYardTransformer;
-import com.ingsis.parser.syntactic.parsers.operator.algorithms.shuntingyard.ShuntingYardTransformer;
-import com.ingsis.parser.syntactic.parsers.operator.algorithms.shuntingyard.storage.InMemoryShuntingYardStorage;
-import com.ingsis.parser.syntactic.parsers.operator.algorithms.shuntingyard.storage.ShuntingYardStorage;
+import com.ingsis.parser.syntactic.parsers.CallFunctionParser;
+import com.ingsis.parser.syntactic.parsers.ConditionalParser;
+import com.ingsis.parser.syntactic.parsers.DeclarationParser;
+import com.ingsis.parser.syntactic.parsers.LineExpressionParser;
+import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.parsers.atomic.IdentifierParser;
+import com.ingsis.parser.syntactic.parsers.atomic.literals.BooleanLiteralParser;
+import com.ingsis.parser.syntactic.parsers.atomic.literals.NumberLiteralParser;
+import com.ingsis.parser.syntactic.parsers.atomic.literals.StringLiteralParser;
+import com.ingsis.parser.syntactic.parsers.operator.PrattParser;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
@@ -29,9 +28,6 @@ import java.util.function.Supplier;
 public class InMemoryParserFactory implements ParserFactory {
     private final TokenTemplateFactory tokenTemplateFactory;
     private final NodeFactory nodeFactory;
-    private final TokenFactory tokenFactory;
-    private final IterationResultFactory iterationResultFactory;
-    private final ResultFactory resultFactory;
 
     public InMemoryParserFactory(
             TokenTemplateFactory tokenTemplateFactory,
@@ -41,9 +37,6 @@ public class InMemoryParserFactory implements ParserFactory {
             ResultFactory resultFactory) {
         this.tokenTemplateFactory = tokenTemplateFactory;
         this.nodeFactory = nodeFactory;
-        this.tokenFactory = tokenFactory;
-        this.iterationResultFactory = iterationResultFactory;
-        this.resultFactory = resultFactory;
     }
 
     @Override
@@ -83,19 +76,7 @@ public class InMemoryParserFactory implements ParserFactory {
     @Override
     public Parser<ExpressionNode> operatorParser(
             Supplier<Parser<ExpressionNode>> leafParserSupplier) {
-        ShuntingYardStorage storage =
-                new InMemoryShuntingYardStorage(
-                        tokenTemplateFactory.separator(TokenType.LPAREN.lexeme()).result(),
-                        tokenTemplateFactory.separator(TokenType.RPAREN.lexeme()).result());
-        ShuntingYardTransformer shuntingYardTransformer =
-                new DefaultShuntingYardTransformer(storage);
-        PostfixToAstBuilder postfixToAstBuilder =
-                new PostfixExpressionTreeBuilder(
-                        this.nodeFactory,
-                        this.tokenFactory,
-                        this.iterationResultFactory,
-                        this.resultFactory);
-        return new OperatorParser(leafParserSupplier, shuntingYardTransformer, postfixToAstBuilder);
+        return new PrattParser(leafParserSupplier, this.nodeFactory);
     }
 
     @Override
@@ -108,16 +89,6 @@ public class InMemoryParserFactory implements ParserFactory {
                 tokenTemplateFactory.separator(TokenType.RPAREN.lexeme()).result(),
                 identifierParser,
                 leafParserSupplier,
-                this.nodeFactory);
-    }
-
-    @Override
-    public Parser<ExpressionNode> assignationParser(
-            Parser<ExpressionNode> identifierParser, Parser<ExpressionNode> expressionNodeParser) {
-        return new AssignationParser(
-                tokenTemplateFactory.operator(TokenType.EQUAL.lexeme()).result(),
-                identifierParser,
-                expressionNodeParser,
                 this.nodeFactory);
     }
 

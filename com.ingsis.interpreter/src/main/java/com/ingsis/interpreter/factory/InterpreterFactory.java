@@ -46,7 +46,8 @@ public final class InterpreterFactory implements SafeIteratorFactory<String> {
                             interpretableIteratorFactory.fromInputStreamLogger(in, debugPath),
                             interpreter,
                             iterationResultFactory),
-                    debugPath);
+                    debugPath,
+                    iterationResultFactory);
         } catch (Exception e) {
             throw new RuntimeException();
         }

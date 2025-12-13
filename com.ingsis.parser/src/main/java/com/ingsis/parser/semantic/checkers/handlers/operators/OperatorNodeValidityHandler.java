@@ -4,11 +4,11 @@
 
 package com.ingsis.parser.semantic.checkers.handlers.operators;
 
+import com.ingsis.utils.nodes.expressions.CallFunctionNode;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
-import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
-import com.ingsis.utils.nodes.expressions.atomic.literal.LiteralNode;
-import com.ingsis.utils.nodes.expressions.function.CallFunctionNode;
-import com.ingsis.utils.nodes.expressions.operator.OperatorNode;
+import com.ingsis.utils.nodes.expressions.IdentifierNode;
+import com.ingsis.utils.nodes.expressions.LiteralNode;
+import com.ingsis.utils.nodes.expressions.OperatorNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;

@@ -5,16 +5,23 @@
 package com.ingsis.utils.process.checkpoint;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.process.state.ProcessState;
 
 public final class ProcessCheckpoint<S, R> {
     private final R result;
     private final SafeIterator<S> iterator;
-    private static final ProcessCheckpoint<?, ?> UNINITIALIZED_SINGLETON =
-            new ProcessCheckpoint<>(null, null);
+    private final ProcessState status;
+    private final Integer priority;
 
-    private ProcessCheckpoint(SafeIterator<S> iterator, R result) {
+    private static final ProcessCheckpoint<?, ?> UNINITIALIZED_SINGLETON =
+            new ProcessCheckpoint<>(null, null, ProcessState.INVALID, null);
+
+    private ProcessCheckpoint(
+            SafeIterator<S> iterator, R result, ProcessState status, Integer priority) {
         this.iterator = iterator;
         this.result = result;
+        this.status = status;
+        this.priority = priority;
     }
 
     @SuppressWarnings("unchecked")
@@ -22,12 +29,21 @@ public final class ProcessCheckpoint<S, R> {
         return (ProcessCheckpoint<S, R>) UNINITIALIZED_SINGLETON;
     }
 
-    public static <S, R> ProcessCheckpoint<S, R> INITIALIZED(SafeIterator<S> iterator, R result) {
-        return new ProcessCheckpoint<>(iterator, result);
+    public static <S, R> ProcessCheckpoint<S, R> INITIALIZED(
+            SafeIterator<S> iterator, R result, Integer priority) {
+        return new ProcessCheckpoint<>(iterator, result, ProcessState.COMPLETE, priority);
     }
 
     public R result() {
         return this.result;
+    }
+
+    public Integer priority() {
+        return this.priority;
+    }
+
+    public ProcessState status() {
+        return this.status;
     }
 
     public SafeIterator<S> iterator() {
@@ -35,7 +51,7 @@ public final class ProcessCheckpoint<S, R> {
     }
 
     public boolean isUninitialized() {
-        return this == UNINITIALIZED_SINGLETON;
+        return !this.status.isValid();
     }
 
     public Boolean isInitialized() {

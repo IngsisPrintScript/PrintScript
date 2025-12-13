@@ -10,8 +10,6 @@ import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.metachar.MetaChar;
 import com.ingsis.utils.metachar.string.builder.MetaCharStringBuilder;
-import com.ingsis.utils.process.checkpoint.ProcessCheckpoint;
-import com.ingsis.utils.process.result.ProcessResult;
 import com.ingsis.utils.token.Token;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,40 +33,36 @@ public final class Lexer implements SafeIterator<Token> {
 
     @Override
     public SafeIterationResult<Token> next() {
-        SafeIterationResult<Token> result = maximalMunchOf();
-        return result;
+        return maximalMunchOf();
     }
 
     private SafeIterationResult<Token> maximalMunchOf() {
         SafeIterationResult<MetaChar> iterationResult = charIterator.next();
-        ProcessCheckpoint<MetaChar, Token> checkpoint = ProcessCheckpoint.UNINITIALIZED();
+        TokenizeCheckpoint checkpoint = new TokenizeCheckpoint.UNINITIALIZED();
         MetaCharStringBuilder sb = new MetaCharStringBuilder();
         List<Token> trailingTrivia = new ArrayList<>();
         while (iterationResult.isCorrect()) {
             sb = sb.append(iterationResult.iterationResult());
-
-            ProcessResult<Token> processTralingToken = processTrivia(sb);
-            switch (processTralingToken.status()) {
-                case COMPLETE:
-                    trailingTrivia.add(processTralingToken.result());
+            switch (tokenizeTriviaToken(sb)) {
+                case TokenizeResult.COMPLETE C:
+                    trailingTrivia.add(C.token());
                     sb = new MetaCharStringBuilder();
                     iterationResult = iterationResult.nextIterator().next();
                     continue;
-                case PREFIX, INVALID:
+                default:
                     break;
             }
 
-            ProcessResult<Token> processResult = process(sb, trailingTrivia);
-            switch (processResult.status()) {
-                case COMPLETE:
-                    trailingTrivia = new ArrayList<>();
+            switch (tokenizeRealToken(sb, trailingTrivia)) {
+                case TokenizeResult.COMPLETE C:
                     checkpoint =
-                            ProcessCheckpoint.INITIALIZED(
-                                    iterationResult.nextIterator(), processResult.result());
+                            new TokenizeCheckpoint.INITIALIZED(
+                                    C.token(), iterationResult.nextIterator());
+                    trailingTrivia = new ArrayList<>();
                     break;
-                case INVALID:
+                case TokenizeResult.INVALID I:
                     return processCheckpoint(checkpoint);
-                case PREFIX:
+                case TokenizeResult.PREFIX P:
                     break;
             }
             iterationResult = iterationResult.nextIterator().next();
@@ -76,28 +70,27 @@ public final class Lexer implements SafeIterator<Token> {
         return processCheckpoint(checkpoint);
     }
 
-    private SafeIterationResult<Token> processCheckpoint(
-            ProcessCheckpoint<MetaChar, Token> checkpoint) {
-        if (checkpoint.isInitialized()) {
-            return iterationResultFactory.createCorrectResult(
-                    checkpoint.result(),
-                    new Lexer(
-                            checkpoint.iterator(),
-                            this.triviaTokenizer,
-                            this.tokenizer,
-                            this.iterationResultFactory));
-        }
-        return iterationResultFactory.createIncorrectResult("Error lexing");
+    private SafeIterationResult<Token> processCheckpoint(TokenizeCheckpoint checkpoint) {
+        return switch (checkpoint) {
+            case TokenizeCheckpoint.INITIALIZED I ->
+                    iterationResultFactory.createCorrectResult(
+                            I.token(),
+                            new Lexer(
+                                    I.nextIterator(),
+                                    this.triviaTokenizer,
+                                    this.tokenizer,
+                                    this.iterationResultFactory));
+            case TokenizeCheckpoint.UNINITIALIZED U ->
+                    iterationResultFactory.createIncorrectResult("Error lexing");
+        };
     }
 
-    private ProcessResult<Token> processTrivia(MetaCharStringBuilder builder) {
-        return triviaTokenizer.tokenize(
-                builder.getString(), List.of(), builder.getLine(), builder.getColumn());
+    private TokenizeResult tokenizeTriviaToken(MetaCharStringBuilder builder) {
+        return triviaTokenizer.tokenize(builder, List.of());
     }
 
-    private ProcessResult<Token> process(
+    private TokenizeResult tokenizeRealToken(
             MetaCharStringBuilder builder, List<Token> trailingTrivia) {
-        return tokenizer.tokenize(
-                builder.getString(), trailingTrivia, builder.getLine(), builder.getColumn());
+        return tokenizer.tokenize(builder, trailingTrivia);
     }
 }

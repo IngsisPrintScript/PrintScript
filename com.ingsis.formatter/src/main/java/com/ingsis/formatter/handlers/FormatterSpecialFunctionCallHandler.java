@@ -5,11 +5,9 @@
 package com.ingsis.formatter.handlers;
 
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
-import com.ingsis.utils.nodes.expressions.function.CallFunctionNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
-import java.io.IOException;
 import java.io.Writer;
 import java.util.function.Supplier;
 
@@ -45,26 +43,7 @@ public class FormatterSpecialFunctionCallHandler implements NodeEventHandler<Exp
 
     @Override
     public Result<String> handle(ExpressionNode node) {
-        if (!(node instanceof CallFunctionNode callFunctionNode)) {
-            return resultFactory.createIncorrectResult("Incorrect handler.");
-        }
-        Result<String> baseFunctionFormatterHandleResult = baseFunctionParser.handle(node);
-        if (!baseFunctionFormatterHandleResult.isCorrect()) {
-            return resultFactory.cloneIncorrectResult(baseFunctionFormatterHandleResult);
-        }
-        try {
-            String functionIdentifier = callFunctionNode.identifierNode().name();
-            if (functionIdentifier.equals(functionName)) {
-                for (int i = 0; i < amountOfLinesBeforeCall + 1; i++) {
-                    writer.append("\n");
-                }
-            } else {
-                return resultFactory.createIncorrectResult("Incorrect handler.");
-            }
-        } catch (IOException e) {
-            return resultFactory.createIncorrectResult(e.getMessage());
-        }
-
-        return resultFactory.createCorrectResult("Formatt correct.");
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'handle'");
     }
 }

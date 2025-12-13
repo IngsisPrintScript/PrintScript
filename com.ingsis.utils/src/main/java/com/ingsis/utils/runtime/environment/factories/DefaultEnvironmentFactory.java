@@ -4,7 +4,7 @@
 
 package com.ingsis.utils.runtime.environment.factories;
 
-import com.ingsis.utils.nodes.expressions.function.GlobalFunctionBody;
+import com.ingsis.utils.nodes.expressions.GlobalFunctionBody;
 import com.ingsis.utils.runtime.environment.DefaultEnvironment;
 import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.GlobalEnvironment;

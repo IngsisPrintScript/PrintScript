@@ -4,10 +4,10 @@
 
 package com.ingsis.utils.typer.expression;
 
+import com.ingsis.utils.nodes.expressions.CallFunctionNode;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
-import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
-import com.ingsis.utils.nodes.expressions.atomic.literal.LiteralNode;
-import com.ingsis.utils.nodes.expressions.function.CallFunctionNode;
+import com.ingsis.utils.nodes.expressions.IdentifierNode;
+import com.ingsis.utils.nodes.expressions.LiteralNode;
 import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.runtime.type.typer.identifier.DefaultIdentifierTypeGetter;
 import com.ingsis.utils.type.typer.TypeGetter;

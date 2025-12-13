@@ -5,6 +5,7 @@
 package com.ingsis.interpreter;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -19,20 +20,33 @@ public class LoggerProgramInterpreter implements SafeIterator<String>, Logger {
     private final SafeIterator<String> interpreter;
     private final PrintWriter logWriter;
     private final String loggerName;
+    private final IterationResultFactory iterationResultFactory;
 
     private long stepCount = 0;
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    public LoggerProgramInterpreter(SafeIterator<String> interpreter, String logFilePath)
+    public LoggerProgramInterpreter(
+            SafeIterator<String> interpreter,
+            String logFilePath,
+            IterationResultFactory iterationResultFactory)
             throws IOException {
         this.interpreter = interpreter;
         this.loggerName =
                 "LoggerProgramInterpreter[" + Integer.toHexString(interpreter.hashCode()) + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
+        this.iterationResultFactory = iterationResultFactory;
+    }
 
-        log(Level.INFO, "=== PROGRAM INTERPRETER TRACE STARTED ===");
-        log(Level.INFO, "Logging every interpretation step (output or error)");
+    public LoggerProgramInterpreter(
+            SafeIterator<String> interpreter,
+            PrintWriter logWriter,
+            String loggerName,
+            IterationResultFactory iterationResultFactory) {
+        this.interpreter = interpreter;
+        this.loggerName = loggerName;
+        this.logWriter = logWriter;
+        this.iterationResultFactory = iterationResultFactory;
     }
 
     // ──────────────────────────────
@@ -46,11 +60,17 @@ public class LoggerProgramInterpreter implements SafeIterator<String>, Logger {
             String output = result.iterationResult();
             stepCount++;
             log(Level.INFO, String.format("Step [%3d]  Output: %s", stepCount, safeOutput(output)));
-        } else {
-            log(Level.ERROR, String.format("Interpretation failed: %s", result.error()));
-            log(Level.INFO, "Interpretation halted due to error");
+            return iterationResultFactory.createCorrectResult(
+                    result.iterationResult(),
+                    new LoggerProgramInterpreter(
+                            result.nextIterator(),
+                            this.logWriter,
+                            this.loggerName,
+                            this.iterationResultFactory));
         }
 
+        log(Level.ERROR, String.format("Interpretation failed: %s", result.error()));
+        log(Level.INFO, "Interpretation halted due to error");
         return result;
     }
 

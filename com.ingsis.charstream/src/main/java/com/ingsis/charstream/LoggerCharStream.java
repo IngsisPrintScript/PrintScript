@@ -5,6 +5,7 @@
 package com.ingsis.charstream;
 
 import com.ingsis.utils.iterator.safe.SafeIterator;
+import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.metachar.MetaChar;
 import java.io.FileWriter;
@@ -21,20 +22,32 @@ public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
     private final SafeIterator<MetaChar> delegate;
     private final PrintWriter logWriter;
     private final String loggerName;
+    private final IterationResultFactory iterationResultFactory;
 
     private long charCount = 0;
     private static final DateTimeFormatter DTF =
             DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
 
-    // Constructor
-    public LoggerCharStream(SafeIterator<MetaChar> charStream, String logFilePath)
+    public LoggerCharStream(
+            SafeIterator<MetaChar> charStream,
+            String logFilePath,
+            IterationResultFactory iterationResultFactory)
             throws IOException {
         this.delegate = Objects.requireNonNull(charStream);
         this.loggerName = "LoggerCharStream[" + Integer.toHexString(charStream.hashCode()) + "]";
         this.logWriter = new PrintWriter(new FileWriter(logFilePath, true));
+        this.iterationResultFactory = iterationResultFactory;
+    }
 
-        log(Level.INFO, "=== LoggerCharStream STARTED ===");
-        log(Level.INFO, "Logging every consumed character with position and representation");
+    private LoggerCharStream(
+            SafeIterator<MetaChar> charStream,
+            PrintWriter logWriter,
+            String loggerName,
+            IterationResultFactory iterationResultFactory) {
+        this.delegate = charStream;
+        this.logWriter = logWriter;
+        this.loggerName = loggerName;
+        this.iterationResultFactory = iterationResultFactory;
     }
 
     // ──────────────────────────────
@@ -48,10 +61,13 @@ public class LoggerCharStream implements SafeIterator<MetaChar>, Logger {
             MetaChar mc = result.iterationResult();
             charCount++;
             logCharacter(charCount, mc);
-        } else {
-            log(Level.INFO, "End of input stream reached (no more characters)");
+            return iterationResultFactory.createCorrectResult(
+                    result.iterationResult(),
+                    new LoggerCharStream(
+                            result.nextIterator(), logWriter, loggerName, iterationResultFactory));
         }
 
+        log(Level.INFO, "End of input stream reached (no more characters)");
         return result;
     }
 

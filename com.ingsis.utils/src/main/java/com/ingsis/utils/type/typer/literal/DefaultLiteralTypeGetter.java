@@ -4,10 +4,10 @@
 
 package com.ingsis.utils.type.typer.literal;
 
-import com.ingsis.utils.nodes.expressions.atomic.literal.BooleanLiteralNode;
-import com.ingsis.utils.nodes.expressions.atomic.literal.LiteralNode;
-import com.ingsis.utils.nodes.expressions.atomic.literal.NumberLiteralNode;
-import com.ingsis.utils.nodes.expressions.atomic.literal.StringLiteralNode;
+import com.ingsis.utils.nodes.expressions.BooleanLiteralNode;
+import com.ingsis.utils.nodes.expressions.LiteralNode;
+import com.ingsis.utils.nodes.expressions.NumberLiteralNode;
+import com.ingsis.utils.nodes.expressions.StringLiteralNode;
 import com.ingsis.utils.type.typer.TypeGetter;
 import com.ingsis.utils.type.types.Types;
 

@@ -42,7 +42,7 @@ public final class CliEngine implements Runnable {
 
     private volatile boolean stopRequested = false;
 
-    private final Engine engine = new InMemoryEngine();
+    private final Engine engine = new LoggerEngine();
 
     public void requestStop() {
         stopRequested = true;

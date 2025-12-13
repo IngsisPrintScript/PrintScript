@@ -5,7 +5,7 @@
 package com.ingsis.sca.observer.handlers;
 
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
-import com.ingsis.utils.nodes.expressions.atomic.identifier.IdentifierNode;
+import com.ingsis.utils.nodes.expressions.IdentifierNode;
 import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.result.Result;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;

@@ -4,7 +4,7 @@
 
 package com.ingsis.utils.runtime.type.typer.function;
 
-import com.ingsis.utils.nodes.expressions.function.CallFunctionNode;
+import com.ingsis.utils.nodes.expressions.CallFunctionNode;
 import com.ingsis.utils.runtime.Runtime;
 import com.ingsis.utils.type.typer.TypeGetter;
 import com.ingsis.utils.type.types.Types;

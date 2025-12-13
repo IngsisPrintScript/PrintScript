@@ -50,7 +50,8 @@ public final class LexerFactory implements SafeIteratorFactory<Token> {
                             tokenizerFactory.createTriviaTokenizer(),
                             tokenizerFactory.createTokenizer(),
                             iterationResultFactory),
-                    debugPath);
+                    debugPath,
+                    iterationResultFactory);
         } catch (Exception ignored) {
             throw new RuntimeException();
         }

@@ -4,12 +4,10 @@
 
 package com.ingsis.parser.syntactic.parsers.registry;
 
+import com.ingsis.parser.syntactic.ParseResult;
 import com.ingsis.parser.syntactic.parsers.Parser;
+import com.ingsis.parser.syntactic.tokenstream.TokenStream;
 import com.ingsis.utils.nodes.Node;
-import com.ingsis.utils.process.checkpoint.ProcessCheckpoint;
-import com.ingsis.utils.process.result.ProcessResult;
-import com.ingsis.utils.token.Token;
-import com.ingsis.utils.token.tokenstream.TokenStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,30 +29,11 @@ public final class DefaultParserRegistry<T extends Node> implements ParserRegist
         return new DefaultParserRegistry<>(newParser);
     }
 
-    private ProcessCheckpoint<Token, ProcessResult<T>> getBetterResult(
-            ProcessCheckpoint<Token, ProcessResult<T>> best,
-            ProcessCheckpoint<Token, ProcessResult<T>> candidate) {
-        ProcessResult<T> bestResult = best.result();
-        ProcessResult<T> candidateResult = candidate.result();
-
-        if (bestResult.comparePriority(candidateResult).equals(candidateResult)) {
-            return candidate;
-        }
-        return best;
-    }
-
     @Override
-    public ProcessCheckpoint<Token, ProcessResult<T>> parse(TokenStream stream) {
-        ProcessCheckpoint<Token, ProcessResult<T>> best = ProcessCheckpoint.UNINITIALIZED();
+    public ParseResult<T> parse(TokenStream stream) {
+        ParseResult<T> best = new ParseResult.INVALID<>();
         for (Parser<T> parser : parsers) {
-            ProcessCheckpoint<Token, ProcessResult<T>> candidate = parser.parse(stream);
-            if (best.isUninitialized() && candidate.isInitialized()) {
-                best = (ProcessCheckpoint<Token, ProcessResult<T>>) candidate;
-                continue;
-            } else if (candidate.isUninitialized() || !candidate.result().status().isValid()) {
-                continue;
-            }
-            best = getBetterResult(best, candidate);
+            best = best.comparePriority(parser.parse(stream));
         }
         return best;
     }

@@ -4,11 +4,11 @@
 
 package com.ingsis.lexer.tokenizers;
 
-import com.ingsis.utils.process.result.ProcessResult;
+import com.ingsis.lexer.TokenizeResult;
+import com.ingsis.utils.metachar.string.builder.MetaCharStringBuilder;
 import com.ingsis.utils.token.Token;
 import java.util.List;
 
 public interface Tokenizer {
-    ProcessResult<Token> tokenize(
-            String input, List<Token> trailingTrivia, Integer line, Integer column);
+    TokenizeResult tokenize(MetaCharStringBuilder sb, List<Token> trailingTrivia);
 }
