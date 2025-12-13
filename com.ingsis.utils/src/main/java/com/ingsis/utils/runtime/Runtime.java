@@ -13,7 +13,7 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 
-public sealed interface Runtime permits DefaultRuntime {
+public interface Runtime {
     Environment getCurrentEnvironment();
 
     Result<Environment> push();
@@ -21,6 +21,10 @@ public sealed interface Runtime permits DefaultRuntime {
     Result<Environment> pushClosure(FunctionEntry functionEntry);
 
     Result<Environment> pop();
+
+    PrintEmitter getEmitter();
+
+    void setEmitter(PrintEmitter emitter);
 
     void setExecutionError(IncorrectResult<?> result);
 

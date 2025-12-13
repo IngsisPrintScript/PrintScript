@@ -5,6 +5,7 @@
 package com.ingsis.utils.runtime.environment.factories;
 
 import com.ingsis.utils.nodes.expressions.GlobalFunctionBody;
+import com.ingsis.utils.runtime.DefaultRuntime;
 import com.ingsis.utils.runtime.environment.DefaultEnvironment;
 import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.GlobalEnvironment;
@@ -54,29 +55,49 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                         new GlobalFunctionBody(
                                 List.of(PARAM_STRING),
                                 args -> {
-                                    System.out.println(args[0]);
+                                    DefaultRuntime.getInstance()
+                                            .getEmitter()
+                                            .print(
+                                                    (args[0] == null ? "null" : args[0].toString())
+                                                            + "\n");
                                     return null;
                                 },
                                 null,
                                 null)));
-        global.createFunction(
-                "readInput",
-                new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
-                Types.UNDEFINED);
+        global.createFunction("readInput", new LinkedHashMap<>(), Types.UNDEFINED);
+
         global.updateFunction(
                 "readInput",
                 List.of(
                         new GlobalFunctionBody(
-                                List.of(PARAM_STRING),
+                                List.of(),
                                 args -> {
-                                    System.out.println(args[0]);
                                     Scanner scanner =
                                             new Scanner(System.in, StandardCharsets.UTF_8);
-                                    Object input = scanner.nextLine();
-                                    return input;
+                                    return scanner.nextLine();
                                 },
                                 null,
                                 null)));
+        global.createFunction("readNumber", new LinkedHashMap<>(), Types.NUMBER);
+        global.updateFunction(
+                "readNumber",
+                List.of(
+                        new GlobalFunctionBody(
+                                List.of(),
+                                args -> {
+                                    Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+                                    String value = scanner.nextLine();
+                                    try {
+                                        return Double.parseDouble(value);
+                                    } catch (NumberFormatException e) {
+                                        return 0.0;
+                                    }
+                                },
+                                null,
+                                null
+                        )
+                )
+        );
         global.createFunction(
                 "readEnv",
                 new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
@@ -87,11 +108,10 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                         new GlobalFunctionBody(
                                 List.of(PARAM_STRING),
                                 args -> {
-                                    if (args.length == 0 || args[0] == null) return null;
+                                    if (args.length == 0 || args[0] == null) return "";
                                     String varName = args[0].toString();
                                     String env = System.getenv(varName);
-                                    if (env == null) return "";
-                                    return env;
+                                    return env == null ? "" : env;
                                 },
                                 null,
                                 null)));
