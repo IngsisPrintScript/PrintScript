@@ -10,16 +10,16 @@ import com.ingsis.utils.nodes.visitors.CheckResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AndInMemoryNodeEventHandlerRegistry<T extends Node>
+public class AndNodeEventHandlerRegistry<T extends Node>
     implements NodeEventHandlerRegistry<T> {
   private final List<NodeEventHandler<T>> handlers;
 
-  public AndInMemoryNodeEventHandlerRegistry(
+  public AndNodeEventHandlerRegistry(
       List<NodeEventHandler<T>> handlers) {
     this.handlers = new ArrayList<>(handlers);
   }
 
-  public AndInMemoryNodeEventHandlerRegistry() {
+  public AndNodeEventHandlerRegistry() {
     this(new ArrayList<>());
   }
 
@@ -39,7 +39,9 @@ public class AndInMemoryNodeEventHandlerRegistry<T extends Node>
   }
 
   @Override
-  public void register(NodeEventHandler<T> newHandler) {
-    this.handlers.add(newHandler);
+  public NodeEventHandlerRegistry<T> register(NodeEventHandler<T> newHandler) {
+    List<NodeEventHandler<T>> newHandlers = new ArrayList<>(handlers);
+    newHandlers.add(newHandler);
+    return new OrNodeEventHandlerRegistry<>(newHandlers);
   }
 }

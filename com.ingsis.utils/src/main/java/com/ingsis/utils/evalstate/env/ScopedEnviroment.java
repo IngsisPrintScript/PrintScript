@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.ingsis.utils.evalstate.env.bindings.Binding;
+import com.ingsis.utils.value.Value;
 
 import java.util.HashMap;
 
@@ -34,15 +35,17 @@ public record ScopedEnviroment(
   }
 
   @Override
-  public Environment update(String identifier, Binding binding) {
+  public Environment update(String identifier, Value value) {
     if (bindings.containsKey(identifier)) {
       Map<String, Binding> newBindings = new HashMap<>(bindings);
-      newBindings.put(identifier, binding);
+      Binding.VariableBinding originalBinding = (Binding.VariableBinding) newBindings.get(identifier);
+      newBindings.put(identifier,
+          new Binding.VariableBinding(originalBinding.type(), originalBinding.isMutable(), Optional.ofNullable(value)));
       return new ScopedEnviroment(parent, Map.copyOf(newBindings));
     }
 
     if (parent != null) {
-      Environment newParent = parent.update(identifier, binding);
+      Environment newParent = parent.update(identifier, value);
       return new ScopedEnviroment(newParent, bindings);
     }
 

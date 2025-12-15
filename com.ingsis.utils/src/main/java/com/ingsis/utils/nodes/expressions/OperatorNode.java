@@ -4,13 +4,13 @@
 
 package com.ingsis.utils.nodes.expressions;
 
+import com.ingsis.utils.evalstate.EvalState;
 import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.InterpretResult;
 import com.ingsis.utils.nodes.visitors.Interpreter;
-import com.ingsis.utils.result.CorrectResult;
-import com.ingsis.utils.result.IncorrectResult;
-import com.ingsis.utils.result.Result;
+
 import java.util.List;
 
 public record OperatorNode(
@@ -23,12 +23,8 @@ public record OperatorNode(
   }
 
   @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    Result<Object> interpretResult = interpreter.interpret(this);
-    if (!interpretResult.isCorrect()) {
-      return new IncorrectResult<>(interpretResult);
-    }
-    return new CorrectResult<String>("Interpreted correctly.");
+  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+    return interpreter.interpret(this, evalState);
   }
 
   @Override
@@ -37,7 +33,7 @@ public record OperatorNode(
   }
 
   @Override
-  public Result<Object> solve() {
-    return operatorType().strategy().solve(children);
+  public InterpretResult solve(EvalState evalState) {
+    return operatorType().strategy().solve(children, evalState);
   }
 }

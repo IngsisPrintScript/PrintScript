@@ -4,22 +4,22 @@
 
 package com.ingsis.utils.nodes.expressions;
 
+import com.ingsis.utils.evalstate.EvalState;
 import com.ingsis.utils.nodes.Node;
-import com.ingsis.utils.nodes.visitors.Interpretable;
-import com.ingsis.utils.result.Result;
+import com.ingsis.utils.nodes.visitors.InterpretResult;
+
 import java.util.List;
 
-public sealed interface ExpressionNode extends Node, Interpretable
-    permits LiteralNode,
+public sealed interface ExpressionNode extends Node permits LiteralNode,
     IdentifierNode,
     CallFunctionNode,
     OperatorNode,
     NilExpressionNode,
-    GlobalFunctionBody, BlockNode {
+    BlockNode {
 
   List<ExpressionNode> children();
 
-  Result<Object> solve();
+  InterpretResult solve(EvalState evalState);
 
   String symbol();
 }

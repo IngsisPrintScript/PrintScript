@@ -4,15 +4,15 @@
 
 package com.ingsis.utils.nodes.visitors;
 
+import com.ingsis.utils.evalstate.EvalState;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.keyword.IfKeywordNode;
-import com.ingsis.utils.result.Result;
 
 public interface Interpreter {
-    Result<String> interpret(IfKeywordNode ifKeywordNode);
+  InterpretResult interpret(IfKeywordNode ifKeywordNode, EvalState evalState);
 
-    Result<String> interpret(DeclarationKeywordNode declarationKeywordNode);
+  InterpretResult interpret(DeclarationKeywordNode declarationKeywordNode, EvalState evalState);
 
-    Result<Object> interpret(ExpressionNode expressionNode);
+  InterpretResult interpret(ExpressionNode expressionNode, EvalState evalState);
 }

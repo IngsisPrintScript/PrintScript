@@ -4,14 +4,15 @@
 
 package com.ingsis.utils.nodes.expressions;
 
+import com.ingsis.utils.evalstate.EvalState;
 import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.InterpretResult;
 import com.ingsis.utils.nodes.visitors.Interpreter;
-import com.ingsis.utils.result.CorrectResult;
-import com.ingsis.utils.result.IncorrectResult;
-import com.ingsis.utils.result.Result;
 import com.ingsis.utils.type.types.Types;
+import com.ingsis.utils.value.Value;
+
 import java.util.List;
 
 public record NilExpressionNode() implements ExpressionNode {
@@ -22,13 +23,8 @@ public record NilExpressionNode() implements ExpressionNode {
   }
 
   @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    Result<Object> interpretResult = interpreter.interpret(this);
-    if (interpretResult.isCorrect()) {
-      return new CorrectResult<String>("Interpreted correctly.");
-    } else {
-      return new IncorrectResult<>(interpretResult);
-    }
+  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+    return interpreter.interpret(this, evalState);
   }
 
   @Override
@@ -54,7 +50,9 @@ public record NilExpressionNode() implements ExpressionNode {
   }
 
   @Override
-  public Result<Object> solve() {
-    return new CorrectResult<>(null);
+  public InterpretResult solve(EvalState evalState) {
+    return new InterpretResult.CORRECT(
+        evalState,
+        Value.UnitValue.INSTANCE);
   }
 }

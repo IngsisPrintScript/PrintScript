@@ -4,8 +4,8 @@
 
 package com.ingsis.utils.nodes.visitors;
 
-import com.ingsis.utils.result.Result;
+import com.ingsis.utils.evalstate.EvalState;
 
 public interface Interpretable {
-    Result<String> acceptInterpreter(Interpreter interpreter);
+  InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState);
 }

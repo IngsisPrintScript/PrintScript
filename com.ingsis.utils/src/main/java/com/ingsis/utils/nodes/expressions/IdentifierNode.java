@@ -4,13 +4,15 @@
 
 package com.ingsis.utils.nodes.expressions;
 
+import com.ingsis.utils.evalstate.EvalState;
+import com.ingsis.utils.evalstate.env.bindings.Binding;
 import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.InterpretResult;
 import com.ingsis.utils.nodes.visitors.Interpreter;
-import com.ingsis.utils.result.CorrectResult;
-import com.ingsis.utils.result.IncorrectResult;
-import com.ingsis.utils.result.Result;
+import com.ingsis.utils.value.Value;
+
 import java.util.List;
 
 public record IdentifierNode(String name, Integer line, Integer column) implements ExpressionNode {
@@ -31,20 +33,19 @@ public record IdentifierNode(String name, Integer line, Integer column) implemen
   }
 
   @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    Result<Object> interpretResult = interpreter.interpret(this);
-    if (!interpretResult.isCorrect()) {
-      return new IncorrectResult<>(interpretResult);
-    }
-    return new CorrectResult<>("Interpreted successfully.");
+  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+    return interpreter.interpret(this, evalState);
   }
 
   @Override
-  public Result<Object> solve() {
-    Result<VariableEntry> getVariableEntry = DefaultRuntime.getInstance().getCurrentEnvironment().readVariable(name());
-    if (!getVariableEntry.isCorrect()) {
-      return new IncorrectResult<>(getVariableEntry);
+  public InterpretResult solve(EvalState evalState) {
+    try {
+      Value value = ((Binding.VariableBinding) evalState.env().lookup(name()).get()).value().get();
+      return new InterpretResult.CORRECT(
+          evalState,
+          value);
+    } catch (Exception e) {
+      return new InterpretResult.INCORRECT(evalState, "Error getting identifier value.");
     }
-    return new CorrectResult<>(getVariableEntry.result().value());
   }
 }

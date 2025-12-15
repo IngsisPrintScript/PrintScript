@@ -5,6 +5,7 @@
 package com.ingsis.parser.semantic.checkers.handlers.identifier.existance;
 
 import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
+import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.expressions.IdentifierNode;
 import com.ingsis.utils.nodes.visitors.CheckResult;
@@ -14,13 +15,16 @@ import java.util.List;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class ExpressionNodeEventVariableExistenceHandler
-    implements NodeEventHandler<ExpressionNode> {
+    implements NodeEventHandler<Node> {
 
   @Override
-  public CheckResult handle(ExpressionNode node, SemanticEnvironment env) {
-    List<ExpressionNode> children = node.children();
+  public CheckResult handle(Node node, SemanticEnvironment env) {
+    if (!(node instanceof ExpressionNode expressionNode)) {
+      return new CheckResult.CORRECT(env);
+    }
+    List<ExpressionNode> children = expressionNode.children();
 
-    if (node.symbol().equals("=")) {
+    if (expressionNode.symbol().equals("=")) {
       ExpressionNode identifierNode = children.get(0);
       String identifier = identifierNode.symbol();
       if (env.lookup(identifier).isEmpty() || env.lookup(identifier).get().isInitialized()) {

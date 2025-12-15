@@ -4,13 +4,14 @@
 
 package com.ingsis.utils.nodes.keyword;
 
+import com.ingsis.utils.evalstate.EvalState;
 import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.nodes.visitors.Checker;
+import com.ingsis.utils.nodes.visitors.InterpretResult;
 import com.ingsis.utils.nodes.visitors.Interpreter;
-import com.ingsis.utils.result.Result;
 import java.util.List;
 
 public record IfKeywordNode(
@@ -42,7 +43,7 @@ public record IfKeywordNode(
   }
 
   @Override
-  public Result<String> acceptInterpreter(Interpreter interpreter) {
-    return interpreter.interpret(this);
+  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+    return interpreter.interpret(this, evalState);
   }
 }

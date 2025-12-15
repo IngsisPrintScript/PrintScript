@@ -5,6 +5,7 @@
 package com.ingsis.parser.semantic.checkers.handlers.operators;
 
 import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
+import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.expressions.CallFunctionNode;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.expressions.IdentifierNode;
@@ -21,16 +22,16 @@ import com.ingsis.utils.typer.identifier.DefaultIdentifierTypeGetter;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
-public final class OperatorNodeValidityHandler implements NodeEventHandler<ExpressionNode> {
+public final class OperatorNodeValidityHandler implements NodeEventHandler<Node> {
   @Override
-  public CheckResult handle(ExpressionNode node, SemanticEnvironment env) {
+  public CheckResult handle(Node node, SemanticEnvironment env) {
     if (node instanceof OperatorNode operatorNode) {
       if (operatorNode.symbol().equals("+")) {
         return new CheckResult.CORRECT(env);
       }
       Types expectedType = new DefaultExpressionTypeGetter()
           .getType(operatorNode.children().get(0), env);
-      return recursiveCheck(expectedType, node, env);
+      return recursiveCheck(expectedType, (ExpressionNode) node, env);
     }
 
     return new CheckResult.CORRECT(env);

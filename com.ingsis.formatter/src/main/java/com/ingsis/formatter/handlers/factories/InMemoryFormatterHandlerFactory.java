@@ -16,10 +16,10 @@ import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.keyword.IfKeywordNode;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.result.factory.ResultFactory;
-import com.ingsis.utils.rule.observer.handlers.AndInMemoryNodeEventHandlerRegistry;
+import com.ingsis.utils.rule.observer.handlers.AndNodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandlerRegistry;
-import com.ingsis.utils.rule.observer.handlers.OrInMemoryNodeEventHandlerRegistry;
+import com.ingsis.utils.rule.observer.handlers.OrNodeEventHandlerRegistry;
 import com.ingsis.utils.rule.observer.handlers.factories.HandlerSupplier;
 import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
@@ -48,7 +48,7 @@ public class InMemoryFormatterHandlerFactory implements HandlerSupplier {
 
   @Override
   public NodeEventHandler<DeclarationKeywordNode> getDeclarationHandler() {
-    NodeEventHandlerRegistry<DeclarationKeywordNode> handlerRegistry = new AndInMemoryNodeEventHandlerRegistry<>(
+    NodeEventHandlerRegistry<DeclarationKeywordNode> handlerRegistry = new AndNodeEventHandlerRegistry<>(
         resultFactory);
     handlerRegistry.register(
         new FormatterDeclarationHandler(
@@ -71,7 +71,7 @@ public class InMemoryFormatterHandlerFactory implements HandlerSupplier {
   @Override
   public NodeEventHandler<IfKeywordNode> getConditionalHandler() {
     TokenTemplateFactory tokenTemplateFactory = new DefaultTokenTemplateFactory();
-    NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry = new AndInMemoryNodeEventHandlerRegistry<>(resultFactory);
+    NodeEventHandlerRegistry<IfKeywordNode> handlerRegistry = new AndNodeEventHandlerRegistry<>(resultFactory);
     handlerRegistry.register(
         new FormatterConditionalHandler(
             eventsCheckerSupplier,
@@ -94,7 +94,7 @@ public class InMemoryFormatterHandlerFactory implements HandlerSupplier {
 
     Supplier<NodeEventHandler<ExpressionNode>> self = ref::get;
 
-    OrInMemoryNodeEventHandlerRegistry<ExpressionNode> registry = new OrInMemoryNodeEventHandlerRegistry<>(
+    OrNodeEventHandlerRegistry<ExpressionNode> registry = new OrNodeEventHandlerRegistry<>(
         resultFactory);
 
     registry.register(new FormatterLiteralHandler(resultFactory, writer));
