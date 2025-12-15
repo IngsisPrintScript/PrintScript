@@ -14,11 +14,6 @@ public final class MemoryCharSource implements CharSource {
     }
 
     @Override
-    public int length() {
-        return buffer.length;
-    }
-
-    @Override
     public char charAt(int index) {
         return buffer[index];
     }

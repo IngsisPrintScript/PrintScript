@@ -23,6 +23,7 @@ import com.ingsis.parser.syntactic.parsers.factory.InMemoryParserFactory;
 import com.ingsis.parser.syntactic.parsers.factory.ParserFactory;
 import com.ingsis.sca.factories.DefaultScaFactory;
 import com.ingsis.sca.factories.ScaFactory;
+import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.iterator.safe.result.DefaultIterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
@@ -70,18 +71,25 @@ public class InMemoryEngine implements Engine {
 
     @Override
     public Result<String> interpret(InputStream inputStream, Version version) {
-        SafeIterationResult<String> result =
-                createProgramInterpreterFactory(version).fromInputStream(inputStream).next();
-        if (!result.isCorrect()) {
-            return new IncorrectResult<>(result.error());
-        }
-        while (result.isCorrect()) {
-            result = result.nextIterator().next();
-            if (!result.isCorrect() && !result.error().equals("EOL")) {
+        SafeIterator<String> iterator =
+                createProgramInterpreterFactory(version)
+                        .fromInputStream(inputStream);
+        int guard = 0;
+        while (true) {
+            guard++;
+            SafeIterationResult<String> result = iterator.next();
+            if (guard % 1000 == 0) {
+                System.err.println("[PROFILE] ENGINE " + guard);
+            }
+            if (!result.isCorrect()) {
+                if ("EOL".equals(result.error())) {
+                    break;
+                }
                 return new IncorrectResult<>(result.error());
             }
+            iterator = result.nextIterator();
         }
-        return resultFactory.createCorrectResult("Interpreted succesfully.");
+        return resultFactory.createCorrectResult("Interpreted successfully.");
     }
 
     @Override

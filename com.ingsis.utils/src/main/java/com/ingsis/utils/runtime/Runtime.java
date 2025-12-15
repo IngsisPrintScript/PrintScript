@@ -13,7 +13,7 @@ import com.ingsis.utils.result.Result;
 import com.ingsis.utils.runtime.environment.Environment;
 import com.ingsis.utils.runtime.environment.entries.FunctionEntry;
 
-public interface Runtime {
+public  interface Runtime {
     Environment getCurrentEnvironment();
 
     Result<Environment> push();
@@ -22,11 +22,11 @@ public interface Runtime {
 
     Result<Environment> pop();
 
-    PrintEmitter getEmitter();
-
-    void setEmitter(PrintEmitter emitter);
-
     void setExecutionError(IncorrectResult<?> result);
 
     IncorrectResult<?> getExecutionError();
+
+    PrintEmitter getEmitter();
+
+    void setEmitter(PrintEmitter emitter);
 }

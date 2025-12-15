@@ -16,11 +16,9 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public final class DefaultRuntime implements Runtime {
-
     private final Deque<Environment> environments;
     private PrintEmitter emitter;
     private IncorrectResult<?> executionError;
-
     private static final EnvironmentFactory ENVIRONMENT_FACTORY =
             new DefaultEnvironmentFactory(new DefaultEntryFactory());
 

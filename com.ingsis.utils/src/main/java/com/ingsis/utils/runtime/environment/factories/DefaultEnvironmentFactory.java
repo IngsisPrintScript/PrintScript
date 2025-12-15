@@ -1,6 +1,3 @@
-/*
- * My Project
- */
 
 package com.ingsis.utils.runtime.environment.factories;
 
@@ -57,9 +54,7 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                 args -> {
                                     DefaultRuntime.getInstance()
                                             .getEmitter()
-                                            .print(
-                                                    (args[0] == null ? "null" : args[0].toString())
-                                                            + "\n");
+                                            .print(args[0] == null ? "null" : args[0].toString());
                                     return null;
                                 },
                                 null,
@@ -85,7 +80,8 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                         new GlobalFunctionBody(
                                 List.of(),
                                 args -> {
-                                    Scanner scanner = new Scanner(System.in, StandardCharsets.UTF_8);
+                                    Scanner scanner =
+                                            new Scanner(System.in, StandardCharsets.UTF_8);
                                     String value = scanner.nextLine();
                                     try {
                                         return Double.parseDouble(value);
@@ -94,10 +90,7 @@ public final class DefaultEnvironmentFactory implements EnvironmentFactory {
                                     }
                                 },
                                 null,
-                                null
-                        )
-                )
-        );
+                                null)));
         global.createFunction(
                 "readEnv",
                 new LinkedHashMap<>(Map.of(PARAM_STRING, Types.STRING)),
