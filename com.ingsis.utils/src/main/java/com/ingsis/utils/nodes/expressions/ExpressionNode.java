@@ -10,16 +10,16 @@ import com.ingsis.utils.result.Result;
 import java.util.List;
 
 public sealed interface ExpressionNode extends Node, Interpretable
-        permits LiteralNode,
-                IdentifierNode,
-                CallFunctionNode,
-                OperatorNode,
-                NilExpressionNode,
-                GlobalFunctionBody {
+    permits LiteralNode,
+    IdentifierNode,
+    CallFunctionNode,
+    OperatorNode,
+    NilExpressionNode,
+    GlobalFunctionBody, BlockNode {
 
-    List<ExpressionNode> children();
+  List<ExpressionNode> children();
 
-    Result<Object> solve();
+  Result<Object> solve();
 
-    String symbol();
+  String symbol();
 }
