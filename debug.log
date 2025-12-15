@@ -1,0 +1,107 @@
+[2025-12-14 12:26:20.619] INFO   Char [    1]  Pos: (line=  1, col= 1)  Codepoint: U+006C  →  'l'
+[2025-12-14 12:26:20.644] INFO   Char [    1]  Pos: (line=  1, col= 2)  Codepoint: U+0065  →  'e'
+[2025-12-14 12:26:20.646] INFO   Char [    1]  Pos: (line=  1, col= 3)  Codepoint: U+0074  →  't'
+[2025-12-14 12:26:20.647] INFO   Char [    1]  Pos: (line=  1, col= 4)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.648] INFO   Token [  1]  Type: LET           Text: let
+[2025-12-14 12:26:20.655] INFO   Char [    2]  Pos: (line=  1, col= 4)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.656] INFO   Char [    1]  Pos: (line=  1, col= 5)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:26:20.656] INFO   Char [    1]  Pos: (line=  1, col= 6)  Codepoint: U+003A  →  ':'
+[2025-12-14 12:26:20.657] INFO   Token [  1]  Type: IDENTIFIER    Text: a
+[2025-12-14 12:26:20.659] INFO   Char [    2]  Pos: (line=  1, col= 6)  Codepoint: U+003A  →  ':'
+[2025-12-14 12:26:20.659] INFO   Char [    1]  Pos: (line=  1, col= 7)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.660] INFO   Token [  1]  Type: COLON         Text: :
+[2025-12-14 12:26:20.661] INFO   Char [    2]  Pos: (line=  1, col= 7)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.661] INFO   Char [    1]  Pos: (line=  1, col= 8)  Codepoint: U+0073  →  's'
+[2025-12-14 12:26:20.662] INFO   Char [    1]  Pos: (line=  1, col= 9)  Codepoint: U+0074  →  't'
+[2025-12-14 12:26:20.662] INFO   Char [    1]  Pos: (line=  1, col=10)  Codepoint: U+0072  →  'r'
+[2025-12-14 12:26:20.663] INFO   Char [    1]  Pos: (line=  1, col=11)  Codepoint: U+0069  →  'i'
+[2025-12-14 12:26:20.664] INFO   Char [    1]  Pos: (line=  1, col=12)  Codepoint: U+006E  →  'n'
+[2025-12-14 12:26:20.664] INFO   Char [    1]  Pos: (line=  1, col=13)  Codepoint: U+0067  →  'g'
+[2025-12-14 12:26:20.665] INFO   Char [    1]  Pos: (line=  1, col=14)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.665] INFO   Token [  1]  Type: STRING        Text: string
+[2025-12-14 12:26:20.666] INFO   Char [    2]  Pos: (line=  1, col=14)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.666] INFO   Char [    1]  Pos: (line=  1, col=15)  Codepoint: U+003D  →  '='
+[2025-12-14 12:26:20.667] INFO   Char [    1]  Pos: (line=  1, col=16)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.667] INFO   Token [  1]  Type: EQUAL         Text: =
+[2025-12-14 12:26:20.668] INFO   Char [    2]  Pos: (line=  1, col=16)  Codepoint: U+0020  →  ' ' (space)
+[2025-12-14 12:26:20.668] INFO   Char [    1]  Pos: (line=  1, col=17)  Codepoint: U+0022  →  '"'
+[2025-12-14 12:26:20.669] INFO   Char [    1]  Pos: (line=  1, col=18)  Codepoint: U+0041  →  'A'
+[2025-12-14 12:26:20.670] INFO   Char [    1]  Pos: (line=  1, col=19)  Codepoint: U+0022  →  '"'
+[2025-12-14 12:26:20.670] INFO   Char [    1]  Pos: (line=  1, col=20)  Codepoint: U+003B  →  ';'
+[2025-12-14 12:26:20.671] INFO   Token [  1]  Type: STRING_LITERAL  Text: "A"
+[2025-12-14 12:26:20.673] INFO   Char [    2]  Pos: (line=  1, col=20)  Codepoint: U+003B  →  ';'
+[2025-12-14 12:26:20.673] INFO   Char [    1]  Pos: (line=  1, col=21)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:26:20.674] INFO   Token [  1]  Type: SEMICOLON     Text: ;
+[2025-12-14 12:26:20.706] INFO    Node [  1]  DeclarationKeyword    →  DeclarationKeywordNode  |  DeclarationKeywordNode[identifierNode=IdentifierNode[name=a, line=1, column=5], expressionNode=StringLiteralNode[valu...
+[2025-12-14 12:26:20.710] INFO    SemanticNode [  1]  Type: DeclarationKeyword    →  DeclarationKeywordNode[identifierNode=IdentifierNode[name=a, line=1, column=5], expressionNode=StringLiteralNode[value=A, line=1, column=17], decla...
+[2025-12-14 12:26:20.711] INFO    Step [  1]  Output: Correctly interpreted declaration.
+[2025-12-14 12:26:20.712] INFO   Char [    2]  Pos: (line=  1, col=21)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:26:20.712] INFO   End of input stream reached (no more characters)
+[2025-12-14 12:26:20.712] INFO   End of token stream reached (no more tokens)
+[2025-12-14 12:26:20.712] WARNING Parsing failed with error: EOL
+[2025-12-14 12:26:20.712] ERROR   Semantic error detected: EOL
+[2025-12-14 12:26:20.713] ERROR   Interpretation failed: EOL
+[2025-12-14 12:26:20.713] INFO    Interpretation halted due to error
+[2025-12-14 12:26:24.537] INFO   Char [    1]  Pos: (line=  1, col= 1)  Codepoint: U+0070  →  'p'
+[2025-12-14 12:26:24.537] INFO   Char [    1]  Pos: (line=  1, col= 2)  Codepoint: U+0072  →  'r'
+[2025-12-14 12:26:24.538] INFO   Char [    1]  Pos: (line=  1, col= 3)  Codepoint: U+0069  →  'i'
+[2025-12-14 12:26:24.538] INFO   Char [    1]  Pos: (line=  1, col= 4)  Codepoint: U+006E  →  'n'
+[2025-12-14 12:26:24.538] INFO   Char [    1]  Pos: (line=  1, col= 5)  Codepoint: U+0074  →  't'
+[2025-12-14 12:26:24.539] INFO   Char [    1]  Pos: (line=  1, col= 6)  Codepoint: U+006C  →  'l'
+[2025-12-14 12:26:24.539] INFO   Char [    1]  Pos: (line=  1, col= 7)  Codepoint: U+006E  →  'n'
+[2025-12-14 12:26:24.540] INFO   Char [    1]  Pos: (line=  1, col= 8)  Codepoint: U+0028  →  '('
+[2025-12-14 12:26:24.540] INFO   Token [  1]  Type: IDENTIFIER    Text: println
+[2025-12-14 12:26:24.542] INFO   Char [    2]  Pos: (line=  1, col= 8)  Codepoint: U+0028  →  '('
+[2025-12-14 12:26:24.543] INFO   Char [    1]  Pos: (line=  1, col= 9)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:26:24.544] INFO   Token [  1]  Type: LPAREN        Text: (
+[2025-12-14 12:26:24.545] INFO   Char [    2]  Pos: (line=  1, col= 9)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:26:24.546] INFO   Char [    1]  Pos: (line=  1, col=10)  Codepoint: U+0029  →  ')'
+[2025-12-14 12:26:24.546] INFO   Token [  1]  Type: IDENTIFIER    Text: a
+[2025-12-14 12:26:24.548] INFO   Char [    2]  Pos: (line=  1, col=10)  Codepoint: U+0029  →  ')'
+[2025-12-14 12:26:24.548] INFO   Char [    1]  Pos: (line=  1, col=11)  Codepoint: U+003B  →  ';'
+[2025-12-14 12:26:24.549] INFO   Token [  1]  Type: RPAREN        Text: )
+[2025-12-14 12:26:24.551] INFO   Char [    2]  Pos: (line=  1, col=11)  Codepoint: U+003B  →  ';'
+[2025-12-14 12:26:24.552] INFO   Char [    1]  Pos: (line=  1, col=12)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:26:24.552] INFO   Token [  1]  Type: SEMICOLON     Text: ;
+[2025-12-14 12:26:24.562] INFO    Node [  1]  CallFunction          →  CallFunctionNode  |  CallFunctionNode[identifierNode=IdentifierNode[name=println, line=1, column=1], argumentNodes=[IdentifierNode[name=a,...
+[2025-12-14 12:26:24.564] INFO    SemanticNode [  1]  Type: CallFunction          →  CallFunctionNode[identifierNode=IdentifierNode[name=println, line=1, column=1], argumentNodes=[IdentifierNode[name=a, line=1, column=9]], line=1, c...
+[2025-12-14 12:26:24.565] INFO    Step [  1]  Output: Interpreted successfully.
+[2025-12-14 12:26:24.565] INFO   Char [    2]  Pos: (line=  1, col=12)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:26:24.566] INFO   End of input stream reached (no more characters)
+[2025-12-14 12:26:24.566] INFO   End of token stream reached (no more tokens)
+[2025-12-14 12:26:24.566] WARNING Parsing failed with error: EOL
+[2025-12-14 12:26:24.566] ERROR   Semantic error detected: EOL
+[2025-12-14 12:26:24.566] ERROR   Interpretation failed: EOL
+[2025-12-14 12:26:24.566] INFO    Interpretation halted due to error
+[2025-12-14 12:48:04.380] INFO   Char [    1]  Pos: (line=  1, col= 1)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:48:04.406] INFO   Char [    1]  Pos: (line=  1, col= 2)  Codepoint: U+0073  →  's'
+[2025-12-14 12:48:04.408] INFO   Char [    1]  Pos: (line=  1, col= 3)  Codepoint: U+0066  →  'f'
+[2025-12-14 12:48:04.409] INFO   Char [    1]  Pos: (line=  1, col= 4)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:48:04.409] INFO   Char [    1]  Pos: (line=  1, col= 5)  Codepoint: U+0064  →  'd'
+[2025-12-14 12:48:04.410] INFO   Char [    1]  Pos: (line=  1, col= 6)  Codepoint: U+0066  →  'f'
+[2025-12-14 12:48:04.411] INFO   Char [    1]  Pos: (line=  1, col= 7)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:48:04.412] INFO   Token [  1]  Type: IDENTIFIER    Text: asfadf
+[2025-12-14 12:48:04.422] INFO   Char [    2]  Pos: (line=  1, col= 7)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:48:04.423] INFO   End of input stream reached (no more characters)
+[2025-12-14 12:48:04.423] INFO   End of token stream reached (no more tokens)
+[2025-12-14 12:48:04.424] WARNING Parsing failed with error: Unable to parse token stream
+[2025-12-14 12:48:04.424] ERROR   Semantic error detected: Unable to parse token stream
+[2025-12-14 12:48:04.424] ERROR   Interpretation failed: Unable to parse token stream
+[2025-12-14 12:48:04.425] INFO    Interpretation halted due to error
+[2025-12-14 12:48:06.037] INFO   Char [    1]  Pos: (line=  1, col= 1)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:48:06.038] INFO   Char [    1]  Pos: (line=  1, col= 2)  Codepoint: U+0073  →  's'
+[2025-12-14 12:48:06.039] INFO   Char [    1]  Pos: (line=  1, col= 3)  Codepoint: U+0064  →  'd'
+[2025-12-14 12:48:06.039] INFO   Char [    1]  Pos: (line=  1, col= 4)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:48:06.040] INFO   Char [    1]  Pos: (line=  1, col= 5)  Codepoint: U+0064  →  'd'
+[2025-12-14 12:48:06.041] INFO   Char [    1]  Pos: (line=  1, col= 6)  Codepoint: U+0066  →  'f'
+[2025-12-14 12:48:06.041] INFO   Char [    1]  Pos: (line=  1, col= 7)  Codepoint: U+0061  →  'a'
+[2025-12-14 12:48:06.042] INFO   Char [    1]  Pos: (line=  1, col= 8)  Codepoint: U+0064  →  'd'
+[2025-12-14 12:48:06.042] INFO   Char [    1]  Pos: (line=  1, col= 9)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:48:06.043] INFO   Token [  1]  Type: IDENTIFIER    Text: asdadfad
+[2025-12-14 12:48:06.044] INFO   Char [    2]  Pos: (line=  1, col= 9)  Codepoint: U+000A  →  \n (newline)
+[2025-12-14 12:48:06.044] INFO   End of input stream reached (no more characters)
+[2025-12-14 12:48:06.044] INFO   End of token stream reached (no more tokens)
+[2025-12-14 12:48:06.045] WARNING Parsing failed with error: Unable to parse token stream
+[2025-12-14 12:48:06.045] ERROR   Semantic error detected: Unable to parse token stream
+[2025-12-14 12:48:06.045] ERROR   Interpretation failed: Unable to parse token stream
+[2025-12-14 12:48:06.045] INFO    Interpretation halted due to error

@@ -47,12 +47,15 @@ public final class CharStream implements SafeIterator<MetaChar> {
         int newLine = line;
         int newColumn = column;
 
-        if (c == '\n') { newLine++; newColumn = 1; }
-        else { newColumn++; }
+        if (c == '\n') {
+            newLine++;
+            newColumn = 1;
+        } else {
+            newColumn++;
+        }
 
         return factory.createCorrectResult(
                 new MetaChar(c, line, column),
-                new CharStream(source, index + 1, newLine, newColumn, factory)
-        );
+                new CharStream(source, index + 1, newLine, newColumn, factory));
     }
 }

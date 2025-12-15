@@ -1,3 +1,7 @@
+/*
+ * My Project
+ */
+
 package com.ingsis.charstream.source;
 
 import java.io.IOException;
@@ -28,13 +32,15 @@ public final class MappedCharSource implements CharSource {
     private final CharsetDecoder decoder;
 
     public MappedCharSource(Path path) {
-        try (FileChannel ch = FileChannel.open(path, StandardOpenOption.READ)) { 
+        try (FileChannel ch = FileChannel.open(path, StandardOpenOption.READ)) {
             this.byteSize = ch.size();
             this.mmap = ch.map(FileChannel.MapMode.READ_ONLY, 0, byteSize);
 
-            this.decoder = StandardCharsets.UTF_8.newDecoder()
-                    .onMalformedInput(CodingErrorAction.REPORT)
-                    .onUnmappableCharacter(CodingErrorAction.REPORT);
+            this.decoder =
+                    StandardCharsets.UTF_8
+                            .newDecoder()
+                            .onMalformedInput(CodingErrorAction.REPORT)
+                            .onUnmappableCharacter(CodingErrorAction.REPORT);
 
             loadWindow(0, 0);
 

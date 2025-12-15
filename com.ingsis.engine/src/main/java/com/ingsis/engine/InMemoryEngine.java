@@ -72,8 +72,7 @@ public class InMemoryEngine implements Engine {
     @Override
     public Result<String> interpret(InputStream inputStream, Version version) {
         SafeIterator<String> iterator =
-                createProgramInterpreterFactory(version)
-                        .fromInputStream(inputStream);
+                createProgramInterpreterFactory(version).fromInputStream(inputStream);
         int guard = 0;
         while (true) {
             guard++;
