@@ -14,7 +14,6 @@ import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.nodes.visitors.Checkable;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
-import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
 import java.io.InputStream;
 import java.util.Map;
@@ -26,7 +25,6 @@ public final class SemanticFactory implements SafeIteratorFactory<Interpretable>
 
   public SemanticFactory(
       SafeIteratorFactory<Checkable> nodeIteratorFactory,
-      ResultFactory resultFactory,
       IterationResultFactory iterationResultFactory) {
     this.checkableIteratorFactory = nodeIteratorFactory;
     this.checker = new DefaultCheckerFactory()

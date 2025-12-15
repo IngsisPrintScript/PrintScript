@@ -12,55 +12,62 @@ import java.util.List;
 
 public final class RuleStatusProviderRegistry implements RuleStatusProvider {
 
-    private final List<RuleStatusProvider> providers;
-    private RuleStatusProvider activeProvider;
+  private final List<RuleStatusProvider> providers;
+  private RuleStatusProvider activeProvider;
 
-    public RuleStatusProviderRegistry(List<RuleStatusProvider> providers) {
-        this.providers = providers;
-    }
+  public RuleStatusProviderRegistry(List<RuleStatusProvider> providers) {
+    this.providers = providers;
+  }
 
-    public void loadRules(InputStream inputStream) {
-        try {
-            byte[] buffer = inputStream.readAllBytes();
+  /**
+   * Loads rules from the input stream and returns the provider that successfully
+   * read them.
+   */
+  public RuleStatusProvider loadRules(InputStream inputStream) {
+    try {
+      byte[] buffer = inputStream.readAllBytes();
 
-            for (RuleStatusProvider provider : providers) {
-                ByteArrayInputStream probe = new ByteArrayInputStream(buffer);
-
-                if (provider.canReadInputFormat(probe)) {
-                    provider.loadRules(new ByteArrayInputStream(buffer));
-                    this.activeProvider = provider;
-                    return;
-                }
-            }
-
-            throw new IllegalStateException("No rule provider could read the input format");
-
-        } catch (IOException e) {
-            throw new UncheckedIOException("Could not read rules stream", e);
+      for (RuleStatusProvider provider : providers) {
+        try (ByteArrayInputStream probe = new ByteArrayInputStream(buffer)) {
+          if (provider.canReadInputFormat(probe)) {
+            // Reset stream for actual loading
+            provider.loadRules(new ByteArrayInputStream(buffer));
+            this.activeProvider = provider;
+            return provider;
+          }
         }
-    }
+      }
 
-    public Boolean getRuleStatus(String ruleName) {
-        if (activeProvider == null) {
-            throw new IllegalStateException("Rules have not been loaded");
-        }
-        return activeProvider.getRuleStatus(ruleName);
-    }
+      throw new IllegalStateException("No rule provider could read the input format");
 
-    public <T> T getRuleValue(String ruleName, Class<T> type) {
-        if (activeProvider == null) {
-            throw new IllegalStateException("Rules have not been loaded");
-        }
-        return activeProvider.getRuleValue(ruleName, type);
+    } catch (IOException e) {
+      throw new UncheckedIOException("Could not read rules stream", e);
     }
+  }
 
-    @Override
-    public Boolean canReadInputFormat(InputStream inputStream) {
-        for (RuleStatusProvider ruleStatusProvider : providers) {
-            if (ruleStatusProvider.canReadInputFormat(inputStream)) {
-                return true;
-            }
-        }
-        return false;
+  public Boolean getRuleStatus(String ruleName) {
+    checkActiveProvider();
+    return activeProvider.getRuleStatus(ruleName);
+  }
+
+  public <T> T getRuleValue(String ruleName, Class<T> type) {
+    checkActiveProvider();
+    return activeProvider.getRuleValue(ruleName, type);
+  }
+
+  private void checkActiveProvider() {
+    if (activeProvider == null) {
+      throw new IllegalStateException("Rules have not been loaded");
     }
+  }
+
+  @Override
+  public Boolean canReadInputFormat(InputStream inputStream) {
+    for (RuleStatusProvider ruleStatusProvider : providers) {
+      if (ruleStatusProvider.canReadInputFormat(inputStream)) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
