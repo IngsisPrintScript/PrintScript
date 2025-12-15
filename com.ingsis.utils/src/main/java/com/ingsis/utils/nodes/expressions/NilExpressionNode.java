@@ -4,6 +4,8 @@
 
 package com.ingsis.utils.nodes.expressions;
 
+import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
+import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.CorrectResult;
@@ -14,45 +16,45 @@ import java.util.List;
 
 public record NilExpressionNode() implements ExpressionNode {
 
-    @Override
-    public Result<String> acceptChecker(Checker checker) {
-        return checker.check(this);
-    }
+  @Override
+  public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
+    return checker.check(this, env);
+  }
 
-    @Override
-    public Result<String> acceptInterpreter(Interpreter interpreter) {
-        Result<Object> interpretResult = interpreter.interpret(this);
-        if (interpretResult.isCorrect()) {
-            return new CorrectResult<String>("Interpreted correctly.");
-        } else {
-            return new IncorrectResult<>(interpretResult);
-        }
+  @Override
+  public Result<String> acceptInterpreter(Interpreter interpreter) {
+    Result<Object> interpretResult = interpreter.interpret(this);
+    if (interpretResult.isCorrect()) {
+      return new CorrectResult<String>("Interpreted correctly.");
+    } else {
+      return new IncorrectResult<>(interpretResult);
     }
+  }
 
-    @Override
-    public List<ExpressionNode> children() {
-        return List.of();
-    }
+  @Override
+  public List<ExpressionNode> children() {
+    return List.of();
+  }
 
-    @Override
-    public String symbol() {
-        return Types.NIL.name();
-    }
+  @Override
+  public String symbol() {
+    return Types.NIL.name();
+  }
 
-    @Override
-    public Integer line() {
-        throw new UnsupportedOperationException(
-                "Nil expression node has no line where it was built from.");
-    }
+  @Override
+  public Integer line() {
+    throw new UnsupportedOperationException(
+        "Nil expression node has no line where it was built from.");
+  }
 
-    @Override
-    public Integer column() {
-        throw new UnsupportedOperationException(
-                "Nil expression node has no line where it was built from.");
-    }
+  @Override
+  public Integer column() {
+    throw new UnsupportedOperationException(
+        "Nil expression node has no line where it was built from.");
+  }
 
-    @Override
-    public Result<Object> solve() {
-        return new CorrectResult<>(null);
-    }
+  @Override
+  public Result<Object> solve() {
+    return new CorrectResult<>(null);
+  }
 }

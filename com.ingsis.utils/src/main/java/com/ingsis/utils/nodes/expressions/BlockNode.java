@@ -2,7 +2,9 @@ package com.ingsis.utils.nodes.expressions;
 
 import java.util.List;
 
+import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.Node;
+import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.result.Result;
@@ -22,7 +24,7 @@ public record BlockNode(List<Node> statments) implements ExpressionNode {
   }
 
   @Override
-  public Result<String> acceptChecker(Checker checker) {
+  public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
     // TODO Auto-generated method stub
     throw new UnsupportedOperationException("Unimplemented method 'acceptChecker'");
   }

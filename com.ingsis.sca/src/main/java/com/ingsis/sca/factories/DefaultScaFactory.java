@@ -14,31 +14,25 @@ import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.result.factory.DefaultResultFactory;
 import com.ingsis.utils.result.factory.ResultFactory;
 import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
-import com.ingsis.utils.rule.observer.handlers.factories.HandlerFactory;
-import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.utils.rule.observer.handlers.factories.HandlerSupplier;
 import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
-import com.ingsis.utils.runtime.Runtime;
-import com.ingsis.utils.runtime.result.factory.LoggerResultFactory;
 import java.io.InputStream;
 
 public class DefaultScaFactory implements ScaFactory {
-    private final SafeIteratorFactory<Interpretable> checkablePeekableIteratorFactory;
+  private final SafeIteratorFactory<Interpretable> checkablePeekableIteratorFactory;
 
-    public DefaultScaFactory(SafeIteratorFactory<Interpretable> checkablePeekableIteratorFactory) {
-        this.checkablePeekableIteratorFactory = checkablePeekableIteratorFactory;
-    }
+  public DefaultScaFactory(SafeIteratorFactory<Interpretable> checkablePeekableIteratorFactory) {
+    this.checkablePeekableIteratorFactory = checkablePeekableIteratorFactory;
+  }
 
-    @Override
-    public ProgramSca fromFile(
-            InputStream in, RuleStatusProvider ruleStatusProvider, Runtime runtime) {
-        ResultFactory resultFactory = new LoggerResultFactory(new DefaultResultFactory(), runtime);
-        HandlerFactory handlerFactory =
-                new DefaultStaticCodeAnalyzerHandlerFactory(resultFactory, ruleStatusProvider);
-        PublishersFactory publishersFactory =
-                new DefaultStaticCodeAnalyzerPublisherFactory(handlerFactory);
-        Checker eventsChecker =
-                new DefaultCheckerFactory().createInMemoryEventBasedChecker(publishersFactory);
-        return new InMemoryProgramSca(
-                checkablePeekableIteratorFactory.fromInputStream(in), eventsChecker);
-    }
+  @Override
+  public ProgramSca fromFile(
+      InputStream in, RuleStatusProvider ruleStatusProvider, Runtime runtime) {
+    ResultFactory resultFactory = new LoggerResultFactory();
+    HandlerSupplier handlerFactory = new DefaultStaticCodeAnalyzerHandlerFactory(resultFactory, ruleStatusProvider);
+    PublishersFactory publishersFactory = new DefaultStaticCodeAnalyzerPublisherFactory(handlerFactory);
+    Checker eventsChecker = new DefaultCheckerFactory().createInMemoryEventBasedChecker(publishersFactory);
+    return new InMemoryProgramSca(
+        checkablePeekableIteratorFactory.fromInputStream(in), eventsChecker);
+  }
 }

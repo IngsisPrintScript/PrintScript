@@ -4,29 +4,36 @@
 
 package com.ingsis.utils.typer.identifier;
 
+import java.util.Optional;
+
+import com.ingsis.utils.evalstate.env.Environment;
+import com.ingsis.utils.evalstate.env.bindings.Binding;
+import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
+import com.ingsis.utils.evalstate.env.semantic.bindings.SemanticBinding;
 import com.ingsis.utils.nodes.expressions.IdentifierNode;
-import com.ingsis.utils.result.Result;
-import com.ingsis.utils.runtime.Runtime;
-import com.ingsis.utils.runtime.environment.entries.VariableEntry;
 import com.ingsis.utils.type.typer.TypeGetter;
 import com.ingsis.utils.type.types.Types;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultIdentifierTypeGetter implements TypeGetter<IdentifierNode> {
-    private final Runtime runtime;
-
-    public DefaultIdentifierTypeGetter(Runtime runtime) {
-        this.runtime = runtime;
+  @Override
+  public Types getType(IdentifierNode expressionNode, Environment env) {
+    String functionIdentifier = expressionNode.name();
+    Optional<Binding> ob = env.lookup(functionIdentifier);
+    if (ob.isPresent()) {
+      return ob.get().type();
     }
+    return Types.NIL;
+  }
 
-    @Override
-    public Types getType(IdentifierNode expressionNode) {
-        String name = expressionNode.name();
-        Result<VariableEntry> getVarResult = runtime.getCurrentEnvironment().readVariable(name);
-        if (!getVarResult.isCorrect()) {
-            return Types.UNDEFINED;
-        }
-        return getVarResult.result().type();
+  @Override
+  public Types getType(IdentifierNode expressionNode, SemanticEnvironment env) {
+    String functionIdentifier = expressionNode.name();
+    Optional<SemanticBinding> ob = env.lookup(functionIdentifier);
+    if (ob.isPresent()) {
+      return ob.get().type();
     }
+    return Types.NIL;
+  }
 }

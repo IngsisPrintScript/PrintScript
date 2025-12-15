@@ -4,105 +4,96 @@
 
 package com.ingsis.parser.semantic.checkers.handlers.operators;
 
+import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.expressions.CallFunctionNode;
 import com.ingsis.utils.nodes.expressions.ExpressionNode;
 import com.ingsis.utils.nodes.expressions.IdentifierNode;
 import com.ingsis.utils.nodes.expressions.LiteralNode;
 import com.ingsis.utils.nodes.expressions.OperatorNode;
-import com.ingsis.utils.result.Result;
-import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.utils.runtime.Runtime;
-import com.ingsis.utils.runtime.type.typer.expression.DefaultExpressionTypeGetter;
-import com.ingsis.utils.runtime.type.typer.function.DefaultFunctionTypeGetter;
-import com.ingsis.utils.runtime.type.typer.identifier.DefaultIdentifierTypeGetter;
 import com.ingsis.utils.type.typer.literal.DefaultLiteralTypeGetter;
 import com.ingsis.utils.type.types.Types;
+import com.ingsis.utils.typer.expression.DefaultExpressionTypeGetter;
+import com.ingsis.utils.typer.function.DefaultFunctionTypeGetter;
+import com.ingsis.utils.typer.identifier.DefaultIdentifierTypeGetter;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class OperatorNodeValidityHandler implements NodeEventHandler<ExpressionNode> {
-    private final Runtime runtime;
-    private final ResultFactory resultFactory;
-
-    public OperatorNodeValidityHandler(Runtime runtime, ResultFactory resultFactory) {
-        this.runtime = runtime;
-        this.resultFactory = resultFactory;
+  @Override
+  public CheckResult handle(ExpressionNode node, SemanticEnvironment env) {
+    if (node instanceof OperatorNode operatorNode) {
+      if (operatorNode.symbol().equals("+")) {
+        return new CheckResult.CORRECT(env);
+      }
+      Types expectedType = new DefaultExpressionTypeGetter()
+          .getType(operatorNode.children().get(0), env);
+      return recursiveCheck(expectedType, node, env);
     }
 
-    @Override
-    public Result<String> handle(ExpressionNode node) {
-        if (node instanceof OperatorNode operatorNode) {
-            if (operatorNode.symbol().equals("+")) {
-                return resultFactory.createCorrectResult("Check passed");
-            }
-            Types expectedType =
-                    new DefaultExpressionTypeGetter(runtime)
-                            .getType(operatorNode.children().get(0));
-            return recursiveCheck(expectedType, node);
-        }
+    return new CheckResult.CORRECT(env);
+  }
 
-        return resultFactory.createCorrectResult("Check passed.");
+  private CheckResult recursiveCheck(Types expectedType, ExpressionNode node, SemanticEnvironment env) {
+    if (node instanceof LiteralNode literalNode) {
+      return checkLiteral(expectedType, literalNode, env);
+    } else if (node instanceof IdentifierNode identifierNode) {
+      return checkIdentifier(expectedType, identifierNode, env);
+    } else if (node instanceof CallFunctionNode callFunctionNode) {
+      return checkFunction(expectedType, callFunctionNode, env);
     }
 
-    private Result<String> recursiveCheck(Types expectedType, ExpressionNode node) {
-        if (node instanceof LiteralNode literalNode) {
-            return checkLiteral(expectedType, literalNode);
-        } else if (node instanceof IdentifierNode identifierNode) {
-            return checkIdentifier(expectedType, identifierNode);
-        } else if (node instanceof CallFunctionNode callFunctionNode) {
-            return checkFunction(expectedType, callFunctionNode);
-        }
-
-        for (ExpressionNode child : node.children()) {
-            Result<String> checkTypeResult = recursiveCheck(expectedType, child);
-            if (!checkTypeResult.isCorrect()) {
-                return resultFactory.cloneIncorrectResult(checkTypeResult);
-            }
-        }
-
-        return resultFactory.createCorrectResult("Check passed.");
+    for (ExpressionNode child : node.children()) {
+      CheckResult checkTypeResult = recursiveCheck(expectedType, child, env);
+      switch (checkTypeResult) {
+        case CheckResult.INCORRECT I:
+          return I;
+        case CheckResult.CORRECT C:
+          break;
+      }
     }
 
-    private Result<String> checkLiteral(Types expectedType, LiteralNode literalNode) {
-        boolean checkResult =
-                new DefaultLiteralTypeGetter().getType(literalNode).isCompatibleWith(expectedType);
-        if (checkResult) {
-            return resultFactory.createCorrectResult("Check passed.");
-        }
-        return resultFactory.createIncorrectResult(
-                String.format(
-                        "Literal:%s has an unexpected type on line:%d and column:%d",
-                        literalNode.value(), literalNode.line(), literalNode.column()));
-    }
+    return new CheckResult.CORRECT(env);
+  }
 
-    private Result<String> checkIdentifier(Types expectedType, IdentifierNode identifierNode) {
-        boolean checkResult =
-                new DefaultIdentifierTypeGetter(runtime)
-                        .getType(identifierNode)
-                        .isCompatibleWith(expectedType);
-        if (checkResult) {
-            return resultFactory.createCorrectResult("Check passed.");
-        }
-        return resultFactory.createIncorrectResult(
-                String.format(
-                        "Identifier:%s has an unexpected type on line:%d and column:%d",
-                        identifierNode.name(), identifierNode.line(), identifierNode.column()));
+  private CheckResult checkLiteral(Types expectedType, LiteralNode literalNode, SemanticEnvironment env) {
+    boolean checkResult = new DefaultLiteralTypeGetter().getType(literalNode, env).isCompatibleWith(expectedType);
+    if (checkResult) {
+      return new CheckResult.CORRECT(env);
     }
+    return new CheckResult.INCORRECT(env,
+        String.format(
+            "Literal:%s has an unexpected type on line:%d and column:%d",
+            literalNode.value(), literalNode.line(), literalNode.column()));
+  }
 
-    private Result<String> checkFunction(Types expectedType, CallFunctionNode callFunctionNode) {
-        boolean check =
-                new DefaultFunctionTypeGetter(runtime)
-                        .getType(callFunctionNode)
-                        .isCompatibleWith(expectedType);
-        if (check) {
-            return resultFactory.createCorrectResult("Check passed.");
-        }
-        return resultFactory.createIncorrectResult(
-                String.format(
-                        "Function: %s does not return correct type on line:%d and column:%d",
-                        callFunctionNode.identifierNode().name(),
-                        callFunctionNode.line(),
-                        callFunctionNode.column()));
+  private CheckResult checkIdentifier(Types expectedType, IdentifierNode identifierNode, SemanticEnvironment env) {
+    boolean checkResult = new DefaultIdentifierTypeGetter()
+        .getType(identifierNode, env)
+        .isCompatibleWith(expectedType);
+    if (checkResult) {
+      return new CheckResult.CORRECT(env);
     }
+    return new CheckResult.INCORRECT(env,
+        String.format(
+            "Identifier:%s has an unexpected type on line:%d and column:%d",
+            identifierNode.name(), identifierNode.line(), identifierNode.column()));
+  }
+
+  private CheckResult checkFunction(Types expectedType, CallFunctionNode callFunctionNode, SemanticEnvironment env) {
+    boolean check = new DefaultFunctionTypeGetter()
+        .getType(callFunctionNode, env)
+        .isCompatibleWith(expectedType);
+    if (check) {
+      return new CheckResult.CORRECT(env);
+    }
+    return new CheckResult.INCORRECT(env,
+        String.format(
+            "Function: %s does not return correct type on line:%d and column:%d",
+            callFunctionNode.identifierNode().name(),
+            callFunctionNode.line(),
+            callFunctionNode.column()));
+  }
 }

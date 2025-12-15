@@ -4,39 +4,33 @@
 
 package com.ingsis.parser.semantic.checkers.handlers.identifier.type;
 
+import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
 import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.utils.result.Result;
-import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.utils.runtime.Runtime;
-import com.ingsis.utils.runtime.type.typer.expression.DefaultExpressionTypeGetter;
 import com.ingsis.utils.type.types.Types;
+import com.ingsis.utils.typer.expression.DefaultExpressionTypeGetter;
+
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class LetNodeCorrectTypeEventHandler
-        implements NodeEventHandler<DeclarationKeywordNode> {
-    private final Runtime runtime;
-    private final ResultFactory resultFactory;
+    implements NodeEventHandler<DeclarationKeywordNode> {
 
-    public LetNodeCorrectTypeEventHandler(Runtime runtime, ResultFactory resultFactory) {
-        this.runtime = runtime;
-        this.resultFactory = resultFactory;
+  @Override
+  public CheckResult handle(DeclarationKeywordNode node, SemanticEnvironment env) {
+    Types expectedType = node.declaredType();
+    Types actualType = new DefaultExpressionTypeGetter().getType(node.expressionNode(), env);
+    if (actualType.equals(Types.NIL)) {
+      return new CheckResult.CORRECT(env);
     }
-
-    @Override
-    public Result<String> handle(DeclarationKeywordNode node) {
-        Types expectedType = node.declaredType();
-        Types actualType = new DefaultExpressionTypeGetter(runtime).getType(node.expressionNode());
-        if (actualType.equals(Types.NIL)) {
-            return resultFactory.createCorrectResult("Check passed.");
-        }
-        if (!expectedType.isCompatibleWith(actualType)) {
-            return resultFactory.createIncorrectResult(
-                    String.format(
-                            "Unexepected type for identifier value on line:%d and column:%d",
-                            node.line(), node.column()));
-        }
-        return resultFactory.createCorrectResult("Check passed.");
+    if (!expectedType.isCompatibleWith(actualType)) {
+      return new CheckResult.INCORRECT(
+          env,
+          String.format(
+              "Unexepected type for identifier value on line:%d and column:%d",
+              node.line(), node.column()));
     }
+    return new CheckResult.CORRECT(env);
+  }
 }

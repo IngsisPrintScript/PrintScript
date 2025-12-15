@@ -2,13 +2,11 @@
  * My Project
  */
 
-package com.ingsis.utils.rule.observer.factories; /*
-                                                   * My Project
-                                                   */
+package com.ingsis.utils.rule.observer.factories;
 
 import com.ingsis.utils.nodes.visitors.Checker;
-import com.ingsis.utils.rule.observer.publishers.factories.PublishersFactory;
+import com.ingsis.utils.rule.observer.handlers.factories.HandlerSupplier;
 
 public interface CheckerFactory {
-    Checker createInMemoryEventBasedChecker(PublishersFactory publishersFactory);
+  Checker createInMemoryEventBasedChecker(HandlerSupplier handlerSupplier);
 }

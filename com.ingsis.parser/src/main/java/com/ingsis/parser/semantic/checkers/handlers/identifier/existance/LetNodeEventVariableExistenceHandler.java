@@ -4,35 +4,42 @@
 
 package com.ingsis.parser.semantic.checkers.handlers.identifier.existance;
 
+import com.ingsis.utils.evalstate.env.semantic.SemanticEnvironment;
+import com.ingsis.utils.evalstate.env.semantic.bindings.SemanticBinding;
+import com.ingsis.utils.nodes.expressions.NilExpressionNode;
 import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
-import com.ingsis.utils.result.Result;
-import com.ingsis.utils.result.factory.ResultFactory;
+import com.ingsis.utils.nodes.visitors.CheckResult;
 import com.ingsis.utils.rule.observer.handlers.NodeEventHandler;
-import com.ingsis.utils.runtime.Runtime;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
-public final class LetNodeEventVariableExistenceHandler
-        implements NodeEventHandler<DeclarationKeywordNode> {
-    private final Runtime runtime;
-    private final ResultFactory resultFactory;
+public final class LetNodeEventVariableExistenceHandler implements NodeEventHandler<DeclarationKeywordNode> {
 
-    public LetNodeEventVariableExistenceHandler(Runtime runtime, ResultFactory resultFactory) {
-        this.runtime = runtime;
-        this.resultFactory = resultFactory;
+  @Override
+  public CheckResult handle(DeclarationKeywordNode node, SemanticEnvironment env) {
+    String identifier = node.identifierNode().name();
+    if (env.lookup(identifier).isPresent()) {
+      return new CheckResult.INCORRECT(env,
+          String.format(
+              "Trying to declare already declared variable: \"%s\" on line: %d and"
+                  + " column: %d",
+              identifier, node.line(), node.column()));
     }
-
-    @Override
-    public Result<String> handle(DeclarationKeywordNode node) {
-        String identifier = node.identifierNode().name();
-        if (runtime.getCurrentEnvironment().isVariableDeclared(identifier)) {
-            return resultFactory.createIncorrectResult(
-                    String.format(
-                            "Trying to declare already declared variable: \"%s\" on line: %d and"
-                                    + " column: %d",
-                            identifier, node.line(), node.column()));
+    CheckResult expressionCheck = new ExpressionNodeEventVariableExistenceHandler().handle(node.expressionNode(), env);
+    return switch (expressionCheck) {
+      case CheckResult.INCORRECT I -> expressionCheck;
+      case CheckResult.CORRECT C -> {
+        boolean isInitialized = true;
+        if (node.expressionNode() instanceof NilExpressionNode) {
+          isInitialized = false;
         }
-        return new ExpressionNodeEventVariableExistenceHandler(runtime, resultFactory)
-                .handle(node.expressionNode());
-    }
+        yield new CheckResult.CORRECT(C.environment().define(
+            identifier,
+            new SemanticBinding.VariableBinding(
+                node.declaredType(),
+                node.isMutable(),
+                isInitialized)));
+      }
+    };
+  }
 }
