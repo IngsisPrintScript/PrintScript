@@ -23,7 +23,7 @@ public record DefaultEnviromentFactory() implements EnvironmentFactory {
             Map.of("string", Types.STRING),
             Types.NIL,
             (List<Value> args) -> {
-              emitter.emit(args.get(0));
+              emitter.emit(((Value.StringValue) args.get(0)).v());
               return Value.UnitValue.INSTANCE;
             })));
     env = env.define("readEnv", new FunctionBinding(
@@ -40,7 +40,7 @@ public record DefaultEnviromentFactory() implements EnvironmentFactory {
             Map.of("prompt", Types.STRING),
             Types.STRING,
             (List<Value> args) -> {
-              emitter.emit(args.get(0));
+              emitter.emit(((Value.StringValue) args.get(0)).v());
               return supplier.supply();
             })));
     return env;
