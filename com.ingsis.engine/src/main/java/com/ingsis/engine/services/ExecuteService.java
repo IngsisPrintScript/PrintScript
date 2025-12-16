@@ -42,54 +42,50 @@ import java.io.InputStream;
 
 public class ExecuteService {
 
-    public Result<String> execute(
-            Version version, OutputEmitter emitter, InputSupplier supplier, InputStream in) {
-        SafeIterationResult<String> iterationResult =
-                createProgramInterpreter(version, emitter, supplier).fromInputStream(in).next();
-        while (iterationResult.isCorrect()) {
-            iterationResult = iterationResult.nextIterator().next();
-        }
-        if (!iterationResult.isCorrect() && !iterationResult.error().equals("EOL")) {
-            return new IncorrectResult<>(iterationResult.error());
-        }
-        return new CorrectResult<String>("Program interpreted succesfully");
+  public Result<String> execute(
+      Version version, OutputEmitter emitter, InputSupplier supplier, InputStream in) {
+    SafeIterationResult<String> iterationResult = createProgramInterpreter(version, emitter, supplier)
+        .fromInputStream(in).next();
+    while (iterationResult.isCorrect()) {
+      iterationResult = iterationResult.nextIterator().next();
     }
+    if (!iterationResult.isCorrect() && !iterationResult.error().equals("EOL")) {
+      return new IncorrectResult<>(iterationResult.error());
+    }
+    return new CorrectResult<String>("Program interpreted succesfully");
+  }
 
-    private SafeIteratorFactory<String> createProgramInterpreter(
-            Version version, OutputEmitter emitter, InputSupplier supplier) {
-        IterationResultFactory baseResultFactory = new DefaultIterationResultFactory();
-        IterationResultFactory iterationResultFactory =
-                new LoggerIterationResultFactory(baseResultFactory);
-        SafeIteratorFactory<MetaChar> metacharIteratorFactory =
-                new CharStreamFactory(iterationResultFactory);
-        TokenFactory tokenFactory = new DefaultTokensFactory();
-        TokenizerFactory tokenizerFactory = null;
-        switch (version) {
-            case V1_0 -> tokenizerFactory = new TokenizerFactoryV1_0(tokenFactory);
-            case V1_1 -> tokenizerFactory = new TokenizerFactoryV1_1(tokenFactory);
-        }
-        SafeIteratorFactory<Token> tokenIteratorFactory =
-                new LexerFactory(metacharIteratorFactory, tokenizerFactory, iterationResultFactory);
-        SafeIteratorFactory<Checkable> checkableIteratorFactory =
-                new SyntacticFactory(
-                        tokenIteratorFactory,
-                        new DefaultParserChainFactory(
-                                new InMemoryParserFactory(
-                                        new DefaultTokenTemplateFactory(),
-                                        new DefaultNodeFactory())),
-                        iterationResultFactory,
-                        tokenFactory);
-        SafeIteratorFactory<Interpretable> interpretableIteratorFactory =
-                new SemanticFactory(checkableIteratorFactory, iterationResultFactory);
-        InterpreterVisitorFactory interpreterFactory = new DefaultInterpreterVisitorFactory();
-        EvalStateFactory evalStateFactory =
-                new DefaultEvalStateFactory(new DefaultEnviromentFactory());
-        return new InterpreterFactory(
-                interpretableIteratorFactory,
-                interpreterFactory,
-                emitter,
-                supplier,
-                iterationResultFactory,
-                evalStateFactory);
+  private SafeIteratorFactory<String> createProgramInterpreter(
+      Version version, OutputEmitter emitter, InputSupplier supplier) {
+    IterationResultFactory baseResultFactory = new DefaultIterationResultFactory();
+    IterationResultFactory iterationResultFactory = new LoggerIterationResultFactory(baseResultFactory);
+    SafeIteratorFactory<MetaChar> metacharIteratorFactory = new CharStreamFactory(iterationResultFactory);
+    TokenFactory tokenFactory = new DefaultTokensFactory();
+    TokenizerFactory tokenizerFactory = null;
+    switch (version) {
+      case V1_0 -> tokenizerFactory = new TokenizerFactoryV1_0(tokenFactory);
+      case V1_1 -> tokenizerFactory = new TokenizerFactoryV1_1(tokenFactory);
     }
+    SafeIteratorFactory<Token> tokenIteratorFactory = new LexerFactory(metacharIteratorFactory, tokenizerFactory,
+        iterationResultFactory);
+    SafeIteratorFactory<Checkable> checkableIteratorFactory = new SyntacticFactory(
+        tokenIteratorFactory,
+        new DefaultParserChainFactory(
+            new InMemoryParserFactory(
+                new DefaultTokenTemplateFactory(),
+                new DefaultNodeFactory())),
+        iterationResultFactory,
+        tokenFactory);
+    SafeIteratorFactory<Interpretable> interpretableIteratorFactory = new SemanticFactory(checkableIteratorFactory,
+        iterationResultFactory);
+    InterpreterVisitorFactory interpreterFactory = new DefaultInterpreterVisitorFactory();
+    EvalStateFactory evalStateFactory = new DefaultEvalStateFactory(new DefaultEnviromentFactory());
+    return new InterpreterFactory(
+        interpretableIteratorFactory,
+        interpreterFactory,
+        emitter,
+        supplier,
+        iterationResultFactory,
+        evalStateFactory);
+  }
 }
