@@ -20,64 +20,70 @@ import java.util.Optional;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class DefaultInterpreterVisitor implements Interpreter {
-    @Override
-    public InterpretResult interpret(IfKeywordNode ifKeywordNode, EvalState evalState) {
-        InterpretResult interpretCondition = this.interpret(ifKeywordNode.condition(), evalState);
-        return switch (interpretCondition) {
-            case InterpretResult.INCORRECT I -> I;
-            case InterpretResult.CORRECT C -> {
-                if (((BooleanValue) C.value()).v()) {
-                    yield interpretChildren(ifKeywordNode.thenBody(), evalState);
-                } else {
-                    yield interpretChildren(ifKeywordNode.elseBody(), evalState);
-                }
+  @Override
+  public InterpretResult interpret(IfKeywordNode ifKeywordNode, EvalState evalState) {
+    InterpretResult interpretCondition = this.interpret(ifKeywordNode.condition(), evalState);
+    return switch (interpretCondition) {
+      case InterpretResult.INCORRECT I -> I;
+      case InterpretResult.CORRECT C -> {
+        switch (C.value()) {
+          case BooleanValue B -> {
+            if (B.v()) {
+              yield interpretChildren(ifKeywordNode.thenBody(), evalState);
+            } else {
+              yield interpretChildren(ifKeywordNode.elseBody(), evalState);
             }
-        };
-    }
 
-    private InterpretResult interpretChildren(List<Node> children, EvalState evalState) {
-        EvalState newEvalState = evalState;
-        Value resultValue = Value.UnitValue.INSTANCE;
-        for (Node child : children) {
-            switch (child.acceptInterpreter(this, evalState)) {
-                case InterpretResult.INCORRECT I:
-                    return I;
-                case InterpretResult.CORRECT C:
-                    newEvalState = C.evalState();
-                    resultValue = C.value();
-            }
+          }
+          default -> {
+            yield new InterpretResult.INCORRECT(evalState, "Unexpected type for condition,");
+          }
         }
-        return new InterpretResult.CORRECT(newEvalState, resultValue);
-    }
+      }
+    };
+  }
 
-    @Override
-    public InterpretResult interpret(
-            DeclarationKeywordNode declarationKeywordNode, EvalState evalState) {
-        InterpretResult evaluateExpression =
-                this.interpret(declarationKeywordNode.expressionNode(), evalState);
-        Value value = null;
-        switch (evaluateExpression) {
-            case InterpretResult.INCORRECT I:
-                return I;
-            case InterpretResult.CORRECT C:
-                value = C.value();
-                break;
-        }
-        EvalState newEvalState =
-                evalState.withEnv(
-                        evalState
-                                .env()
-                                .define(
-                                        declarationKeywordNode.identifierNode().name(),
-                                        new Binding.VariableBinding(
-                                                declarationKeywordNode.declaredType(),
-                                                declarationKeywordNode.isMutable(),
-                                                Optional.ofNullable(value))));
-        return new InterpretResult.CORRECT(newEvalState, Value.UnitValue.INSTANCE);
+  private InterpretResult interpretChildren(List<Node> children, EvalState evalState) {
+    EvalState newEvalState = evalState;
+    Value resultValue = Value.UnitValue.INSTANCE;
+    for (Node child : children) {
+      switch (child.acceptInterpreter(this, evalState)) {
+        case InterpretResult.INCORRECT I:
+          return I;
+        case InterpretResult.CORRECT C:
+          newEvalState = C.evalState();
+          resultValue = C.value();
+      }
     }
+    return new InterpretResult.CORRECT(newEvalState, resultValue);
+  }
 
-    @Override
-    public InterpretResult interpret(ExpressionNode expressionNode, EvalState evalState) {
-        return expressionNode.solve(evalState);
+  @Override
+  public InterpretResult interpret(
+      DeclarationKeywordNode declarationKeywordNode, EvalState evalState) {
+    InterpretResult evaluateExpression = this.interpret(declarationKeywordNode.expressionNode(), evalState);
+    Value value = null;
+    switch (evaluateExpression) {
+      case InterpretResult.INCORRECT I:
+        return I;
+      case InterpretResult.CORRECT C:
+        value = C.value();
+        break;
     }
+    EvalState newEvalState = evalState.withEnv(
+        evalState
+            .env()
+            .define(
+                declarationKeywordNode.identifierNode().name(),
+                new Binding.VariableBinding(
+                    declarationKeywordNode.declaredType(),
+                    declarationKeywordNode.isMutable(),
+                    Optional.ofNullable(value))));
+    return new InterpretResult.CORRECT(newEvalState, Value.UnitValue.INSTANCE);
+  }
+
+  @Override
+  public InterpretResult interpret(ExpressionNode expressionNode, EvalState evalState) {
+    return expressionNode.solve(evalState);
+  }
 }
