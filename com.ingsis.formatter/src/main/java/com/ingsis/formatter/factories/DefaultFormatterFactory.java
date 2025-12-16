@@ -69,7 +69,8 @@ public class DefaultFormatterFactory implements SafeIteratorFactory<String> {
     return new ProgramFormatter(
             tokenIteratorFactory.fromInputStream(in),
         iterationResultFactory, triviaRules,
-            new LinesAfterFunctionCall(ruleStatusProvider.getRuleValue("line-breaks-after-println", Integer.class)));
+            new LinesAfterFunctionCall(ruleStatusProvider.getRuleValue("line-breaks-after-println", Integer.class)),
+            ruleStatusProvider.getRuleValue("indent-inside-if", Integer.class));
   }
 
   @Override

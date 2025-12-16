@@ -7,12 +7,12 @@ import com.ingsis.utils.token.type.TokenType;
 
 public class SpaceAfterColon implements TriviaRule {
   @Override
-  public boolean appliea(Token previousToken, Token currentToken) {
+  public boolean applies(Token previousToken, Token currentToken) {
     return previousToken.type().equals(TokenType.COLON);
   }
 
   @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder sb) {
+  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder sb, int indentation) {
     sb.append(" ");
     sb.append(currentToken.value());
     return sb;

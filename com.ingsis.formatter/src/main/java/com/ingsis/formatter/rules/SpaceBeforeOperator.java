@@ -7,12 +7,12 @@ import com.ingsis.utils.token.type.TokenType;
 
 public class SpaceBeforeOperator implements TriviaRule {
   @Override
-  public boolean appliea(Token previousToken, Token currentToken) {
+  public boolean applies(Token previousToken, Token currentToken) {
     return TokenType.OPERATORS.contains(currentToken.type());
   }
 
   @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder) {
+  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder, int indentation) {
     stringBuilder.append(" ");
     stringBuilder.append(currentToken.value());
     return stringBuilder;

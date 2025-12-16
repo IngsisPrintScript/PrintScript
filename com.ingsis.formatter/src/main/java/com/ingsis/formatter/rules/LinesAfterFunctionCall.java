@@ -13,21 +13,31 @@ public class LinesAfterFunctionCall implements TriviaRule {
   }
 
   @Override
-  public boolean appliea(Token previousToken, Token currentToken) {
+  public boolean applies(Token previousToken, Token currentToken) {
     return previousToken.type().equals(TokenType.SEMICOLON);
   }
 
   @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder) {
+  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder, int indentation) {
     if (amount == null) {
-      for (Token token : trivia) {
-        stringBuilder.append(token.value());
+      if (indentation==0){
+        for (Token token : trivia) {
+          stringBuilder.append(token.value());
+        }
+      } else {
+        stringBuilder.append("\n");
       }
     } else {
-        stringBuilder.append("\n".repeat(Math.max(0, amount+1)));
+      stringBuilder.append("\n".repeat(Math.max(0, amount + 1)));
     }
+    if (indentation > 0) {
+
+      stringBuilder.append(" ".repeat(indentation));
+    }
+
     stringBuilder.append(currentToken.value());
     return stringBuilder;
   }
+
 
 }

@@ -13,12 +13,12 @@ public class SpaceAfterEquals implements TriviaRule {
   }
 
   @Override
-  public boolean appliea(Token previousToken, Token currentToken) {
+  public boolean applies(Token previousToken, Token currentToken) {
     return previousToken.type().equals(TokenType.EQUAL);
   }
 
   @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder sb) {
+  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder sb, int indentation) {
     if (hasSpace) {
       sb.append(" ");
     }

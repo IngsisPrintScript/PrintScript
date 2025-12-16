@@ -7,15 +7,23 @@ import com.ingsis.utils.token.type.TokenType;
 
 public class LineBreakAfterStatement implements TriviaRule {
   @Override
-  public boolean appliea(Token previousToken, Token currentToken) {
+  public boolean applies(Token previousToken, Token currentToken) {
     return previousToken.type().equals(TokenType.SEMICOLON);
   }
 
   @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder) {
+  public StringBuilder apply(
+          Token previousToken,
+          List<Token> trivia,
+          Token currentToken,
+          StringBuilder stringBuilder,
+          int indentation
+  ) {
     stringBuilder.append("\n");
+    stringBuilder.append(" ".repeat(indentation));
     stringBuilder.append(currentToken.value());
     return stringBuilder;
   }
+
 
 }

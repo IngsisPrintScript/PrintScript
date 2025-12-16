@@ -13,19 +13,27 @@ public class BraceLine implements TriviaRule {
   }
 
   @Override
-  public boolean appliea(Token previousToken, Token currentToken) {
+  public boolean applies(Token previousToken, Token currentToken) {
     return previousToken.type().equals(TokenType.RPAREN) && currentToken.type().equals(TokenType.LBRACE);
   }
 
   @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder) {
+  public StringBuilder apply(
+          Token previousToken,
+          List<Token> trivia,
+          Token currentToken,
+          StringBuilder stringBuilder,
+          int indentation
+  ) {
     if (!onIfLine) {
       stringBuilder.append("\n");
+      stringBuilder.append(" ".repeat(indentation));
     } else {
       stringBuilder.append(" ");
     }
     stringBuilder.append(currentToken.value());
     return stringBuilder;
   }
+
 
 }
