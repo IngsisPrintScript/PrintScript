@@ -45,6 +45,11 @@ public class DefaultFormatterFactory implements SafeIteratorFactory<String> {
     if (ruleStatusProvider.getRuleStatus("enforce-spacing-before-colon-in-declaration")) {
       triviaRules.add(new SpaceBeforeColon());
     }
+    if (ruleStatusProvider.getRuleStatus("if-brace-same-line")){
+      triviaRules.add(new BraceLine(true));
+    } else if (ruleStatusProvider.getRuleStatus("if-brace-below-line")) {
+      triviaRules.add(new BraceLine(false));
+    }
     if (ruleStatusProvider.getRuleStatus("mandatory-line-break-after-statement")){
       triviaRules.add(new LineBreakAfterStatement());
     }

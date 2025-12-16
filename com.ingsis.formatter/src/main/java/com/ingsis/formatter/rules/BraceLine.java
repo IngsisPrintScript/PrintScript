@@ -14,13 +14,15 @@ public class BraceLine implements TriviaRule {
 
   @Override
   public boolean appliea(Token previousToken, Token currentToken) {
-    return previousToken.type().equals(TokenType.IF) && currentToken.type().equals(TokenType.LBRACE);
+    return previousToken.type().equals(TokenType.RPAREN) && currentToken.type().equals(TokenType.LBRACE);
   }
 
   @Override
   public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder) {
     if (!onIfLine) {
       stringBuilder.append("\n");
+    } else {
+      stringBuilder.append(" ");
     }
     stringBuilder.append(currentToken.value());
     return stringBuilder;
