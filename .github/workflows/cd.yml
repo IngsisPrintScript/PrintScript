@@ -32,10 +32,6 @@ jobs:
       - name: Determine Version
         id: version
         run: |
-          # If triggered by a tag, use the tag (strip refs/tags/).
-          # Otherwise try reading from Gradle; if it's empty or 'unspecified',
-          # generate a CI version using the run number + short SHA so every publish
-          # uses a unique, non-unspecified version (avoids 409 conflicts).
           if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
             VERSION="${GITHUB_REF#refs/tags/}"
           else
