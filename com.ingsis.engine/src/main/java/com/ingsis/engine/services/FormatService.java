@@ -27,29 +27,22 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.factories.TokenFactory;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.util.List;
 
 public class FormatService {
     public Result<String> format(
-            Version version,
-            InputStream in,
-            InputStream config,
-            Writer writer) {
+            Version version, InputStream in, InputStream config, Writer writer) {
         StringBuilder buffer = new StringBuilder();
         try {
             SafeIterationResult<String> iterationResult =
-                    createProgramFormatter(version, config)
-                            .fromInputStream(in)
-                            .next();
+                    createProgramFormatter(version, config).fromInputStream(in).next();
 
             while (iterationResult.isCorrect()) {
                 buffer.append(iterationResult.iterationResult());
                 iterationResult = iterationResult.nextIterator().next();
             }
-           if (!iterationResult.isCorrect()
-                    && !"EOL".equals(iterationResult.error())) {
+            if (!iterationResult.isCorrect() && !"EOL".equals(iterationResult.error())) {
                 return new IncorrectResult<>(iterationResult.iterationResult());
             }
 
@@ -63,7 +56,8 @@ public class FormatService {
         }
     }
 
-    private SafeIteratorFactory<String> createProgramFormatter(Version version, InputStream config) {
+    private SafeIteratorFactory<String> createProgramFormatter(
+            Version version, InputStream config) {
         IterationResultFactory baseResultFactory = new DefaultIterationResultFactory();
         IterationResultFactory iterationResultFactory =
                 new LoggerIterationResultFactory(baseResultFactory);
@@ -81,10 +75,7 @@ public class FormatService {
                 tokenIteratorFactory,
                 iterationResultFactory,
                 new RuleStatusProviderRegistry(
-                        List.of(
-                                new JsonRuleStatusProvider(),
-                                new YamlRuleStatusProvider())
-                ).loadRules(config)
-        );
+                                List.of(new JsonRuleStatusProvider(), new YamlRuleStatusProvider()))
+                        .loadRules(config));
     }
 }

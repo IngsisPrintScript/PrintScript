@@ -25,7 +25,7 @@ public final class DefaultExpressionTypeGetter implements TypeGetter<ExpressionN
         } else if (expressionNode instanceof CallFunctionNode callFunctionNode) {
             return new DefaultFunctionTypeGetter().getType(callFunctionNode, env);
         } else if (expressionNode instanceof NilExpressionNode) {
-            return  Types.NIL;
+            return Types.NIL;
         } else {
             return this.getType(expressionNode.children().get(0), env);
         }
@@ -39,8 +39,8 @@ public final class DefaultExpressionTypeGetter implements TypeGetter<ExpressionN
             return new DefaultLiteralTypeGetter().getType(literalNode, env);
         } else if (expressionNode instanceof CallFunctionNode callFunctionNode) {
             return new DefaultFunctionTypeGetter().getType(callFunctionNode, env);
-        } else if(expressionNode instanceof  NilExpressionNode) {
-            return  Types.NIL;
+        } else if (expressionNode instanceof NilExpressionNode) {
+            return Types.NIL;
         } else {
             return this.getType(expressionNode.children().get(0), env);
         }

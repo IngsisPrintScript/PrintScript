@@ -1,43 +1,49 @@
-package com.ingsis.formatter.rules;
+/*
+ * My Project
+ */
 
-import java.util.List;
+package com.ingsis.formatter.rules;
 
 import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.type.TokenType;
+import java.util.List;
 
 public class LinesAfterFunctionCall implements TriviaRule {
-  private final Integer amount;
+    private final Integer amount;
 
-  public LinesAfterFunctionCall(Integer amount) {
-    this.amount = amount;
-  }
+    public LinesAfterFunctionCall(Integer amount) {
+        this.amount = amount;
+    }
 
-  @Override
-  public boolean applies(Token previousToken, Token currentToken) {
-    return previousToken.type().equals(TokenType.SEMICOLON);
-  }
+    @Override
+    public boolean applies(Token previousToken, Token currentToken) {
+        return previousToken.type().equals(TokenType.SEMICOLON);
+    }
 
-  @Override
-  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder, int indentation) {
-    if (amount == null) {
-      if (indentation==0){
-        for (Token token : trivia) {
-          stringBuilder.append(token.value());
+    @Override
+    public StringBuilder apply(
+            Token previousToken,
+            List<Token> trivia,
+            Token currentToken,
+            StringBuilder stringBuilder,
+            int indentation) {
+        if (amount == null) {
+            if (indentation == 0) {
+                for (Token token : trivia) {
+                    stringBuilder.append(token.value());
+                }
+            } else {
+                stringBuilder.append("\n");
+            }
+        } else {
+            stringBuilder.append("\n".repeat(Math.max(0, amount + 1)));
         }
-      } else {
-        stringBuilder.append("\n");
-      }
-    } else {
-      stringBuilder.append("\n".repeat(Math.max(0, amount + 1)));
+        if (indentation > 0) {
+
+            stringBuilder.append(" ".repeat(indentation));
+        }
+
+        stringBuilder.append(currentToken.value());
+        return stringBuilder;
     }
-    if (indentation > 0) {
-
-      stringBuilder.append(" ".repeat(indentation));
-    }
-
-    stringBuilder.append(currentToken.value());
-    return stringBuilder;
-  }
-
-
 }

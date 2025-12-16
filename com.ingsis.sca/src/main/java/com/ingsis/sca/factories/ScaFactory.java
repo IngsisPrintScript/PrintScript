@@ -17,34 +17,35 @@ import com.ingsis.utils.rule.status.provider.RuleStatusProvider;
 import java.io.InputStream;
 
 public class ScaFactory implements SafeIteratorFactory<String> {
-  private final SafeIteratorFactory<Interpretable> checkableIteratorFactory;
-  private final IterationResultFactory iterationResultFactory;
-  private final RuleStatusProvider ruleStatusProvider;
+    private final SafeIteratorFactory<Interpretable> checkableIteratorFactory;
+    private final IterationResultFactory iterationResultFactory;
+    private final RuleStatusProvider ruleStatusProvider;
 
-  public ScaFactory(
-      SafeIteratorFactory<Interpretable> checkableIteratorFactory,
-      IterationResultFactory iterationResultFactory,
-      RuleStatusProvider ruleStatusProvider) {
-    this.checkableIteratorFactory = checkableIteratorFactory;
-    this.iterationResultFactory = iterationResultFactory;
-    this.ruleStatusProvider = ruleStatusProvider;
-  }
+    public ScaFactory(
+            SafeIteratorFactory<Interpretable> checkableIteratorFactory,
+            IterationResultFactory iterationResultFactory,
+            RuleStatusProvider ruleStatusProvider) {
+        this.checkableIteratorFactory = checkableIteratorFactory;
+        this.iterationResultFactory = iterationResultFactory;
+        this.ruleStatusProvider = ruleStatusProvider;
+    }
 
-  @Override
-  public SafeIterator<String> fromInputStream(InputStream in) {
-    Checker eventsChecker = new DefaultCheckerFactory()
-        .createInMemoryEventBasedChecker(
-            new DefaultStaticCodeAnalyzerHandlerFactory(ruleStatusProvider));
-    return new ProgramSca(
-        checkableIteratorFactory.fromInputStream(in),
-        eventsChecker,
-        new DefaultSemanticEnvironmentFactory().root(),
-        iterationResultFactory);
-  }
+    @Override
+    public SafeIterator<String> fromInputStream(InputStream in) {
+        Checker eventsChecker =
+                new DefaultCheckerFactory()
+                        .createInMemoryEventBasedChecker(
+                                new DefaultStaticCodeAnalyzerHandlerFactory(ruleStatusProvider));
+        return new ProgramSca(
+                checkableIteratorFactory.fromInputStream(in),
+                eventsChecker,
+                new DefaultSemanticEnvironmentFactory().root(),
+                iterationResultFactory);
+    }
 
-  @Override
-  public SafeIterator<String> fromInputStreamLogger(InputStream in, String debugPath) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'fromInputStreamLogger'");
-  }
+    @Override
+    public SafeIterator<String> fromInputStreamLogger(InputStream in, String debugPath) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'fromInputStreamLogger'");
+    }
 }

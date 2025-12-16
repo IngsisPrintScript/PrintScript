@@ -16,66 +16,69 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DefaultFormatterFactory implements SafeIteratorFactory<String> {
-  private final SafeIteratorFactory<Token> tokenIteratorFactory;
-  private final IterationResultFactory iterationResultFactory;
-  private final RuleStatusProvider ruleStatusProvider;
+    private final SafeIteratorFactory<Token> tokenIteratorFactory;
+    private final IterationResultFactory iterationResultFactory;
+    private final RuleStatusProvider ruleStatusProvider;
 
-  public DefaultFormatterFactory(
-      SafeIteratorFactory<Token> tokenIteratorFactory,
-      IterationResultFactory iterationResultFactory,
-      RuleStatusProvider ruleStatusProvider) {
-    this.tokenIteratorFactory = tokenIteratorFactory;
-    this.iterationResultFactory = iterationResultFactory;
-    this.ruleStatusProvider = ruleStatusProvider;
-  }
+    public DefaultFormatterFactory(
+            SafeIteratorFactory<Token> tokenIteratorFactory,
+            IterationResultFactory iterationResultFactory,
+            RuleStatusProvider ruleStatusProvider) {
+        this.tokenIteratorFactory = tokenIteratorFactory;
+        this.iterationResultFactory = iterationResultFactory;
+        this.ruleStatusProvider = ruleStatusProvider;
+    }
 
-  @Override
-  public SafeIterator<String> fromInputStream(InputStream in) {
-    List<TriviaRule> triviaRules = new ArrayList<>();
-    if (ruleStatusProvider.getRuleStatus("enforce-no-spacing-around-equals")) {
-      triviaRules.add(new SpaceBeforeEquals(false));
-      triviaRules.add(new SpaceAfterEquals(false));
-    } else if (ruleStatusProvider.getRuleStatus("enforce-spacing-around-equals")) {
-      triviaRules.add(new SpaceBeforeEquals(true));
-      triviaRules.add(new SpaceAfterEquals(true));
+    @Override
+    public SafeIterator<String> fromInputStream(InputStream in) {
+        List<TriviaRule> triviaRules = new ArrayList<>();
+        if (ruleStatusProvider.getRuleStatus("enforce-no-spacing-around-equals")) {
+            triviaRules.add(new SpaceBeforeEquals(false));
+            triviaRules.add(new SpaceAfterEquals(false));
+        } else if (ruleStatusProvider.getRuleStatus("enforce-spacing-around-equals")) {
+            triviaRules.add(new SpaceBeforeEquals(true));
+            triviaRules.add(new SpaceAfterEquals(true));
+        }
+        if (ruleStatusProvider.getRuleStatus("enforce-spacing-after-colon-in-declaration")) {
+            triviaRules.add(new SpaceAfterColon());
+        }
+        if (ruleStatusProvider.getRuleStatus("enforce-spacing-before-colon-in-declaration")) {
+            triviaRules.add(new SpaceBeforeColon());
+        }
+        if (ruleStatusProvider.getRuleStatus("if-brace-same-line")) {
+            triviaRules.add(new BraceLine(true));
+        } else if (ruleStatusProvider.getRuleStatus("if-brace-below-line")) {
+            triviaRules.add(new BraceLine(false));
+        }
+        if (ruleStatusProvider.getRuleStatus("mandatory-line-break-after-statement")) {
+            triviaRules.add(new LineBreakAfterStatement());
+        }
+        if (ruleStatusProvider.getRuleStatus("mandatory-single-space-separation")) {
+            triviaRules.add(new SingleSpaceInBetween());
+        }
+        if (ruleStatusProvider.getRuleStatus("mandatory-space-surrounding-operations")) {
+            triviaRules.add(new SpaceBeforeOperator());
+            triviaRules.add(new SpaceAfterOperator());
+        }
+        if (ruleStatusProvider.getRuleStatus("if-brace-below-line")) {
+            triviaRules.add(new BraceLine(false));
+        } else if (ruleStatusProvider.getRuleStatus("if-brace-same-line")) {
+            triviaRules.add(new BraceLine(true));
+        }
+        triviaRules.add(new BaseRule());
+        return new ProgramFormatter(
+                tokenIteratorFactory.fromInputStream(in),
+                iterationResultFactory,
+                triviaRules,
+                new LinesAfterFunctionCall(
+                        ruleStatusProvider.getRuleValue(
+                                "line-breaks-after-println", Integer.class)),
+                ruleStatusProvider.getRuleValue("indent-inside-if", Integer.class));
     }
-    if (ruleStatusProvider.getRuleStatus("enforce-spacing-after-colon-in-declaration")) {
-      triviaRules.add(new SpaceAfterColon());
-    }
-    if (ruleStatusProvider.getRuleStatus("enforce-spacing-before-colon-in-declaration")) {
-      triviaRules.add(new SpaceBeforeColon());
-    }
-    if (ruleStatusProvider.getRuleStatus("if-brace-same-line")){
-      triviaRules.add(new BraceLine(true));
-    } else if (ruleStatusProvider.getRuleStatus("if-brace-below-line")) {
-      triviaRules.add(new BraceLine(false));
-    }
-    if (ruleStatusProvider.getRuleStatus("mandatory-line-break-after-statement")){
-      triviaRules.add(new LineBreakAfterStatement());
-    }
-    if (ruleStatusProvider.getRuleStatus("mandatory-single-space-separation")) {
-      triviaRules.add(new SingleSpaceInBetween());
-    }
-    if (ruleStatusProvider.getRuleStatus("mandatory-space-surrounding-operations")) {
-      triviaRules.add(new SpaceBeforeOperator());
-      triviaRules.add(new SpaceAfterOperator());
-    }
-    if (ruleStatusProvider.getRuleStatus("if-brace-below-line")) {
-      triviaRules.add(new BraceLine(false));
-    } else if (ruleStatusProvider.getRuleStatus("if-brace-same-line")) {
-      triviaRules.add(new BraceLine(true));
-    }
-    triviaRules.add(new BaseRule());
-    return new ProgramFormatter(
-            tokenIteratorFactory.fromInputStream(in),
-        iterationResultFactory, triviaRules,
-            new LinesAfterFunctionCall(ruleStatusProvider.getRuleValue("line-breaks-after-println", Integer.class)),
-            ruleStatusProvider.getRuleValue("indent-inside-if", Integer.class));
-  }
 
-  @Override
-  public SafeIterator<String> fromInputStreamLogger(InputStream in, String debugPath) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'fromInputStreamLogger'");
-  }
+    @Override
+    public SafeIterator<String> fromInputStreamLogger(InputStream in, String debugPath) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'fromInputStreamLogger'");
+    }
 }

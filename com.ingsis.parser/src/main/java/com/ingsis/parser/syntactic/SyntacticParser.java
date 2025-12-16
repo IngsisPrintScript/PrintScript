@@ -45,8 +45,8 @@ public final class SyntacticParser implements SafeIterator<Checkable> {
             }
             switch (process(stream)) {
                 case ParseResult.COMPLETE<Node> C -> {
-                    if (!C.finalStream().isEmpty()){
-                        return  processCheckpoint(checkpoint, stream);
+                    if (!C.finalStream().isEmpty()) {
+                        return processCheckpoint(checkpoint, stream);
                     }
                     checkpoint =
                             new ParseCheckpoint.INITIALIZED(

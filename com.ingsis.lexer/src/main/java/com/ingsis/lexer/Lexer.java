@@ -71,19 +71,21 @@ public final class Lexer implements SafeIterator<Token> {
             }
             iterationResult = iterationResult.nextIterator().next();
         }
-        if (!iterationResult.isCorrect() && checkpoint.equals(new TokenizeCheckpoint.UNINITIALIZED())){
+        if (!iterationResult.isCorrect()
+                && checkpoint.equals(new TokenizeCheckpoint.UNINITIALIZED())) {
             return iterationResultFactory.cloneIncorrectResult(iterationResult);
         }
         return processCheckpoint(checkpoint, false);
     }
 
-    private SafeIterationResult<Token> processCheckpoint(TokenizeCheckpoint checkpoint, boolean triviaProcessed) {
+    private SafeIterationResult<Token> processCheckpoint(
+            TokenizeCheckpoint checkpoint, boolean triviaProcessed) {
         return switch (checkpoint) {
             case TokenizeCheckpoint.UNINITIALIZED U ->
                     iterationResultFactory.createIncorrectResult("Error lexing");
             case TokenizeCheckpoint.INITIALIZED I -> {
-                if (!triviaProcessed){
-                    yield  processTrailingTrivia(I);
+                if (!triviaProcessed) {
+                    yield processTrailingTrivia(I);
                 }
                 yield iterationResultFactory.createCorrectResult(
                         I.token(),
@@ -97,27 +99,27 @@ public final class Lexer implements SafeIterator<Token> {
         };
     }
 
-    private SafeIterationResult<Token> processTrailingTrivia(TokenizeCheckpoint.INITIALIZED checkpoint){
+    private SafeIterationResult<Token> processTrailingTrivia(
+            TokenizeCheckpoint.INITIALIZED checkpoint) {
         SafeIterationResult<MetaChar> iterationResult = checkpoint.nextIterator().next();
         MetaCharStringBuilder sb = new MetaCharStringBuilder();
         List<Token> trailingTrivia = new ArrayList<>();
         boolean isTrivia = true;
-        while (iterationResult.isCorrect() && isTrivia){
+        while (iterationResult.isCorrect() && isTrivia) {
             sb = sb.append(iterationResult.iterationResult());
-            switch (tokenizeTriviaToken(sb)){
+            switch (tokenizeTriviaToken(sb)) {
                 case TokenizeResult.COMPLETE C -> {
                     trailingTrivia.add(C.token());
-                    checkpoint = new TokenizeCheckpoint.INITIALIZED(
-                            new DefaultToken(
-                                    checkpoint.token().type(),
-                                    checkpoint.token().value(),
-                                    checkpoint.token().leadingTrivia(),
-                                    trailingTrivia,
-                                    checkpoint.token().line(),
-                                    checkpoint.token().column()
-                            ),
-                            iterationResult.nextIterator()
-                    );
+                    checkpoint =
+                            new TokenizeCheckpoint.INITIALIZED(
+                                    new DefaultToken(
+                                            checkpoint.token().type(),
+                                            checkpoint.token().value(),
+                                            checkpoint.token().leadingTrivia(),
+                                            trailingTrivia,
+                                            checkpoint.token().line(),
+                                            checkpoint.token().column()),
+                                    iterationResult.nextIterator());
                     sb = new MetaCharStringBuilder();
                 }
                 default -> {
