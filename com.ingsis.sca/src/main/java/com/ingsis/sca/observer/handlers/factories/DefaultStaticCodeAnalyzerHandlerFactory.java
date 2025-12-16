@@ -32,11 +32,15 @@ public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerSupplier 
   public NodeEventHandler<Node> getDeclarationHandler() {
     NodeEventHandler<Node> identifierChecker;
     String format = ruleStatusProvider.getRuleValue("identifier_format", String.class);
+    if (format == null) {
+      format = "default";
+    }
     switch (format) {
-      case "camel case" -> identifierChecker = new IdentifierPatternChecker(
-          "^[a-z]+(?:[A-Z][a-z0-9]*)*$", "camelCase");
-      case "snake case" -> identifierChecker = new IdentifierPatternChecker(
-          "^[a-z]+(?:_[a-z0-9]+)*$", "snake_case");
+      case "camel case" ->
+        identifierChecker = new IdentifierPatternChecker(
+            "^[a-z]+(?:[A-Z][a-z0-9]*)*$", "camelCase");
+      case "snake case" ->
+        identifierChecker = new IdentifierPatternChecker("^[a-z]+(?:_[a-z0-9]+)*$", "snake_case");
       default -> identifierChecker = new AndNodeEventHandlerRegistry<>();
     }
     return new DeclarationHandler(identifierChecker, getExpressionHandler());
@@ -44,18 +48,17 @@ public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerSupplier 
 
   @Override
   public NodeEventHandler<Node> getExpressionHandler() {
-    NodeEventHandler<Node> expressionHandler = new AndNodeEventHandlerRegistry<>();
+    NodeEventHandlerRegistry<Node> registry = new AndNodeEventHandlerRegistry<>();
 
     if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-println")) {
-      expressionHandler = new FunctionArgumentTypeChecker(
-          "println", List.of(LiteralNode.class, IdentifierNode.class));
+      registry = registry.register(new FunctionArgumentTypeChecker(
+          "println", List.of(LiteralNode.class, IdentifierNode.class)));
     }
     if (ruleStatusProvider.getRuleStatus("mandatory-variable-or-literal-in-readInput")) {
-      expressionHandler = new FunctionArgumentTypeChecker(
-          "readInput", List.of(LiteralNode.class, IdentifierNode.class));
+      registry = registry.register(new FunctionArgumentTypeChecker(
+          "readInput", List.of(LiteralNode.class, IdentifierNode.class)));
     }
-
-    return expressionHandler;
+    return registry;
   }
 
   @Override
@@ -64,8 +67,9 @@ public class DefaultStaticCodeAnalyzerHandlerFactory implements HandlerSupplier 
     NodeEventHandlerRegistry<Node> registry = new OrNodeEventHandlerRegistry<>();
     registry = registry.register(getDeclarationHandler());
     registry = registry.register(getExpressionHandler());
-    registry = registry.register(new ConditionalSca(() -> registryRef.get()));
+    registry = registry.register(new ConditionalSca(registryRef::get));
     registryRef.set(registry);
-    return new ConditionalSca(() -> registryRef.get());
+
+    return registryRef.get();
   }
 }

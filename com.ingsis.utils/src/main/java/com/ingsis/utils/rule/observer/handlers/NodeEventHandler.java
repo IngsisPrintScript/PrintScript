@@ -9,5 +9,5 @@ import com.ingsis.utils.nodes.Node;
 import com.ingsis.utils.nodes.visitors.CheckResult;
 
 public interface NodeEventHandler<T extends Node> {
-  CheckResult handle(T node, SemanticEnvironment env);
+    CheckResult handle(T node, SemanticEnvironment env);
 }

@@ -10,9 +10,9 @@ import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.keyword.IfKeywordNode;
 
 public interface Checker {
-  CheckResult check(IfKeywordNode ifKeywordNode, SemanticEnvironment env);
+    CheckResult check(IfKeywordNode ifKeywordNode, SemanticEnvironment env);
 
-  CheckResult check(DeclarationKeywordNode declarationKeywordNode, SemanticEnvironment env);
+    CheckResult check(DeclarationKeywordNode declarationKeywordNode, SemanticEnvironment env);
 
-  CheckResult check(ExpressionNode expressionNode, SemanticEnvironment env);
+    CheckResult check(ExpressionNode expressionNode, SemanticEnvironment env);
 }

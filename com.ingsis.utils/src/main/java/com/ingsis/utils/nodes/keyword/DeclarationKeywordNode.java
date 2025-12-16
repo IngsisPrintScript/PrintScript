@@ -16,21 +16,21 @@ import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.type.types.Types;
 
 public record DeclarationKeywordNode(
-    IdentifierNode identifierNode,
-    ExpressionNode expressionNode,
-    Types declaredType,
-    boolean isMutable,
-    Integer line,
-    Integer column)
-    implements Node {
+        IdentifierNode identifierNode,
+        ExpressionNode expressionNode,
+        Types declaredType,
+        boolean isMutable,
+        Integer line,
+        Integer column)
+        implements Node {
 
-  @Override
-  public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
-    return checker.check(this, env);
-  }
+    @Override
+    public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
+        return checker.check(this, env);
+    }
 
-  @Override
-  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
-    return interpreter.interpret(this, evalState);
-  }
+    @Override
+    public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+        return interpreter.interpret(this, evalState);
+    }
 }

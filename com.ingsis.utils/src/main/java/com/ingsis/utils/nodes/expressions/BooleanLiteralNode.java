@@ -11,36 +11,33 @@ import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.InterpretResult;
 import com.ingsis.utils.nodes.visitors.Interpreter;
 import com.ingsis.utils.value.Value;
-
 import java.util.List;
 
 public final record BooleanLiteralNode(Boolean value, Integer line, Integer column)
-    implements LiteralNode {
+        implements LiteralNode {
 
-  @Override
-  public List<ExpressionNode> children() {
-    return List.of();
-  }
+    @Override
+    public List<ExpressionNode> children() {
+        return List.of();
+    }
 
-  @Override
-  public String symbol() {
-    return value().toString();
-  }
+    @Override
+    public String symbol() {
+        return value().toString();
+    }
 
-  @Override
-  public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
-    return checker.check(this, env);
-  }
+    @Override
+    public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
+        return checker.check(this, env);
+    }
 
-  @Override
-  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
-    return interpreter.interpret(this, evalState);
-  }
+    @Override
+    public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+        return interpreter.interpret(this, evalState);
+    }
 
-  @Override
-  public InterpretResult solve(EvalState evalState) {
-    return new InterpretResult.CORRECT(
-        evalState,
-        new Value.BooleanValue(value()));
-  }
+    @Override
+    public InterpretResult solve(EvalState evalState) {
+        return new InterpretResult.CORRECT(evalState, new Value.BooleanValue(value()));
+    }
 }

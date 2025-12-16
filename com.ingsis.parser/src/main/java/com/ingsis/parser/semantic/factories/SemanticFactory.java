@@ -7,7 +7,7 @@ package com.ingsis.parser.semantic.factories;
 import com.ingsis.parser.semantic.LoggerSemanticChecker;
 import com.ingsis.parser.semantic.SemanticChecker;
 import com.ingsis.parser.semantic.checkers.handlers.factories.DefaultHandlersFactory;
-import com.ingsis.utils.evalstate.env.semantic.ScopedSemanticEnvironment;
+import com.ingsis.utils.evalstate.env.semantic.factories.DefaultSemanticEnvironmentFactory;
 import com.ingsis.utils.iterator.safe.SafeIterator;
 import com.ingsis.utils.iterator.safe.factories.SafeIteratorFactory;
 import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
@@ -16,7 +16,6 @@ import com.ingsis.utils.nodes.visitors.Checker;
 import com.ingsis.utils.nodes.visitors.Interpretable;
 import com.ingsis.utils.rule.observer.factories.DefaultCheckerFactory;
 import java.io.InputStream;
-import java.util.Map;
 
 public final class SemanticFactory implements SafeIteratorFactory<Interpretable> {
   private final SafeIteratorFactory<Checkable> checkableIteratorFactory;
@@ -28,8 +27,7 @@ public final class SemanticFactory implements SafeIteratorFactory<Interpretable>
       IterationResultFactory iterationResultFactory) {
     this.checkableIteratorFactory = nodeIteratorFactory;
     this.checker = new DefaultCheckerFactory()
-        .createInMemoryEventBasedChecker(
-            new DefaultHandlersFactory());
+        .createInMemoryEventBasedChecker(new DefaultHandlersFactory());
     this.iterationResultFactory = iterationResultFactory;
   }
 
@@ -38,7 +36,7 @@ public final class SemanticFactory implements SafeIteratorFactory<Interpretable>
     return new SemanticChecker(
         checkableIteratorFactory.fromInputStream(in),
         checker,
-        new ScopedSemanticEnvironment(null, Map.of()),
+        new DefaultSemanticEnvironmentFactory().root(),
         iterationResultFactory);
   }
 
@@ -49,7 +47,7 @@ public final class SemanticFactory implements SafeIteratorFactory<Interpretable>
           new SemanticChecker(
               checkableIteratorFactory.fromInputStream(in),
               checker,
-              new ScopedSemanticEnvironment(null, Map.of()),
+              new DefaultSemanticEnvironmentFactory().root(),
               iterationResultFactory),
           debugPath,
           iterationResultFactory);

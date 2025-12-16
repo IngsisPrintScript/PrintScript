@@ -10,7 +10,7 @@ import com.ingsis.utils.rule.observer.handlers.factories.HandlerSupplier;
 
 public class DefaultCheckerFactory implements CheckerFactory {
 
-  public Checker createInMemoryEventBasedChecker(HandlerSupplier handlerSupplier) {
-    return new EventsChecker(handlerSupplier);
-  }
+    public Checker createInMemoryEventBasedChecker(HandlerSupplier handlerSupplier) {
+        return new EventsChecker(handlerSupplier);
+    }
 }

@@ -9,5 +9,5 @@ import com.ingsis.utils.evalstate.io.InputSupplier;
 import com.ingsis.utils.evalstate.io.OutputEmitter;
 
 public sealed interface EnvironmentFactory permits DefaultEnviromentFactory {
-  Environment createRoot(OutputEmitter emitter, InputSupplier supplier);
+    Environment createRoot(OutputEmitter emitter, InputSupplier supplier);
 }

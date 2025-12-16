@@ -14,21 +14,21 @@ import com.ingsis.utils.type.typer.TypeGetter;
 import com.ingsis.utils.type.types.Types;
 
 public final class DefaultLiteralTypeGetter implements TypeGetter<LiteralNode> {
-  @Override
-  public Types getType(LiteralNode expressionNode, Environment env) {
-    return getType(expressionNode);
-  }
+    @Override
+    public Types getType(LiteralNode expressionNode, Environment env) {
+        return getType(expressionNode);
+    }
 
-  @Override
-  public Types getType(LiteralNode expressionNode, SemanticEnvironment env) {
-    return getType(expressionNode);
-  }
+    @Override
+    public Types getType(LiteralNode expressionNode, SemanticEnvironment env) {
+        return getType(expressionNode);
+    }
 
-  private Types getType(LiteralNode literalNode) {
-    return switch (literalNode) {
-      case StringLiteralNode ignored -> Types.STRING;
-      case NumberLiteralNode ignored -> Types.NUMBER;
-      case BooleanLiteralNode ignored -> Types.BOOLEAN;
-    };
-  }
+    private Types getType(LiteralNode literalNode) {
+        return switch (literalNode) {
+            case StringLiteralNode ignored -> Types.STRING;
+            case NumberLiteralNode ignored -> Types.NUMBER;
+            case BooleanLiteralNode ignored -> Types.BOOLEAN;
+        };
+    }
 }

@@ -17,4 +17,6 @@ public interface Token {
     String value();
 
     List<Token> leadingTrivia();
+
+    List<Token> trailingTrivia();
 }

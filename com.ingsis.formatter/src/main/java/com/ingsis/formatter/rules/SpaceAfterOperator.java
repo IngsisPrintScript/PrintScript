@@ -1,0 +1,21 @@
+package com.ingsis.formatter.rules;
+
+import java.util.List;
+
+import com.ingsis.utils.token.Token;
+import com.ingsis.utils.token.type.TokenType;
+
+public class SpaceAfterOperator implements TriviaRule {
+  @Override
+  public boolean appliea(Token previousToken, Token currentToken) {
+    return TokenType.OPERATORS.contains(previousToken.type());
+  }
+
+  @Override
+  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder stringBuilder) {
+    stringBuilder.append(" ");
+    stringBuilder.append(currentToken.value());
+    return stringBuilder;
+  }
+
+}

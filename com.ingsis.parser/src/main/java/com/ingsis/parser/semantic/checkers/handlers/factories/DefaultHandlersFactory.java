@@ -4,6 +4,9 @@
 
 package com.ingsis.parser.semantic.checkers.handlers.factories;
 
+import java.util.concurrent.atomic.AtomicReference;
+
+import com.ingsis.parser.semantic.checkers.handlers.conditional.ConditionalHandler;
 import com.ingsis.parser.semantic.checkers.handlers.identifier.existance.ExpressionNodeEventVariableExistenceHandler;
 import com.ingsis.parser.semantic.checkers.handlers.identifier.existance.LetNodeEventVariableExistenceHandler;
 import com.ingsis.parser.semantic.checkers.handlers.identifier.type.LetNodeCorrectTypeEventHandler;
@@ -19,24 +22,29 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public final class DefaultHandlersFactory implements HandlerSupplier {
   @Override
   public NodeEventHandler<Node> getDeclarationHandler() {
-    NodeEventHandlerRegistry<Node> handler = new AndNodeEventHandlerRegistry<>();
-    handler.register(new LetNodeEventVariableExistenceHandler());
-    handler.register(new LetNodeCorrectTypeEventHandler());
-    return handler;
+    NodeEventHandlerRegistry<Node> registry = new AndNodeEventHandlerRegistry<>();
+    registry = registry.register(new LetNodeEventVariableExistenceHandler());
+    registry = registry.register(new LetNodeCorrectTypeEventHandler());
+    return registry;
   }
 
   @Override
   public NodeEventHandler<Node> getConditionalHandler() {
-    NodeEventHandlerRegistry<Node> handlerRegistry = new AndNodeEventHandlerRegistry<>();
-    return handlerRegistry;
+    AtomicReference<NodeEventHandler<Node>> registryRef = new AtomicReference<>();
+    NodeEventHandlerRegistry<Node> registry = new AndNodeEventHandlerRegistry<>();
+    registry = registry.register(getDeclarationHandler());
+    registry = registry.register(getExpressionHandler());
+    registry = registry.register(new ConditionalHandler(registryRef::get));
+    registryRef.set(registry);
+
+    return registryRef.get();
   }
 
   @Override
   public NodeEventHandler<Node> getExpressionHandler() {
-    NodeEventHandlerRegistry<Node> handlerRegistry = new AndNodeEventHandlerRegistry<>();
-    handlerRegistry.register(
-        new ExpressionNodeEventVariableExistenceHandler());
-    handlerRegistry.register(new OperatorNodeValidityHandler());
-    return handlerRegistry;
+    NodeEventHandlerRegistry<Node> registry = new AndNodeEventHandlerRegistry<>();
+    registry = registry.register(new ExpressionNodeEventVariableExistenceHandler());
+    registry = registry.register(new OperatorNodeValidityHandler());
+    return registry;
   }
 }

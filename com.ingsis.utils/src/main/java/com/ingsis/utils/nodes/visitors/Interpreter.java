@@ -10,9 +10,9 @@ import com.ingsis.utils.nodes.keyword.DeclarationKeywordNode;
 import com.ingsis.utils.nodes.keyword.IfKeywordNode;
 
 public interface Interpreter {
-  InterpretResult interpret(IfKeywordNode ifKeywordNode, EvalState evalState);
+    InterpretResult interpret(IfKeywordNode ifKeywordNode, EvalState evalState);
 
-  InterpretResult interpret(DeclarationKeywordNode declarationKeywordNode, EvalState evalState);
+    InterpretResult interpret(DeclarationKeywordNode declarationKeywordNode, EvalState evalState);
 
-  InterpretResult interpret(ExpressionNode expressionNode, EvalState evalState);
+    InterpretResult interpret(ExpressionNode expressionNode, EvalState evalState);
 }

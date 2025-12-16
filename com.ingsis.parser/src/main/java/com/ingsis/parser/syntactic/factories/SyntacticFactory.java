@@ -16,45 +16,44 @@ import com.ingsis.utils.token.factories.TokenFactory;
 import java.io.InputStream;
 
 public final class SyntacticFactory implements SafeIteratorFactory<Checkable> {
-  private final SafeIteratorFactory<Token> tokenIteratorFactory;
-  private final ParserChainFactory parserChainFactory;
-  private final IterationResultFactory iterationResultFactory;
-  private final TokenFactory tokenFactory;
+    private final SafeIteratorFactory<Token> tokenIteratorFactory;
+    private final ParserChainFactory parserChainFactory;
+    private final IterationResultFactory iterationResultFactory;
+    private final TokenFactory tokenFactory;
 
-  public SyntacticFactory(
-      SafeIteratorFactory<Token> tokenIteratorFactory,
-      ParserChainFactory parserFactory,
-      IterationResultFactory iterationResultFactory,
-      TokenFactory tokenFactory) {
-    this.tokenIteratorFactory = tokenIteratorFactory;
-    this.parserChainFactory = parserFactory;
-    this.iterationResultFactory = iterationResultFactory;
-    this.tokenFactory = tokenFactory;
-  }
-
-  @Override
-  public SafeIterator<Checkable> fromInputStream(InputStream in) {
-    return new SyntacticParser(
-        tokenIteratorFactory.fromInputStream(in),
-        parserChainFactory.createDefaultChain(),
-        new DefaultTokenStream(tokenFactory, iterationResultFactory),
-        iterationResultFactory);
-  }
-
-  @Override
-  public SafeIterator<Checkable> fromInputStreamLogger(InputStream in, String debugPath) {
-    try {
-      return new LogerSyntacticParser(
-          new SyntacticParser(
-              tokenIteratorFactory.fromInputStreamLogger(in, debugPath),
-              parserChainFactory.createDefaultChain(),
-              new DefaultTokenStream(
-                  tokenFactory, iterationResultFactory),
-              iterationResultFactory),
-          debugPath,
-          iterationResultFactory);
-    } catch (Exception exception) {
-      throw new RuntimeException();
+    public SyntacticFactory(
+            SafeIteratorFactory<Token> tokenIteratorFactory,
+            ParserChainFactory parserFactory,
+            IterationResultFactory iterationResultFactory,
+            TokenFactory tokenFactory) {
+        this.tokenIteratorFactory = tokenIteratorFactory;
+        this.parserChainFactory = parserFactory;
+        this.iterationResultFactory = iterationResultFactory;
+        this.tokenFactory = tokenFactory;
     }
-  }
+
+    @Override
+    public SafeIterator<Checkable> fromInputStream(InputStream in) {
+        return new SyntacticParser(
+                tokenIteratorFactory.fromInputStream(in),
+                parserChainFactory.createDefaultChain(),
+                new DefaultTokenStream(tokenFactory, iterationResultFactory),
+                iterationResultFactory);
+    }
+
+    @Override
+    public SafeIterator<Checkable> fromInputStreamLogger(InputStream in, String debugPath) {
+        try {
+            return new LogerSyntacticParser(
+                    new SyntacticParser(
+                            tokenIteratorFactory.fromInputStreamLogger(in, debugPath),
+                            parserChainFactory.createDefaultChain(),
+                            new DefaultTokenStream(tokenFactory, iterationResultFactory),
+                            iterationResultFactory),
+                    debugPath,
+                    iterationResultFactory);
+        } catch (Exception exception) {
+            throw new RuntimeException();
+        }
+    }
 }

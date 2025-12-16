@@ -15,35 +15,35 @@ import com.ingsis.utils.nodes.visitors.Interpreter;
 import java.util.List;
 
 public record IfKeywordNode(
-    ExpressionNode condition,
-    List<Node> thenBody,
-    List<Node> elseBody,
-    Integer line,
-    Integer column)
-    implements Node {
+        ExpressionNode condition,
+        List<Node> thenBody,
+        List<Node> elseBody,
+        Integer line,
+        Integer column)
+        implements Node {
 
-  public IfKeywordNode {
-    thenBody = List.copyOf(thenBody);
-    elseBody = List.copyOf(elseBody);
-  }
+    public IfKeywordNode {
+        thenBody = List.copyOf(thenBody);
+        elseBody = List.copyOf(elseBody);
+    }
 
-  @Override
-  public List<Node> thenBody() {
-    return List.copyOf(thenBody);
-  }
+    @Override
+    public List<Node> thenBody() {
+        return List.copyOf(thenBody);
+    }
 
-  @Override
-  public List<Node> elseBody() {
-    return List.copyOf(elseBody);
-  }
+    @Override
+    public List<Node> elseBody() {
+        return List.copyOf(elseBody);
+    }
 
-  @Override
-  public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
-    return checker.check(this, env);
-  }
+    @Override
+    public CheckResult acceptChecker(Checker checker, SemanticEnvironment env) {
+        return checker.check(this, env);
+    }
 
-  @Override
-  public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
-    return interpreter.interpret(this, evalState);
-  }
+    @Override
+    public InterpretResult acceptInterpreter(Interpreter interpreter, EvalState evalState) {
+        return interpreter.interpret(this, evalState);
+    }
 }

@@ -16,47 +16,52 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 @SuppressFBWarnings("EI_EXPOSE_REP2")
 public final class SemanticChecker implements SafeIterator<Interpretable> {
-  private final SafeIterator<Checkable> checkableStream;
-  private final Checker checker;
-  private final SemanticEnvironment env;
-  private final IterationResultFactory iterationResultFactory;
+    private final SafeIterator<Checkable> checkableStream;
+    private final Checker checker;
+    private final SemanticEnvironment env;
+    private final IterationResultFactory iterationResultFactory;
 
-  public SemanticChecker(
-      SafeIterator<Checkable> checkableStream,
-      Checker checker,
-      SemanticEnvironment env,
-      IterationResultFactory iterationResultFactory) {
-    this.checkableStream = checkableStream;
-    this.checker = checker;
-    this.env = env;
-    this.iterationResultFactory = iterationResultFactory;
-  }
-
-  private CheckResult parse(Checkable checkable) {
-    return checkable.acceptChecker(checker, env);
-  }
-
-  @Override
-  public SafeIterationResult<Interpretable> next() {
-    SafeIterationResult<Checkable> iterationResult = checkableStream.next();
-    if (!iterationResult.isCorrect()) {
-      return iterationResultFactory.cloneIncorrectResult(iterationResult);
+    public SemanticChecker(
+            SafeIterator<Checkable> checkableStream,
+            Checker checker,
+            SemanticEnvironment env,
+            IterationResultFactory iterationResultFactory) {
+        this.checkableStream = checkableStream;
+        this.checker = checker;
+        this.env = env;
+        this.iterationResultFactory = iterationResultFactory;
     }
-    return switch (parse(iterationResult.iterationResult())) {
-      case CheckResult.CORRECT C ->
-        createCorrectResult(C, iterationResult.nextIterator(), (Interpretable) iterationResult.iterationResult());
-      case CheckResult.INCORRECT I -> iterationResultFactory.createIncorrectResult(I.error());
-    };
-  }
 
-  private SafeIterationResult<Interpretable> createCorrectResult(CheckResult.CORRECT result,
-      SafeIterator<Checkable> nextIterator, Interpretable interpretable) {
-    return iterationResultFactory.createCorrectResult(
-        interpretable,
-        new SemanticChecker(
-            nextIterator,
-            this.checker,
-            result.environment(),
-            this.iterationResultFactory));
-  }
+    private CheckResult parse(Checkable checkable) {
+        return checkable.acceptChecker(checker, env);
+    }
+
+    @Override
+    public SafeIterationResult<Interpretable> next() {
+        SafeIterationResult<Checkable> iterationResult = checkableStream.next();
+        if (!iterationResult.isCorrect()) {
+            return iterationResultFactory.cloneIncorrectResult(iterationResult);
+        }
+        return switch (parse(iterationResult.iterationResult())) {
+            case CheckResult.CORRECT C ->
+                    createCorrectResult(
+                            C,
+                            iterationResult.nextIterator(),
+                            (Interpretable) iterationResult.iterationResult());
+            case CheckResult.INCORRECT I -> iterationResultFactory.createIncorrectResult(I.error());
+        };
+    }
+
+    private SafeIterationResult<Interpretable> createCorrectResult(
+            CheckResult.CORRECT result,
+            SafeIterator<Checkable> nextIterator,
+            Interpretable interpretable) {
+        return iterationResultFactory.createCorrectResult(
+                interpretable,
+                new SemanticChecker(
+                        nextIterator,
+                        this.checker,
+                        result.environment(),
+                        this.iterationResultFactory));
+    }
 }

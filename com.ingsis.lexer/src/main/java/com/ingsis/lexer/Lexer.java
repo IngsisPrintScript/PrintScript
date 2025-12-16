@@ -10,6 +10,7 @@ import com.ingsis.utils.iterator.safe.result.IterationResultFactory;
 import com.ingsis.utils.iterator.safe.result.SafeIterationResult;
 import com.ingsis.utils.metachar.MetaChar;
 import com.ingsis.utils.metachar.string.builder.MetaCharStringBuilder;
+import com.ingsis.utils.token.DefaultToken;
 import com.ingsis.utils.token.Token;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public final class Lexer implements SafeIterator<Token> {
     private final Tokenizer triviaTokenizer;
     private final Tokenizer tokenizer;
     private final IterationResultFactory iterationResultFactory;
+    private final List<Token> leadingTrivia;
 
     public Lexer(
             SafeIterator<MetaChar> charIterator,
@@ -29,6 +31,20 @@ public final class Lexer implements SafeIterator<Token> {
         this.triviaTokenizer = triviaTokenizer;
         this.tokenizer = tokenizer;
         this.iterationResultFactory = iterationResultFactory;
+        this.leadingTrivia = List.of();
+    }
+
+    private Lexer(
+            SafeIterator<MetaChar> charIterator,
+            Tokenizer triviaTokenizer,
+            Tokenizer tokenizer,
+            IterationResultFactory iterationResultFactory,
+            List<Token> leadingTrivia) {
+        this.charIterator = charIterator;
+        this.triviaTokenizer = triviaTokenizer;
+        this.tokenizer = tokenizer;
+        this.iterationResultFactory = iterationResultFactory;
+        this.leadingTrivia = leadingTrivia;
     }
 
     @Override
@@ -40,49 +56,77 @@ public final class Lexer implements SafeIterator<Token> {
         SafeIterationResult<MetaChar> iterationResult = charIterator.next();
         TokenizeCheckpoint checkpoint = new TokenizeCheckpoint.UNINITIALIZED();
         MetaCharStringBuilder sb = new MetaCharStringBuilder();
-        List<Token> trailingTrivia = new ArrayList<>();
         while (iterationResult.isCorrect()) {
             sb = sb.append(iterationResult.iterationResult());
-            switch (tokenizeTriviaToken(sb)) {
-                case TokenizeResult.COMPLETE C:
-                    trailingTrivia.add(C.token());
-                    sb = new MetaCharStringBuilder();
-                    iterationResult = iterationResult.nextIterator().next();
-                    continue;
-                default:
-                    break;
-            }
-
-            switch (tokenizeRealToken(sb, trailingTrivia)) {
+            switch (tokenizeRealToken(sb, leadingTrivia)) {
                 case TokenizeResult.COMPLETE C:
                     checkpoint =
                             new TokenizeCheckpoint.INITIALIZED(
                                     C.token(), iterationResult.nextIterator());
-                    trailingTrivia = new ArrayList<>();
                     break;
                 case TokenizeResult.INVALID I:
-                    return processCheckpoint(checkpoint);
+                    return processCheckpoint(checkpoint, false);
                 case TokenizeResult.PREFIX P:
                     break;
             }
             iterationResult = iterationResult.nextIterator().next();
         }
-        return processCheckpoint(checkpoint);
+        if (!iterationResult.isCorrect() && checkpoint.equals(new TokenizeCheckpoint.UNINITIALIZED())){
+            return iterationResultFactory.cloneIncorrectResult(iterationResult);
+        }
+        return processCheckpoint(checkpoint, false);
     }
 
-    private SafeIterationResult<Token> processCheckpoint(TokenizeCheckpoint checkpoint) {
+    private SafeIterationResult<Token> processCheckpoint(TokenizeCheckpoint checkpoint, boolean triviaProcessed) {
         return switch (checkpoint) {
-            case TokenizeCheckpoint.INITIALIZED I ->
-                    iterationResultFactory.createCorrectResult(
-                            I.token(),
-                            new Lexer(
-                                    I.nextIterator(),
-                                    this.triviaTokenizer,
-                                    this.tokenizer,
-                                    this.iterationResultFactory));
             case TokenizeCheckpoint.UNINITIALIZED U ->
                     iterationResultFactory.createIncorrectResult("Error lexing");
+            case TokenizeCheckpoint.INITIALIZED I -> {
+                if (!triviaProcessed){
+                    yield  processTrailingTrivia(I);
+                }
+                yield iterationResultFactory.createCorrectResult(
+                        I.token(),
+                        new Lexer(
+                                I.nextIterator(),
+                                this.triviaTokenizer,
+                                this.tokenizer,
+                                this.iterationResultFactory,
+                                I.token().trailingTrivia()));
+            }
         };
+    }
+
+    private SafeIterationResult<Token> processTrailingTrivia(TokenizeCheckpoint.INITIALIZED checkpoint){
+        SafeIterationResult<MetaChar> iterationResult = checkpoint.nextIterator().next();
+        MetaCharStringBuilder sb = new MetaCharStringBuilder();
+        List<Token> trailingTrivia = new ArrayList<>();
+        boolean isTrivia = true;
+        while (iterationResult.isCorrect() && isTrivia){
+            sb = sb.append(iterationResult.iterationResult());
+            switch (tokenizeTriviaToken(sb)){
+                case TokenizeResult.COMPLETE C -> {
+                    trailingTrivia.add(C.token());
+                    checkpoint = new TokenizeCheckpoint.INITIALIZED(
+                            new DefaultToken(
+                                    checkpoint.token().type(),
+                                    checkpoint.token().value(),
+                                    checkpoint.token().leadingTrivia(),
+                                    trailingTrivia,
+                                    checkpoint.token().line(),
+                                    checkpoint.token().column()
+                            ),
+                            iterationResult.nextIterator()
+                    );
+                    sb = new MetaCharStringBuilder();
+                }
+                default -> {
+                    isTrivia = false;
+                }
+            }
+            iterationResult = iterationResult.nextIterator().next();
+        }
+        return processCheckpoint(checkpoint, true);
     }
 
     private TokenizeResult tokenizeTriviaToken(MetaCharStringBuilder builder) {

@@ -1,7 +1,8 @@
-package com.ingsis.engine.services;
+/*
+ * My Project
+ */
 
-import java.io.InputStream;
-import java.util.List;
+package com.ingsis.engine.services;
 
 import com.ingsis.charstream.factories.CharStreamFactory;
 import com.ingsis.engine.versions.Version;
@@ -33,48 +34,52 @@ import com.ingsis.utils.token.Token;
 import com.ingsis.utils.token.factories.DefaultTokensFactory;
 import com.ingsis.utils.token.factories.TokenFactory;
 import com.ingsis.utils.token.template.factories.DefaultTokenTemplateFactory;
+import java.io.InputStream;
+import java.util.List;
 
 public class LintService {
-  public Result<String> lint(Version version, InputStream rules, InputStream in) {
-    SafeIterationResult<String> iterationResult = createProgramLinter(version, rules).fromInputStream(in).next();
-    while (iterationResult.isCorrect()) {
-      iterationResult = iterationResult.nextIterator().next();
+    public Result<String> lint(Version version, InputStream rules, InputStream in) {
+        SafeIterationResult<String> iterationResult =
+                createProgramLinter(version, rules).fromInputStream(in).next();
+        while (iterationResult.isCorrect()) {
+            iterationResult = iterationResult.nextIterator().next();
+        }
+        if (!iterationResult.isCorrect() && !iterationResult.error().equals("EOL")) {
+            return new IncorrectResult<>(iterationResult.error());
+        }
+        return new CorrectResult<String>("Passed checks");
     }
-    if (!iterationResult.isCorrect() && !iterationResult.error().equals("EOL")) {
-      return new IncorrectResult<>(iterationResult.error());
-    }
-    return new CorrectResult<String>("Passed checks");
-  }
 
-  private SafeIteratorFactory<String> createProgramLinter(Version version, InputStream rules) {
-    IterationResultFactory baseResultFactory = new DefaultIterationResultFactory();
-    IterationResultFactory iterationResultFactory = new LoggerIterationResultFactory(baseResultFactory);
-    SafeIteratorFactory<MetaChar> metacharIteratorFactory = new CharStreamFactory(iterationResultFactory);
-    TokenFactory tokenFactory = new DefaultTokensFactory();
-    TokenizerFactory tokenizerFactory = null;
-    switch (version) {
-      case V1_0 -> tokenizerFactory = new TokenizerFactoryV1_0(tokenFactory);
-      case V1_1 -> tokenizerFactory = new TokenizerFactoryV1_1(tokenFactory);
+    private SafeIteratorFactory<String> createProgramLinter(Version version, InputStream rules) {
+        IterationResultFactory baseResultFactory = new DefaultIterationResultFactory();
+        IterationResultFactory iterationResultFactory =
+                new LoggerIterationResultFactory(baseResultFactory);
+        SafeIteratorFactory<MetaChar> metacharIteratorFactory =
+                new CharStreamFactory(iterationResultFactory);
+        TokenFactory tokenFactory = new DefaultTokensFactory();
+        TokenizerFactory tokenizerFactory = null;
+        switch (version) {
+            case V1_0 -> tokenizerFactory = new TokenizerFactoryV1_0(tokenFactory);
+            case V1_1 -> tokenizerFactory = new TokenizerFactoryV1_1(tokenFactory);
+        }
+        SafeIteratorFactory<Token> tokenIteratorFactory =
+                new LexerFactory(metacharIteratorFactory, tokenizerFactory, iterationResultFactory);
+        SafeIteratorFactory<Checkable> checkableIteratorFactory =
+                new SyntacticFactory(
+                        tokenIteratorFactory,
+                        new DefaultParserChainFactory(
+                                new InMemoryParserFactory(
+                                        new DefaultTokenTemplateFactory(),
+                                        new DefaultNodeFactory())),
+                        iterationResultFactory,
+                        tokenFactory);
+        SafeIteratorFactory<Interpretable> interpretableIteratorFactory =
+                new SemanticFactory(checkableIteratorFactory, iterationResultFactory);
+        return new ScaFactory(
+                interpretableIteratorFactory,
+                iterationResultFactory,
+                new RuleStatusProviderRegistry(
+                                List.of(new YamlRuleStatusProvider(), new JsonRuleStatusProvider()))
+                        .loadRules(rules));
     }
-    SafeIteratorFactory<Token> tokenIteratorFactory = new LexerFactory(
-        metacharIteratorFactory,
-        tokenizerFactory,
-        iterationResultFactory);
-    SafeIteratorFactory<Checkable> checkableIteratorFactory = new SyntacticFactory(
-        tokenIteratorFactory,
-        new DefaultParserChainFactory(
-            new InMemoryParserFactory(
-                new DefaultTokenTemplateFactory(),
-                new DefaultNodeFactory())),
-        iterationResultFactory,
-        tokenFactory);
-    SafeIteratorFactory<Interpretable> interpretableIteratorFactory = new SemanticFactory(
-        checkableIteratorFactory,
-        iterationResultFactory);
-    return new ScaFactory(
-        interpretableIteratorFactory,
-        iterationResultFactory,
-        new RuleStatusProviderRegistry(
-            List.of(new YamlRuleStatusProvider(), new JsonRuleStatusProvider())).loadRules(rules));
-  }
 }

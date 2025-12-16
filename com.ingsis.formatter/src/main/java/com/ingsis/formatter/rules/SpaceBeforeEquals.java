@@ -1,0 +1,28 @@
+package com.ingsis.formatter.rules;
+
+import java.util.List;
+
+import com.ingsis.utils.token.Token;
+import com.ingsis.utils.token.type.TokenType;
+
+public class SpaceBeforeEquals implements TriviaRule {
+  private final boolean hasSpace;
+
+  public SpaceBeforeEquals(boolean hasSpace) {
+    this.hasSpace = hasSpace;
+  }
+
+  @Override
+  public boolean appliea(Token previousToken, Token currentToken) {
+    return currentToken.type().equals(TokenType.EQUAL);
+  }
+
+  @Override
+  public StringBuilder apply(Token previousToken, List<Token> trivia, Token currentToken, StringBuilder sb) {
+    if (hasSpace) {
+      sb.append(" ");
+    }
+    sb.append(currentToken.value());
+    return sb;
+  }
+}

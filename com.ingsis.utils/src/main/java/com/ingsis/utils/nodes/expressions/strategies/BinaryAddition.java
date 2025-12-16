@@ -41,23 +41,35 @@ public class BinaryAddition implements ExpressionStrategy {
     return switch (left) {
       case Value.IntValue LI ->
         switch (right) {
-          case Value.IntValue RI -> new InterpretResult.CORRECT(
-              evalState,
-              new Value.IntValue(LI.v().add(RI.v())));
-          default -> new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
+          case Value.IntValue RI ->
+            new InterpretResult.CORRECT(
+                evalState, new Value.IntValue(LI.v().add(RI.v())));
+          default ->
+            new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
         };
-      case Value.BooleanValue LB -> switch (right) {
-        case Value.BooleanValue RB -> new InterpretResult.CORRECT(
-            evalState,
-            new Value.BooleanValue(LB.v() && RB.v()));
-        default -> new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
-      };
-      case Value.StringValue LS -> switch (right) {
-        case Value.StringValue RS -> new InterpretResult.CORRECT(
-            evalState,
-            new Value.StringValue(LS.v() + RS.v()));
-        default -> new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
-      };
+      case Value.BooleanValue LB ->
+        switch (right) {
+          case Value.BooleanValue RB ->
+            new InterpretResult.CORRECT(
+                evalState, new Value.BooleanValue(LB.v() && RB.v()));
+          default ->
+            new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
+        };
+      case Value.StringValue LS ->
+        switch (right) {
+          case Value.StringValue RS ->
+            new InterpretResult.CORRECT(
+                evalState, new Value.StringValue(LS.v() + RS.v()));
+          case Value.IntValue RV ->
+            new InterpretResult.CORRECT(
+                evalState, new Value.StringValue(LS.v() + RV.v().toString()));
+          case Value.BooleanValue RB ->
+            new InterpretResult.CORRECT(
+                evalState, new Value.StringValue(LS.v() + Boolean.toString(RB.v())));
+
+          default ->
+            new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
+        };
       default -> new InterpretResult.INCORRECT(evalState, "Adding incorrect types.");
     };
   }
